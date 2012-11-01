@@ -5,10 +5,10 @@ import java.util.Collections;
 import java.util.List;
 
 import Agent.Agent;
+import Interface.KitRobotAgent.KitRobot;
 import MoveableObjects.Kit;
-import MoveableObjects.Part;
 
-public class KitRobotAgent extends Agent{
+public class KitRobotAgent extends Agent implements KitRobot{
 
 
 	enum KitState {WaitForKit, MoveKit , MoveToInspection, WaitingForInspection, FinishedKit, DestroyKit};
@@ -26,7 +26,6 @@ public class KitRobotAgent extends Agent{
 	
 	class KitHolder
 	{
-	//	public List<Part> part_list;
 		public int position_on_stand;
 		public KitState state;
 		public Kit kit;

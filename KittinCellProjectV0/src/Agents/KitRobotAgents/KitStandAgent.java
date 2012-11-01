@@ -5,10 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import Agent.Agent;
+import Interface.KitRobotAgent.KitStand;
 import MoveableObjects.Kit;
 import MoveableObjects.Part;
 
-public class KitStandAgent extends Agent{
+public class KitStandAgent extends Agent implements KitStand{
 
 	
 	class KitHolder

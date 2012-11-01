@@ -5,9 +5,10 @@ import java.util.Collections;
 import java.util.List;
 
 import Agent.Agent;
+import Interface.KitRobotAgent.KitConveyor;
 import MoveableObjects.Kit;
 
-public class KitConveyorAgent extends Agent{
+public class KitConveyorAgent extends Agent implements KitConveyor{
 
 	
 	enum ConveyorEvents {GetKit};

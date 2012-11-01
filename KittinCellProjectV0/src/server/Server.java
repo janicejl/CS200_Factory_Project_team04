@@ -54,6 +54,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	}
 	
 	public void run(){
+		try {
+			s = ss.accept();
+			determine = new DetermineProtocol(s, this); //create proper protocol
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	

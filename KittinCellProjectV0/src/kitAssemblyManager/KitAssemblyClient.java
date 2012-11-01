@@ -49,6 +49,9 @@ public class KitAssemblyClient implements Runnable {
 			out.reset();
 			command = (String)in.readObject();
 			if(command.equals("Confirmed")){
+				commandSent = "Confirmed";
+				out.writeObject(commandSent);
+				out.reset();
 				//start
 			}
 			else{

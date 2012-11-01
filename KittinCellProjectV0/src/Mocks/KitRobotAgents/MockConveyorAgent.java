@@ -1,7 +1,8 @@
 package Mocks.KitRobotAgents;
 
-import restaurant.test.EventLog;
+
 import Interface.KitRobotAgent.KitConveyor;
+import UnitTest.KitRobotAgents.EventLog;
 
 public class MockConveyorAgent extends MockAgent implements KitConveyor{
 

@@ -1,7 +1,8 @@
 package Mocks.KitRobotAgents;
 
-import restaurant.test.EventLog;
+
 import Interface.KitRobotAgent.KitStand;
+import UnitTest.KitRobotAgents.EventLog;
 
 public class MockKitStand extends MockAgent implements KitStand{
 

@@ -1,3 +1,5 @@
+package kitAssemblyManager;
+
 public class GUIKit{
     Kit kit;
     double x;

@@ -1,3 +1,5 @@
+package kitAssemblyManager;
+
 public class Kit{
     int id;
     double x;
@@ -9,20 +11,20 @@ public class Kit{
         y = -50;
     }
 
-    public double getX(){
+    public synchronized double getX(){
         return x;
     }
 
-    public double getY(){
+    public synchronized double getY(){
         return y;
     }
 
-    public void setPosition(double x, double y){
+    public synchronized void setPosition(double x, double y){
         this.x = x;
         this.y = y;
     }
 
-    public int getID(){
+    public synchronized int getID(){
         return id;
     }
 }

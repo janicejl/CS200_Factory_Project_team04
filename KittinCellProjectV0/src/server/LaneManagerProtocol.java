@@ -32,6 +32,7 @@ public class LaneManagerProtocol implements Runnable{
 	
 	public void run(){
 		try {
+			//confirm phase
 			out.writeObject("Confirmed");
 			out.reset();
 			command = (String)in.readObject();

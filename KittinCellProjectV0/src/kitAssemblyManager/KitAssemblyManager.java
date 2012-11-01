@@ -1,3 +1,5 @@
+package kitAssemblyManager;
+
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
@@ -43,27 +45,27 @@ public class KitAssemblyManager implements Runnable{
         }
     }
 
-    public boolean getEmptyConveyorOn(){
+    public synchronized boolean getEmptyConveyorOn(){
         return emptyConveyorOn;
     }
 
-    public boolean getFinishedConveyorOn(){
+    public synchronized boolean getFinishedConveyorOn(){
         return finishedConveyorOn;
     }
 
-    public ArrayList<Kit> getEmptyKits(){
+    public synchronized ArrayList<Kit> getEmptyKits(){
         return emptyKits;
     }
 
-    public ArrayList<Kit> getFinishedKits(){
+    public synchronized ArrayList<Kit> getFinishedKits(){
         return finishedKits;
     }
 
-    public ArrayList<Kit> getStationKits(){
+    public synchronized ArrayList<Kit> getStationKits(){
         return stationKits;
     }
 
-    public ArrayList<Boolean> getStationOccupied(){
+    public synchronized ArrayList<Boolean> getStationOccupied(){
         return stationOccupied;
     }
 
@@ -107,7 +109,7 @@ public class KitAssemblyManager implements Runnable{
         finishedConveyorOn = (finishedKits.size() > 0);
 
         if(emptyConveyorOn){
-            for(Kit k : emptyKits){
+            for(Kit k : getEmptyKits()){
                 k.setPosition(k.getX(),k.getY() + conveyorSpeed);
             }
         }

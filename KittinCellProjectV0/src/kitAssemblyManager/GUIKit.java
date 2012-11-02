@@ -1,4 +1,5 @@
-package kitAssemblyManager;
+//package kitAssemblyManager;
+
 
 public class GUIKit{
     Kit kit;

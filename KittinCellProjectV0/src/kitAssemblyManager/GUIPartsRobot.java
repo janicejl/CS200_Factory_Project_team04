@@ -1,4 +1,5 @@
-package kitAssemblyManager;
+//package kitAssemblyManager;
+
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -40,8 +41,8 @@ public class GUIPartsRobot{
 
     public GUIPartsRobot(KitAssemblyManagerTester s){
         server = s;
-        x = 340;
-        y = 265;
+        x = 265;
+        y = 300;
         angle = 0;
         opacity = 0.01f;
         flashCounter = 1.0f;
@@ -90,46 +91,29 @@ public class GUIPartsRobot{
     public void paintPartsRobot(Graphics2D g2){
         AffineTransform at = new AffineTransform(); // transform object
 
-        at.translate((int)x,(int)y);
+        for (int i = 0; i < 4; i++) {
+            at = new AffineTransform();
+            at.translate((int)x,(int)y);
+            at.rotate(Math.toRadians(angle + i*90));
+            at.translate(-18,-41 - gripperExtensions.get(i).intValue()); // gripper 0
+            g2.drawImage(partsRobotGripperImage,at,null);
+            if(gripperHolding.get(i)){
+                at.translate(5,0);
+                g2.drawImage(part,at,null);
+                at.translate(-5,0);
+            }
+            at.translate(13,26);
+            at.scale(1,gripperExtensions.get(i)/40);
+            g2.drawImage(gripperArmImage,at,null);
+        }
+        at = new AffineTransform();
+        at.translate(x,y);
         at.rotate(Math.toRadians(angle));
-
-        at.translate(gripperExtensions.get(0).intValue()-5,-27);
-        g2.drawImage(gripperArmImage,at,null);
-        at.translate(20,-2);
-        g2.drawImage(partsRobotGripperImage,at,null);
-        if(gripperHolding.get(0)){
-            g2.drawImage(part,at,null);
-        }
-
-        at.translate(gripperExtensions.get(1).intValue() - gripperExtensions.get(0).intValue() -20,18);
-        g2.drawImage(gripperArmImage,at,null);
-        at.translate(20,-2);
-        g2.drawImage(partsRobotGripperImage,at,null);
-        if(gripperHolding.get(1)){
-            g2.drawImage(part,at,null);
-        }
-
-        at.translate(gripperExtensions.get(2).intValue() - gripperExtensions.get(1).intValue() -20,18);
-        g2.drawImage(gripperArmImage,at,null);
-        at.translate(20,-2);
-        g2.drawImage(partsRobotGripperImage,at,null);
-        if(gripperHolding.get(2)){
-            g2.drawImage(part,at,null);
-        }
-
-        at.translate(gripperExtensions.get(3).intValue() - gripperExtensions.get(2).intValue() -20,18);
-        g2.drawImage(gripperArmImage,at,null);
-        at.translate(20,-2);
-        g2.drawImage(partsRobotGripperImage,at,null);
-        if(gripperHolding.get(3)){
-            g2.drawImage(part,at,null);
-        }
-        at.translate(-gripperExtensions.get(3).intValue()-30,-54);
+        at.translate(-15,-15);
 
         g2.drawImage(partsRobotImage,at,null);
 
-
-        g2.drawImage(partsRobotRailImage,335,0,null);
+        g2.drawImage(partsRobotRailImage,260,0,null);
         at = new AffineTransform();
         at.translate(x-8,y-10);
         g2.drawImage(topImage,at,null);

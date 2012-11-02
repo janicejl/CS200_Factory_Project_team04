@@ -1,4 +1,5 @@
-package kitAssemblyManager;
+//package kitAssemblyManager;
+
 
 public class Kit{
     int id;
@@ -7,8 +8,8 @@ public class Kit{
 
     public Kit(int i){
         id = i;
-        x = 150;
-        y = -50;
+        x = 80;
+        y = -110;
     }
 
     public synchronized double getX(){

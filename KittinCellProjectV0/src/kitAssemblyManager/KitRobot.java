@@ -1,4 +1,4 @@
-package kitAssemblyManager;
+//package kitAssemblyManager;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -20,13 +20,17 @@ public class KitRobot implements Runnable{
     boolean spawnEmpty = true;
     boolean emptyConveyorOn = true;
     boolean doneConveyorOn = false;
-    double extension = 37;
-    double newExtension = 37;
-    double angle = 0.0;
-    double newAngle = 0;
+    double x;
+    double y;
+    double newX;
+    double newY;
     Kit kit;
+    int[] stationX =  {105,185,185,105, 35,185, 35};
+    int[] stationY =  { 60,190,410,540,540,300, 60};
+    int[] waypointX = {105,105,105,105, 35,105, 35};
+    int[] waypointY = {190,190,410,410,410,300,190};
+    double speed = 4.0;
 
-    ArrayList<String> stationRotations;
     ArrayList<String> commands;
     ArrayList<String> subCommands;
     ArrayList<String> commandsSkipped;
@@ -37,64 +41,56 @@ public class KitRobot implements Runnable{
         commands = new ArrayList<String>();
         subCommands = new ArrayList<String>();
         commandsSkipped = new ArrayList<String>();
-        stationRotations = new ArrayList<String>();
-        stationRotations.add("r,13.34"); // Empty Kit Station
-        stationRotations.add("r,76.66"); // Kit Stand 1
-        stationRotations.add("r,103.34"); // Kit stand 2
-        stationRotations.add("r,166.66"); // Bad Kit Station
-        stationRotations.add("r,193.34"); // incomplete kit station
-        stationRotations.add("r,270"); // Kit Check Station
-        stationRotations.add("r,346.66"); // finished kit station
-    }
-
-    public double getAngle(){
-        return angle;
-    }
-
-    public double getExtension(){
-        return extension;
+        x = 100;
+        y = 300;
+        newX = x;
+        newY = y;
     }
 
     public boolean getHasKit(){
         return hasKit;
     }
 
-    private boolean processCommand(String[] ss){
+    private void processCommand(String[] ss){
         int src = 0;
         int dst = 0;
-        boolean flag = true;
+        int i = 0;
         try{
             src = Integer.parseInt(ss[1]);
             dst = Integer.parseInt(ss[2]);
         }
         catch (Exception e){}
 
-        subCommands.add(0,stationRotations.get(src));
-        subCommands.add(1,"e,65");
-        subCommands.add(2,"p," + src);
-        subCommands.add(3,"e,37");
-        subCommands.add(4,stationRotations.get(dst));
-        subCommands.add(5,"e,65");
-        subCommands.add(6,"d," + dst);
-        subCommands.add(7,"e,37");
-        return true;
+        subCommands.add(i,"m," + waypointX[src] + "," + waypointY[src]);
+        subCommands.add(i+1,"m," + stationX[src] + "," + stationY[src]);
+        subCommands.add(i+2,"p," + src);
+        if(dst != 5){
+        }
+        if(dst == 6){
+            subCommands.add(i+3,"m," + waypointX[0] + "," + waypointY[0]);
+            i++;
+        }
+        else if(dst == 4){
+            subCommands.add(i+3,"m," + waypointX[2] + "," + waypointY[2]);
+            i++;
+        }
+        if(dst != 5){
+            subCommands.add(i+3,"m," + waypointX[dst] + "," + waypointY[dst]);
+            i++;
+        }
+
+        subCommands.add(i+3,"m," + stationX[dst] + "," + stationY[dst]);
+        subCommands.add(i+4,"d," + dst);
+        subCommands.add(i+5,"m," + waypointX[dst] + "," + waypointY[dst]);
     }
 
     private void processSubCommand(String s){
         String[] ss = s.split("\\,");
-        if (ss[0].equals("r")){
-            try{
-                newAngle = Double.parseDouble(ss[1]);
-                processing = true;
-            }
-            catch (Exception e){}
-        }
-        else if(ss[0].equals("e")){
-            try{
-                newExtension = Integer.parseInt(ss[1]);
-                processing = true;
-            }
-            catch (Exception e){}
+        if("m".equals(ss[0])){
+            System.out.println(s);
+            newX = Double.parseDouble(ss[1]);
+            newY = Double.parseDouble(ss[2]);
+            processing = true;
         }
         else if(ss[0].equals("p")){
             int i = Integer.parseInt(ss[1]);
@@ -162,41 +158,25 @@ public class KitRobot implements Runnable{
         paused = !paused;
     }
 
+    public double getX(){
+        return x;
+    }
+
+    public double getY(){
+        return y;
+    }
+
     public void update(){
         if(!paused){
-            if (angle != newAngle){
-                if(angle <= newAngle && newAngle - angle <= 180.0){
-                    angle += 5;
-                }
-                else if(angle <= newAngle && newAngle - angle > 180.0){
-                    angle -= 5;
-                }
-                else if(angle > newAngle && angle - newAngle <= 180.0){
-                    angle -= 5;
-                }
-                else if(angle > newAngle && angle - newAngle > 180.0){
-                    angle += 5;
-                }
-                if(Math.abs(angle - newAngle) < 5){
-                    angle = newAngle;
-                }
-                if(angle >= 360.0){
-                    angle = 0.0;
-                }
-                if(angle < 0.0){
-                    angle = 360.0;
-                }
-
-            }
-            else if(extension != newExtension){
-                if (newExtension > extension){
-                    extension+= 2;
+            if(x != newX || y != newY){
+                double d = Math.sqrt(Math.pow((newX-x),2) + Math.pow((newY-y),2));
+                if (d >= speed){
+                    x += ((newX-x)/d)*speed;
+                    y += ((newY-y)/d)*speed;
                 }
                 else {
-                    extension-= 2;
-                }
-                if(Math.abs(extension - newExtension) < 2){
-                    extension = newExtension;
+                    x = newX;
+                    y = newY;
                 }
             }
             else {

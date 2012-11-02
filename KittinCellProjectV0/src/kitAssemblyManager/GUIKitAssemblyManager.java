@@ -1,4 +1,5 @@
-package kitAssemblyManager;
+//package kitAssemblyManager;
+
 
 import java.util.*;
 import java.awt.*;
@@ -17,6 +18,8 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 
     double emptyConveyorMove = 0;
     double finishedConveyorMove = 0;
+    double badConveyorMove = 0;
+    double incompleteConveyorMove = 0;
     BufferedImage crateImage = null;
     BufferedImage background = null;
     BufferedImage stand = null;
@@ -29,9 +32,21 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
     ArrayList<Kit> baseFinishedKits;
     ArrayList<Kit> baseStationKits;
 
-    int[] stationPostions = {265, 250, 265, 310, 170, 405, 110, 405, 15, 280};
+    int[] stationPositions = {160, 140, 160, 360, 80, 490, 10, 490, 160, 250}; // stations 1 - 2 - 3 - 4 - 5 (image corner coords)
     boolean emptyConveyorOn;
     boolean finishedConveyorOn;
+    boolean badConveyorOn;
+    boolean incompleteConveyorOn;
+    /*
+    id  name    corX  corY
+    0   empty   80    10
+    1   kit 1   160   140
+    2   kit 2   160   360
+    3   inc     80    490
+    4   bad     10    490
+    5   check   160   250
+    6   done    10    10
+    */
 
 
 
@@ -63,6 +78,9 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         kam = server.getKitAssemblyManager();
         emptyConveyorOn = kam.getEmptyConveyorOn();
         finishedConveyorOn = kam.getFinishedConveyorOn();
+        badConveyorOn = kam.getBadConveyorOn();
+        incompleteConveyorOn = kam.getIncompleteConveyorOn();
+        // System.out.println(incompleteConveyorOn);
         baseEmptyKits = kam.getEmptyKits();
         baseFinishedKits = kam.getFinishedKits();
         baseStationKits = kam.getStationKits();
@@ -80,53 +98,84 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
                 finishedConveyorMove = 0;
             }
         }
+        if(badConveyorOn){
+            badConveyorMove += 0.5;
+            if(badConveyorMove > 20.0){
+                badConveyorMove = 0;
+            }
+        }
+        if(incompleteConveyorOn){
+            incompleteConveyorMove += 0.5;
+            if(incompleteConveyorMove > 20.0){
+                incompleteConveyorMove = 0;
+            }
+        }
     }
 
     public void paintComponent(Graphics g){ // Pant game background and
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.drawImage(background, 0, 0, null);
-        g2.drawImage(stand,255,240,null);
-        g2.drawImage(stand,5,270,60,60,null);
-        AffineTransform at = new AffineTransform();
-        at.translate(100,395);
-        at.rotate(Math.toRadians(90));
-        at.translate(0,-120);
-        g2.drawImage(stand,at,null);
+        g2.drawImage(stand,150,130,70,340,null); // kit stand
         g2.setColor(Color.BLACK);
-        g2.drawRect(375,100,50,50);
-        g2.drawRect(375,150,50,50);
-        g2.drawRect(375,200,50,50);
-        g2.drawRect(375,250,50,50);
-        g2.drawRect(375,300,50,50);
-        g2.drawRect(375,350,50,50);
-        g2.drawRect(375,400,50,50);
-        g2.drawRect(375,450,50,50);
+        g2.drawRect(320,100,50,50);
+        g2.drawRect(320,150,50,50);
+        g2.drawRect(320,200,50,50);
+        g2.drawRect(320,250,50,50);
+        g2.drawRect(320,300,50,50);
+        g2.drawRect(320,350,50,50);
+        g2.drawRect(320,400,50,50);
+        g2.drawRect(320,450,50,50);
 
-        for(int i = -1; i < 9; i++){
-            g2.drawImage(conveyorImage,165, i * 20 + (int)emptyConveyorMove,null);
-            g2.drawLine(165,20*i+(int)emptyConveyorMove,214,20*i+(int)emptyConveyorMove);
+        for(int i = -1; i < 5; i++){ // main conveyor images
+            g2.drawImage(conveyorImage,75, i * 20 + (int)emptyConveyorMove,null); // empty conveyor
+            g2.drawLine(75,20*i+(int)emptyConveyorMove,134,20*i+(int)emptyConveyorMove);
 
-            g2.drawImage(conveyorImage,105,(i+1)*20 - (int)finishedConveyorMove,null);
-            g2.drawLine(105,(i+1)*20-(int)finishedConveyorMove,154,(i+1)*20-(int)finishedConveyorMove);
+            g2.drawImage(conveyorImage,5,(i+1)*20 - (int)finishedConveyorMove,null); // finished conveyor
+            g2.drawLine(5,(i+1)*20-(int)finishedConveyorMove,64,(i+1)*20-(int)finishedConveyorMove);
+
+            g2.drawImage(conveyorImage,75, 500 + i * 20 + (int)incompleteConveyorMove,null); // incomplete conveyor
+            g2.drawLine(75,500 + 20*i+(int)incompleteConveyorMove,134, 500 + 20*i +(int)incompleteConveyorMove);
+
+            g2.drawImage(conveyorImage,5, 500 + i*20 + (int)badConveyorMove,null); // bad conveyor
+            g2.drawLine(5,500 + i*20+(int)badConveyorMove,64,500 + i*20+(int)badConveyorMove);
         }
 
-        g2.drawImage(conveyorImage,165,180+(int)emptyConveyorMove,215,202,0,0,50,22,null);
-        g2.drawLine(165,180+(int)emptyConveyorMove,214,180+(int)emptyConveyorMove);
+        g2.drawImage(conveyorImage,75,100+(int)emptyConveyorMove,135,120,0,0,60,22,null); // empty conveyor end
+        g2.drawLine(75,100+(int)emptyConveyorMove,134,100+(int)emptyConveyorMove);
 
-        g2.drawImage(conveyorImage,105,200-(int)finishedConveyorMove,155,202,0,0,50,22,null);
-        g2.drawLine(105,200-(int)finishedConveyorMove,154,200-(int)finishedConveyorMove);
+        g2.drawImage(conveyorImage,5,120-(int)finishedConveyorMove,65,120,0,0,60,22,null); // finished conveyor end
+        g2.drawLine(5,120-(int)finishedConveyorMove,64,120-(int)finishedConveyorMove);
 
-        for(Kit k : baseEmptyKits){
-            g2.drawImage(crateImage,170, (int)k.getY(),null);
+        g2.drawImage(conveyorImage,75,480,135,480+(int)incompleteConveyorMove,0,0,60,22,null); // incomplete conveyor end
+        g2.drawLine(75,480+(int)incompleteConveyorMove,134,480+(int)incompleteConveyorMove);
+
+        g2.drawImage(conveyorImage,5,480,65,480+(int)badConveyorMove,0,0,60,22,null); // bad conveyor end
+        g2.drawLine(5,480+(int)badConveyorMove,64,480+(int)badConveyorMove);
+
+
+
+        for(Kit k : baseEmptyKits){ // draw empty kits
+            g2.drawImage(crateImage,80, (int)k.getY(),null);
         }
-        for(Kit k : baseFinishedKits){
-            g2.drawImage(crateImage,110, (int)k.getY(),null);
+        for(Kit k : baseFinishedKits){ // draw finished kits
+            g2.drawImage(crateImage,10, (int)k.getY(),null);
         }
 
-        for (int i = 1; i < stationOccupied.size()-1; i++) {
+        for (int i = 1; i < stationOccupied.size()-1; i++) { // draw station kits
             if(stationOccupied.get(i)){
-                g2.drawImage(crateImage,stationPostions[i*2-2],stationPostions[i*2-1],null);
+                if(i == 3) {
+                    g2.drawImage(crateImage,stationPositions[i*2-2],(int)baseStationKits.get(i).getY(),null);
+
+                }
+                else if (i == 4) {
+                    g2.drawImage(crateImage,stationPositions[i*2-2],(int)baseStationKits.get(i).getY(),null);
+                    //System.out.println(baseStationKits.get(4).getY());
+                }
+                else {
+                    g2.drawImage(crateImage,stationPositions[i*2-2],stationPositions[i*2-1],null);
+                }
+
             }
         }
         partsRobot.paintPartsRobot(g2);

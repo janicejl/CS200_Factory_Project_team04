@@ -1,10 +1,11 @@
-package kitAssemblyManager;
+//package kitAssemblyManager;
 
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
+
 
 public class KitAssemblyManagerTester extends JFrame implements ActionListener{
     JPanel controlPanel;

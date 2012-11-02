@@ -1,4 +1,5 @@
-package kitAssemblyManager;
+//package kitAssemblyManager;
+
 
 import java.util.*;
 import java.awt.*;
@@ -16,23 +17,29 @@ public class KitAssemblyManager implements Runnable{
     ArrayList<Kit> stationKits;
     boolean finishedConveyorOn;
     boolean emptyConveyorOn;
+    boolean badConveyorOn;
+    boolean incompleteConveyorOn;
     int idCounter;
     double conveyorSpeed = 1;
 
     public KitAssemblyManager(){
         stationOccupied = new ArrayList<Boolean>();
         stationKits = new ArrayList<Kit>();
+        idCounter = 0;
         for(int i = 0; i < 7; i++){
             stationOccupied.add(false);
             stationKits.add(new Kit(idCounter));
+            if(i == 3){
+                stationKits.get(i).setPosition(80,700);
+            }
+            else if(i == 4){
+                stationKits.get(i).setPosition(10,700);
+            }
             idCounter++;
         }
 
         emptyKits = new ArrayList<Kit>();
         finishedKits = new ArrayList<Kit>();
-        finishedConveyorOn = true;
-        emptyConveyorOn = true;
-        idCounter = 0;
     }
 
     @Override
@@ -53,6 +60,14 @@ public class KitAssemblyManager implements Runnable{
         return finishedConveyorOn;
     }
 
+    public synchronized boolean getBadConveyorOn(){
+        return badConveyorOn;
+    }
+
+    public synchronized boolean getIncompleteConveyorOn(){
+        return incompleteConveyorOn;
+    }
+
     public synchronized ArrayList<Kit> getEmptyKits(){
         return emptyKits;
     }
@@ -69,7 +84,7 @@ public class KitAssemblyManager implements Runnable{
         return stationOccupied;
     }
 
-    public Kit getStationKit(int i){
+    public synchronized Kit getStationKit(int i){
         stationOccupied.set(i,false);
         if(i == 0){
             Kit k = emptyKits.get(0);
@@ -81,14 +96,27 @@ public class KitAssemblyManager implements Runnable{
         }
     }
 
-    public void setStationKit(int i, Kit k){
+    public synchronized void setStationKit(int i, Kit k){
+        stationOccupied.set(i,true);
         if(i == 6){
             finishedKits.add(k);
         }
+        else if(i == 3){
+            System.out.println(stationKits.get(4).getY() + " - " + stationKits.get(3).getY());
+            stationKits.set(i,k);
+            stationKits.get(3).setPosition(80,490);
+            System.out.println(stationKits.get(4).getY() + " - " + stationKits.get(3).getY());
+        }
+        else if(i == 4){
+            System.out.println(stationKits.get(4).getY() + " - " + stationKits.get(3).getY());
+            stationKits.set(i,k);
+            stationKits.get(4).setPosition(10,490);
+            System.out.println(stationKits.get(4).getY() + " - " + stationKits.get(3).getY());
+        }
         else {
-            stationOccupied.set(i,true);
             stationKits.set(i,k);
         }
+        System.out.println(stationKits.get(4).getY() + " - " + stationKits.get(3).getY());
     }
 
     public void processCommand(String s){
@@ -97,7 +125,7 @@ public class KitAssemblyManager implements Runnable{
             Kit temp = new Kit(idCounter);
             int sz = emptyKits.size();
             if(sz > 0 && emptyKits.get(sz-1).getY() < 0){
-                temp.setPosition(150,emptyKits.get(sz-1).getY() - 60);
+                temp.setPosition(80,emptyKits.get(sz-1).getY() - 110);
             }
             emptyKits.add(temp);
             idCounter++;
@@ -107,6 +135,8 @@ public class KitAssemblyManager implements Runnable{
     public void update(){
         emptyConveyorOn = !stationOccupied.get(0) && (emptyKits.size() > 0);
         finishedConveyorOn = (finishedKits.size() > 0);
+        badConveyorOn = stationKits.get(4).getY() < 600;
+        incompleteConveyorOn = stationKits.get(3).getY() < 600;
 
         if(emptyConveyorOn){
             for(Kit k : getEmptyKits()){
@@ -114,7 +144,7 @@ public class KitAssemblyManager implements Runnable{
             }
         }
 
-        if(emptyKits.size() > 0 && emptyKits.get(0).getY() >= 155.0){
+        if(emptyKits.size() > 0 && emptyKits.get(0).getY() >= 10.0){ // check if empty kit is ready to pickup
             stationOccupied.set(0,true);
         }
 
@@ -123,12 +153,19 @@ public class KitAssemblyManager implements Runnable{
                 k.setPosition(k.getX(),k.getY() - conveyorSpeed);
             }
         }
+        if(incompleteConveyorOn){
+            stationKits.get(3).setPosition(80,stationKits.get(3).getY() + conveyorSpeed);
+        }
+
+        if(badConveyorOn){
+            stationKits.get(4).setPosition(80,stationKits.get(4).getY() + conveyorSpeed);
+        }
 
         if(finishedKits.size() > 0){
-            if(finishedKits.get(finishedKits.size()-1).getY() < 155.0){
+            if(finishedKits.get(finishedKits.size()-1).getY() < -100.0){ // check if finished station is clear
                 stationOccupied.set(6,false);
             }
-            if(finishedKits.get(0).getY() < -140.0){
+            if(finishedKits.get(0).getY() < -200.0){ // check is image is off screen
                 finishedKits.remove(0);
             }
         }

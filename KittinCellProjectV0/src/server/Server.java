@@ -163,6 +163,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		revalidate();
 	}
 	
+	public void revalidate(){
+		gui.revalidate();
+		kitTest.revalidate();
+	}
+	
 	public static void main(String[] args) {
 		Server factory = new Server();
 		factory.setSize(533, 400);

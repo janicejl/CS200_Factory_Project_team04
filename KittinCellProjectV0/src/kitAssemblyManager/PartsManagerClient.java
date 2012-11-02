@@ -1,10 +1,11 @@
-package partsRobot; //this package will be renamed in v1 as the clients will be merged into the kitAssemblyManager
+package kitAssemblyManager; //this package will be renamed in v1 as the clients will be merged into the kitAssemblyManager
 
 import java.io.*;
 import java.net.*;
 
 public class PartsManagerClient implements Runnable {
 	Socket s;
+	KitAssemblyApp app;
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	String command;
@@ -12,7 +13,8 @@ public class PartsManagerClient implements Runnable {
 	String serverName; //keep track of what server to connect to...default localhost
 	Thread thread;
 	
-	public PartsManagerClient(){
+	public PartsManagerClient(KitAssemblyApp _app){
+		app= _app;
 		serverName = "localhost";
 		command = "";
 		commandSent = "";
@@ -67,5 +69,13 @@ public class PartsManagerClient implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public synchronized Thread getThread() {
+		return thread;
+	}
+
+	public synchronized void setThread(Thread thread) {
+		this.thread = thread;
 	}
 }

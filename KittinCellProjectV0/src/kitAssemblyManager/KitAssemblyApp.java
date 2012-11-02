@@ -11,8 +11,8 @@ import java.awt.event.*;
 import java.io.*;
 
 public class KitAssemblyApp extends JFrame implements ActionListener{
-    KitAssemblyClient client;
-	
+    KitAssemblyClient kitClient;
+	PartsManagerClient partsClient;
 	JPanel controlPanel;
     GridBagConstraints gbc;
     ArrayList<JButton> buttons;
@@ -28,7 +28,8 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     PartsRobot partsRobot;
 
     public KitAssemblyApp(){
-    	client = new KitAssemblyClient(this);
+    	kitClient = new KitAssemblyClient(this);
+    	partsClient = new PartsManagerClient(this);
         kitAssemblyManager = new KitAssemblyManager();
         partsRobot = new PartsRobot();
         kitRobot = new KitRobot(kitAssemblyManager);
@@ -65,7 +66,8 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         controlPanel = new JPanel(new GridBagLayout());
         buttons = new ArrayList<JButton>();
 
-        createButton("Connect");
+        createButton("ConnectKitRobot");
+        createButton("ConnectPartsRobot");
         createButton("Load Config");
         createButton("Spawn Kit");
         createButton("Take Picture");
@@ -176,13 +178,22 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     }
     
     public void actionPerformed(ActionEvent ae) {
-    	if("Connect".equals(ae.getActionCommand())){
-    		int i = client.connect();
+    	if("ConnectKitRobot".equals(ae.getActionCommand())){
+    		int i = kitClient.connect();
     		if(i == -1){
     			System.exit(1);
     		}
     		else if(i == 1){
-    			client.getThread().start();
+    			kitClient.getThread().start();
+    		}
+    	}
+    	else if ("ConnectPartsRobot".equals(ae.getActionCommand())){
+    		int i = partsClient.connect();
+    		if(i == -1){
+    			System.exit(1);
+    		}
+    		else if(i == 1){
+    			partsClient.getThread().start();
     		}
     	}
     	else if("Load Config".equals(ae.getActionCommand())) {

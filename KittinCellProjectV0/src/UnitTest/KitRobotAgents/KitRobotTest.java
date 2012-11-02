@@ -15,6 +15,9 @@ public class KitRobotTest {
 		KitRobotAgent robot_agent = new KitRobotAgent();
 		MockKitStand kit_stand = new MockKitStand("kit stand");
 		
+		assertEquals("The kit stand should have no messages " + kit_stand.log.toString(),0,kit_stand.log.size());
+		
+		
 	}
 
 }

@@ -11,7 +11,7 @@ public class TestMain {
 	//	KitStandAgent kit_agent = new KitStandAgent();
 		
 		
-		robot_agent.SetConveyorAgent(conveyor_agnet);
+		/*robot_agent.SetConveyorAgent(conveyor_agnet);
 		robot_agent.SetStandAgent(kit_agent);
 		
 		conveyor_agnet.SetKitRobot(robot_agent);
@@ -23,7 +23,7 @@ public class TestMain {
 		conveyor_agnet.startThread();
 		kit_agent.startThread();
 		
-		robot_agent.msgGetKits(2);
+		robot_agent.msgGetKits(2);*/
 
 	}
 

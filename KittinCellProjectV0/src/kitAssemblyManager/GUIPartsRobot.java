@@ -36,9 +36,9 @@ public class GUIPartsRobot{
     double y;
     double angle;
 
-    KitAssemblyManagerTester server;
+    KitAssemblyApp server;
 
-    public GUIPartsRobot(KitAssemblyManagerTester s){
+    public GUIPartsRobot(KitAssemblyApp s){
         server = s;
         x = 340;
         y = 265;

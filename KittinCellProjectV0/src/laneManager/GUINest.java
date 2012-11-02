@@ -18,7 +18,7 @@ public class GUINest {
 	public GUINest(Nest n) {
 		nest = n;
 		try {
-			image = ImageIO.read(new File("graphics/nest.png"));
+			image = ImageIO.read(new File("images/nest.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -44,7 +44,7 @@ public class GUINest {
 		BufferedImage part;
 		if (parts.size() > 0) {
 			try {
-				part = ImageIO.read(new File("graphics/" + parts.get(0).getID() + ".png"));
+				part = ImageIO.read(new File("images/" + parts.get(0).getID() + ".png"));
 				
 				for (int i = 0; i < parts.size(); i++) {
 					g.drawImage(part, (int)parts.get(i).getX(), (int)parts.get(i).getY(), null);

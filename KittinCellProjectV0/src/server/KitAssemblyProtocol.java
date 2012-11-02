@@ -17,7 +17,7 @@ public class KitAssemblyProtocol implements Runnable{
 		app = _app;
 		s = _s;
 		command = "";
-		commandSent = "";
+		commandSent = "Confirmed";
 		try {
 			out = new ObjectOutputStream(s.getOutputStream());
 			out.flush();
@@ -30,14 +30,30 @@ public class KitAssemblyProtocol implements Runnable{
 		thread.start();
 	}
 	
-	public void run(){
+	public synchronized void run(){
 		try {
+			command = (String)in.readObject();
+			if(!command.equals("KitAssembly")){
+				commandSent = "Denied";
+			}
 			//confirm phase
-			out.writeObject("Confirmed");
+			out.writeObject(commandSent);
 			out.reset();
 			command = (String)in.readObject();
 			if(command.equals("Confirmed")){
-				
+				//start
+			}
+			
+			commandSent = "Idle";
+			while(true){
+				out.writeObject(app.getKitRobot());
+				out.reset();
+				out.writeObject(app.getKitAssemblyManager());
+				out.reset();
+				command = (String)in.readObject();
+				if(command.equals("Received")){
+					
+				}
 			}
 			
 		} catch (ClassNotFoundException e) {

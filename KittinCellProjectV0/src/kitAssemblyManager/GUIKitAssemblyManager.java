@@ -5,12 +5,15 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import javax.imageio.*;
+
+import server.KitAssemblyManager;
+
 import java.awt.image.*;
 import java.io.*;
 import java.awt.geom.*;
 
 public class GUIKitAssemblyManager extends JPanel implements ActionListener {
-    KitAssemblyManagerTester server;
+    KitAssemblyApp app;
     KitAssemblyManager kam;
     GUIKitRobot kitRobot;
     GUIPartsRobot partsRobot;
@@ -22,34 +25,35 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
     BufferedImage stand = null;
     BufferedImage conveyorImage = null;
 
-    ArrayList<Boolean> stationOccupied;
-    ArrayList<GUIKit> emptyKits;
-    ArrayList<GUIKit> finishedKits;
-    ArrayList<Kit> baseEmptyKits;
-    ArrayList<Kit> baseFinishedKits;
-    ArrayList<Kit> baseStationKits;
+    Vector<Boolean> stationOccupied;
+    Vector<GUIKit> emptyKits;
+    Vector<GUIKit> finishedKits;
+    Vector<Kit> baseEmptyKits;
+    Vector<Kit> baseFinishedKits;
+    Vector<Kit> baseStationKits;
 
     int[] stationPostions = {265, 250, 265, 310, 170, 405, 110, 405, 15, 280};
     boolean emptyConveyorOn;
     boolean finishedConveyorOn;
 
+    javax.swing.Timer timer;
 
-
-    public GUIKitAssemblyManager(KitAssemblyManagerTester s){
-        server = s;
+    public GUIKitAssemblyManager(KitAssemblyApp _app){
+        app = _app;
         setPreferredSize(new Dimension (450,600));
 
         //kitAssemblyManager = kam;
-        kitRobot = new GUIKitRobot(server);
-        partsRobot = new GUIPartsRobot(server);
-        stationOccupied = new ArrayList<Boolean>();
-        emptyKits = new ArrayList<GUIKit>();
-        finishedKits = new ArrayList<GUIKit>();
-        baseEmptyKits = new ArrayList<Kit>();
-        baseFinishedKits = new ArrayList<Kit>();
-        baseStationKits = new ArrayList<Kit>();
+        kitRobot = new GUIKitRobot(app);
+        partsRobot = new GUIPartsRobot(app);
+        stationOccupied = new Vector<Boolean>();
+        emptyKits = new Vector<GUIKit>();
+        finishedKits = new Vector<GUIKit>();
+        baseEmptyKits = new Vector<Kit>();
+        baseFinishedKits = new Vector<Kit>();
+        baseStationKits = new Vector<Kit>();
 
-        new javax.swing.Timer(10, this).start();
+        timer = new javax.swing.Timer(10, this);
+        timer.start();
 
         try {
             background = ImageIO.read(new File("images/background.png"));
@@ -58,9 +62,9 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
             conveyorImage = ImageIO.read(new File("images/conveyor.png"));
         } catch (IOException e) {}
     }
-
+    
     public void update(){
-        kam = server.getKitAssemblyManager();
+        kam = app.getKitAssemblyManager();
         emptyConveyorOn = kam.getEmptyConveyorOn();
         finishedConveyorOn = kam.getFinishedConveyorOn();
         baseEmptyKits = kam.getEmptyKits();
@@ -117,10 +121,10 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         g2.drawImage(conveyorImage,105,200-(int)finishedConveyorMove,155,202,0,0,50,22,null);
         g2.drawLine(105,200-(int)finishedConveyorMove,154,200-(int)finishedConveyorMove);
 
-        for(Kit k : baseEmptyKits){
+        for(Kit k : getBaseEmptyKits()){
             g2.drawImage(crateImage,170, (int)k.getY(),null);
         }
-        for(Kit k : baseFinishedKits){
+        for(Kit k : getBaseFinishedKits()){
             g2.drawImage(crateImage,110, (int)k.getY(),null);
         }
 
@@ -139,4 +143,20 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         kitRobot.update();
         repaint();
     }
+
+	public synchronized Vector<Kit> getBaseEmptyKits() {
+		return baseEmptyKits;
+	}
+
+	public synchronized void setBaseEmptyKits(Vector<Kit> baseEmptyKits) {
+		this.baseEmptyKits = baseEmptyKits;
+	}
+
+	public synchronized Vector<Kit> getBaseFinishedKits() {
+		return baseFinishedKits;
+	}
+
+	public synchronized void setBaseFinishedKits(Vector<Kit> baseFinishedKits) {
+		this.baseFinishedKits = baseFinishedKits;
+	}
 }

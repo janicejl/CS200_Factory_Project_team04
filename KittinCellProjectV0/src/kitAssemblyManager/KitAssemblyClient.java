@@ -3,7 +3,11 @@ package kitAssemblyManager;
 import java.io.*;
 import java.net.*;
 
+import server.KitAssemblyManager;
+import server.KitRobot;
+
 public class KitAssemblyClient implements Runnable {
+	KitAssemblyApp app;
 	Socket s;
 	ObjectOutputStream out;
 	ObjectInputStream in;
@@ -12,20 +16,14 @@ public class KitAssemblyClient implements Runnable {
 	String serverName; //keep track of what server to connect to...default localhost
 	Thread thread;
 	
-	public KitAssemblyClient(){
+	public KitAssemblyClient(KitAssemblyApp _app){
+		app = _app;
 		serverName = "localhost";
 		command = "";
 		commandSent = "";
 		thread = new Thread(this, "KitAssemblyClient_Thread");
-		int i = connect();
-		if(i == -1){
-			System.exit(1);
-		}
-		else if(i == 1){
-			thread.start();
-		}
 	}
-	
+
 	public Integer connect(){
 		try {
 			s = new Socket(serverName, 61337); //attempt to connect to servername
@@ -54,6 +52,10 @@ public class KitAssemblyClient implements Runnable {
 				out.reset();
 				//start
 			}
+			else if(command.equals("Denied")){
+				System.err.println("Server not accepting this Client");
+				System.exit(1);
+			}
 			else{
 				//error connection
 				System.out.println(command);
@@ -61,11 +63,25 @@ public class KitAssemblyClient implements Runnable {
 			}
 			
 //**************START CODE***************************
-			
+			commandSent = "Received";
+			while(true){
+				app.setKitRobot((KitRobot)in.readObject());
+				app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
+				out.writeObject(commandSent);
+				out.reset();
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public synchronized Thread getThread() {
+		return thread;
+	}
+
+	public synchronized void setThread(Thread thread) {
+		this.thread = thread;
 	}
 }

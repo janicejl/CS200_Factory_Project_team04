@@ -1,6 +1,7 @@
 package server;
 
 import java.net.*;
+import java.util.Scanner;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.awt.*;
@@ -10,6 +11,10 @@ import javax.swing.*;
 public class Server extends JFrame implements Runnable, ActionListener{
 	
 	ServerPanel gui; //panel for gui
+	ServerKitTestPanel kitTest; //panel for kit assembly commands
+	Integer phase;
+	
+	String clientType; //type of client to connect to
 	
 	ServerSocket ss; //serversocket
 	Socket s; //socket reference to connect to each manager
@@ -17,6 +22,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	KitAssemblyProtocol kitPro;
 	LaneManagerProtocol lanePro;
 	PartsRobotProtocol partsPro;
+	
+	KitAssemblyManager kitAssemblyManager;
+	KitRobot kitRobot; //kit assembly robot
 	
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
@@ -26,10 +34,17 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		//setup layout
 		setLayout(new GridBagLayout());
 		gui = new ServerPanel(this);
+		phase = new Integer(0);
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;	
 		c.gridy = 0;
 		add(gui, c);
+		kitTest = new ServerKitTestPanel(this);
+		
+		kitAssemblyManager = new KitAssemblyManager();
+		kitRobot = new KitRobot(kitAssemblyManager);
+		new Thread(kitAssemblyManager).start();
+        new Thread(kitRobot).start();
 		
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");
@@ -56,19 +71,76 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public void run(){
 		try {
 			s = ss.accept();
-			determine = new DetermineProtocol(s, this); //create proper protocol
+			if(getClientType().equals("Kit Assembly")){
+				kitPro = new KitAssemblyProtocol(s, this); //create proper protocol
+				removeCenter();
+				GridBagConstraints c = new GridBagConstraints();
+				c.gridx = 0;	
+				c.gridy = 0;
+				add(kitTest, c);
+				phase = 1;
+			}
+			else if(getClientType().equals("Lane Manager")){
+				lanePro = new LaneManagerProtocol(s, this);
+			}
+			else if(getClientType().equals("Parts Robot")){
+				partsPro = new PartsRobotProtocol(s, this);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 	}
 	
+	public void execute(String process){
+    	if(process.equals("Load Stand 1")){
+    		getKitRobot().addCommand("load,0,1");
+    	}
+    	else if(process.equals("Load Stand 2")){
+    		getKitRobot().addCommand("load,0,2");
+    	}
+    	else if(process.equals("Check Kit 1")){
+    		getKitRobot().addCommand("load,1,5");
+    	}
+    	else if(process.equals("Check Kit 2")){
+    		getKitRobot().addCommand("load,2,5");
+    	}
+    	else if(process.equals("Take Picture")){
+    		
+    	}
+    	else if(process.equals("Remove Finished")){
+    		getKitRobot().addCommand("load,5,6");
+    	}
+    }
+	 
+    public void execute(String process, Integer num){
+    	if(process.equals("Spawn Kit")){
+    		for(int i = 0; i < num; i++){
+    			getKitAssemblyManager().processCommand("spawn");
+    		}
+    	}
+    }
 	public void actionPerformed(ActionEvent e){
 		repaint();
 	}
 	
+	public void removeCenter(){
+		if(phase.equals(0)){
+			remove(gui);
+		}
+		else if(phase.equals(1)){
+			remove(kitTest);
+		}
+	}
+	
 	public void paint(Graphics g){
-		gui.repaint();
+		if(phase.equals(0)){
+			gui.repaint();
+		}
+		else if(phase.equals(1)){
+			kitTest.repaint();
+		}
+		revalidate();
 	}
 	
 	public static void main(String[] args) {
@@ -76,6 +148,31 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		factory.setSize(533, 400);
 		factory.setVisible(true);
 		factory.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+
+	public synchronized KitAssemblyManager getKitAssemblyManager() {
+		return kitAssemblyManager;
+	}
+
+	public synchronized void setKitAssemblyManager(
+			KitAssemblyManager kitAssemblyManager) {
+		this.kitAssemblyManager = kitAssemblyManager;
+	}
+
+	public synchronized KitRobot getKitRobot() {
+		return kitRobot;
+	}
+
+	public synchronized void setKitRobot(KitRobot kitRobot) {
+		this.kitRobot = kitRobot;
+	}
+
+	public synchronized String getClientType() {
+		return clientType;
+	}
+
+	public synchronized void setClientType(String clientType) {
+		this.clientType = clientType;
 	}
 
 }

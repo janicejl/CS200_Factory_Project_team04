@@ -68,7 +68,8 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
           
         }
         else if("Spawn Kit".equals(ae.getActionCommand())) {
-            server.execute("Spawn Kit", 1);
+            //server.execute("Spawn Kit", 1);
+        	server.getKitRobotAgent().msgGetKits(1);
         }
         else if("Load Stand 1".equals(ae.getActionCommand())) {
         	server.execute("Load Stand 1");

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import Agents.KitRobotAgents.KitConveyorAgent;
 import Agents.KitRobotAgents.KitRobotAgent;
 import Agents.KitRobotAgents.KitStandAgent;
 
@@ -28,6 +29,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	KitRobotAgent kitRobotAgent; 
 	KitStandAgent kitStandAgent;
+	KitConveyorAgent kitConveyorAgent;
 	KitAssemblyManager kitAssemblyManager;
 	KitRobot kitRobot; //kit assembly robot
 	
@@ -48,10 +50,16 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		
 		kitRobotAgent = new KitRobotAgent(this);
 		kitStandAgent = new KitStandAgent(this); 
+		kitConveyorAgent = new KitConveyorAgent(this);
 		kitAssemblyManager = new KitAssemblyManager();
 		kitRobot = new KitRobot(kitAssemblyManager);
+		kitStandAgent.SetRobotAgent(kitRobotAgent);
+		kitRobotAgent.SetConveyorAgent(kitConveyorAgent);
+		kitRobotAgent.SetStandAgent(kitStandAgent);
+		kitConveyorAgent.SetKitRobot(kitRobotAgent);
 		kitRobotAgent.startThread();
 		kitStandAgent.startThread();
+		kitConveyorAgent.startThread();
 		new Thread(kitAssemblyManager).start();
         new Thread(kitRobot).start();
         
@@ -99,6 +107,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		
 		
 	}
 	
@@ -183,6 +193,30 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public synchronized void setClientType(String clientType) {
 		this.clientType = clientType;
+	}
+
+	public synchronized KitRobotAgent getKitRobotAgent() {
+		return kitRobotAgent;
+	}
+
+	public synchronized void setKitRobotAgent(KitRobotAgent kitRobotAgent) {
+		this.kitRobotAgent = kitRobotAgent;
+	}
+
+	public synchronized KitStandAgent getKitStandAgent() {
+		return kitStandAgent;
+	}
+
+	public synchronized void setKitStandAgent(KitStandAgent kitStandAgent) {
+		this.kitStandAgent = kitStandAgent;
+	}
+
+	public synchronized KitConveyorAgent getKitConveyorAgent() {
+		return kitConveyorAgent;
+	}
+
+	public synchronized void setKitConveyorAgent(KitConveyorAgent kitConveyorAgent) {
+		this.kitConveyorAgent = kitConveyorAgent;
 	}
 
 }

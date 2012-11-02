@@ -1,10 +1,8 @@
 package Agents.KitRobotAgents;
 
 public class TestMain {
-
-	/**
-	 * @param args
-	 */
+/*
+	
 	public static void main(String[] args) {
 	//	KitRobotAgent robot_agent = new KitRobotAgent();
 	//	KitConveyorAgent conveyor_agnet = new KitConveyorAgent();
@@ -25,6 +23,6 @@ public class TestMain {
 		
 		robot_agent.msgGetKits(2);*/
 
-	}
+	}*/
 
 }

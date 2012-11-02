@@ -27,7 +27,7 @@ public class MockKitRobot extends MockAgent implements KitRobot{
 	}
 
 	@Override
-	public void PlaceKitAtPosition(int i) {
+	public void msgPlaceKitAtPosition(int i) {
 		log.add(new UnitTest.KitRobotAgents.LoggedEvent("Place kit at position " + i) );
 		
 	}

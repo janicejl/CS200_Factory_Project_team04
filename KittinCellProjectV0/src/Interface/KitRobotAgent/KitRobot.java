@@ -8,6 +8,6 @@ public interface KitRobot {
 
 	void msgMoveKitToInspection(int position);
 
-	void PlaceKitAtPosition(int i);
+	void msgPlaceKitAtPosition(int i);
 
 }

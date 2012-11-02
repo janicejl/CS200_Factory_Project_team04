@@ -7,6 +7,8 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import server.Server;
+
 import Agent.Agent;
 import Interface.KitRobotAgent.KitConveyor;
 import Interface.KitRobotAgent.KitRobot;
@@ -30,6 +32,7 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	boolean b_ask_for_kit;
 	Timer timer = new Timer();
 	Random rn = new Random();
+	Server server;
 	
 	class KitHolder
 	{
@@ -40,10 +43,10 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	}
 	
 	
-	public KitRobotAgent()
+	public KitRobotAgent(Server _server)
 	{
 		b_ask_for_kit = true;
-		
+		server = _server;
 	}
 	
 	
@@ -86,7 +89,7 @@ public class KitRobotAgent extends Agent implements KitRobot{
 		}
 	}
 	//telling where to place a kit
-	public void PlaceKitAtPosition(int position)
+	public void msgPlaceKitAtPosition(int position)
 	{
 		System.out.println("KitRobot: place kit an position");
 		event_list.add(KitRobotEvent.CanPlaceKit);
@@ -124,7 +127,7 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	
 	
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 
 	
 		
@@ -211,7 +214,15 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	
 	private void MoveKitToStand(KitHolder kit)
 	{
-		//PLAY ANIMATION TO MOVE KIT FROM CONVEYOR TO STAND
+		if(kit.position_on_stand  == 0)
+		{
+			server.execute("Load Stand 1");
+		}
+		else
+		{
+			server.execute("Load Stand 2");
+		}
+		
 		System.out.println("KitRobot: Move kit to stand");
 		kit.state = KitState.BeingBuilt;
 		kit_stand.msgPlacingKit(kit.kit);
@@ -248,4 +259,7 @@ public class KitRobotAgent extends Agent implements KitRobot{
 		kit_stand = stand;
 	}
 
+
+
+	
 }

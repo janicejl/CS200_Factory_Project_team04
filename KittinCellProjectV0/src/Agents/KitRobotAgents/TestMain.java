@@ -6,9 +6,9 @@ public class TestMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		KitRobotAgent robot_agent = new KitRobotAgent();
-		KitConveyorAgent conveyor_agnet = new KitConveyorAgent();
-		KitStandAgent kit_agent = new KitStandAgent();
+	//	KitRobotAgent robot_agent = new KitRobotAgent();
+	//	KitConveyorAgent conveyor_agnet = new KitConveyorAgent();
+	//	KitStandAgent kit_agent = new KitStandAgent();
 		
 		
 		robot_agent.SetConveyorAgent(conveyor_agnet);

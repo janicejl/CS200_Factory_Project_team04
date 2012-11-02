@@ -18,15 +18,15 @@ public class MockKitStand extends MockAgent implements KitStand{
 
 	@Override
 	public void msgCanIPlaceKit() {
-		System.out.println("hmmm");
+		
 		log.add(new UnitTest.KitRobotAgents.LoggedEvent("Can I place kit"));
 		
 	}
 
 	@Override
 	public void msgPlacingKit(Kit kit) {
-		// TODO Auto-generated method stub
 		
+		log.add(new UnitTest.KitRobotAgents.LoggedEvent("Kit being placed"));
 	}
 
 }

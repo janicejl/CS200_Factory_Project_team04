@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import server.Server;
+
 import Agent.Agent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
 import Interface.KitRobotAgent.KitRobot;
@@ -39,12 +41,12 @@ public class KitStandAgent extends Agent implements KitStand{
 	enum KitState {BeingInspected,AddParts,Empty,None,KitFinished}
 	PartsRobotAgent parts_robot;
 	KitRobot kit_robot;
+	Server server;
 	
 	
-	
-	public KitStandAgent()
+	public KitStandAgent(Server _server)
 	{
-		
+		server = _server;
 	}
 	
 	public void msgCanIPlaceKit()
@@ -294,17 +296,17 @@ public class KitStandAgent extends Agent implements KitStand{
 		{
 			if(kit_holder_list.size() == 0)
 			{
-				kit_robot.PlaceKitAtPosition(0);
+				kit_robot.msgPlaceKitAtPosition(0);
 			}
 			else
 			{
 				if(kit_holder_list.get(0).position == 0)
 				{
-					kit_robot.PlaceKitAtPosition(1);
+					kit_robot.msgPlaceKitAtPosition(1);
 				}
 				else
 				{
-					kit_robot.PlaceKitAtPosition(0);
+					kit_robot.msgPlaceKitAtPosition(0);
 				}
 			}
 		}

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import server.Server;
+
 import Agent.Agent;
 import Interface.KitRobotAgent.KitConveyor;
 import Interface.KitRobotAgent.KitRobot;
@@ -16,10 +18,11 @@ public class KitConveyorAgent extends Agent implements KitConveyor{
 	List<ConveyorEvents> conveyor_events = Collections.synchronizedList( new ArrayList<ConveyorEvents>());
 	List<Kit> finished_kit_list = Collections.synchronizedList( new ArrayList<Kit>());
 	KitRobot kit_robot;
+	Server server;
 	
-	public KitConveyorAgent()
+	public KitConveyorAgent(Server _server)
 	{
-		
+		server = _server;
 	}
 	
 	

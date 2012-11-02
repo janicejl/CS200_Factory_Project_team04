@@ -20,7 +20,8 @@ public class KitAssemblyManager implements Runnable, Serializable{
     Boolean emptyConveyorOn;
     int idCounter;
     double conveyorSpeed = 1;
-
+    Boolean msg;
+    
     public KitAssemblyManager(){
         stationOccupied = new Vector<Boolean>();
         stationKits = new Vector<Kit>();
@@ -34,7 +35,9 @@ public class KitAssemblyManager implements Runnable, Serializable{
         finishedKits = new Vector<Kit>();
         finishedConveyorOn = new Boolean(true);
         emptyConveyorOn = new Boolean(true);
+        msg = new Boolean(false);
         idCounter = 0;
+    
     }
 
     public void run(){
@@ -71,6 +74,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
 
         if(getEmptyKits().size() > 0 && getEmptyKits().get(0).getY() >= 155.0){
             getStationOccupied().set(0,true);
+            setMsg(true);
         }
 
         if(getFinishedConveyorOn()){
@@ -181,5 +185,13 @@ public class KitAssemblyManager implements Runnable, Serializable{
 
 	public synchronized void setEmptyConveyorOn(Boolean emptyConveyorOn) {
 		this.emptyConveyorOn = emptyConveyorOn;
+	}
+
+	public synchronized Boolean getMsg() {
+		return msg;
+	}
+
+	public synchronized void setMsg(Boolean msg) {
+		this.msg = msg;
 	}
 }

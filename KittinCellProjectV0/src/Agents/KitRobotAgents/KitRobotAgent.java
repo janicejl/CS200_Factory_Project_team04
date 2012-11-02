@@ -1,5 +1,6 @@
 package Agents.KitRobotAgents;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +16,7 @@ import Interface.KitRobotAgent.KitRobot;
 import Interface.KitRobotAgent.KitStand;
 import MoveableObjects.Kit;
 
-public class KitRobotAgent extends Agent implements KitRobot{
+public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 
 
 	enum KitState {BeingBuilt,WaitForKit, MoveKit , MoveToInspection, WaitingForInspection, FinishedKit, DestroyKit};

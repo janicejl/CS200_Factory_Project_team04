@@ -23,6 +23,6 @@ public class TestMain {
 		
 		robot_agent.msgGetKits(2);*/
 
-	}*/
+	}
 
-}
+

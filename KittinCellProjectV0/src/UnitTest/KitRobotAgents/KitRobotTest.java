@@ -19,9 +19,9 @@ public class KitRobotTest {
 
 		MockConveyorAgent conveyor = new MockConveyorAgent("conveyor");
 		
-		KitRobotAgent robot_agent = new KitRobotAgent();
+		//KitRobotAgent robot_agent = new KitRobotAgent();
 		
-		
+		/*
 		
 		MockKitStand kit_stand = new MockKitStand("kit stand");
 		robot_agent.SetStandAgent(kit_stand);
@@ -44,7 +44,7 @@ public class KitRobotTest {
 		Kit kit = new Kit();
 		robot_agent.msgHereIsAKit(kit);
 		
-		robot_agent.pickAndExecuteAnAction();
+		robot_agent.pickAndExecuteAnAction();*/
 		
 	
 		

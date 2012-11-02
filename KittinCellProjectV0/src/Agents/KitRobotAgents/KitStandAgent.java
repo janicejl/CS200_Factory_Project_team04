@@ -1,5 +1,6 @@
 package Agents.KitRobotAgents;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +14,7 @@ import Interface.KitRobotAgent.KitStand;
 import MoveableObjects.Kit;
 import MoveableObjects.Part;
 
-public class KitStandAgent extends Agent implements KitStand{
+public class KitStandAgent extends Agent implements KitStand, Serializable{
 
 	
 	class KitHolder

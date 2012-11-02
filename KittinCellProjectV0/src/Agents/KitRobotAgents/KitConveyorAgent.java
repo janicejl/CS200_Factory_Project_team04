@@ -82,6 +82,7 @@ public class KitConveyorAgent extends Agent implements KitConveyor{
 	private void GiveKitToRobot()
 	{
 		//PLAY ANIMATION TO MOVE KIT ONTO CONVEYOR
+		server.execute("Spawn Kit",1);
 		System.out.println("KitConveyor: Moving empty kit onto conveyor");
 		server.execute("Spawn Kit", 1);
 		Kit kit = new Kit();

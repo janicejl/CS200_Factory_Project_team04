@@ -6,6 +6,7 @@ import java.util.List;
 
 import Agent.Agent;
 import Interface.KitRobotAgent.KitConveyor;
+import Interface.KitRobotAgent.KitRobot;
 import MoveableObjects.Kit;
 
 public class KitConveyorAgent extends Agent implements KitConveyor{
@@ -14,7 +15,7 @@ public class KitConveyorAgent extends Agent implements KitConveyor{
 	enum ConveyorEvents {GetKit};
 	List<ConveyorEvents> conveyor_events = Collections.synchronizedList( new ArrayList<ConveyorEvents>());
 	List<Kit> finished_kit_list = Collections.synchronizedList( new ArrayList<Kit>());
-	KitRobotAgent kit_robot;
+	KitRobot kit_robot;
 	
 	public KitConveyorAgent()
 	{
@@ -24,12 +25,14 @@ public class KitConveyorAgent extends Agent implements KitConveyor{
 	
 	public void msgGiveMeAKit()
 	{
+		System.out.println("KitConveyor: Conveyor got a request for a kit");
 		conveyor_events.add(ConveyorEvents.GetKit);
 		stateChanged();
 	}
 	
 	public void msgHereIsFinishedKit(Kit k)
 	{
+		System.out.println("KitConveyor: Conveyor got a finished kit");
 		finished_kit_list.add(k);
 		stateChanged();
 	}
@@ -39,24 +42,26 @@ public class KitConveyorAgent extends Agent implements KitConveyor{
 	@Override
 	protected boolean pickAndExecuteAnAction() {
 
-
-		for(ConveyorEvents event:conveyor_events)
+		if(!conveyor_events.isEmpty())
 		{
-			if(event == ConveyorEvents.GetKit)
+			for(ConveyorEvents event:conveyor_events)
 			{
-				conveyor_events.remove(event);
-				GiveKitToRobot();
+				if(event == ConveyorEvents.GetKit)
+				{
+					conveyor_events.remove(event);
+					GiveKitToRobot();
+					return true;
+				}
+			}
+		}
+		if(!finished_kit_list.isEmpty())
+		{
+			for(Kit kit:finished_kit_list)
+			{
+				FinishedKit(kit);
 				return true;
 			}
 		}
-		
-		for(Kit kit:finished_kit_list)
-		{
-			FinishedKit(kit);
-			return true;
-		}
-		
-		
 		
 		return false;
 	}
@@ -67,14 +72,21 @@ public class KitConveyorAgent extends Agent implements KitConveyor{
 	private void FinishedKit(Kit kit)
 	{
 		//Move kit off the conveyor 
+		System.out.println("KitConveyor: Moving finished kit off conveyor");
 		finished_kit_list.remove(kit);
 	}
 	
 	private void GiveKitToRobot()
 	{
 		//PLAY ANIMATION TO MOVE KIT ONTO CONVEYOR
+		System.out.println("KitConveyor: Moving empty kit onto conveyor");
 		Kit kit = new Kit();
 		kit_robot.msgHereIsAKit(kit);
 	}
 
+	
+	public void SetKitRobot(KitRobotAgent robot)
+	{
+		kit_robot = robot;
+	}
 }

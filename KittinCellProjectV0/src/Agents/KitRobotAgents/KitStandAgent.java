@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import Agent.Agent;
+import Agents.PartsRobotAgent.PartsRobotAgent;
+import Interface.KitRobotAgent.KitRobot;
 import Interface.KitRobotAgent.KitStand;
 import MoveableObjects.Kit;
 import MoveableObjects.Part;
@@ -35,8 +37,8 @@ public class KitStandAgent extends Agent implements KitStand{
 	List<KitHolder> kit_holder_list =Collections.synchronizedList( new ArrayList<KitHolder>());
 	List<KitHolder> inpspection_list = Collections.synchronizedList( new ArrayList<KitHolder>());
 	enum KitState {BeingInspected,AddParts,Empty,None,KitFinished}
-//	PartsRobotAgent parts_robot;
-	KitRobotAgent kit_robot;
+	PartsRobotAgent parts_robot;
+	KitRobot kit_robot;
 	
 	
 	
@@ -47,13 +49,14 @@ public class KitStandAgent extends Agent implements KitStand{
 	
 	public void msgCanIPlaceKit()
 	{
-		
+		System.out.println("KitStand: Can a kit be placed?");
 		stand_events.add(KitStandEvent.IsEmptySpot);
 		stateChanged();
 	}
 	
 	public void msgPlacingKit(Kit k)
 	{
+		System.out.println("KitStand:: kit being placed");
 		KitHolder kit_h = new KitHolder(k,null);
 		kit_h.state = KitState.Empty;
 		if(kit_holder_list.size() == 0)
@@ -77,6 +80,7 @@ public class KitStandAgent extends Agent implements KitStand{
 	
 	public void msgKitIsDone(int position)
 	{
+		System.out.println("KitStand:: kit is done!");
 		for(KitHolder kit_h:kit_holder_list)
 		{
 			if(kit_h.position == position)
@@ -93,6 +97,7 @@ public class KitStandAgent extends Agent implements KitStand{
 	
 	public void msgKitMoved(int position)
 	{
+		System.out.println("KitStand: Kit being moved");
 		for(KitHolder kit_h:kit_holder_list)
 		{
 			if(kit_h.position == position)
@@ -112,6 +117,7 @@ public class KitStandAgent extends Agent implements KitStand{
 	
 	public void msgKitRemovedFromInspection()
 	{
+		System.out.println("KitStand: kit removed from inspection");
 		stand_events.add(KitStandEvent.RemoveKit);
 		stateChanged();
 		
@@ -119,6 +125,7 @@ public class KitStandAgent extends Agent implements KitStand{
 	
 	public void msgHereAreParts(List<Part> part_l, int position)
 	{
+		System.out.println("KitStand: Parts to add for a kit");
 		for(KitHolder kit_h:kit_holder_list)
 		{
 			if(kit_h.position == position)
@@ -134,6 +141,7 @@ public class KitStandAgent extends Agent implements KitStand{
 	
 	public void msgIsThereEmptyKit()
 	{
+		System.out.println("KitStand: Is there and empty kit?");
 		stand_events.add(KitStandEvent.IsEmptyKit);
 		stateChanged();
 	}
@@ -149,6 +157,7 @@ public class KitStandAgent extends Agent implements KitStand{
 			{
 				if(event == KitStandEvent.IsEmptyKit)
 				{
+					stand_events.remove(event);
 					CheckForEmptyKit();
 					return true;
 				}
@@ -161,6 +170,7 @@ public class KitStandAgent extends Agent implements KitStand{
 			{
 				if(event == KitStandEvent.RemoveKit)
 				{
+					stand_events.remove(event);
 					RemoveKit();
 					return true;
 				}
@@ -174,6 +184,7 @@ public class KitStandAgent extends Agent implements KitStand{
 			{
 				if(event == KitStandEvent.IsEmptySpot)
 				{
+					stand_events.remove(event);
 					CheckEmptySpot();
 					return true;
 				}
@@ -229,6 +240,7 @@ public class KitStandAgent extends Agent implements KitStand{
 	
 	private void MoveToBeInspected(KitHolder kit_h)
 	{
+		System.out.println("KitStand: Telling robot to move kit");
 		kit_robot.msgMoveKitToInspection(kit_h.position);
 		kit_h.state = KitState.None;
 	}
@@ -238,22 +250,26 @@ public class KitStandAgent extends Agent implements KitStand{
 	{
 		//vision_agent.TakePicture();
 		kit_h.state = KitState.None;
+		System.out.println("KitStand: Inspect kit by vision");
 	}
 	
 	private void RemoveKit()
 	{
+		System.out.println("KitStand: Removing kit");
 		inpspection_list.remove(0);		
 	}
 	
 	private void AppPartsToKit(KitHolder kit_h)
 	{
 		//kit_h.kit.AddPartsPartsToKit(kit_h.parts_to_add); ANIMATION
+		System.out.println("KitStand: Add Parts to kit");
 		kit_h.state = KitState.None;
 		kit_h.parts_to_add = null;
 	}
 	
 	private void CheckForEmptyKit()
 	{
+		System.out.println("KitStand: Check for empty kit");
 		for(KitHolder kit:kit_holder_list)
 		{
 			if(kit.state == KitState.Empty)
@@ -268,9 +284,11 @@ public class KitStandAgent extends Agent implements KitStand{
 	//what do i message the robot
 	private void CheckEmptySpot()
 	{
+		
+		System.out.println("KitStand: Check for an empty spot on stand");
 		if(kit_holder_list.size() >= 2)
 		{
-			//message part robot there is no empty slot
+			//message kit robot there is no empty slot
 		}
 		else
 		{
@@ -293,6 +311,15 @@ public class KitStandAgent extends Agent implements KitStand{
 		
 		
 	}
-	
 
+
+	//Setters
+	
+	public void SetRobotAgent(KitRobot robot)
+	{
+		kit_robot = robot;
+	}
+	
+	
+	
 }

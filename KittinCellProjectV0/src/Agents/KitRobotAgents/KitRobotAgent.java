@@ -3,15 +3,20 @@ package Agents.KitRobotAgents;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Agent.Agent;
+import Interface.KitRobotAgent.KitConveyor;
 import Interface.KitRobotAgent.KitRobot;
+import Interface.KitRobotAgent.KitStand;
 import MoveableObjects.Kit;
 
 public class KitRobotAgent extends Agent implements KitRobot{
 
 
-	enum KitState {WaitForKit, MoveKit , MoveToInspection, WaitingForInspection, FinishedKit, DestroyKit};
+	enum KitState {BeingBuilt,WaitForKit, MoveKit , MoveToInspection, WaitingForInspection, FinishedKit, DestroyKit};
 	
 	enum KitRobotEvent {
 		CanPlaceKit};
@@ -20,9 +25,11 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	List<KitHolder> inspection_list = Collections.synchronizedList( new ArrayList<KitHolder>());
 	List<KitRobotEvent> event_list = Collections.synchronizedList( new ArrayList<KitRobotEvent>());
 	int kits_needed;
-	KitStandAgent kit_stand;
-	KitConveyorAgent kit_conveyor;
-	
+	KitStand kit_stand;
+	KitConveyor kit_conveyor;
+	boolean b_ask_for_kit;
+	Timer timer = new Timer();
+	Random rn = new Random();
 	
 	class KitHolder
 	{
@@ -35,7 +42,7 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	
 	public KitRobotAgent()
 	{
-		
+		b_ask_for_kit = true;
 		
 	}
 	
@@ -43,13 +50,15 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	
 	public void msgGetKits(int count)
 	{
+		System.out.println("KitRobot: get kits");
 		//THIS WILL PROBALBY NEED TO BE REWORKED, depends on a new type of kit being made or a 
-		kits_needed = 0;
+		kits_needed = count;
 		stateChanged();
 	}
 	
 	public void msgHereIsAKit(Kit k)
 	{	
+		System.out.println("KitRobot: here is a kit");
 		for(KitHolder kit_h:kit_list)
 		{
 			if(kit_h.state == KitState.WaitForKit)
@@ -65,6 +74,7 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	
 	public void msgMoveKitToInspection(int i)
 	{
+		System.out.println("KitRobot: move kit to inspection");
 		for(KitHolder kit_h:kit_list)
 		{
 			if(kit_h.position_on_stand == i)
@@ -78,10 +88,12 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	//telling where to place a kit
 	public void PlaceKitAtPosition(int position)
 	{
+		System.out.println("KitRobot: place kit an position");
 		event_list.add(KitRobotEvent.CanPlaceKit);
 		KitHolder kit_h = new KitHolder();
 		kit_h.position_on_stand = position;
 		kit_h.state = KitState.WaitForKit;
+		kit_list.add(kit_h);
 		stateChanged();
 		
 	}
@@ -89,6 +101,7 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	
 	public void msgKitInspected(boolean bis_good)
 	{
+		System.out.println("KitRobot: kit has been inspected");
 		for(KitHolder kit_h:kit_list)
 		{
 			if(kit_h.state == KitState.WaitingForInspection)
@@ -113,13 +126,7 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	@Override
 	protected boolean pickAndExecuteAnAction() {
 
-
-		
-			if(kit_list.size() < 2 && kits_needed > 0)
-			{
-				CanIPlaceKit();
-				return true;
-			}
+	
 		
 			if(!event_list.isEmpty())
 			{
@@ -171,6 +178,14 @@ public class KitRobotAgent extends Agent implements KitRobot{
 					}
 				}
 			}
+			
+			
+			if(kit_list.size() < 2 && kits_needed > 0 && b_ask_for_kit)
+			{
+				CanIPlaceKit();
+				return true;
+			}
+			
 		return false;
 	}
 	
@@ -181,6 +196,7 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	private void FinishedKit(KitHolder kit)
 	{
 		//MOVE KIT TO CONVEYOR
+		System.out.println("KitRobot: Finished a kit!");
 		kit_conveyor.msgHereIsFinishedKit(kit.kit);
 		kit_list.remove(kit);
 	}
@@ -189,28 +205,47 @@ public class KitRobotAgent extends Agent implements KitRobot{
 	{
 		//PLAY ANIMATION TO MOVE THE KIT FROM THE STAND TO INSPECTION STAND	
 		kit.state = KitState.WaitingForInspection;
+		System.out.println("KitRobot: Moving kit to inspection");
 	}
 	
 	
 	private void MoveKitToStand(KitHolder kit)
 	{
 		//PLAY ANIMATION TO MOVE KIT FROM CONVEYOR TO STAND
+		System.out.println("KitRobot: Move kit to stand");
+		kit.state = KitState.BeingBuilt;
+		kit_stand.msgPlacingKit(kit.kit);
 	}
 	
 	
 	private void GiveMeAKit()
 	{
 		kits_needed--;
+		System.out.println("KitRobot: Give me a kit");
 		kit_conveyor.msgGiveMeAKit();
-		
 	}
-	
 	
 	private void CanIPlaceKit()
 	{
+		System.out.println("KitRobot: Can I place kit");
 		kit_stand.msgCanIPlaceKit();
+		b_ask_for_kit = false;
+		timer.schedule(new TimerTask(){
+		    public void run(){ 
+		    	b_ask_for_kit = true;
+		    	stateChanged();
+		    }
+		}, (rn.nextInt(5000)+5000));
 	}
 	
-
+	public void SetConveyorAgent(KitConveyor conv)
+	{
+		kit_conveyor =  conv;
+	}
+	
+	public void SetStandAgent(KitStand stand)
+	{
+		kit_stand = stand;
+	}
 
 }

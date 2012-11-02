@@ -17,7 +17,7 @@ public class PartsRobotAgent extends Agent{
 
 	int count = 0;
 	List <Part.PartType> recipe = new ArrayList<Part.PartType>();
-	List <MyNest> nests;
+	List <MyNest> nests = new ArrayList<MyNest>();
 	Gripper[] grippers = new Gripper[4];
 	RobotState state;
 	CurrentKit currentkit;
@@ -54,6 +54,7 @@ public class PartsRobotAgent extends Agent{
 		KitStatus state = KitStatus.notAvailable;
 		public MyKit(int ind){
 			index = ind;
+			partsneeded = new ArrayList<Part.PartType>();
 		}
 	}
 	MyKit kit1;
@@ -69,9 +70,10 @@ public class PartsRobotAgent extends Agent{
 	public PartsRobotAgent(List <NestAgent> nestagents, VisionAgent visionagent, KitStandAgent stand)
 	{
 		int index = 0;
-		for(NestAgent nestagent:nestagents)
+		for(NestAgent nest:nestagents)
 		{
-			nests.add(new MyNest(nestagent,index));
+			MyNest mn = new MyNest(nest,index);
+			nests.add(mn);
 			index++;
 		}
 		camera = visionagent;
@@ -91,9 +93,13 @@ public class PartsRobotAgent extends Agent{
 		count = ct;
 		recipe = kitrecipe;
 		camerahasrecipe = false;
-		kit1.partsneeded = recipe;
+		kit1.partsneeded.clear();
+		kit2.partsneeded.clear();
+		for(Part.PartType type : kitrecipe){
+			kit1.partsneeded.add(type);
+			kit2.partsneeded.add(type);
+		}
 		kit1.state = KitStatus.notAvailable;
-		kit2.partsneeded = recipe;
 		kit2.state = KitStatus.notAvailable;
 		state = RobotState.mustOrderParts;
 		stateChanged();
@@ -138,24 +144,24 @@ public class PartsRobotAgent extends Agent{
 
 	public boolean pickAndExecuteAnAction(){
 		
-	if(recipe != null && !camerahasrecipe)
-	{
-		giveCameraRecipe();
-		return true;
-	}
+	
 	if(recipe!= null && state == RobotState.mustOrderParts)
 	{
 		orderParts();
 		return true;
 	}
-	
+	if(!recipe.isEmpty() && !camerahasrecipe)
+	{
+		giveCameraRecipe();
+		return true;
+	}
 	if(count > 0 && (kit1.state == KitStatus.notAvailable || kit2.state == KitStatus.notAvailable)){
 		requestEmptyKit();
 		return true;
 	}
-	if((kit1.partsneeded.isEmpty() || kit2.partsneeded.isEmpty()) && grippersEmpty())
+	if((kit1.partsneeded.isEmpty() || kit2.partsneeded.isEmpty()) && grippersEmpty() && !recipe.isEmpty())
 	{
-		
+		print("A kit is finished");
 		kitFinished();
 		return true;
 	}

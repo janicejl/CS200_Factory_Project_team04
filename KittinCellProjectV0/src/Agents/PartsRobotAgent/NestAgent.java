@@ -28,13 +28,16 @@ public class NestAgent extends Agent{
 	NestStatus neststate = NestStatus.noParts;
 	AnimationStatus animationstate = AnimationStatus.noAction;
 	
-	public NestAgent(LaneAgent lane, VisionAgent camera, PartsRobotAgent partsrobot, int index)
+	public NestAgent(LaneAgent lane, VisionAgent camera, int index)
 	{
 		this.lane = lane;
 		this.camera = camera;
-		this.partsrobot = partsrobot;
 		this.index = index;
 		name = "NestAgent " + index;
+	}
+	
+	public void setPartsRobotAgent(PartsRobotAgent robot){
+		this.partsrobot = robot;
 	}
 	//Messages
 	public void msgCanIPlacePart(LaneAgent lane)
@@ -72,8 +75,10 @@ public class NestAgent extends Agent{
 	{
 			for(int i = 0; i<9; i++)
 			{
-				if(nestslots[i].type != type)
-					animationstate = AnimationStatus.needPurge;
+				if(nestslots[1] != null){
+					if(nestslots[i].type != type)
+						animationstate = AnimationStatus.needPurge;
+				}
 			}
 					
 			parttype = type;

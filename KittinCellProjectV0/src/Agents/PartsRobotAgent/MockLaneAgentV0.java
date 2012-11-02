@@ -15,7 +15,11 @@ public class MockLaneAgentV0 extends Agent implements LaneAgent {
 	int count = 0;
 	//LaneAgentGui gui;
 
-	public MockLaneAgentV0(NestAgent nest){
+	public MockLaneAgentV0(){
+		
+	}
+	
+	public void setNest(NestAgent nest){
 		this.nest = nest;
 	}
 	

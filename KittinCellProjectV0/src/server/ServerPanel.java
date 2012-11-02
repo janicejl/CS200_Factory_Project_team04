@@ -78,14 +78,17 @@ public class ServerPanel extends JPanel implements ActionListener{
 		if(e.getSource() == kit){
 			int i = ((Server)server).start();
 			if(i == 1){
+				((Server)server).setClientType("Kit Assembly");
 				kit.setEnabled(false);
 				parts.setEnabled(false);
 				lane.setEnabled(false);
 			}
+			
 		}
 		else if(e.getSource() == parts){
 			int i = ((Server)server).start();
 			if(i == 1){
+				((Server)server).setClientType("Parts Robot");
 				kit.setEnabled(false);
 				parts.setEnabled(false);
 				lane.setEnabled(false);
@@ -94,6 +97,7 @@ public class ServerPanel extends JPanel implements ActionListener{
 		else if(e.getSource() == lane){
 			int i = ((Server)server).start();
 			if(i == 1){
+				((Server)server).setClientType("Lane Manager");
 				kit.setEnabled(false);
 				parts.setEnabled(false);
 				lane.setEnabled(false);

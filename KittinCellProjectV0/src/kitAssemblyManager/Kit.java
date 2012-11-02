@@ -1,6 +1,8 @@
 package kitAssemblyManager;
 
-public class Kit{
+import java.io.Serializable;
+
+public class Kit implements Serializable{
     int id;
     double x;
     double y;

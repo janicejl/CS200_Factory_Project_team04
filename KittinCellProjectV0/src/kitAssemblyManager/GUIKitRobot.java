@@ -12,6 +12,8 @@ import java.util.concurrent.*;
 import java.io.*;
 import javax.imageio.*;
 
+import server.KitRobot;
+
 public class GUIKitRobot {
     KitRobot kr;
     double x, y, angle, extension, jointAngle;
@@ -27,10 +29,10 @@ public class GUIKitRobot {
     BufferedImage hinge = null;
     BufferedImage base2 = null;
 
-    KitAssemblyManagerTester server;
+    KitAssemblyApp app;
 
-    public GUIKitRobot(KitAssemblyManagerTester s){
-        server = s;
+    public GUIKitRobot(KitAssemblyApp _app){
+        app = _app;
         x = 160;
         y = 300;
 
@@ -49,7 +51,7 @@ public class GUIKitRobot {
     }
 
     public void update(){
-        kr = server.getKitRobot();
+        kr = app.getKitRobot();
         angle = kr.getAngle();
         extension = kr.getExtension();
         hasKit = kr.getHasKit();

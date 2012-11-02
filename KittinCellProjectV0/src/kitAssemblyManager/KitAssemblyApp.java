@@ -3,11 +3,17 @@ package kitAssemblyManager;
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
+
+import server.KitAssemblyManager;
+import server.KitRobot;
+
 import java.awt.event.*;
 import java.io.*;
 
-public class KitAssemblyManagerTester extends JFrame implements ActionListener{
-    JPanel controlPanel;
+public class KitAssemblyApp extends JFrame implements ActionListener{
+    KitAssemblyClient client;
+	
+	JPanel controlPanel;
     GridBagConstraints gbc;
     ArrayList<JButton> buttons;
     String[] nests = { "Nest 1", "Nest 2", "Nest 3", "Nest 4", "Nest 5", "Nest 6", "Nest 7", "Nest 8" };
@@ -21,7 +27,8 @@ public class KitAssemblyManagerTester extends JFrame implements ActionListener{
     KitRobot kitRobot;
     PartsRobot partsRobot;
 
-    public KitAssemblyManagerTester(){
+    public KitAssemblyApp(){
+    	client = new KitAssemblyClient(this);
         kitAssemblyManager = new KitAssemblyManager();
         partsRobot = new PartsRobot();
         kitRobot = new KitRobot(kitAssemblyManager);
@@ -58,6 +65,7 @@ public class KitAssemblyManagerTester extends JFrame implements ActionListener{
         controlPanel = new JPanel(new GridBagLayout());
         buttons = new ArrayList<JButton>();
 
+        createButton("Connect");
         createButton("Load Config");
         createButton("Spawn Kit");
         createButton("Take Picture");
@@ -94,19 +102,27 @@ public class KitAssemblyManagerTester extends JFrame implements ActionListener{
         controlPanel.add(gripList, gbc);
     }
 
-    public KitRobot getKitRobot(){
+    public synchronized KitRobot getKitRobot(){
         return kitRobot;
     }
 
-    public PartsRobot getPartsRobot(){
+    public synchronized PartsRobot getPartsRobot(){
         return partsRobot;
     }
 
-    public KitAssemblyManager getKitAssemblyManager(){
+    public synchronized KitAssemblyManager getKitAssemblyManager(){
         return kitAssemblyManager;
     }
 
-    public void initGraphicsPanel(){
+    public synchronized void setKitAssemblyManager(KitAssemblyManager kitAssemblyManager) {
+		this.kitAssemblyManager = kitAssemblyManager;
+	}
+
+	public synchronized void setKitRobot(KitRobot kitRobot) {
+		this.kitRobot = kitRobot;
+	}
+
+	public void initGraphicsPanel(){
         kamPanel = new GUIKitAssemblyManager(this);
     }
 
@@ -128,10 +144,11 @@ public class KitAssemblyManagerTester extends JFrame implements ActionListener{
         catch (IllegalAccessException e) {
            // handle exception
         }
-        KitAssemblyManagerTester frame = new KitAssemblyManagerTester();
+        KitAssemblyApp frame = new KitAssemblyApp();
 
         frame.pack();
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     public void input(){
@@ -157,9 +174,18 @@ public class KitAssemblyManagerTester extends JFrame implements ActionListener{
         }
 
     }
-
+    
     public void actionPerformed(ActionEvent ae) {
-        if("Load Config".equals(ae.getActionCommand())) {
+    	if("Connect".equals(ae.getActionCommand())){
+    		int i = client.connect();
+    		if(i == -1){
+    			System.exit(1);
+    		}
+    		else if(i == 1){
+    			client.getThread().start();
+    		}
+    	}
+    	else if("Load Config".equals(ae.getActionCommand())) {
             input();
         }
         else if("Spawn Kit".equals(ae.getActionCommand())) {

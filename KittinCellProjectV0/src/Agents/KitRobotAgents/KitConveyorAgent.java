@@ -40,8 +40,6 @@ public class KitConveyorAgent extends Agent implements KitConveyor{
 		stateChanged();
 	}
 	
-	
-	
 	@Override
 	protected boolean pickAndExecuteAnAction() {
 

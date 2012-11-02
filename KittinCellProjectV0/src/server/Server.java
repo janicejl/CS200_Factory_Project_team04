@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import Agents.KitRobotAgents.KitRobotAgent;
+import Agents.KitRobotAgents.KitStandAgent;
+
 public class Server extends JFrame implements Runnable, ActionListener{
 	
 	ServerPanel gui; //panel for gui
@@ -23,6 +26,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	LaneManagerProtocol lanePro;
 	PartsRobotProtocol partsPro;
 	
+	KitRobotAgent kitRobotAgent; 
+	KitStandAgent kitStandAgent;
 	KitAssemblyManager kitAssemblyManager;
 	KitRobot kitRobot; //kit assembly robot
 	
@@ -41,10 +46,15 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		add(gui, c);
 		kitTest = new ServerKitTestPanel(this);
 		
+		kitRobotAgent = new KitRobotAgent(this);
+		kitStandAgent = new KitStandAgent(this); 
 		kitAssemblyManager = new KitAssemblyManager();
 		kitRobot = new KitRobot(kitAssemblyManager);
+		kitRobotAgent.startThread();
+		kitStandAgent.startThread();
 		new Thread(kitAssemblyManager).start();
         new Thread(kitRobot).start();
+        
 		
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");

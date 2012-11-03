@@ -12,9 +12,7 @@ public class painterPanel extends JPanel
 	//Items that will always be painted, regardless of user input
 	protected BufferedImage background = null;
 	protected BufferedImage rail = null;
-	protected BufferedImage gantryImage = null;
 	protected BufferedImage station = null;
-	protected BufferedImage box =null;
 	protected BufferedImage lane = null;
 	protected BufferedImage feeder = null;
 	Gantry gantry;
@@ -26,9 +24,7 @@ public class painterPanel extends JPanel
 		{
            	background = ImageIO.read(new File("images/background.png"));
 			rail = ImageIO.read(new File("images/rail.png"));
-			gantryImage = ImageIO.read(new File("images/gantryrobot.png"));
 			station = ImageIO.read(new File("images/station.png"));
-			box =ImageIO.read(new File("images/crate.png"));
 			feeder = ImageIO.read(new File("images/base.png"));
 			lane = ImageIO.read(new File("images/lanetemp.png"));
        	} 
@@ -54,13 +50,12 @@ public class painterPanel extends JPanel
 		int i=0;
 		while(i<boxes.size())
 		{
-			g2.drawImage(box, boxes.get(i).getXCurrent(),boxes.get(i).getYCurrent(),null);
-			g2.drawImage(boxes.get(i).getImage(), boxes.get(i).getXCurrent()+15, boxes.get(i).getYCurrent()+15, null);
+			boxes.get(i).paint(g);
 			i++;
 		}
 		
 		g2.drawImage(rail,gantry.getXCurrent()+10,0, null);
-		g2.drawImage(gantryImage,gantry.getXCurrent(), gantry.getYCurrent(),null);	
+		gantry.paint(g);
 		//I will implement proper image centering instead of the +10, -5 hack, but for now there are more important aspects
 	}
 

@@ -17,9 +17,6 @@ public class GUIGantryManager extends JFrame implements ActionListener
 	public Timer timer; //Calls actionPerformed every clock cycle
 	protected BufferedImage test = null; //Test image for the part
 	
-
-	
-
 	public GUIGantryManager() //Initializes all objects
 	{
 		timer = new Timer(10,this);
@@ -28,13 +25,12 @@ public class GUIGantryManager extends JFrame implements ActionListener
 		paintPanel.setGantry(gantry);
 
 		this.add(paintPanel);
+		
 		try
 		{
 			test = ImageIO.read(new File("images/part.png"));
 		}
-		catch(IOException e)
-		{
-		}
+		catch(IOException e){}
 		
 		//Populates the Parts box with a base box
 		parts = new ArrayList<PartsBox>();
@@ -58,11 +54,28 @@ public class GUIGantryManager extends JFrame implements ActionListener
 		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gui.setVisible(true);
 		gui.startTimer();
+		gui.setResizable(false);
 	}
 	
 	public void actionPerformed(ActionEvent ae) //Controls the actual code for simulation
+	{	
+		this.update();
+		gantry.update(); //update the gantry robots position
+		paintPanel.repaint();
+	}
+	
+	public void startTimer()
 	{
-
+		timer.start();
+	}
+	
+	public void setTimerDelay(int d)
+	{
+		timer.setDelay(d);
+	}
+	
+	public void update()
+	{
 		int i =0;
 		boolean go = true;
 		while(i<parts.size()) //Checks if a parts bin is waiting to be loaded or dumped
@@ -155,23 +168,6 @@ public class GUIGantryManager extends JFrame implements ActionListener
 			}
 			
 		}
-		
-		
-		gantry.update(); //update the gantry robots position
-		paintPanel.repaint();
 	}
-	
-	public void startTimer()
-	{
-		timer.start();
-	}
-	
-	public void setTimerDelay(int d)
-	{
-		timer.setDelay(d);
-	}
-	
-
-	
 }
 		

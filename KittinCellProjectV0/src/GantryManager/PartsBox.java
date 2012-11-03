@@ -1,10 +1,14 @@
 package GantryManager;
 
+import java.awt.*;
 import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
 
 public class PartsBox 
 {
 	protected BufferedImage part = null;
+	protected BufferedImage box = null;
 	int xFinal; //destination
 	int yFinal;
 	int xCurrent; //current position
@@ -22,6 +26,18 @@ public class PartsBox
 		yFinal=280;
 		yCurrent=280;
 		state = "wait";
+		try
+		{
+			box = ImageIO.read(new File("images/crate.png"));
+		}
+		catch(IOException e){}
+	}
+	
+	public void paint(Graphics g)
+	{
+		Graphics2D g2 = (Graphics2D)g;
+		g2.drawImage(box, xCurrent, yCurrent, null);
+		g2.drawImage(part, xCurrent+15, yCurrent+15, null);
 	}
 	
 	public BufferedImage getImage()

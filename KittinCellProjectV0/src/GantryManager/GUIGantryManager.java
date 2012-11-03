@@ -3,10 +3,8 @@ package GantryManager;
 import java.io.*;
 import java.util.ArrayList;
 import java.awt.image.*;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 
 public class GUIGantryManager extends JFrame implements ActionListener
@@ -69,7 +67,7 @@ public class GUIGantryManager extends JFrame implements ActionListener
 		boolean go = true;
 		while(i<parts.size()) //Checks if a parts bin is waiting to be loaded or dumped
 		{
-			if(parts.get(i).getState() == "dump" || parts.get(i).getState()=="load")
+			if(parts.get(i).getState() == "dump" || parts.get(i).getState()=="loading" || parts.get(i).getState()=="ready" || parts.get(i).getState()=="load")
 			{
 				go = false;
 			}
@@ -139,6 +137,7 @@ public class GUIGantryManager extends JFrame implements ActionListener
 						gantry.setFeeder(c);
 						parts.get(gantry.getBox()).setX(gantry.getX()-5);
 						parts.get(gantry.getBox()).setY(gantry.getY()+15);
+						parts.get(gantry.getBox()).setState("moving");
 						feeders.set(c, 1);
 						break;
 					}

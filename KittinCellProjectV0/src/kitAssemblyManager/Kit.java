@@ -1,4 +1,4 @@
-//package kitAssemblyManager;
+package kitAssemblyManager;
 
 
 public class Kit{

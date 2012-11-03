@@ -22,11 +22,16 @@ public class KitRobot implements Runnable, Serializable{
     boolean spawnEmpty = true;
     boolean emptyConveyorOn = true;
     boolean doneConveyorOn = false;
-    double extension = 37;
-    double newExtension = 37;
-    double angle = 0.0;
-    double newAngle = 0;
+    double x;
+    double y;
+    double newX;
+    double newY;
     Kit kit;
+    int[] stationX =  {105,185,185,105, 35,185, 35};
+    int[] stationY =  { 60,190,410,540,540,300, 60};
+    int[] waypointX = {105,105,105,105, 35,105, 35};
+    int[] waypointY = {190,190,410,410,410,300,190};
+    double speed = 4.0;
 
     Vector<String> stationRotations;
     Vector<String> commands;
@@ -35,71 +40,72 @@ public class KitRobot implements Runnable, Serializable{
     KitAssemblyManager kitAssemblyManager;
 
     Thread thread;
-    
+
     public KitRobot(KitAssemblyManager kam){
         kitAssemblyManager = kam;
         commands = new Vector<String>();
         subCommands = new Vector<String>();
         commandsSkipped = new Vector<String>();
         stationRotations = new Vector<String>();
-        stationRotations.add("r,13.34"); // 0 Empty Kit Station
-        stationRotations.add("r,76.66"); // 1 Kit Stand 1
-        stationRotations.add("r,103.34"); // 2 Kit stand 2
-        stationRotations.add("r,166.66"); // 3 Bad Kit Station
-        stationRotations.add("r,193.34"); // 4 incomplete kit station
-        stationRotations.add("r,270"); // 5 Kit Check Station
-        stationRotations.add("r,346.66"); // 6 finished kit station
+        x = 100;
+        y = 300;
+        newX = x;
+        newY = y;
     }
 
-    private boolean processCommand(String[] ss){
+    private void processCommand(String[] ss){
         int src = 0;
         int dst = 0;
-        boolean flag = true;
+        int i = 0;
         try{
             src = Integer.parseInt(ss[1]);
             dst = Integer.parseInt(ss[2]);
         }
         catch (Exception e){}
 
-        getSubCommands().add(0,stationRotations.get(src));
-        getSubCommands().add(1,"e,65");
-        getSubCommands().add(2,"p," + src);
-        getSubCommands().add(3,"e,37");
-        getSubCommands().add(4,stationRotations.get(dst));
-        getSubCommands().add(5,"e,65");
-        getSubCommands().add(6,"d," + dst);
-        getSubCommands().add(7,"e,37");
-        return true;
+        subCommands.add(i,"m," + waypointX[src] + "," + waypointY[src]);
+        subCommands.add(i+1,"m," + stationX[src] + "," + stationY[src]);
+        subCommands.add(i+2,"p," + src);
+        if(dst != 5){
+        }
+        if(dst == 6){
+            subCommands.add(i+3,"m," + waypointX[0] + "," + waypointY[0]);
+            i++;
+        }
+        else if(dst == 4){
+            subCommands.add(i+3,"m," + waypointX[2] + "," + waypointY[2]);
+            i++;
+        }
+        if(dst != 5){
+            subCommands.add(i+3,"m," + waypointX[dst] + "," + waypointY[dst]);
+            i++;
+        }
+
+        subCommands.add(i+3,"m," + stationX[dst] + "," + stationY[dst]);
+        subCommands.add(i+4,"d," + dst);
+        subCommands.add(i+5,"m," + waypointX[dst] + "," + waypointY[dst]);
     }
 
     private void processSubCommand(String s){
         String[] ss = s.split("\\,");
-        if (ss[0].equals("r")){
-            try{
-                setNewAngle(Double.parseDouble(ss[1]));
-                setProcessing(true);
-            }
-            catch (Exception e){}
-        }
-        else if(ss[0].equals("e")){
-            try{
-                setNewExtension(Integer.parseInt(ss[1]));
-                setProcessing(true);
-            }
-            catch (Exception e){}
+        if("m".equals(ss[0])){
+            System.out.println(s);
+            newX = Double.parseDouble(ss[1]);
+            newY = Double.parseDouble(ss[2]);
+            processing = true;
         }
         else if(ss[0].equals("p")){
             int i = Integer.parseInt(ss[1]);
             try {
-                setKit(getKitAssemblyManager().getStationKit(i));
+                kit = kitAssemblyManager.getStationKit(i);
             }
             catch (Exception ignore) {}
-            setHasKit(true);
+            hasKit = true;
         }
         else if(ss[0].equals("d")){
             int i = Integer.parseInt(ss[1]);
-            getKitAssemblyManager().setStationKit(i, getKit());
-            setHasKit(false);
+            kitAssemblyManager.setStationKit(i, kit);
+            hasKit = false;
         }
 
     }
@@ -121,18 +127,18 @@ public class KitRobot implements Runnable, Serializable{
         String[] ss = null;
         while(true){
             update();
-            if(getProcessing() == false){
-                if(getSubCommands().size() > 0){
-                    processSubCommand(getSubCommands().get(0));
-                    getSubCommands().remove(0);
+            if(processing == false){
+                if(subCommands.size() > 0){
+                    processSubCommand(subCommands.get(0));
+                    subCommands.remove(0);
                 }
                 else {
-                    for (int i = 0; i < getCommands().size(); i++){
-                        s = getCommands().get(i);
+                    for (int i = 0; i < commands.size(); i++){
+                        s = commands.get(i);
                         ss = s.split("\\,");
                         if(ss[0].equals("load")) {
                             processCommand(ss);
-                            getCommands().remove(i);
+                            commands.remove(i);
                             break;
                         }
                     }
@@ -147,198 +153,182 @@ public class KitRobot implements Runnable, Serializable{
 
     public void addCommand(String s){
         System.out.println("add: " + s);
-        getCommands().add(s);
+        commands.add(s);
     }
 
     public void pause(){
-        setPaused(!getPaused());
+        paused = !paused;
     }
 
     public void update(){
-        if(!getPaused()){
-            if (getAngle() != getNewAngle()){
-                if(getAngle() <= getNewAngle() && getNewAngle() - getAngle() <= 180.0){
-                	setAngle(getAngle() + 5);
-                }
-                else if(getAngle() <= getNewAngle() && getNewAngle() - getAngle() > 180.0){
-                	setAngle(getAngle() - 5);
-                }
-                else if(getAngle() > getNewAngle() && getAngle() - getNewAngle() <= 180.0){
-                	setAngle(getAngle() - 5);
-                }
-                else if(getAngle() > getNewAngle() && getAngle() - getNewAngle() > 180.0){
-                	setAngle(getAngle() + 5);
-                }
-                if(Math.abs(getAngle() - getNewAngle()) < 5){
-                    setAngle(getNewAngle());
-                }
-                if(getAngle() >= 360.0){
-                    setAngle(0.0);
-                }
-                if(getAngle() < 0.0){
-                    setAngle(360.0);
-                }
-
-            }
-            else if(getExtension() != getNewExtension()){
-                if (getNewExtension() > getExtension()){
-                	setExtension(getExtension() + 2);
+        if(!paused){
+            if(x != newX || y != newY){
+                double d = Math.sqrt(Math.pow((newX-x),2) + Math.pow((newY-y),2));
+                if (d >= speed){
+                    x += ((newX-x)/d)*speed;
+                    y += ((newY-y)/d)*speed;
                 }
                 else {
-                	setExtension(getExtension() - 2);
-                }
-                if(Math.abs(getExtension() - getNewExtension()) < 2){
-                	setExtension(getNewExtension());
+                    x = newX;
+                    y = newY;
                 }
             }
             else {
-                setProcessing(false);
+                processing = false;
             }
         }
     }
 
-	public synchronized boolean getProcessing() {
-		return processing;
-	}
+    public synchronized double getX(){
+        return x;
+    }
 
-	public synchronized void setProcessing(boolean processing) {
-		this.processing = processing;
-	}
+    public synchronized double getY(){
+        return y;
+    }
 
-	public synchronized boolean getPaused() {
-		return paused;
-	}
+    public synchronized boolean getProcessing() {
+        return processing;
+    }
 
-	public synchronized void setPaused(boolean paused) {
-		this.paused = paused;
-	}
+    public synchronized void setProcessing(boolean processing) {
+        this.processing = processing;
+    }
 
-	public synchronized boolean getEmptyAvailable() {
-		return emptyAvailable;
-	}
+    public synchronized boolean getPaused() {
+        return paused;
+    }
 
-	public synchronized void setEmptyAvailable(boolean emptyAvailable) {
-		this.emptyAvailable = emptyAvailable;
-	}
+    public synchronized void setPaused(boolean paused) {
+        this.paused = paused;
+    }
 
-	public synchronized boolean getSpawnEmpty() {
-		return spawnEmpty;
-	}
+    public synchronized boolean getEmptyAvailable() {
+        return emptyAvailable;
+    }
 
-	public synchronized void setSpawnEmpty(boolean spawnEmpty) {
-		this.spawnEmpty = spawnEmpty;
-	}
+    public synchronized void setEmptyAvailable(boolean emptyAvailable) {
+        this.emptyAvailable = emptyAvailable;
+    }
 
-	public synchronized boolean getEmptyConveyorOn() {
-		return emptyConveyorOn;
-	}
+    public synchronized boolean getSpawnEmpty() {
+        return spawnEmpty;
+    }
 
-	public synchronized void setEmptyConveyorOn(boolean emptyConveyorOn) {
-		this.emptyConveyorOn = emptyConveyorOn;
-	}
+    public synchronized void setSpawnEmpty(boolean spawnEmpty) {
+        this.spawnEmpty = spawnEmpty;
+    }
 
-	public synchronized boolean getDoneConveyorOn() {
-		return doneConveyorOn;
-	}
+    public synchronized boolean getEmptyConveyorOn() {
+        return emptyConveyorOn;
+    }
 
-	public synchronized void setDoneConveyorOn(boolean doneConveyorOn) {
-		this.doneConveyorOn = doneConveyorOn;
-	}
+    public synchronized void setEmptyConveyorOn(boolean emptyConveyorOn) {
+        this.emptyConveyorOn = emptyConveyorOn;
+    }
 
-	public synchronized double getNewExtension() {
-		return newExtension;
-	}
+    public synchronized boolean getDoneConveyorOn() {
+        return doneConveyorOn;
+    }
 
-	public synchronized void setNewExtension(double newExtension) {
-		this.newExtension = newExtension;
-	}
+    public synchronized void setDoneConveyorOn(boolean doneConveyorOn) {
+        this.doneConveyorOn = doneConveyorOn;
+    }
 
-	public synchronized double getNewAngle() {
-		return newAngle;
-	}
+    public synchronized double getNewExtension() {
+        return newExtension;
+    }
 
-	public synchronized void setNewAngle(double newAngle) {
-		this.newAngle = newAngle;
-	}
+    public synchronized void setNewExtension(double newExtension) {
+        this.newExtension = newExtension;
+    }
 
-	public synchronized Kit getKit() {
-		return kit;
-	}
+    public synchronized double getNewAngle() {
+        return newAngle;
+    }
 
-	public synchronized void setKit(Kit kit) {
-		this.kit = kit;
-	}
+    public synchronized void setNewAngle(double newAngle) {
+        this.newAngle = newAngle;
+    }
 
-	public synchronized Vector<String> getStationRotations() {
-		return stationRotations;
-	}
+    public synchronized Kit getKit() {
+        return kit;
+    }
 
-	public synchronized void setStationRotations(Vector<String> stationRotations) {
-		this.stationRotations = stationRotations;
-	}
+    public synchronized void setKit(Kit kit) {
+        this.kit = kit;
+    }
 
-	public synchronized Vector<String> getCommands() {
-		return commands;
-	}
+    public synchronized Vector<String> getStationRotations() {
+        return stationRotations;
+    }
 
-	public synchronized void setCommands(Vector<String> commands) {
-		this.commands = commands;
-	}
+    public synchronized void setStationRotations(Vector<String> stationRotations) {
+        this.stationRotations = stationRotations;
+    }
 
-	public synchronized Vector<String> getSubCommands() {
-		return subCommands;
-	}
+    public synchronized Vector<String> getCommands() {
+        return commands;
+    }
 
-	public synchronized void setSubCommands(Vector<String> subCommands) {
-		this.subCommands = subCommands;
-	}
+    public synchronized void setCommands(Vector<String> commands) {
+        this.commands = commands;
+    }
 
-	public synchronized Vector<String> getCommandsSkipped() {
-		return commandsSkipped;
-	}
+    public synchronized Vector<String> getSubCommands() {
+        return subCommands;
+    }
 
-	public synchronized void setCommandsSkipped(Vector<String> commandsSkipped) {
-		this.commandsSkipped = commandsSkipped;
-	}
+    public synchronized void setSubCommands(Vector<String> subCommands) {
+        this.subCommands = subCommands;
+    }
 
-	public synchronized KitAssemblyManager getKitAssemblyManager() {
-		return kitAssemblyManager;
-	}
+    public synchronized Vector<String> getCommandsSkipped() {
+        return commandsSkipped;
+    }
 
-	public synchronized void setKitAssemblyManager(
-			KitAssemblyManager kitAssemblyManager) {
-		this.kitAssemblyManager = kitAssemblyManager;
-	}
+    public synchronized void setCommandsSkipped(Vector<String> commandsSkipped) {
+        this.commandsSkipped = commandsSkipped;
+    }
 
-	public synchronized Thread getThread() {
-		return thread;
-	}
+    public synchronized KitAssemblyManager getKitAssemblyManager() {
+        return kitAssemblyManager;
+    }
 
-	public synchronized void setThread(Thread thread) {
-		this.thread = thread;
-	}
+    public synchronized void setKitAssemblyManager(
+            KitAssemblyManager kitAssemblyManager) {
+        this.kitAssemblyManager = kitAssemblyManager;
+    }
 
-	public synchronized void setHasKit(boolean hasKit) {
-		this.hasKit = hasKit;
-	}
+    public synchronized Thread getThread() {
+        return thread;
+    }
 
-	public synchronized void setExtension(double extension) {
-		this.extension = extension;
-	}
+    public synchronized void setThread(Thread thread) {
+        this.thread = thread;
+    }
 
-	public synchronized void setAngle(double angle) {
-		this.angle = angle;
-	}
+    public synchronized void setHasKit(boolean hasKit) {
+        this.hasKit = hasKit;
+    }
 
-	public synchronized boolean getHasKit() {
-		return hasKit;
-	}
+    public synchronized void setExtension(double extension) {
+        this.extension = extension;
+    }
 
-	public synchronized double getExtension() {
-		return extension;
-	}
+    public synchronized void setAngle(double angle) {
+        this.angle = angle;
+    }
 
-	public synchronized double getAngle() {
-		return angle;
-	}
+    public synchronized boolean getHasKit() {
+        return hasKit;
+    }
+
+    public synchronized double getExtension() {
+        return extension;
+    }
+
+    public synchronized double getAngle() {
+        return angle;
+    }
 }

@@ -199,7 +199,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	
 	private void FinishedKit(KitHolder kit)
 	{
-		//MOVE KIT TO CONVEYOR
+		server.execute("Remove Finished");
 		System.out.println("KitRobot: Finished a kit!");
 		kit_conveyor.msgHereIsFinishedKit(kit.kit);
 		kit_list.remove(kit);

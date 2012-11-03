@@ -94,7 +94,7 @@ public class KitConveyorAgent extends Agent implements KitConveyor, Serializable
 	
 	private void FinishedKit(Kit kit)
 	{
-		server.execute("Remove Finished");
+		
 		System.out.println("KitConveyor: Moving finished kit off conveyor");
 		finished_kit_list.remove(kit);
 	}
@@ -107,10 +107,8 @@ public class KitConveyorAgent extends Agent implements KitConveyor, Serializable
 	
 	private void SpawnKit()
 	{
-		//PLAY ANIMATION TO MOVE KIT ONTO CONVEYOR
 		server.execute("Spawn Kit",1);
 		System.out.println("KitConveyor: Moving empty kit onto conveyor");
-		
 	}
 
 	

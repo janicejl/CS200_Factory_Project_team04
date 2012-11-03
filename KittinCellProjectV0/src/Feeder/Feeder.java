@@ -6,6 +6,7 @@ public class Feeder {
 	private double y;
 	private double partAmount;
 	
+	private boolean topLane;
 	private boolean empty;
 
 	public Feeder(double nX, double nY){
@@ -13,6 +14,7 @@ public class Feeder {
 		y = nY;
 		partAmount = 0;
 		empty = true;
+		topLane = true;
 	}
 	
 	public double getX(){
@@ -45,7 +47,28 @@ public class Feeder {
 		}
 	}
 	
+	public void removeAll(){
+		partAmount = 0;
+	}
+	
 	public void addParts(double amt){
 		partAmount += amt;
+		if (partAmount > 25)	// 25 part maximum;
+			partAmount = 25;
+	}
+	
+	// True sets the diverter to top lane
+	// False sets the diverter to bottom lane
+	public void divertLane(boolean l){
+		if (l = true)
+			topLane = true;
+		else
+			topLane = false;
+	}
+	
+	// returns true if the diverter is set to Top lane
+	// returns false if the diverter is set to Bottom Lane
+	public boolean getLane(){
+		return topLane;
 	}
 }

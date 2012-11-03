@@ -143,6 +143,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Remove Finished")){
     		getKitRobot().addCommand("load,5,6");
     	}
+    	else if(process.equals("Load Kit 1")){
+    		getPartsRobot().addCommand("dump,0");
+    	}
+    	else if(process.equals("Load Kit 2")){
+    		getPartsRobot().addCommand("dump,1");
+    	}   
     }
 	 
     public void execute(String process, Integer num){
@@ -156,13 +162,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     public void execute(String process, Integer nest, Integer grip){
     	if(process.equals("Get Part")){
     		getPartsRobot().addCommand("grab," + nest + "," + grip);
-    	}
-    	else if(process.equals("Load Kit 1")){
-    		getPartsRobot().addCommand("dump,0");
-    	}
-    	else if(process.equals("Load Kit 2")){
-    		getPartsRobot().addCommand("dump,1");
-    	}    		
+    	} 		
     }
     
 	public void actionPerformed(ActionEvent e){

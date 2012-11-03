@@ -67,8 +67,8 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         controlPanel = new JPanel(new GridBagLayout());
         buttons = new ArrayList<JButton>();
 
-        createButton("ConnectKitRobot");
-        createButton("ConnectPartsRobot");
+        createButton("Connect KitRobot");
+        createButton("Connect PartsRobot");
         createButton("Load Config");
         createButton("Spawn Kit");
         createButton("Take Picture");
@@ -182,8 +182,14 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
 
     }
     
+    public void disableButtons(){
+    	for(int i = 0; i < buttons.size(); i++){
+    		buttons.get(i).setEnabled(false);
+    	}
+    }
+    
     public void actionPerformed(ActionEvent ae) {
-    	if("ConnectKitRobot".equals(ae.getActionCommand())){
+    	if("Connect KitRobot".equals(ae.getActionCommand())){
     		int i = kitClient.connect();
     		if(i == -1){
     			System.exit(1);
@@ -191,8 +197,9 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     		else if(i == 1){
     			kitClient.getThread().start();
     		}
+    		disableButtons();
     	}
-    	else if ("ConnectPartsRobot".equals(ae.getActionCommand())){
+    	else if ("Connect PartsRobot".equals(ae.getActionCommand())){
     		int i = partsClient.connect();
     		if(i == -1){
     			System.exit(1);
@@ -200,6 +207,7 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     		else if(i == 1){
     			partsClient.getThread().start();
     		}
+    		disableButtons();
     	}
     	else if("Load Config".equals(ae.getActionCommand())) {
             input();

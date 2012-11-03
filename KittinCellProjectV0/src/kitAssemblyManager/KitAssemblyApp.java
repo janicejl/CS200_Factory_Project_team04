@@ -14,7 +14,7 @@ import java.io.*;
 public class KitAssemblyApp extends JFrame implements ActionListener{
     KitAssemblyClient kitClient;
 	PartsManagerClient partsClient;
-	JPanel controlPanel;
+    JPanel controlPanel;
     GridBagConstraints gbc;
     ArrayList<JButton> buttons;
     String[] nests = { "Nest 1", "Nest 2", "Nest 3", "Nest 4", "Nest 5", "Nest 6", "Nest 7", "Nest 8" };
@@ -181,13 +181,13 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         }
 
     }
-    
+
     public void disableButtons(){
     	for(int i = 0; i < buttons.size(); i++){
     		buttons.get(i).setEnabled(false);
     	}
     }
-    
+
     public void actionPerformed(ActionEvent ae) {
     	if("Connect KitRobot".equals(ae.getActionCommand())){
     		int i = kitClient.connect();

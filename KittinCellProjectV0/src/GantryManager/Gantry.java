@@ -147,4 +147,16 @@ public class Gantry
 			yFinal = 465;
 		}
 	}
+	
+	public boolean done()
+	{
+		if(xFinal==xCurrent && yFinal==yCurrent)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }

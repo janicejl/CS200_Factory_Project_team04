@@ -15,7 +15,9 @@ public class PartsBox
 	int yCurrent;
 	int count; //parts in the box
 	int index; //type of part
+	int feeder;
 	String state;
+	int cycles; //Number of clock cycles
 	
 	public PartsBox(BufferedImage p, int c)
 	{
@@ -26,6 +28,8 @@ public class PartsBox
 		yFinal=280;
 		yCurrent=280;
 		state = "wait";
+		cycles = 0;
+		feeder = -1;
 		try
 		{
 			box = ImageIO.read(new File("images/crate.png"));
@@ -85,8 +89,24 @@ public class PartsBox
 	
 	public void update() //Given the state, it will determine what to do next;
 	{
+		//Parts box degredation
+		
+		
 		//State checking
-		if(state == "ready")
+		if(state=="feeding")
+		{
+			cycles++;
+			if(count ==0)
+			{
+				state="dump";
+			}
+			else if(cycles%10==0 && cycles!=0)
+			{
+				cycles=0;
+				count--;
+			}
+		}
+		else if(state == "ready")
 		{
 				xFinal = 280;
 				yFinal = 280;
@@ -134,5 +154,15 @@ public class PartsBox
 	public void setState(String s)
 	{
 		state = s;
+	}
+	
+	public int getFeeder()
+	{
+		return feeder;
+	}
+	
+	public void setFeeder(int f)
+	{
+		feeder=f;
 	}
 }

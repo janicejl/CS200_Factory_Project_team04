@@ -1,6 +1,7 @@
 package GantryManager;
 
 import java.io.*;
+import java.util.Random;
 import java.util.ArrayList;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
@@ -16,10 +17,13 @@ public class GUIGantryManager extends JFrame implements ActionListener
 	int speed; //Speed of the timer
 	public Timer timer; //Calls actionPerformed every clock cycle
 	protected BufferedImage test = null; //Test image for the part
+	Random rand;
 	
 	public GUIGantryManager() //Initializes all objects
 	{
 		timer = new Timer(10,this);
+		rand = new Random();
+		
 		gantry = new Gantry();
 		paintPanel = new painterPanel();
 		paintPanel.setGantry(gantry);
@@ -34,7 +38,7 @@ public class GUIGantryManager extends JFrame implements ActionListener
 		
 		//Populates the Parts box with a base box
 		parts = new ArrayList<PartsBox>();
-		parts.add(new PartsBox(test,10));
+		parts.add(new PartsBox(test,100));
 		
 		//Creates the four feeder indices and sets them as open
 		feeders = new ArrayList<Integer>();
@@ -80,7 +84,7 @@ public class GUIGantryManager extends JFrame implements ActionListener
 		boolean go = true;
 		while(i<parts.size()) //Checks if a parts bin is waiting to be loaded or dumped
 		{
-			if(parts.get(i).getState() == "dump" || parts.get(i).getState()=="loading" || parts.get(i).getState()=="ready" || parts.get(i).getState()=="load")
+			if(parts.get(i).getState() == "dump" || parts.get(i).getState()=="loading" || parts.get(i).getState()=="ready" || parts.get(i).getState()=="load" || parts.get(i).getState()=="dumpf")
 			{
 				go = false;
 			}
@@ -106,25 +110,14 @@ public class GUIGantryManager extends JFrame implements ActionListener
 			}
 			if(go==false && parts.size()<4) //If there are none waiting (and there are less than 4 boxes, creates a new box)
 			{
-				parts.add(new PartsBox(test, 2));
+				parts.add(new PartsBox(test, (rand.nextInt(10)+1)*20));
 			}
 		}
 		
 		if(gantry.getState()=="free") //If the gantry is free
 		{
+			boolean flip = true;
 			int c=0;
-			while(c<parts.size())
-			{
-				if(parts.get(c).getState()=="dump")//first look for parts bins waiting to be dumped
-				{
-					gantry.setX(parts.get(c).getXCurrent());
-					gantry.setY(parts.get(c).getYCurrent());
-					gantry.setBox(c);
-					gantry.setState("dumpi");
-				}
-				c++;
-			}
-			c=0;
 			while(c<parts.size())
 			{
 				if(parts.get(c).getState()=="load") //then look for ones to be loaded
@@ -136,10 +129,26 @@ public class GUIGantryManager extends JFrame implements ActionListener
 				}
 				c++;
 			}
+			
+			c=0;
+			if(flip==true)
+			{
+				while(c<parts.size())
+				{
+					if(parts.get(c).getState()=="dump")//first look for parts bins waiting to be dumped
+					{
+						gantry.setBox(c);
+						gantry.setFeeder(parts.get(c).getFeeder());
+						gantry.setState("dumpi");
+						flip=false;
+					}
+					c++;
+				}
+			}
 		}
 		else if(gantry.getState() == "load") //if the gantry  is moving towards the load station
 		{
-			if(gantry.getX()==gantry.getXCurrent() && gantry.getY()==gantry.getYCurrent())
+			if(gantry.done())
 			{
 				gantry.setState("loading");//once it has reached it, switch to a busy signal
 				int c=0;
@@ -151,6 +160,7 @@ public class GUIGantryManager extends JFrame implements ActionListener
 						parts.get(gantry.getBox()).setX(gantry.getX()-5);
 						parts.get(gantry.getBox()).setY(gantry.getY()+15);
 						parts.get(gantry.getBox()).setState("moving");
+						parts.get(gantry.getBox()).setFeeder(c);
 						feeders.set(c, 1);
 						break;
 					}
@@ -160,13 +170,35 @@ public class GUIGantryManager extends JFrame implements ActionListener
 		}
 		else if(gantry.getState()=="loading") //if busy
 		{
-			if(gantry.getX()==gantry.getXCurrent() && gantry.getY() == gantry.getYCurrent())
+			if(gantry.done())
 			{
 				parts.get(gantry.getBox()).setState("feeding"); //once at the feeder, drop the box, and go back to free
 				gantry.setBox(-1);
 				gantry.setState("free");
 			}
 			
+		}
+		else if(gantry.getState()=="dumpi")
+		{
+			if(gantry.done())
+			{
+				feeders.set(parts.get(gantry.getBox()).getFeeder(),0);
+				gantry.setState("dumpf");
+				parts.get(gantry.getBox()).setState("dumpf");
+				gantry.setX(300);
+				gantry.setY(0);
+				parts.get(gantry.getBox()).setX(gantry.getX()-5);
+				parts.get(gantry.getBox()).setY(gantry.getY()+15);
+			}
+		}
+		else if(gantry.getState()=="dumpf")
+		{
+			if(gantry.done())
+			{
+				gantry.setState("free");
+				parts.remove(gantry.getBox());
+				gantry.setBox(-1);
+			}
 		}
 	}
 }

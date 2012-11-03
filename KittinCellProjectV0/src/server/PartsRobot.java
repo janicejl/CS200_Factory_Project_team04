@@ -6,13 +6,13 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.Random;
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.TreeMap;
 import java.util.concurrent.*;
 import java.io.*;
 import javax.imageio.*;
 
-public class PartsRobot implements Runnable{
+public class PartsRobot implements Runnable, Serializable{
     boolean processing;
     boolean paused;
     boolean hasCrate;
@@ -26,13 +26,13 @@ public class PartsRobot implements Runnable{
 
     BufferedImage partsRobotImage;
 
-    ArrayList<Boolean> gripperHolding;
-    ArrayList<Double> gripperExtensions;
-    ArrayList<Double> newGripperExtensions;
-    ArrayList<String> commands;
-    ArrayList<String> subCommands;
-    ArrayList<String> nestLocations;
-    ArrayList<String> kitLocations;
+    Vector<Boolean> gripperHolding;
+    Vector<Double> gripperExtensions;
+    Vector<Double> newGripperExtensions;
+    Vector<String> commands;
+    Vector<String> subCommands;
+    Vector<String> nestLocations;
+    Vector<String> kitLocations;
     int[] nl = {125,175,225,275,325,375,425,475};
     int[] kl = {270,330};
 
@@ -40,18 +40,18 @@ public class PartsRobot implements Runnable{
         y = 265;
         newY = 265;
         takePicture = false;
-        gripperHolding = new ArrayList<Boolean>();
-        gripperExtensions = new ArrayList<Double>();
-        newGripperExtensions = new ArrayList<Double>();
-        nestLocations = new ArrayList<String>();
-        kitLocations = new ArrayList<String>();
+        gripperHolding = new Vector<Boolean>();
+        gripperExtensions = new Vector<Double>();
+        newGripperExtensions = new Vector<Double>();
+        nestLocations = new Vector<String>();
+        kitLocations = new Vector<String>();
         for(int i = 0; i < 4; i++){
             gripperHolding.add(false);
             gripperExtensions.add(0.0);
             newGripperExtensions.add(0.0);
         }
-        commands = new ArrayList<String>();
-        subCommands = new ArrayList<String>();
+        commands = new Vector<String>();
+        subCommands = new Vector<String>();
 
         try {
             partsRobotImage = ImageIO.read(new File("crate.png"));
@@ -225,11 +225,11 @@ public class PartsRobot implements Runnable{
         return angle;
     }
 
-    public ArrayList<Boolean> getGripperHolding(){
+    public Vector<Boolean> getGripperHolding(){
         return gripperHolding;
     }
 
-    public ArrayList<Double> getGripperExtensions(){
+    public Vector<Double> getGripperExtensions(){
         return gripperExtensions;
     }
     public boolean getTakePicture(){

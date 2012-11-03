@@ -125,6 +125,10 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
 		this.kitRobot = kitRobot;
 	}
 
+	public synchronized void setPartsRobot(PartsRobot partsRobot) {
+		this.partsRobot = partsRobot;
+	}
+
 	public void initGraphicsPanel(){
         kamPanel = new GUIKitAssemblyManager(this);
     }

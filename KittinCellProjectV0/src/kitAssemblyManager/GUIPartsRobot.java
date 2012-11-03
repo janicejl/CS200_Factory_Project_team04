@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.Random;
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.TreeMap;
 import java.util.concurrent.*;
 import java.io.*;
@@ -24,12 +24,12 @@ public class GUIPartsRobot{
     BufferedImage flash;
     boolean takePicture, flashUp, flashDown;
 
-    ArrayList<Boolean> gripperHolding;
-    ArrayList<Double> gripperExtensions;
-    ArrayList<String> commands;
-    ArrayList<String> subCommands;
-    ArrayList<String> nestLocations;
-    ArrayList<String> kitLocations;
+    Vector<Boolean> gripperHolding;
+    Vector<Double> gripperExtensions;
+    Vector<String> commands;
+    Vector<String> subCommands;
+    Vector<String> nestLocations;
+    Vector<String> kitLocations;
     float opacity, flashCounter;
 
     PartsRobot pr;
@@ -47,12 +47,12 @@ public class GUIPartsRobot{
         angle = 0;
         opacity = 0.01f;
         flashCounter = 1.0f;
-        gripperExtensions = new ArrayList<Double>();
-        gripperHolding = new ArrayList<Boolean>();
-        commands = new ArrayList<String>();
-        subCommands = new ArrayList<String>();
-        nestLocations = new ArrayList<String>();
-        kitLocations = new ArrayList<String>();
+        gripperExtensions = new Vector<Double>();
+        gripperHolding = new Vector<Boolean>();
+        commands = new Vector<String>();
+        subCommands = new Vector<String>();
+        nestLocations = new Vector<String>();
+        kitLocations = new Vector<String>();
 
         for (int i = 0; i < 4; i++) {
             gripperExtensions.add(0.0);

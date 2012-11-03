@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import server.KitAssemblyManager;
 import server.KitRobot;
+import server.PartsRobot;
 
 import java.awt.event.*;
 import java.io.*;

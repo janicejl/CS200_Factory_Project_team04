@@ -1,4 +1,4 @@
-package kitAssemblyManager;
+package server;
 
 import java.awt.*;
 import java.awt.geom.*;

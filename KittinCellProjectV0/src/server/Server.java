@@ -33,6 +33,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	KitAssemblyManager kitAssemblyManager;
 	KitRobot kitRobot; //kit assembly robot
 	
+	PartsRobot partsRobot;
+	
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
 	
@@ -140,6 +142,19 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		}
     	}
     }
+    
+    public void execute(String process, Integer nest, Integer grip){
+    	if(process.equals("Get Part")){
+    		partsRobot.addCommand("grab," + nest + "," + grip);
+    	}
+    	else if(process.equals("Load Kit 1")){
+    		partsRobot.addCommand("dump,0");
+    	}
+    	else if(process.equals("Load Kit 2")){
+    		partsRobot.addCommand("dump,1");
+    	}    		
+    }
+    
 	public void actionPerformed(ActionEvent e){
 		repaint();
 	}

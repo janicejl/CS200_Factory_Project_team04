@@ -10,12 +10,10 @@ import javax.swing.*;
 public class ServerPartTestPanel extends JPanel implements ActionListener{
 	Server server; //reference to server
 	ArrayList<JButton> buttons;
-	ArrayList<JPanel> subPanels; //for double boxlayout;
 	ImageIcon background; //background
 	
 	public ServerPartTestPanel(Server _server){
 		buttons = new ArrayList<JButton>();
-		subPanels = new ArrayList<JPanel>();
 		
 		//setup GUI
 		server = _server;
@@ -25,26 +23,16 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 		setMaximumSize(new Dimension(533, 400));
 		setMinimumSize(new Dimension(533, 400));
 		
-		createButton("Load Config");
-        createButton("Spawn Kit");
-        createButton("Load Stand 1");
-        createButton("Load Stand 2");
-        createButton("Check 1");
-        createButton("Check 2");
-        createButton("Remove Finished");
+		createButton("Get Part");
+        createButton("Load Kit 1");
+        createButton("Load Kit 2");
         createButton("Exit");
 		
 		background = new ImageIcon("images/server.jpeg");
 		
 		add(Box.createRigidArea(new Dimension(0, 130)),"");
 		for(int i = 0; i < buttons.size(); i++){
-			subPanels.add(new JPanel());
-			subPanels.get(subPanels.size()-1).setLayout(new BoxLayout(subPanels.get(subPanels.size()-1), BoxLayout.X_AXIS));
-			subPanels.get(subPanels.size()-1).add(buttons.get(i), "");
-			i++;
-			subPanels.get(subPanels.size()-1).add(Box.createRigidArea(new Dimension(20, 0)),"");
-			subPanels.get(subPanels.size()-1).add(buttons.get(i), "");
-			add(subPanels.get(subPanels.size()-1), "");
+			add(buttons.get(i), "");
             add(Box.createRigidArea(new Dimension(0, 20)),"");
         }
 	}
@@ -65,27 +53,14 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent ae){
-		if("Load Config".equals(ae.getActionCommand())) {
-          
+		if("Get Part".equals(ae.getActionCommand())) {
+          server.execute("Get Part", 1, 1);
         }
-        else if("Spawn Kit".equals(ae.getActionCommand())) {
-            //server.execute("Spawn Kit", 1);
-        	server.getKitRobotAgent().msgGetKits(1);
+        else if("Load Kit 1".equals(ae.getActionCommand())) {
+            server.execute("Load Kit 1");
         }
-        else if("Load Stand 1".equals(ae.getActionCommand())) {
-        	server.execute("Load Stand 1");
-        }
-        else if("Load Stand 2".equals(ae.getActionCommand())) {
-        	server.execute("Load Stand 2");
-        }
-        else if("Check 1".equals(ae.getActionCommand())) {
-        	server.execute("Check Kit 1");
-        }
-        else if("Check 2".equals(ae.getActionCommand())) {
-        	server.execute("Check Kit 2");
-        }
-        else if("Remove Finished".equals(ae.getActionCommand())) {
-        	server.execute("Remove Finished");
+        else if("Load Kit 2".equals(ae.getActionCommand())) {
+        	server.execute("Load Kit 2");
         }
         else if("Exit".equals(ae.getActionCommand())) {
         	System.exit(1);

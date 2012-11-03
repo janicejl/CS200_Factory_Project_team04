@@ -12,6 +12,8 @@ import java.util.concurrent.*;
 import java.io.*;
 import javax.imageio.*;
 
+import server.PartsRobot;
+
 public class GUIPartsRobot{
     BufferedImage partsRobotImage;
     BufferedImage partsRobotRailImage;

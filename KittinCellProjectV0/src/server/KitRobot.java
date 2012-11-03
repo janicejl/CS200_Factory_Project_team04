@@ -235,7 +235,7 @@ public class KitRobot implements Runnable, Serializable{
         this.doneConveyorOn = doneConveyorOn;
     }
 
-    public synchronized double getNewExtension() {
+  /*  public synchronized double getNewExtension() {
         return newExtension;
     }
 
@@ -249,7 +249,7 @@ public class KitRobot implements Runnable, Serializable{
 
     public synchronized void setNewAngle(double newAngle) {
         this.newAngle = newAngle;
-    }
+    }*/
 
     public synchronized Kit getKit() {
         return kit;
@@ -311,18 +311,18 @@ public class KitRobot implements Runnable, Serializable{
     public synchronized void setHasKit(boolean hasKit) {
         this.hasKit = hasKit;
     }
-
+	
+    public synchronized boolean getHasKit() {
+	    return hasKit;
+	}
+  /*  
     public synchronized void setExtension(double extension) {
         this.extension = extension;
     }
 
     public synchronized void setAngle(double angle) {
         this.angle = angle;
-    }
-
-    public synchronized boolean getHasKit() {
-        return hasKit;
-    }
+    }   
 
     public synchronized double getExtension() {
         return extension;
@@ -330,5 +330,69 @@ public class KitRobot implements Runnable, Serializable{
 
     public synchronized double getAngle() {
         return angle;
-    }
+    }*/
+
+	public synchronized double getNewX() {
+		return newX;
+	}
+
+	public synchronized void setNewX(double newX) {
+		this.newX = newX;
+	}
+
+	public synchronized double getNewY() {
+		return newY;
+	}
+
+	public synchronized void setNewY(double newY) {
+		this.newY = newY;
+	}
+
+	public synchronized int[] getStationX() {
+		return stationX;
+	}
+
+	public synchronized void setStationX(int[] stationX) {
+		this.stationX = stationX;
+	}
+
+	public synchronized int[] getStationY() {
+		return stationY;
+	}
+
+	public synchronized void setStationY(int[] stationY) {
+		this.stationY = stationY;
+	}
+
+	public synchronized int[] getWaypointX() {
+		return waypointX;
+	}
+
+	public synchronized void setWaypointX(int[] waypointX) {
+		this.waypointX = waypointX;
+	}
+
+	public synchronized int[] getWaypointY() {
+		return waypointY;
+	}
+
+	public synchronized void setWaypointY(int[] waypointY) {
+		this.waypointY = waypointY;
+	}
+
+	public synchronized double getSpeed() {
+		return speed;
+	}
+
+	public synchronized void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
+	public synchronized void setX(double x) {
+		this.x = x;
+	}
+
+	public synchronized void setY(double y) {
+		this.y = y;
+	}
 }

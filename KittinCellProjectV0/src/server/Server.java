@@ -16,6 +16,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	ServerPanel gui; //panel for gui
 	ServerKitTestPanel kitTest; //panel for kit assembly commands
+	ServerPartTestPanel partsTest; //panel for parts robot commands
 	Integer phase;
 	
 	String clientType; //type of client to connect to
@@ -49,6 +50,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		c.gridy = 0;
 		add(gui, c);
 		kitTest = new ServerKitTestPanel(this);
+		partsTest = new ServerPartTestPanel(this);
 		
 		kitRobotAgent = new KitRobotAgent(this);
 		kitStandAgent = new KitStandAgent(this); 
@@ -105,6 +107,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			}
 			else if(getClientType().equals("Parts Robot")){
 				partsPro = new PartsRobotProtocol(s, this);
+				removeCenter();
+				GridBagConstraints c = new GridBagConstraints();
+				c.gridx = 0;	
+				c.gridy = 0;
+				add(partsTest, c);
+				phase = 1;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -145,13 +153,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
     
     public void execute(String process, Integer nest, Integer grip){
     	if(process.equals("Get Part")){
-    		partsRobot.addCommand("grab," + nest + "," + grip);
+    		getPartsRobot().addCommand("grab," + nest + "," + grip);
     	}
     	else if(process.equals("Load Kit 1")){
-    		partsRobot.addCommand("dump,0");
+    		getPartsRobot().addCommand("dump,0");
     	}
     	else if(process.equals("Load Kit 2")){
-    		partsRobot.addCommand("dump,1");
+    		getPartsRobot().addCommand("dump,1");
     	}    		
     }
     
@@ -237,6 +245,22 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public synchronized void setKitConveyorAgent(KitConveyorAgent kitConveyorAgent) {
 		this.kitConveyorAgent = kitConveyorAgent;
+	}
+
+	public synchronized PartsRobotProtocol getPartsPro() {
+		return partsPro;
+	}
+
+	public synchronized void setPartsPro(PartsRobotProtocol partsPro) {
+		this.partsPro = partsPro;
+	}
+
+	public synchronized PartsRobot getPartsRobot() {
+		return partsRobot;
+	}
+
+	public synchronized void setPartsRobot(PartsRobot partsRobot) {
+		this.partsRobot = partsRobot;
 	}
 
 }

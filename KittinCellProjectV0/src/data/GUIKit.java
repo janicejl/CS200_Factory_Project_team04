@@ -29,7 +29,6 @@ public class GUIKit {
 		g.drawImage(image, (int)x, (int)y, null);
 		
 		Vector<Part> parts = kit.parts;
-		//Vector<BufferedImage> gParts = new Vector<BufferedImage>(); 
 		//Setting the position of each individual part. 
 		for (int i = 0, j = 0; i < parts.size(); i++) {
 			parts.get(i).setX(x + ((i % 2) * 32));		//32 = size of testing image parts. 
@@ -43,7 +42,6 @@ public class GUIKit {
 				p = ImageIO.read(new File("src/data/graphics/" + parts.get(i).getID() + ".png"));
 				g.drawImage(p, (int)parts.get(i).getX(), (int)parts.get(i).getY(), null);
 			} catch (IOException e) {
-				System.out.println(System.getProperty("user.dir"));
 				e.printStackTrace();
 			}
 			

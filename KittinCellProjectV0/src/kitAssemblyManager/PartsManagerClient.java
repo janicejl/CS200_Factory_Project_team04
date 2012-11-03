@@ -3,6 +3,10 @@ package kitAssemblyManager; //this package will be renamed in v1 as the clients 
 import java.io.*;
 import java.net.*;
 
+import server.KitAssemblyManager;
+import server.KitRobot;
+import server.PartsRobot;
+
 public class PartsManagerClient implements Runnable {
 	Socket s;
 	KitAssemblyApp app;
@@ -63,7 +67,13 @@ public class PartsManagerClient implements Runnable {
 			}
 			
 //**************START CODE***************************
-			
+			commandSent = "Received";
+			while(true){
+				app.setPartsRobot((PartsRobot)in.readObject());
+				app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
+				out.writeObject(commandSent);
+				out.reset();
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

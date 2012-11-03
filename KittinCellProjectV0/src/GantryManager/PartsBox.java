@@ -5,12 +5,12 @@ import java.awt.image.*;
 public class PartsBox 
 {
 	protected BufferedImage part = null;
-	int xFinal;
+	int xFinal; //destination
 	int yFinal;
-	int xCurrent;
+	int xCurrent; //current position
 	int yCurrent;
-	int count;
-	int index;
+	int count; //parts in the box
+	int index; //type of part
 	String state;
 	
 	public PartsBox(BufferedImage p, int c)
@@ -18,7 +18,7 @@ public class PartsBox
 		part = p;
 		count = c;
 		xCurrent = 330;
-		xFinal =330;
+		xFinal =330; //Initial position is off of the screen
 		yFinal=280;
 		yCurrent=280;
 		state = "wait";
@@ -28,31 +28,31 @@ public class PartsBox
 	{
 		return part;
 	}
-	public void setX(int m)
+	public void setX(int m) //Set the destination x
 	{
 		xFinal =m;
 	}
 	
-	public void setY(int p)
+	public void setY(int p)// "  "  " y
 	{
 		yFinal =p;
 	}
 	
-	public void setXCurrent(int m)
+	public void setXCurrent(int m)//Set the current x position
 	{
 		xCurrent = m;
 	}
-	public void setYCurrent(int p)
+	public void setYCurrent(int p)//"  "   " y position
 	{
 		yCurrent = p;
 	}
 	
-	public int getX()
+	public int getX() //returns destination x
 	{
 		return xFinal;
 	}
 	
-	public int getY()
+	public int getY() // resturns destination y
 	{
 		return yFinal;
 	}
@@ -67,7 +67,7 @@ public class PartsBox
 		return yCurrent;
 	}
 	
-	public void update()
+	public void update() //Given the state, it will determine what to do next;
 	{
 		//State checking
 		if(state == "ready")

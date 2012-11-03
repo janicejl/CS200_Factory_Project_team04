@@ -9,6 +9,7 @@ import java.io.*;
 
 public class painterPanel extends JPanel
 {
+	//Items that will always be painted, regardless of user input
 	protected BufferedImage background = null;
 	protected BufferedImage rail = null;
 	protected BufferedImage gantryImage = null;
@@ -30,15 +31,15 @@ public class painterPanel extends JPanel
 			box =ImageIO.read(new File("images/crate.png"));
 			feeder = ImageIO.read(new File("images/base.png"));
 			lane = ImageIO.read(new File("images/lanetemp.png"));
-			
-       		} catch (IOException e) {}
-	
+       	} 
+		catch (IOException e) {}
 	}
 	
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
+		//Draw the base images
 		g2.drawImage(background,0,0,null);
 		g2.drawImage(station, 275,275,null);
 		g2.drawImage(feeder, 200, 75, null);
@@ -60,14 +61,15 @@ public class painterPanel extends JPanel
 		
 		g2.drawImage(rail,gantry.getXCurrent()+10,0, null);
 		g2.drawImage(gantryImage,gantry.getXCurrent(), gantry.getYCurrent(),null);	
+		//I will implement proper image centering instead of the +10, -5 hack, but for now there are more important aspects
 	}
 
-	public synchronized void setGantry(Gantry g)
+	public synchronized void setGantry(Gantry g)//Links gantry with GUIGantryManager
 	{
 		gantry = g;
 	}
 	
-	public synchronized void setPartsBoxes(ArrayList<PartsBox> pb)
+	public synchronized void setPartsBoxes(ArrayList<PartsBox> pb) //links parts box with GUIGantryManager
 	{
 		boxes = pb;
 	}

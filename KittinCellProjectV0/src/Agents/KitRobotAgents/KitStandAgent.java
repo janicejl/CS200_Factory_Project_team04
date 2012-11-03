@@ -323,7 +323,11 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	{
 		kit_robot = robot;
 	}
+
 	
-	
-	
+		
 }
+	
+	
+	
+

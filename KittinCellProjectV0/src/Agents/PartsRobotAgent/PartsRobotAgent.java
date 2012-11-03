@@ -1,5 +1,7 @@
 package Agents.PartsRobotAgent;
 import Agent.*;
+import Interface.PartsRobotAgent.*;
+import Interface.KitRobotAgent.*;
 import MoveableObjects.*;
 import Agents.KitRobotAgents.*;
 import java.util.*;
@@ -9,22 +11,23 @@ import java.util.*;
 public class PartsRobotAgent extends Agent{
 
 	String name = "PartsRobotAgent";
-
-	VisionAgent camera;
-	KitStandAgent kitstand;
+	
+	Vision camera;
+	KitStand kitstand;
 	boolean camerahasrecipe = false;
 	//PartsRobotGUI gui;
+	TestGUI gui;
 
 	int count = 0;
 	List <Part.PartType> recipe = new ArrayList<Part.PartType>();
 	List <MyNest> nests = new ArrayList<MyNest>();
 	Gripper[] grippers = new Gripper[4];
 	RobotState state;
-	CurrentKit currentkit;
-	int currentnest;
-	AnimationStatus animationstate = AnimationStatus.atHome;
+	CurrentKit currentkit = CurrentKit.kit1;
+	int currentnest = -1;
+	public AnimationStatus animationstate = AnimationStatus.atHome;
 
-	private enum AnimationStatus {atHome, movingToNest, atNest, movingToStand, atStand, movingHome}//Will need to use when integrating with the animation
+	public enum AnimationStatus {atHome, movingToNest, atNest, movingToStand, atStand, movingHome,waitingForPart}//Will need to use when integrating with the animation
 
 	private enum CurrentKit{kit1, kit2}
 	private enum RobotState{mustOrderParts,PartsOrdered}
@@ -43,7 +46,7 @@ public class PartsRobotAgent extends Agent{
 		}
 		
 	}
-	private enum NestStatus{noAction, assigned, hasPart}
+	private enum NestStatus{noAction, assigned, hasPart,skipped}
 	private enum KitStatus{notAvailable, available, pending}
 
 
@@ -67,9 +70,9 @@ public class PartsRobotAgent extends Agent{
 		int nestindex = -1;
 		private Gripper(){};
 	}
-	public PartsRobotAgent(List <NestAgent> nestagents, VisionAgent visionagent, KitStandAgent stand)
+	public PartsRobotAgent(List <NestAgent> nestagents, Vision visionagent, KitStand stand)
 	{
-		int index = 0;
+		int index = 1;
 		for(NestAgent nest:nestagents)
 		{
 			MyNest mn = new MyNest(nest,index);
@@ -105,28 +108,38 @@ public class PartsRobotAgent extends Agent{
 		stateChanged();
 	}
 	public void msgPartsApproved(int nestindex){
-		nests.get(nestindex).state = NestStatus.hasPart;
+		nests.get(nestindex-1).state = NestStatus.hasPart;
 		stateChanged();
 	}
 
 	public void msgEmptyKit(int position){
-		if(position == 0)
+		if(position == 1)
+		{
 			kit1.state = KitStatus.available;
+		}
 		else
+		{
 			kit2.state = KitStatus.available;
+		}
+		stateChanged();
 		
 	}
 
 	public void msgAnimationDone(){
 		if(animationstate == AnimationStatus.movingToNest){
+			print("Arrived at Nest");
 			animationstate = AnimationStatus.atNest;
+			stateChanged();
 		}
-		if(animationstate == AnimationStatus.movingToStand){
+		else if(animationstate == AnimationStatus.movingToStand){
+			print("Arrived at Stand");
 			animationstate = AnimationStatus.atStand;
+			stateChanged();
 		}
-		if(animationstate == AnimationStatus.movingHome){
+		else if(animationstate == AnimationStatus.movingHome){
 			animationstate = AnimationStatus.atHome;
 		}
+		
 	}
 	public void msgHereIsPart(Part p)
 	{
@@ -134,10 +147,13 @@ public class PartsRobotAgent extends Agent{
 		{
 			if(grippers[i].nestindex == currentnest)
 			{
+				print("taking part");
 				grippers[i].p = p;
 			}
 		}
 		currentnest = -1;
+		animationstate = AnimationStatus.movingHome;
+		stateChanged();
 	}
 
 	//Scheduler:
@@ -155,13 +171,18 @@ public class PartsRobotAgent extends Agent{
 		giveCameraRecipe();
 		return true;
 	}
-	if(count > 0 && (kit1.state == KitStatus.notAvailable || kit2.state == KitStatus.notAvailable)){
+	if(count > 1 && (kit1.state == KitStatus.notAvailable || kit2.state == KitStatus.notAvailable)){
+		requestEmptyKit();
+		return true;
+	}
+	if(count == 1 && kit1.state == KitStatus.notAvailable && kit2.state == KitStatus.notAvailable){
 		requestEmptyKit();
 		return true;
 	}
 	if((kit1.partsneeded.isEmpty() || kit2.partsneeded.isEmpty()) && grippersEmpty() && !recipe.isEmpty())
 	{
-		print("A kit is finished");
+		count--;
+		print("A kit is finished (" + count + " to go)");
 		kitFinished();
 		return true;
 	}
@@ -178,27 +199,33 @@ public class PartsRobotAgent extends Agent{
 		goToStand();
 		return true;
 	}
-	for(MyNest mn: nests)
-	{
-		if(mn.state == NestStatus.hasPart)
+	if(count!= 0 && (animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome)){
+		for(MyNest mn: nests)
 		{
-			checkAvailableParts();
-			return true;
+			if(mn.state == NestStatus.hasPart)
+			{
+				checkAvailableParts(mn);
+				return true;
+			}
 		}
 	}
-	for(int i = 0; i<4; i++)
+	if(animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome)
 	{
-		if(grippers[i].full)
+		for(int i = 0; i<4; i++)
 		{
-			goToStand();
-			return true;
+			if(grippers[i].full)
+			{
+				goToStand();
+				return true;
+			}
 		}
 	}
-	if(animationstate != AnimationStatus.atHome)
+	/*if(animationstate == AnimationStatus.atNest || animationstate == AnimationStatus.atStand)
 	{
 		returnToStart();
 		return false;
-	}
+	}*/
+		//print("Nothing to do, sleeping");
 		return false;
 	}
 
@@ -208,7 +235,8 @@ public class PartsRobotAgent extends Agent{
 	{
 		print("Requesting Parts from Nests");
 		for(int i = 0; i < recipe.size(); i++)
-		{
+		{	
+			print("Assigning Part " + recipe.get(i) + " to nest " + nests.get(i).index);
 			nests.get(i).nest.msgNeedThisPart(recipe.get(i));
 			nests.get(i).state = NestStatus.assigned;
 			nests.get(i).type = recipe.get(i);
@@ -230,79 +258,101 @@ public class PartsRobotAgent extends Agent{
 	}
 	private void requestEmptyKit()
 	{
-		kitstand.msgIsThereEmptyKit();
+		print("Asking if there is a free available kit");
 		if(kit1.state == KitStatus.notAvailable)
 			kit1.state = KitStatus.pending;
 		else
 			kit2.state = KitStatus.pending;
+		kitstand.msgIsThereEmptyKit();
 	}	
 		
-	private void checkAvailableParts(){
-		for(MyNest nest : nests)
-		{
-			if(currentkit == CurrentKit.kit1)
-			{
-				for(Part.PartType p: kit1.partsneeded)
-				{
-					if(p == nest.type)
-					{
-						//Animation Call
-						for(int i = 0; i<4; i++)
-						{
-							if(!grippers[i].full)
-							{
-								grippers[i].full = true;
-								grippers[i].destinationkit = 1;
-								grippers[i].nestindex = nest.index;
-								break;
-							}
-						}
-						print("Moving to Nest " + nest.index + " to pick up part");
-						//gui.DoGoToNest(nest.index); Move to the indicated nest
-						animationstate = AnimationStatus.movingToNest;
+	private void checkAvailableParts(MyNest nest)
+	{
+		Part.PartType type = nest.type;
+		Part.PartType parttoget = null;
+		boolean kit1needsthispart = false;
+		boolean kit2needsthispart = false;
+		if(currentkit == CurrentKit.kit1){
+			for(Part.PartType pt: kit1.partsneeded){
+				if(type == pt){
+					kit1needsthispart = true;
+					parttoget = pt;
+				}
+			}
+			if(parttoget!= null){
+				kit1.partsneeded.remove(parttoget);
+			}
+			if(kit1needsthispart){
+				for(int i = 0; i<4; i++){
+					if(!grippers[i].full){
+						grippers[i].destinationkit = 1;
+						grippers[i].nestindex = nest.index;
+						grippers[i].full = true;
 						currentnest = nest.index;
-						kit1.partsneeded.remove(p);
+						print("Moving To Nest " + nest.index + " to pick up part for kit1");
+						//Animation Call
+						animationstate = AnimationStatus.movingToNest;
+						gui.DoMoveToNest(nest.index);
+						break;
+
 					}
 				}
 			}
-			else 
-			{
-				for(Part.PartType p: kit2.partsneeded)
-				{
-					if(p == nest.type)
-					{
-						for(int i = 0; i<4; i++){
-							if(!grippers[i].full){
-								grippers[i].full = true;
-								grippers[i].destinationkit = 2;
-								grippers[i].nestindex = nest.index;
-								break;
-							}
-						}
-						print("Moving to Nest " + nest.index + " to pick up part");
-						//Animation Call
-						//gui.DoGoToNest(nest.index); // Move to the indicated nest
-						animationstate = AnimationStatus.movingToNest;
-						currentnest = nest.index;
-						kit2.partsneeded.remove(p);
-					}
-				}
-			}
+		
 		}
+		if(currentkit == CurrentKit.kit2)
+		{
+			for(Part.PartType pt: kit2.partsneeded){
+				if(type == pt){
+					kit2needsthispart = true;
+					parttoget = pt;
+				}
+			}
+			if(parttoget!= null){
+				kit2.partsneeded.remove(parttoget);
+			}
+			if(kit2needsthispart){
+				for(int i = 0; i<4; i++){
+					if(!grippers[i].full){
+						grippers[i].destinationkit = 2;
+						grippers[i].nestindex = nest.index;
+						grippers[i].full = true;
+						currentnest = nest.index;
+						print("Moving To Nest " + nest.index + " to pick up part for kit2");
+						//Animation Call
+						animationstate = AnimationStatus.movingToNest;
+						gui.DoMoveToNest(nest.index);
+						break;
+					}
+				}
+			}			
+			
+			
+		
+		}
+		if(kit1needsthispart || kit2needsthispart){
+			nest.state = NestStatus.assigned;
+		}
+		else{
+			nest.state = NestStatus.skipped;
+		}
+		
 	}
 	private void getPart(){
 		print("Picking up part");
 		//gui.DoGetPart();//Any sort of animation for getting the part from the nest
-		nests.get(currentnest).nest.msgGetPart();
+		nests.get(currentnest-1).nest.msgGetPart();
+		animationstate = AnimationStatus.waitingForPart;
 	}
 		
 		
 
 	private void goToStand(){
 		//AnimationCall
-		//gui.DoGoToStand(); //Move to Kit Stand
-		print("Moving to Kit Stand");
 		animationstate = AnimationStatus.movingToStand;
+
+		gui.DoGoToStand(); //Move to Kit Stand
+		print("Moving to Kit Stand");
 	}
 
 	public void placeParts()
@@ -334,21 +384,33 @@ public class PartsRobotAgent extends Agent{
 			}
 		} 
 		kitstand.msgHereAreParts(kit2parts,0);
+		for(MyNest mn : nests)
+		{
+			if(mn.state == NestStatus.skipped){
+				mn.state = NestStatus.hasPart;
+			}
+		}
 		returnToStart();
 	}
 	public void kitFinished(){
 
 		if(kit1.partsneeded.isEmpty()){
 			print("Kit 1 finished");
-			kitstand.msgKitIsDone(0);
-			kit1.partsneeded = recipe;
+			kitstand.msgKitIsDone(1);
+			for(Part.PartType type : recipe){
+				kit1.partsneeded.add(type);
+			}
 			kit1.state = KitStatus.notAvailable;
+			currentkit = CurrentKit.kit2;
 		}
 		if(kit2.partsneeded.isEmpty()){
 			print("Kit 2 finished");
-			kitstand.msgKitIsDone(1);
-			kit2.partsneeded = recipe;
+			kitstand.msgKitIsDone(2);
+			for(Part.PartType type : recipe){
+				kit2.partsneeded.add(type);
+			}
 			kit2.state = KitStatus.notAvailable;
+			currentkit = CurrentKit.kit1;
 		}
 	}
 
@@ -376,5 +438,12 @@ public class PartsRobotAgent extends Agent{
 				return false;
 		}
 		return true;
+	}
+	public String getName()
+	{
+		return name;
+	}
+	public void setTestGUI(TestGUI test){
+		gui = test;
 	}
 }

@@ -10,13 +10,13 @@ public class NestAgent extends Agent{
 	Part.PartType parttype;
 	Part[] nestslots = new Part[9];
 	PartsRobotAgent partsrobot;
-	LaneAgent lane;
-	VisionAgent camera;
+	Lane lane;
+	Vision camera;
 	String name;
 	
 	//GUIObject gui;
 	
-	int index;
+	public int index;
 
 	private enum LaneStatus {hasPart, gettingParts, noAction}
 	private enum PartsRobotStatus {wantsParts, waitingForParts, noAction,readyforpart}
@@ -28,19 +28,22 @@ public class NestAgent extends Agent{
 	NestStatus neststate = NestStatus.noParts;
 	AnimationStatus animationstate = AnimationStatus.noAction;
 	
-	public NestAgent(LaneAgent lane, VisionAgent camera, int index)
+	public NestAgent(Lane lane, Vision camera, int index)
 	{
 		this.lane = lane;
 		this.camera = camera;
 		this.index = index;
 		name = "NestAgent " + index;
+		for(int i = 0; i<9; i++){
+			nestslots[i]=null;
+		}
 	}
 	
 	public void setPartsRobotAgent(PartsRobotAgent robot){
 		this.partsrobot = robot;
 	}
 	//Messages
-	public void msgCanIPlacePart(LaneAgent lane)
+	public void msgCanIPlacePart(Lane lane)
 	{
 			lanestate = LaneStatus.hasPart;
 			stateChanged();
@@ -54,6 +57,7 @@ public class NestAgent extends Agent{
 					nestslots[i] = p;
 					if(i == 0)
 						neststate = NestStatus.needCheck;
+					break;
 				}
 			}
 			stateChanged();
@@ -75,7 +79,7 @@ public class NestAgent extends Agent{
 	{
 			for(int i = 0; i<9; i++)
 			{
-				if(nestslots[1] != null){
+				if(nestslots[i] != null){
 					if(nestslots[i].type != type)
 						animationstate = AnimationStatus.needPurge;
 				}
@@ -173,8 +177,8 @@ public class NestAgent extends Agent{
 	private void askForInspection()
 	{
 		print("I am full and need inspection");
-		camera.msgImFull(parttype,this);
 		neststate = NestStatus.noAction;
+		camera.msgImFull(parttype,this);
 	}
 	
 	private void settleNest()
@@ -182,7 +186,8 @@ public class NestAgent extends Agent{
 		//NestSettlingAnimation
 		//gui.DoSettleNest(); // Settle Nest so that the parts behind in the nest move to the front
 		for(int i = 0; i<8; i++){
-			if(nestslots[i] == null){
+			if(nestslots[i] == null && nestslots[i+1]!= null){
+				print("settling");
 				nestslots[i] = nestslots[i+1];
 				nestslots[i+1] = null;
 				if(i==0)
@@ -192,9 +197,11 @@ public class NestAgent extends Agent{
 	}
 	private void givePart()
 	{
+		print("Giving PartsRobot part");
 		partsrobot.msgHereIsPart(nestslots[0]);
 		nestslots[0] = null;
 		partsrobotstate = PartsRobotStatus.waitingForParts;
+		//settleNest();
 	}
 		
 	private void askForParts()

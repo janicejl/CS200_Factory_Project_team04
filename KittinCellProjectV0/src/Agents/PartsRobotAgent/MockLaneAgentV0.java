@@ -5,18 +5,21 @@ import Agent.*;
 import MoveableObjects.*;
 import java.util.*;
 
-public class MockLaneAgentV0 extends Agent implements LaneAgent {
+public class MockLaneAgentV0 extends Agent implements Lane {
+	
+	String name;
 	
 	Part.PartType parttype;
 	boolean needparts = false;
-	boolean giveparts = false;
+	private enum LaneStatus {noAction,hasParts, giveParts}
+	LaneStatus lanestate = LaneStatus.noAction;
 	NestAgent nest;
 	LinkedList<Part> partslist = new LinkedList<Part>();
 	int count = 0;
 	//LaneAgentGui gui;
 
-	public MockLaneAgentV0(){
-		
+	public MockLaneAgentV0(int index){
+		name = "MockLaneAgent " + index;
 	}
 	
 	public void setNest(NestAgent nest){
@@ -33,7 +36,7 @@ public class MockLaneAgentV0 extends Agent implements LaneAgent {
 	}
 	public void msgReadyForPart()
 	{
-		giveparts = true;
+		lanestate = LaneStatus.giveParts;
 		stateChanged();
 	}
 
@@ -41,6 +44,8 @@ public class MockLaneAgentV0 extends Agent implements LaneAgent {
 	public void msgPartAtEndOfLane(Part p)
 	{
 		partslist.add(p);
+		if(partslist.size() == 1)
+			lanestate = LaneStatus.hasParts;
 		stateChanged();
 	}
 	
@@ -49,12 +54,12 @@ public class MockLaneAgentV0 extends Agent implements LaneAgent {
 	public boolean pickAndExecuteAnAction()
 	{
 		
-		if(giveparts)
+		if(lanestate == LaneStatus.giveParts)
 		{
 			givePart();
 			return true;
 		}
-		if(!partslist.isEmpty())
+		if(!partslist.isEmpty() && lanestate == LaneStatus.hasParts)
 		{
 			askToGivePart();
 			return true;
@@ -78,7 +83,7 @@ public class MockLaneAgentV0 extends Agent implements LaneAgent {
 		//gui.DoSendPartDownLane(p)
 		//When done, animation should call the msgPartAtEndOfLane() method
 		count++;
-		if(count >= 8)
+		if(count >= 2)
 			needparts = false;
 		msgPartAtEndOfLane(p);
 		
@@ -88,10 +93,22 @@ public class MockLaneAgentV0 extends Agent implements LaneAgent {
 	{
 		print("Have part which I'd like to place");
 		nest.msgCanIPlacePart(this);
+		lanestate = LaneStatus.noAction;
 	}
+	
 	private void givePart()
 	{
 		print("Giving part to Nest");
-		nest.msgHereIsPart(partslist.removeFirst());
+		Part p = partslist.remove();
+		nest.msgHereIsPart(p);
+		if(partslist.isEmpty())
+			lanestate = LaneStatus.noAction;
+		else
+			lanestate = LaneStatus.hasParts;
+	}
+	
+	public String getName()
+	{
+		return name;
 	}
 }

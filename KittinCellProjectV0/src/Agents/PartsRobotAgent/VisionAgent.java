@@ -1,11 +1,12 @@
 package Agents.PartsRobotAgent;
 
 import MoveableObjects.*;
+import Interface.PartsRobotAgent.*;
 import Agent.*;
 import java.util.*;
 
 
-public class VisionAgent extends Agent{
+public class VisionAgent extends Agent implements Vision{
 
 	public void msgHereIsSchematic(List<Part.PartType> recipe, List<Part.PartType> nestassignments)
 	{

@@ -10,7 +10,14 @@ import javax.swing.*;
 public class ServerPartTestPanel extends JPanel implements ActionListener{
 	Server server; //reference to server
 	ArrayList<JButton> buttons;
+	
+	String[] nests = { "Nest 1", "Nest 2", "Nest 3", "Nest 4", "Nest 5", "Nest 6", "Nest 7", "Nest 8" };
+    String[] grips = { "Gripper 1", "Gripper 2", "Gripper 3", "Gripper 4"};
+	JPanel selection;
+    JComboBox nestList;
+    JComboBox gripList;
 	ImageIcon background; //background
+	
 	
 	public ServerPartTestPanel(Server _server){
 		buttons = new ArrayList<JButton>();
@@ -27,10 +34,25 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
         createButton("Load Kit 1");
         createButton("Load Kit 2");
         createButton("Exit");
-		
+		nestList = new JComboBox(nests);
+		nestList.setPreferredSize(new Dimension(100, 30));
+		nestList.setMaximumSize(new Dimension(100, 30));
+		nestList.setMinimumSize(new Dimension(100, 30));
+		gripList = new JComboBox(grips);
+		gripList.setPreferredSize(new Dimension(100, 30));
+		gripList.setMaximumSize(new Dimension(100, 30));
+		gripList.setMinimumSize(new Dimension(100, 30));
+		selection = new JPanel();
+		selection.setLayout(new BoxLayout(selection, BoxLayout.X_AXIS));
+        
 		background = new ImageIcon("images/server.jpeg");
 		
 		add(Box.createRigidArea(new Dimension(0, 130)),"");
+		selection.add(nestList, "");
+		selection.add(Box.createRigidArea(new Dimension(20, 0)), "");
+		selection.add(gripList, "");
+		add(selection, "");
+		add(Box.createRigidArea(new Dimension(0, 20)),"");
 		for(int i = 0; i < buttons.size(); i++){
 			add(buttons.get(i), "");
             add(Box.createRigidArea(new Dimension(0, 20)),"");
@@ -42,6 +64,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
         temp.setPreferredSize(new Dimension(150, 30));
         temp.setMaximumSize(new Dimension(150, 30));
         temp.setMinimumSize(new Dimension(150, 30));
+        temp.setAlignmentX(CENTER_ALIGNMENT);
         temp.addActionListener(this);
         temp.setActionCommand(s);
         buttons.add(temp);
@@ -54,7 +77,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 	
 	public void actionPerformed(ActionEvent ae){
 		if("Get Part".equals(ae.getActionCommand())) {
-          server.execute("Get Part", 1, 1);
+          server.execute("Get Part", (int)nestList.getSelectedIndex(), (int)gripList.getSelectedIndex());
         }
         else if("Load Kit 1".equals(ae.getActionCommand())) {
             server.execute("Load Kit 1");

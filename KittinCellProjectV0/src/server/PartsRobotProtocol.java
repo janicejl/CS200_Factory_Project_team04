@@ -26,7 +26,7 @@ public class PartsRobotProtocol implements Runnable{
 			e.printStackTrace();
 		}
 		
-		thread = new Thread(this, "Kit_Thread");
+		thread = new Thread(this, "PartsRobot_Thread");
 		thread.start();
 	}
 	
@@ -37,7 +37,19 @@ public class PartsRobotProtocol implements Runnable{
 			out.reset();
 			command = (String)in.readObject();
 			if(command.equals("Confirmed")){
-				
+				//start
+			}
+			
+			commandSent = "Idle";
+			while(true){
+				out.writeObject(app.getPartsRobot());
+				out.reset();
+				out.writeObject(app.getKitAssemblyManager());
+				out.reset();
+				command = (String)in.readObject();
+				if(command.equals("Received")){
+					
+				}
 			}
 			
 		} catch (ClassNotFoundException e) {

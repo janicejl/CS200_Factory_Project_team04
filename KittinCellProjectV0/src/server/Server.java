@@ -67,6 +67,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		new Thread(kitAssemblyManager).start();
         new Thread(kitRobot).start();
         
+        partsRobot = new PartsRobot();
+        new Thread(partsRobot).start();
 		
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");
@@ -112,7 +114,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 				c.gridx = 0;	
 				c.gridy = 0;
 				add(partsTest, c);
-				phase = 1;
+				phase = 2;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -141,6 +143,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Remove Finished")){
     		getKitRobot().addCommand("load,5,6");
     	}
+    	else if(process.equals("Load Kit 1")){
+    		getPartsRobot().addCommand("dump,0");
+    	}
+    	else if(process.equals("Load Kit 2")){
+    		getPartsRobot().addCommand("dump,1");
+    	}   
     }
 	 
     public void execute(String process, Integer num){
@@ -154,13 +162,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     public void execute(String process, Integer nest, Integer grip){
     	if(process.equals("Get Part")){
     		getPartsRobot().addCommand("grab," + nest + "," + grip);
-    	}
-    	else if(process.equals("Load Kit 1")){
-    		getPartsRobot().addCommand("dump,0");
-    	}
-    	else if(process.equals("Load Kit 2")){
-    		getPartsRobot().addCommand("dump,1");
-    	}    		
+    	} 		
     }
     
 	public void actionPerformed(ActionEvent e){
@@ -183,12 +185,16 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		else if(phase.equals(1)){
 			kitTest.repaint();
 		}
+		else if(phase.equals(2)){
+			partsTest.repaint();
+		}
 		revalidate();
 	}
 	
 	public void revalidate(){
 		gui.revalidate();
 		kitTest.revalidate();
+		partsTest.revalidate();
 	}
 	
 	public static void main(String[] args) {

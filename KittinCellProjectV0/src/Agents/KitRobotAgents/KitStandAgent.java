@@ -251,7 +251,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	
 	private void InspectKitByVision(KitHolder kit_h)
 	{
-		//vision_agent.TakePicture();
+		server.execute("Take Picture");
 		kit_h.state = KitState.None;
 		System.out.println("KitStand: Inspect kit by vision");
 	}
@@ -277,7 +277,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		{
 			if(kit.state == KitState.Empty)
 			{
-				//parts_robot.EmptyKitAt(kit.position);
+				parts_robot.msgEmptyKit(kit.position);
 			}
 		}
 		

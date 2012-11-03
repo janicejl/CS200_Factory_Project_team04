@@ -23,13 +23,6 @@ public class PartsManagerClient implements Runnable {
 		command = "";
 		commandSent = "";
 		thread = new Thread(this, "PartsRobotClient_Thread");
-		int i = connect();
-		if(i == -1){
-			System.exit(1);
-		}
-		else if(i == 1){
-			thread.start();
-		}
 	}
 	
 	public Integer connect(){
@@ -78,6 +71,7 @@ public class PartsManagerClient implements Runnable {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 

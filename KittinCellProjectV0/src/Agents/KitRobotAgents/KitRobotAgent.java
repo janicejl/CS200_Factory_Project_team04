@@ -199,7 +199,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	
 	private void FinishedKit(KitHolder kit)
 	{
-		//MOVE KIT TO CONVEYOR
+		server.execute("Remove Finished");
 		System.out.println("KitRobot: Finished a kit!");
 		kit_conveyor.msgHereIsFinishedKit(kit.kit);
 		kit_list.remove(kit);
@@ -207,7 +207,14 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	
 	private void MoveKitToInspection(KitHolder kit)
 	{
-		//PLAY ANIMATION TO MOVE THE KIT FROM THE STAND TO INSPECTION STAND	
+		if(kit.position_on_stand  == 0)
+		{
+			server.execute("Check Kit 1");
+		}
+		else
+		{
+			server.execute("Check Kit 2");
+		}
 		kit.state = KitState.WaitingForInspection;
 		System.out.println("KitRobot: Moving kit to inspection");
 	}

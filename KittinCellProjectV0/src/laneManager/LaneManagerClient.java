@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import server.Lane;
+
 public class LaneManagerClient implements Runnable {
 	Socket s;
 	LaneGraphics app;

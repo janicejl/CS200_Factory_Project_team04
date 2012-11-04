@@ -26,6 +26,8 @@ public class PartsRobot implements Runnable, Serializable{
     double rotationSpeed = 4;
     double extensionSpeed = 4;
     boolean takePicture;
+    double cameraX;
+    double cameraY;
     Boolean msg;
     
     BufferedImage partsRobotImage;
@@ -43,6 +45,8 @@ public class PartsRobot implements Runnable, Serializable{
     public PartsRobot(){
         y = 300;
         newY = y;
+        cameraX = 350;
+        cameraY = 100;
         takePicture = false;
         gripperHolding = new Vector<Boolean>();
         gripperExtensions = new Vector<Double>();
@@ -138,8 +142,10 @@ public class PartsRobot implements Runnable, Serializable{
         }
     }
 
-    public void takePicture(){
+    public void takePicture(double x, double y){
         takePicture = true;
+        cameraX = x;
+        cameraY = y;
     }
 
     private void processSubCommand(String s){
@@ -235,13 +241,14 @@ public class PartsRobot implements Runnable, Serializable{
         return gripperExtensions;
     }
     public boolean getTakePicture(){
-        if(takePicture){
+        /*if(takePicture){
             takePicture = false;
             return true;
         }
         else {
             return false;
-        }
+        }*/
+    	return takePicture;
     }
 
     public synchronized Boolean getMsg() {
@@ -250,6 +257,26 @@ public class PartsRobot implements Runnable, Serializable{
 
 	public synchronized void setMsg(Boolean msg) {
 		this.msg = msg;
+	}
+
+	public synchronized double getCameraX() {
+		return cameraX;
+	}
+
+	public synchronized void setCameraX(double cameraX) {
+		this.cameraX = cameraX;
+	}
+
+	public synchronized double getCameraY() {
+		return cameraY;
+	}
+
+	public synchronized void setCameraY(double cameraY) {
+		this.cameraY = cameraY;
+	}
+
+	public synchronized void setTakePicture(boolean takePicture) {
+		this.takePicture = takePicture;
 	}
 
 	public void update(){

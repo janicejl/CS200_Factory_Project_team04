@@ -32,6 +32,8 @@ public class GUIPartsRobot{
     Vector<String> nestLocations;
     Vector<String> kitLocations;
     float opacity, flashCounter;
+    double cameraX;
+    double cameraY;
 
     PartsRobot pr;
 
@@ -48,6 +50,8 @@ public class GUIPartsRobot{
         angle = 0;
         opacity = 0.01f;
         flashCounter = 1.0f;
+        cameraX = 350;
+        cameraY = 100;
         gripperExtensions = new Vector<Double>();
         gripperHolding = new Vector<Boolean>();
         commands = new Vector<String>();
@@ -75,6 +79,8 @@ public class GUIPartsRobot{
     public void update(){
         pr = server.getPartsRobot();
         y = pr.getY();
+        cameraX = pr.getCameraX();
+        cameraY = pr.getCameraY();
         angle = pr.getAngle();
         gripperExtensions = pr.getGripperExtensions();
         gripperHolding = pr.getGripperHolding();
@@ -139,6 +145,7 @@ public class GUIPartsRobot{
                 flashCounter -= 0.007;
                 if(opacity < 0){
                     takePicture = false;
+                    server.getPartsClient().setCommandSent("Update");
                     flashCounter = 1;
                 }
             }
@@ -146,10 +153,18 @@ public class GUIPartsRobot{
 
             try {
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-                g2.drawImage(flash,350,100,null);
+                g2.drawImage(flash,(int)cameraX,(int)cameraY,null);
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
             }
             catch (Exception ignore){}
         }
     }
+
+	public synchronized boolean getTakePicture() {
+		return takePicture;
+	}
+
+	public synchronized void setTakePicture(boolean takePicture) {
+		this.takePicture = takePicture;
+	}
 }

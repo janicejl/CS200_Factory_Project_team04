@@ -208,4 +208,20 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 	public synchronized void setBaseFinishedKits(Vector<Kit> baseFinishedKits) {
 		this.baseFinishedKits = baseFinishedKits;
 	}
+
+	public synchronized GUIKitRobot getKitRobot() {
+		return kitRobot;
+	}
+
+	public synchronized void setKitRobot(GUIKitRobot kitRobot) {
+		this.kitRobot = kitRobot;
+	}
+
+	public synchronized GUIPartsRobot getPartsRobot() {
+		return partsRobot;
+	}
+
+	public synchronized void setPartsRobot(GUIPartsRobot partsRobot) {
+		this.partsRobot = partsRobot;
+	}
 }

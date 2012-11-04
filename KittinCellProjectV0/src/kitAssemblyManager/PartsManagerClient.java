@@ -66,6 +66,12 @@ public class PartsManagerClient implements Runnable {
 				app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
 				out.writeObject(commandSent);
 				out.reset();
+				if(commandSent.equals("Update")){
+					out.writeObject(app.getKamPanel().getPartsRobot().getTakePicture());
+					out.reset();
+					commandSent = "Received";
+				}
+				
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -81,5 +87,13 @@ public class PartsManagerClient implements Runnable {
 
 	public synchronized void setThread(Thread thread) {
 		this.thread = thread;
+	}
+
+	public synchronized String getCommandSent() {
+		return commandSent;
+	}
+
+	public synchronized void setCommandSent(String commandSent) {
+		this.commandSent = commandSent;
 	}
 }

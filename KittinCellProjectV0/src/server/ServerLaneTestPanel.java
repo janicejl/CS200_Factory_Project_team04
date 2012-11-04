@@ -20,6 +20,8 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 	JComboBox laneSelectBox;
 	JButton feedLaneButton;
 	JButton feedNestButton;
+	JButton feedPartButton;
+	
 	ImageIcon background;
 	
 	public ServerLaneTestPanel(Server _server){
@@ -28,8 +30,15 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		laneSelectBox = new JComboBox(lanes);
 		feedLaneButton = new JButton("Feed Lane");
 		feedNestButton = new JButton("Feed Nest");
+		feedPartButton = new JButton("Feed part into feeder");
 		background = new ImageIcon("images/server.jpeg");
 		
+		 feedPartButton.setPreferredSize(new Dimension(150, 30));
+		 feedPartButton.setMaximumSize(new Dimension(150, 30));
+		 feedPartButton.setMinimumSize(new Dimension(150, 30));
+		 feedPartButton.setAlignmentX(CENTER_ALIGNMENT);
+		 feedPartButton.setActionCommand("Feed Feeder");
+		    
 	    feedLaneButton.setPreferredSize(new Dimension(150, 30));
 	    feedLaneButton.setMaximumSize(new Dimension(150, 30));
 	    feedLaneButton.setMinimumSize(new Dimension(150, 30));
@@ -47,6 +56,7 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		laneSelectBox.setMinimumSize(new Dimension(100, 30));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(laneSelectBox);
+		add(feedPartButton);
 		add(feedLaneButton);
 		add(feedNestButton);
 		
@@ -68,6 +78,10 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 	    }
 	    else if("Feed Nest".equals(ae.getActionCommand())) {
 	    	server.execute("Feed Nest",  (int)laneSelectBox.getSelectedIndex());
+	    	//msg to MockLaneAgent
+	    }
+	    else if("Feed Feeder".equals(ae.getActionCommand())){
+	    	server.execute("Feed Feeder", (int)laneSelectBox.getSelectedIndex());
 	    	//msg to MockLaneAgent
 	    }
 	}

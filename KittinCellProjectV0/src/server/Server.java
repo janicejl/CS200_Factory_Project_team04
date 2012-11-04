@@ -171,7 +171,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		}
     	}
     	
-    	if(process.equals("Feed Lane")){
+    	if(process.equals("Feed Feeder")){
+    		
+    	}
+    	else if(process.equals("Feed Lane")){
     		
     	}
     	else if(process.equals("Feed Nest")){

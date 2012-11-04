@@ -6,4 +6,4 @@
 *.ear
 /KittinCellProjectV0/bin/Agent
 bin
-.metadata/
+.metadata/ #*.DS_Store

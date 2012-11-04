@@ -37,6 +37,25 @@ public class PartsBox
 		catch(IOException e){}
 	}
 	
+	public PartsBox(int c)
+	{
+		try
+		{
+			part = ImageIO.read(new File("images/part.png"));
+		}
+		catch(IOException e){}
+		count = c;
+		xCurrent = 330;
+		xFinal =330; //Initial position is off of the screen
+		yFinal=280;
+		yCurrent=280;
+		state = "wait";
+		cycles = 0;
+		feeder = -1;
+		
+		
+	}
+	
 	public void paint(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D)g;

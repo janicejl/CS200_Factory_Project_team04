@@ -6,10 +6,11 @@ States for PartsBox
 "moving" 	- The parts box is in transit to a feeder
 "feeding" 	- The parts box is attached to a feeder
 "dump"		- The parts box is requesting to be dumped
-"dumping" 	- The parts box is being dumped
+"dumpf" 	- The parts box is being dumped
 
 States for Gantry
 "dumpi"		- The gantry is moving towards the parts box requesting to be dumped
+"dumpf"		- The gantry has picked up the parts box and is moving to the dump location
 "load"		- The gantry is moving towards the parts box reqeusting to be loaded
 "loading" 	- The gantry is moving towards a feeder with the parts box in tow
 "free"		- The gantry robot is ready for instructions

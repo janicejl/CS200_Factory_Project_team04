@@ -1,7 +1,14 @@
 import java.util.*;
 import java.util.concurrent.*;
 
-import agent.Agent;
+import Agent.Agent;
+import Agents.PartsRobotAgent.NestAgent;
+import Agents.PartsRobotAgent.PartsRobotAgent;
+import MoveableObjects.Kit;
+import MoveableObjects.Part;
+
+
+
 
 public class VisionAgent extends Agent {
 	

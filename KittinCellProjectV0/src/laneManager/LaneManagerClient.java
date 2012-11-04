@@ -69,7 +69,7 @@ public class LaneManagerClient implements Runnable {
 			
 			commandSent = "Received";
 			while(true){
-				app.setLaneManager((Lane)in.readObject());
+				app.setLanes((ArrayList<Lane>)in.readObject());
 				out.writeObject(commandSent);
 				out.reset();
 			}

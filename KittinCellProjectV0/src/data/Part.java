@@ -1,6 +1,8 @@
 package data;
 
-public class Part {
+import java.io.Serializable;
+
+public class Part implements Serializable{
 
 	private String id;
 	private double x;

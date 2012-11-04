@@ -9,4 +9,7 @@ public class Part {
 	public Part(Part.PartType type){
 		this.type = type;
 	}
+	public Part(){
+		
+	}
 }

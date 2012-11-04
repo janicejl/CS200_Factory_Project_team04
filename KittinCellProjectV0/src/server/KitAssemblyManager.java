@@ -12,11 +12,14 @@ import java.awt.geom.*;
 //import kitAssemblyManager.Kit;
 import data.Kit;
 
+import laneManager.Nest;
+
 public class KitAssemblyManager implements Runnable, Serializable{
     Vector<Boolean> stationOccupied;
     Vector<Kit> emptyKits;
     Vector<Kit> finishedKits;
     Vector<Kit> stationKits;
+    Vector<Nest> nests;
     boolean finishedConveyorOn;
     boolean emptyConveyorOn;
     boolean badConveyorOn;
@@ -24,6 +27,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
     Boolean msg;
     int idCounter;
     double conveyorSpeed = 1;
+   
 
     public KitAssemblyManager(){
         stationOccupied = new Vector<Boolean>();
@@ -43,6 +47,11 @@ public class KitAssemblyManager implements Runnable, Serializable{
 
         emptyKits = new Vector<Kit>();
         finishedKits = new Vector<Kit>();
+        nests = new Vector<Nest>();
+        for (int i = 0; i < 8; i++) {
+        	//for v0
+        	nests.add(new Nest(320, 30+(i*70), i)); //Setting the position of the nest properly. 
+        }
         msg = new Boolean(false);
     }
 
@@ -173,6 +182,10 @@ public class KitAssemblyManager implements Runnable, Serializable{
 
     public synchronized Vector<Boolean> getStationOccupied(){
         return stationOccupied;
+    }
+    
+    public synchronized Vector<Nest> getNests() {
+    	return nests;
     }
     
 	public synchronized Boolean getMsg() {

@@ -91,15 +91,18 @@ public class VisionAgent extends Agent {
 	private void initializeVisionAgent(String type) {
 		if (type=="kit") {
 			this.type = Type.KIT_INSPECTOR;
+			print ("initialized to kit inspecting vision agent");
 		}
 		else if (type=="nests") {
 			this.type = Type.NESTS_INSPECTOR;
+			print ("initialized to nest inspecting vision agent");
 		}
 	}
 	
 	private void takePicture() {
-		DoTakePicture(); // ~*~** working on it **~*~ 
+		DoTakePicture(); // ~*~** working on it **~*~
 		state = state.PICTURE_TAKEN;
+		print ("taking a picture");
 		stateChanged();
 	}
 	
@@ -109,6 +112,7 @@ public class VisionAgent extends Agent {
 				nest1 = fullNestsMap.get(i);
 				nest2 = fullNestsMap.get(i+1);
 				state = State.READY_TO_TAKE_PICTURE;
+				print( "consecutive nests found; ready to take picture" );
 				stateChanged();
 			}
 		}
@@ -122,11 +126,14 @@ public class VisionAgent extends Agent {
 			}
 		}
 
-		if (neededPartsList.size()==0)
+		if (neededPartsList.size()==0) {
+			print("kit approved");
 			approved = true;
-		else
+		}
+		else {
+			print("kit not approved");
 			approved = false;
-		
+		}		
 	}
 	
 	private void inspectNests() {
@@ -136,25 +143,31 @@ public class VisionAgent extends Agent {
 		// nest1.getPartType should return the string of the name that the nest should hold
 		if (nest1.getPartType() == fullNestsPartsList.get( nest1.getNumber()) ) {
 			nest1Approved=true;
+			print(nest1.getName() + "approved");
 		}
 		else {
 			nest2Approved=false;
 			nest1.msgBadParts();
+			print(nest1.getName() + "not approved");
 		}
 				
 		if (nest2.getPartType() == fullNestsPartsList.get(nest2.getNumber()) ) { 
 			nest2Approved=true;
+			print(nest2.getName() + "approved");
 		}
 		else {
 			nest2Approved=false;
 			nest2.msgBadParts();
+			print(nest2.getName() + "not approved");
 		}
 			
 		if (nest1Approved && nest2Approved) {
 			approved=true;
+			print("consecutive nests approved");
 		}
 		else {
 			approved=false;
+			print("consecutive not approved");
 		}
 		
 	}

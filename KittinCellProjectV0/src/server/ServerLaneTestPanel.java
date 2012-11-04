@@ -20,7 +20,7 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 	JComboBox laneSelectBox;
 	JButton feedLaneButton;
 	JButton feedNestButton;
-	
+	ImageIcon background;
 	
 	public ServerLaneTestPanel(Server _server){
 		server = _server;
@@ -28,6 +28,7 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		laneSelectBox = new JComboBox(lanes);
 		feedLaneButton = new JButton("Feed Lane");
 		feedNestButton = new JButton("Feed Nest");
+		background = new ImageIcon("images/server.jpeg");
 		
 	    feedLaneButton.setPreferredSize(new Dimension(150, 30));
 	    feedLaneButton.setMaximumSize(new Dimension(150, 30));
@@ -54,15 +55,20 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		
 	}
 	
-	
+	public void paintComponent(Graphics g){
+		background.paintIcon(this, g, 0, 0);
+		revalidate();
+	}
 	
 	public void actionPerformed(ActionEvent ae){
 		//add code in server and figure out what should be sent to lane
 		if("Feed Lane".equals(ae.getActionCommand())) {
 			server.execute("Feed Lane",  (int)laneSelectBox.getSelectedIndex());
+			//msg to MockLaneAgent
 	    }
 	    else if("Feed Nest".equals(ae.getActionCommand())) {
 	    	server.execute("Feed Nest",  (int)laneSelectBox.getSelectedIndex());
+	    	//msg to MockLaneAgent
 	    }
 	}
 	

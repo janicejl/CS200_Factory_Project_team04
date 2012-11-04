@@ -10,12 +10,20 @@ public class GantryAgent extends Agent implements Gantry {
 
 	//Data
 	
+	String name;
 	Feeder currentFeeder;
 	Bin currentBin;
 	GantryController gc;
 	enum FeederState{ready, pending, notReady};
-	FeederState fstate = FeederState.notReady;
+	FeederState fstate;
 	
+	
+	public GantryAgent(String name){
+		this.name = name;
+		currentFeeder = null;
+		currentBin = null;
+		fstate = FeederState.notReady;
+	}
 	
 	//Messages
 	
@@ -68,6 +76,14 @@ public class GantryAgent extends Agent implements Gantry {
 	
 	public void setFeeder(Feeder f1){
 		this.currentFeeder = f1;
+	}
+	
+	public String getName(){
+		return this.getName();
+	}
+	
+	public void setGantryController(GantryController gc){
+		this.gc = gc;
 	}
 	
 	

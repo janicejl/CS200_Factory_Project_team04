@@ -42,6 +42,10 @@ public class GantryControllerAgent extends Agent implements GantryController {
 	}
 	
 	
+	public GantryControllerAgent(){
+		
+	}
+	
 	//Messages
 
 	@Override

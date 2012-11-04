@@ -1,10 +1,10 @@
-package laneManager;
-
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 public class LaneManagerClient implements Runnable {
 	Socket s;
+	LaneGraphics app;
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	String command;
@@ -12,10 +12,15 @@ public class LaneManagerClient implements Runnable {
 	String serverName; //keep track of what server to connect to...default localhost
 	Thread thread;
 	
-	public LaneManagerClient(){
+	 //data received from server
+	
+	
+	
+	public LaneManagerClient(LaneGraphics _app){
 		serverName = "localhost";
 		command = "";
 		commandSent = "";
+		app = _app;
 		thread = new Thread(this, "LaneManagerClient_Thread");
 		int i = connect();
 		if(i == -1){
@@ -25,7 +30,7 @@ public class LaneManagerClient implements Runnable {
 			thread.start();
 		}
 	}
-	
+
 	public Integer connect(){
 		try {
 			s = new Socket(serverName, 61337); //attempt to connect to servername
@@ -41,7 +46,7 @@ public class LaneManagerClient implements Runnable {
 		System.out.println("Connected to "+ serverName);
 		return 1; //successful connection
 	}
-	
+
 	public void run(){
 		try {
 			commandSent = "LaneManager";
@@ -49,9 +54,6 @@ public class LaneManagerClient implements Runnable {
 			out.reset();
 			command = (String)in.readObject();
 			if(command.equals("Confirmed")){
-				commandSent = "Confirmed";
-				out.writeObject(commandSent);
-				out.reset();
 				//start
 			}
 			else{
@@ -62,6 +64,49 @@ public class LaneManagerClient implements Runnable {
 			
 //**************START CODE***************************
 			
+			
+			commandSent = "Received";
+			while(true){
+				app.setLaneManager((LaneManager)in.readObject());
+				out.writeObject(commandSent);
+				out.reset();
+			}
+			
+			/*commandSent = "idle";
+			while(true){
+				
+				out.writeObject(commandSent);
+				out.reset();
+				command = (String)in.readObject();
+				if(command.equals("idle")){
+					commandSent = "idle";
+					continue;
+				}
+				else if(command.equals("start")){
+					break;
+				}
+			}
+			commandSent = "idle";
+			
+			while(true){
+				out.writeObject(commandSent);
+				out.reset();
+				command = (String)in.readObject();
+				if(command.equals("idle")){
+					continue;
+				}
+				else if(command.equals("work")){
+					
+					//***** code for pass the data to graphics
+					
+					//***** code for graphics to update feederData
+					commandSent = "working";
+					
+					
+					
+				}
+			}
+			*/
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

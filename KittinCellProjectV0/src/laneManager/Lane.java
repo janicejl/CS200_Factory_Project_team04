@@ -208,9 +208,8 @@ public class Lane implements ActionListener {
     }
     
     
-    public void addPart() {
-    	
-    	
+    public void addPart(Part part) {
+    	importList.add(part);
     }
     
 }  

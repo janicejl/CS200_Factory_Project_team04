@@ -8,6 +8,7 @@ import java.awt.event.*;
 import javax.imageio.*;
 
 import server.KitAssemblyManager;
+import data.Kit;
 
 import java.awt.image.*;
 import java.io.*;

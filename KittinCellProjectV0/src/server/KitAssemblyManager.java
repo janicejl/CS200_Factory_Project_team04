@@ -9,7 +9,8 @@ import java.awt.image.*;
 import java.io.*;
 import java.awt.geom.*;
 
-import kitAssemblyManager.Kit;
+//import kitAssemblyManager.Kit;
+import data.Kit;
 
 public class KitAssemblyManager implements Runnable, Serializable{
     Vector<Boolean> stationOccupied;
@@ -30,7 +31,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
         idCounter = 0;
         for(int i = 0; i < 7; i++){
             stationOccupied.add(false);
-            stationKits.add(new Kit(idCounter));
+            stationKits.add(new Kit(""+idCounter, 80, -110));		//80, -110 from Jared's kit file. 
             if(i == 3){
                 stationKits.get(i).setPosition(80,700);
             }
@@ -92,7 +93,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
     public void processCommand(String s){
         String[] ss = s.split("\\,");
         if(ss[0].equals("spawn")){
-            Kit temp = new Kit(getIdCounter());
+            Kit temp = new Kit(""+getIdCounter(), 80, -110);
             int sz = getEmptyKits().size();
             if(sz > 0 && getEmptyKits().get(sz-1).getY() < 0){
                 temp.setPosition(80,getEmptyKits().get(sz-1).getY() - 110);

@@ -2,9 +2,10 @@ package laneManager;
 
 import data.Part;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Nest {
+public class Nest implements Serializable{
 	
 	private double x;
 	private double y;

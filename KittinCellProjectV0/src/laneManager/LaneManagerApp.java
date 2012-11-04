@@ -5,9 +5,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+
+import Feeder.Feeder;
+import Feeder.GUIFeeder;
 
 public class LaneManagerApp extends JFrame implements ActionListener {
 	private LaneGraphics laneGraphics;
@@ -23,7 +23,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 			releaseButtons.add(new JButton("Lane: " + (i+1)));
 			releaseButtons.get(i).addActionListener(this);
 			window.add(releaseButtons.get(i));
-			System.out.println("Adding button: " + (i + 1));
+			System.out.println("OAdding button: " + (i + 1));
 		}
 		window.setPreferredSize(new Dimension(800, 30));
 		window.setMaximumSize(new Dimension(800, 30));

@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import data.Part;
-
+import Feeder.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +24,7 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 	private ArrayList<Boolean> emptyConveyorOnList;
 	private ArrayList<Double> emptyConveyorMoveList;
 	private BufferedImage conveyorImage; 
+	private ArrayList<GUIFeeder> gFeeders;
 	
     public LaneGraphics() {
     	lanes.add(new Lane(this,600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
@@ -38,16 +39,22 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	lanes.get(2).setConveyerBeltSpeed(3);
     	maxX = 600;
     	maxY = 700;
+    	
     	this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
     	this.setSize(maxX, maxY);
     	this.setVisible(true);
 		
     	emptyConveyorOnList  = new ArrayList<Boolean>(); 
     	emptyConveyorMoveList = new ArrayList<Double> ();
+    	gFeeders = new ArrayList<GUIFeeder> ();
     	
     	for(int i = 0; i < 8; i++) {
     		emptyConveyorOnList.add(true);
-    		emptyConveyorMoveList.add(0.0);
+    		emptyConveyorMoveList.add(0.0);	
+    	}
+    	
+    	for (int i = 0; i < 4; i++) {
+    		gFeeders.add(new GUIFeeder(new Feeder(525,20 + i*140)));
     	}
 		
 		try {
@@ -62,7 +69,7 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	Graphics2D g2 = (Graphics2D)g;
 		g2.setColor(Color.LIGHT_GRAY);
 		g2.fill( backgroundRectangle );
-	
+		
 		for (int i = 0; i < 8; i++) {
 			 if(emptyConveyorOnList.get(i)){
 		            emptyConveyorMoveList.set(i,emptyConveyorMoveList.get(i) + 0.23 * lanes.get(i).getConveyerBeltSpeed()); //magic ratio
@@ -84,9 +91,14 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
         }  
         
         g2.setColor(Color.BLUE);		
-		for (int i = 0; i < lanes.size(); i++) 
+		for (int i = 0; i < lanes.size(); i++) {
+			if(i < 4)
+				gFeeders.get(i).paintNest(g2);
 			for (int j = 0; j < lanes.get(i).getItemList().size(); j++) 
 				g2.fill(new Ellipse2D.Double(lanes.get(i).getItemList().get(j).getX(),lanes.get(i).getItemList().get(j).getY(),20,20));
+		}
+
+		
     }
     
     public void setVibration() { //Unimplimented

@@ -6,16 +6,17 @@ import MoveableObjects.*;
 import Agents.KitRobotAgents.*;
 import java.util.*;
 
-
+import server.Server;
 
 public class PartsRobotAgent extends Agent{
 
 	String name = "PartsRobotAgent";
 	
+	
 	Vision camera;
 	KitStand kitstand;
 	boolean camerahasrecipe = false;
-	//PartsRobotGUI gui;
+	Server server;
 	TestGUI gui;
 
 	int count = 0;
@@ -70,7 +71,7 @@ public class PartsRobotAgent extends Agent{
 		int nestindex = -1;
 		private Gripper(){};
 	}
-	public PartsRobotAgent(List <NestAgent> nestagents, Vision visionagent, KitStand stand)
+	public PartsRobotAgent(List <NestAgent> nestagents, Vision visionagent, KitStand stand,Server server)
 	{
 		int index = 1;
 		for(NestAgent nest:nestagents)
@@ -81,6 +82,7 @@ public class PartsRobotAgent extends Agent{
 		}
 		camera = visionagent;
 		kitstand = stand;
+		this.server = server;
 		kit1 = new MyKit(1);
 		kit2 = new MyKit(2);
 		for (int i = 0; i<4; i++)
@@ -292,7 +294,7 @@ public class PartsRobotAgent extends Agent{
 						print("Moving To Nest " + nest.index + " to pick up part for kit1");
 						//Animation Call
 						animationstate = AnimationStatus.movingToNest;
-						gui.DoMoveToNest(nest.index);
+						server.execute("Get Part",nest.index,i+1);
 						break;
 
 					}
@@ -321,7 +323,7 @@ public class PartsRobotAgent extends Agent{
 						print("Moving To Nest " + nest.index + " to pick up part for kit2");
 						//Animation Call
 						animationstate = AnimationStatus.movingToNest;
-						gui.DoMoveToNest(nest.index);
+						server.execute("Get Part",nest.index,i+1);
 						break;
 					}
 				}
@@ -351,15 +353,28 @@ public class PartsRobotAgent extends Agent{
 		//AnimationCall
 		animationstate = AnimationStatus.movingToStand;
 
-		gui.DoGoToStand(); //Move to Kit Stand
+		boolean kit1 = false;
+		for(int i = 0; i<4; i++){
+			if(grippers[i].destinationkit == 1){
+				kit1 = true;
+			}
+		}
+		if(kit1)
+		{
+			server.execute("Load Kit 1");
+		}
+		else
+		{
+			server.execute("Load Kit 2");
+		}
 		print("Moving to Kit Stand");
+		placeParts();
 	}
 
 	public void placeParts()
 	{
 		print("Giving parts to kitstand");	
 		//AnimationCall
-		//gui.DoPlaceParts(); //Any sort of part placing animation
 		List <Part> kit1parts = new ArrayList<Part>();
 		for(int i = 0; i<4; i++)
 		{
@@ -371,7 +386,7 @@ public class PartsRobotAgent extends Agent{
 			}
 		}
 			
-
+		
 
 		kitstand.msgHereAreParts(kit1parts,0);
 		List<Part> kit2parts = new ArrayList<Part>();
@@ -384,6 +399,7 @@ public class PartsRobotAgent extends Agent{
 			}
 		} 
 		kitstand.msgHereAreParts(kit2parts,0);
+		
 		for(MyNest mn : nests)
 		{
 			if(mn.state == NestStatus.skipped){

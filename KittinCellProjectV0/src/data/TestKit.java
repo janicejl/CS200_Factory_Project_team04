@@ -16,7 +16,7 @@ public class TestKit extends JFrame implements ActionListener {
 	GUIKit gKit;
 	
 	public TestKit() {
-		kit = new Kit("HELO", 100, 100);
+		kit = new Kit("1", 100, 100);
 		gKit = new GUIKit(kit);
 		
 		for (int i = 0; i < 6; i++) {
@@ -36,11 +36,14 @@ public class TestKit extends JFrame implements ActionListener {
 			System.out.println("Insert Y Coordinate: ");
 			y = in.nextLine();
 			
-			kit.setX(Double.parseDouble(x));
-			kit.setY(Double.parseDouble(y));
+			kit.setDestinationX(Double.parseDouble(x));
+			kit.setDestinationY(Double.parseDouble(y));
 			
-			System.out.println("(" + kit.getX() + ", " + kit.getY() + ")");
-			repaint();
+			System.out.println("(" + kit.getDestinationX() + ", " + kit.getDestinationY() + ")");
+			
+			while (kit.finishMoving() == false) {
+				repaint();
+			}
 		}
 	}
 	
@@ -54,7 +57,7 @@ public class TestKit extends JFrame implements ActionListener {
 	}
 	
 	public static void main(String[] args) {
-		TestKit t = new TestKit();
+		TestKit t = new TestKit();	
 	}
 
 	public void actionPerformed(ActionEvent ae) {

@@ -44,6 +44,10 @@ public class PartsRobotProtocol implements Runnable{
 			while(true){
 				out.writeObject(app.getPartsRobot());
 				out.reset();
+				if(app.getPartsRobot().getMsg().equals(true)){
+					app.getPartsRobotAgent().msgAnimationDone();
+					app.getPartsRobot().setMsg(false);
+				}
 				out.writeObject(app.getKitAssemblyManager());
 				out.reset();
 				command = (String)in.readObject();

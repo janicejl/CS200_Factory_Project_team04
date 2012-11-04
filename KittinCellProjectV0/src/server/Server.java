@@ -55,6 +55,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		kitTest = new ServerKitTestPanel(this);
 		partsTest = new ServerPartTestPanel(this);
 		
+		
+		
 		kitRobotAgent = new KitRobotAgent(this);
 		kitStandAgent = new KitStandAgent(this); 
 		kitConveyorAgent = new KitConveyorAgent(this);
@@ -70,6 +72,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		new Thread(kitAssemblyManager).start();
         new Thread(kitRobot).start();
         
+        partsRobotAgent = new PartsRobotAgent(kitStandAgent, this);
+		partsRobotAgent.startThread();
         partsRobot = new PartsRobot();
         new Thread(partsRobot).start();
 		
@@ -270,6 +274,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public synchronized void setPartsRobot(PartsRobot partsRobot) {
 		this.partsRobot = partsRobot;
+	}
+
+	public synchronized PartsRobotAgent getPartsRobotAgent() {
+		return partsRobotAgent;
+	}
+
+	public synchronized void setPartsRobotAgent(PartsRobotAgent partsRobotAgent) {
+		this.partsRobotAgent = partsRobotAgent;
 	}
 
 }

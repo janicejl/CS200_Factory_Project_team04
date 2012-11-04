@@ -6,5 +6,4 @@ public interface FeederLane {
 	void msgRemovePart();
 
 	void setMaxQuantity(int quantity);
-	String getName();
 }

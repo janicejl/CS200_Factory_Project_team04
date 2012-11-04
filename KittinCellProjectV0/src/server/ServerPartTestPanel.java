@@ -80,7 +80,10 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 	
 	public void actionPerformed(ActionEvent ae){
 		if("Send Recipe".equals(ae.getActionCommand())){
-			server.getPartsRobotAgent().msgMakeThisKit(new ArrayList<Part.PartType>(1), 4);
+			ArrayList <Part.PartType> recipe = new ArrayList<Part.PartType>();
+			Part.PartType part1 = Part.PartType.part1;
+			recipe.add(part1);
+			server.getPartsRobotAgent().msgMakeThisKit(recipe, 4);
 		}
 		else if("Get Part".equals(ae.getActionCommand())) {
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex());

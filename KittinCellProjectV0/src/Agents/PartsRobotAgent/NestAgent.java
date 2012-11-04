@@ -2,7 +2,6 @@ package Agents.PartsRobotAgent;
 
 import  Agent.*;
 import MoveableObjects.*;
-import MoveableObjects.Part.PartType;
 import Interface.PartsRobotAgent.*;
 
 public class NestAgent extends Agent{
@@ -214,14 +213,6 @@ public class NestAgent extends Agent{
 	
 	public String getName(){
 		return name;
-	}
-
-	public Integer getNumber() {
-		return index;
-	}
-
-	public PartType getPartType() {
-		return parttype;
 	}
 	
 

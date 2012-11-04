@@ -45,6 +45,9 @@ public class PartsRobotAgent extends Agent{
 			this.nest = nest;
 			index = ind;
 		}
+		private MyNest (int ind){
+			index = ind;
+		}
 		
 	}
 	private enum NestStatus{noAction, assigned, hasPart,skipped}
@@ -82,6 +85,9 @@ public class PartsRobotAgent extends Agent{
 		for (int i = 0; i<4; i++)
 		{
 			grippers[i] = new Gripper();
+		}
+		for(int i = 0; i<8; i++){
+			nests.add(new MyNest(i+1));
 		}
 	}
 	
@@ -125,6 +131,7 @@ public class PartsRobotAgent extends Agent{
 	}
 	public void msgPartsApproved(int nestindex){
 		nests.get(nestindex).state = NestStatus.hasPart;
+		print("PartReady at nest " + nestindex);
 		stateChanged();
 	}
 
@@ -227,14 +234,17 @@ public class PartsRobotAgent extends Agent{
 	}
 	if(animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome)
 	{
-		for(int i = 0; i<4; i++)
-		{
-			if(grippers[i].full)
+		//if(kit1.state == KitStatus.available || kit2.state == KitStatus.available)
+		//{
+			for(int i = 0; i<4; i++)
 			{
-				goToStand();
-				return true;
+				if(grippers[i].full)
+				{
+					goToStand();
+					return true;
+				}
 			}
-		}
+		//}
 	}
 	/*if(animationstate == AnimationStatus.atNest || animationstate == AnimationStatus.atStand)
 	{
@@ -253,7 +263,7 @@ public class PartsRobotAgent extends Agent{
 		for(int i = 0; i < recipe.size(); i++)
 		{	
 			print("Assigning Part " + recipe.get(i) + " to nest " + nests.get(i).index);
-			nests.get(i).nest.msgNeedThisPart(recipe.get(i));
+			//nests.get(i).nest.msgNeedThisPart(recipe.get(i));
 			nests.get(i).state = NestStatus.assigned;
 			nests.get(i).type = recipe.get(i);
 		}
@@ -269,7 +279,7 @@ public class PartsRobotAgent extends Agent{
 		{
 			nestassignments.add(mn.type);
 		}
-		camera.msgHereIsSchematic(recipe, nestassignments);
+		//camera.msgHereIsSchematic(recipe, nestassignments);
 		camerahasrecipe = true;
 	}
 	private void requestEmptyKit()
@@ -284,6 +294,7 @@ public class PartsRobotAgent extends Agent{
 		
 	private void checkAvailableParts(MyNest nest)
 	{
+		print("Checking if I need part at nest " + nest.index);
 		Part.PartType type = nest.type;
 		Part.PartType parttoget = null;
 		boolean kit1needsthispart = false;
@@ -356,9 +367,19 @@ public class PartsRobotAgent extends Agent{
 	}
 	private void getPart(){
 		print("Picking up part");
-		//gui.DoGetPart();//Any sort of animation for getting the part from the nest
-		nests.get(currentnest-1).nest.msgGetPart();
 		animationstate = AnimationStatus.waitingForPart;
+
+		//gui.DoGetPart();//Any sort of animation for getting the part from the nest
+		//nests.get(currentnest-1).nest.msgGetPart();
+
+		// Hack for v0 with no Nests yet
+		Part.PartType parttype = nests.get(currentnest-1).type;
+
+		this.msgHereIsPart(new Part(parttype));
+		
+		//End of Hack
+		
+		
 	}
 		
 		

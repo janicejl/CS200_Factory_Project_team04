@@ -1,5 +1,6 @@
 package Agents.GantryFeederAgents;
 
+import server.Server;
 import Agent.Agent;
 import Interface.GantryFeederAgent.Feeder;
 import Interface.GantryFeederAgent.FeederLane;
@@ -25,22 +26,28 @@ public class FeederAgent extends Agent implements Feeder {
 	MyLane left;
 	MyLane right;
 	Gantry gantry;
-	GantryController gc; 
+	GantryController gc;
+	Server app;
 	
 	private class MyLane{
 		FeederLane fLane1;
 		PartType partWanted;
 		boolean readyForParts;
 		
-		public MyLane(){
-			
+		public MyLane(FeederLane f1){
+			this.fLane1 = f1;
+			partWanted = PartType.none;
+			readyForParts = false;
 		}
 	}
 	
-	public FeederAgent(String name, int lowParts){
+	public FeederAgent(String name, int lowParts, FeederLane left, FeederLane right, Server app){
 		this.name = name;
 		this.lowParts = lowParts;
 		this.gantry = null;
+		this.left = new MyLane(left);
+		this.right = new MyLane(right);
+		this.app = app;
 	}
 	
 	//Messages
@@ -188,6 +195,10 @@ public class FeederAgent extends Agent implements Feeder {
 	public void setGantryController(GantryController gc) {
 		this.gc = gc;
 		
+	}
+	
+	public String getName(){
+		return this.name;
 	}
 	
 	

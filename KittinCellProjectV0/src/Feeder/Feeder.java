@@ -1,5 +1,11 @@
 package Feeder;
 
+import java.util.ArrayList;
+
+import data.Part;
+
+
+
 public class Feeder {
 	
 	private double x;
@@ -8,10 +14,12 @@ public class Feeder {
 	
 	private boolean topLane;
 	private boolean empty;
-
+	private ArrayList<Part> parts;
 	public Feeder(double nX, double nY){
 		x = nX;
 		y = nY;
+		parts = new ArrayList<Part> ();
+		
 		partAmount = 0;
 		empty = true;
 		topLane = true;
@@ -41,20 +49,28 @@ public class Feeder {
 		return partAmount;
 	}
 	
-	public void removePart(){
+	public Part removePart(){
 		if (partAmount > 0){
 			partAmount--;
+			return parts.remove(0);
 		}
+		else {
+			System.out.println("Sorry! -Roy");
+			return null;
+		}
+	}
+	
+	public void setParts(ArrayList<Part> parts) {
+		this.parts = parts;
 	}
 	
 	public void removeAll(){
 		partAmount = 0;
 	}
 	
-	public void addParts(double amt){
-		partAmount += amt;
-		if (partAmount > 25)	// 25 part maximum;
-			partAmount = 25;
+	public void addParts(Part part){
+		partAmount++;
+		parts.add(part);
 	}
 	
 	// True sets the diverter to top lane

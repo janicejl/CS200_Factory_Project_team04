@@ -32,6 +32,10 @@ public class PartsRobotProtocol implements Runnable{
 	
 	public void run(){
 		try {
+			command = (String)in.readObject();
+			if(!command.equals("KitAssembly")){
+				commandSent = "Denied";
+			}			
 			//confirm phase
 			out.writeObject("Confirmed");
 			out.reset();
@@ -52,7 +56,9 @@ public class PartsRobotProtocol implements Runnable{
 				out.reset();
 				command = (String)in.readObject();
 				if(command.equals("Received")){
-					
+				}
+				else if(command.equals("Update")){
+					app.getPartsRobot().setTakePicture((Boolean)in.readObject());
 				}
 			}
 			

@@ -1,8 +1,9 @@
 package data;
 
+import java.io.*;
 import java.util.Vector;
 
-public class Kit {
+public class Kit implements Serializable {
 	private String id;
 	private double x;
 	private double y;
@@ -89,5 +90,12 @@ public class Kit {
 		} else {
 			return false;
 		}
+	}
+	
+	public void setPosition(double nX, double nY) {
+		x = nX;
+		y = nY;
+		//destinationX = nX;
+		//destinationY = nY;
 	}
 }

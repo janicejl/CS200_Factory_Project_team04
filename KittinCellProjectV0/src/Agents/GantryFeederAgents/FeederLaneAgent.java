@@ -3,6 +3,8 @@ package Agents.GantryFeederAgents;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import server.Server;
+
 import Agent.Agent;
 import Interface.GantryFeederAgent.Feeder;
 import Interface.GantryFeederAgent.FeederLane;
@@ -11,17 +13,20 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 
 	//Data
 	String name;
+	int number;
 	int quantity;
 	int maxQuantity;
 	Timer t;
 	Feeder feeder;
+	Server app;
 	
 	enum FeederState{feeding, stopped, pending};
 	FeederState state;
 	
-	public FeederLaneAgent(String name, Feeder f1){
+	public FeederLaneAgent(String name, int number, Server app){
 		this.name = name;
-		this.feeder = f1;
+		this.number = number;
+		this.app = app;
 	}
 	
 	//Messages
@@ -81,6 +86,15 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 	@Override
 	public void setMaxQuantity(int quantity) {
 		this.maxQuantity = quantity;
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
+	}
+	
+	public void setFeeder(Feeder f1){
+		this.feeder = f1;
 	}
 	
 }

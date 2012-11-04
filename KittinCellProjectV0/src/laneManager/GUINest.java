@@ -33,8 +33,8 @@ public class GUINest {
 		ArrayList<Part> parts = nest.parts;
 		
 		for (int i = 0, j = 0; i < parts.size(); i++) {
-			parts.get(i).setX(x + ((i % 4) * 32));		//32 = size of testing image parts. 
-			parts.get(i).setY(y + (j * 32));
+			parts.get(i).setX(x + ((i % 4) * 25));		//25 = size of testing image parts. 
+			parts.get(i).setY(y + (j * 25));
 			
 			if (i % 4 == 3) {
 				j++;

@@ -8,6 +8,9 @@ import java.awt.event.*;
 import javax.imageio.*;
 
 import server.KitAssemblyManager;
+import data.Kit;
+import laneManager.Nest;
+import laneManager.GUINest;
 
 import java.awt.image.*;
 import java.io.*;
@@ -35,6 +38,8 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
     Vector<Kit> baseFinishedKits;
     Vector<Kit> baseStationKits;
 
+    Vector<GUINest> gNests;
+    
     int[] stationPositions = {160, 140, 160, 360, 80, 490, 10, 490, 160, 250}; // stations 1 - 2 - 3 - 4 - 5 (image corner coords)
     boolean emptyConveyorOn;
     boolean finishedConveyorOn;
@@ -67,6 +72,8 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         baseFinishedKits = new Vector<Kit>();
         baseStationKits = new Vector<Kit>();
 
+        gNests = new Vector<GUINest>();
+        
         timer = new javax.swing.Timer(10, this);
         timer.start();
 
@@ -89,6 +96,12 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         baseFinishedKits = kam.getFinishedKits();
         baseStationKits = kam.getStationKits();
         stationOccupied = kam.getStationOccupied();
+        
+        gNests.clear();
+        for (Nest n: kam.getNests()) {
+        	gNests.add(new GUINest(n));
+        }
+        
         if(emptyConveyorOn){
             emptyConveyorMove += 0.5;
             if(emptyConveyorMove > 20.0){
@@ -122,6 +135,7 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         g2.drawImage(background, 0, 0, null);
         g2.drawImage(stand,150,130,70,340,null); // kit stand
         g2.setColor(Color.BLACK);
+        /*
         g2.drawRect(320,100,50,50);
         g2.drawRect(320,150,50,50);
         g2.drawRect(320,200,50,50);
@@ -130,6 +144,11 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         g2.drawRect(320,350,50,50);
         g2.drawRect(320,400,50,50);
         g2.drawRect(320,450,50,50);
+        */
+        
+        for (GUINest gN : gNests) {
+        	gN.paintNest(g2);
+        }
 
         for(int i = -1; i < 5; i++){ // main conveyor images
             g2.drawImage(conveyorImage,75, i * 20 + (int)emptyConveyorMove,null); // empty conveyor
@@ -207,5 +226,21 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 
 	public synchronized void setBaseFinishedKits(Vector<Kit> baseFinishedKits) {
 		this.baseFinishedKits = baseFinishedKits;
+	}
+
+	public synchronized GUIKitRobot getKitRobot() {
+		return kitRobot;
+	}
+
+	public synchronized void setKitRobot(GUIKitRobot kitRobot) {
+		this.kitRobot = kitRobot;
+	}
+
+	public synchronized GUIPartsRobot getPartsRobot() {
+		return partsRobot;
+	}
+
+	public synchronized void setPartsRobot(GUIPartsRobot partsRobot) {
+		this.partsRobot = partsRobot;
 	}
 }

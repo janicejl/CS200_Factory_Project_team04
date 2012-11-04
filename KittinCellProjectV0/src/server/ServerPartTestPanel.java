@@ -34,23 +34,24 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 		
 		createButton("Send Recipe");
 		createButton("Get Part");
-        createButton("Load Kit 1");
-        createButton("Load Kit 2");
+        createButton("Take Picture");
+		//createButton("Load Kit 1");
+        //createButton("Load Kit 2");
         createButton("Exit");
 		nestList = new JComboBox(nests);
-		nestList.setPreferredSize(new Dimension(100, 30));
-		nestList.setMaximumSize(new Dimension(100, 30));
-		nestList.setMinimumSize(new Dimension(100, 30));
+		nestList.setPreferredSize(new Dimension(100, 20));
+		nestList.setMaximumSize(new Dimension(100, 20));
+		nestList.setMinimumSize(new Dimension(100, 20));
 		gripList = new JComboBox(grips);
-		gripList.setPreferredSize(new Dimension(100, 30));
-		gripList.setMaximumSize(new Dimension(100, 30));
-		gripList.setMinimumSize(new Dimension(100, 30));
+		gripList.setPreferredSize(new Dimension(100, 20));
+		gripList.setMaximumSize(new Dimension(100, 20));
+		gripList.setMinimumSize(new Dimension(100, 20));
 		selection = new JPanel();
 		selection.setLayout(new BoxLayout(selection, BoxLayout.X_AXIS));
         
 		background = new ImageIcon("images/server.jpeg");
 		
-		add(Box.createRigidArea(new Dimension(0, 130)),"");
+		add(Box.createRigidArea(new Dimension(0, 120)),"");
 		selection.add(nestList, "");
 		selection.add(Box.createRigidArea(new Dimension(20, 0)), "");
 		selection.add(gripList, "");
@@ -64,9 +65,9 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 	
 	public void createButton(String s){
         JButton temp = new JButton(s);
-        temp.setPreferredSize(new Dimension(150, 30));
-        temp.setMaximumSize(new Dimension(150, 30));
-        temp.setMinimumSize(new Dimension(150, 30));
+        temp.setPreferredSize(new Dimension(150, 20));
+        temp.setMaximumSize(new Dimension(150, 20));
+        temp.setMinimumSize(new Dimension(150, 20));
         temp.setAlignmentX(CENTER_ALIGNMENT);
         temp.addActionListener(this);
         temp.setActionCommand(s);
@@ -83,13 +84,39 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 			ArrayList <Part.PartType> recipe = new ArrayList<Part.PartType>();
 			Part.PartType part1 = Part.PartType.part1;
 			recipe.add(part1);
+			Part.PartType part2 = Part.PartType.part2;
+			recipe.add(part2);
+			Part.PartType part3 = Part.PartType.part3;
+			recipe.add(part3);
+			Part.PartType part4 = Part.PartType.part4;
+			recipe.add(part4);
+			Part.PartType part5 = Part.PartType.part5;
+			recipe.add(part5);
+			Part.PartType part6 = Part.PartType.part6;
+			recipe.add(part6);
+			Part.PartType part7 = Part.PartType.part7;
+			recipe.add(part7);
+			Part.PartType part8 = Part.PartType.part8;
+			recipe.add(part3);
 			server.getPartsRobotAgent().msgMakeThisKit(recipe, 4);
 		}
 		else if("Get Part".equals(ae.getActionCommand())) {
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex());
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+1);
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+2);
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+3);
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+4);
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+5);
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+6);
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+7);
+
+
 			//server.getPartsRobotAgent().msgAnimationDone();
 			//server.getPartsRobotAgent().msgAnimationDone();
         }
+		else if("Take Picture".equals(ae.getActionCommand())){
+			server.execute("Take Picture", nestList.getSelectedIndex());
+		}
         else if("Load Kit 1".equals(ae.getActionCommand())) {
             server.execute("Load Kit 1");
         }

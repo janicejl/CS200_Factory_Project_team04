@@ -76,8 +76,7 @@ public class MockLaneAgentV0 extends Agent implements Lane {
 
 	private void createParts()
 	{
-		Part p = new Part();
-		p.type = parttype;
+		Part p = new Part(parttype);
 		print("Getting parts");
 		//AnimationCall, just for v0
 		//gui.DoSendPartDownLane(p)

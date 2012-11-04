@@ -64,7 +64,8 @@ public class PartsRobotAgent extends Agent{
 	MyKit kit1;
 	MyKit kit2;
 
-	private class Gripper{
+	private class Gripper
+	{
 		Part p;
 		int destinationkit;
 		boolean full = false;

@@ -1,6 +1,6 @@
 package Mocks.GantryFeederAgents;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 import Interface.GantryFeederAgent.Feeder;
 import Interface.GantryFeederAgent.Gantry;
@@ -21,8 +21,7 @@ public class MockGantryControllerAgent extends MockAgent implements
 	}
 
 	@Override
-	public void msgBinConfiguration(ArrayList<Bin> bins,
-			ArrayList<Gantry> gantries) {
+	public void msgBinConfiguration(Vector<Bin> bins) {
 		log.add(new LoggedEvent("msgBinConfiguration received from FCS."));
 	}
 

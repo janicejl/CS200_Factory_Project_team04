@@ -8,6 +8,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import Agents.GantryFeederAgents.FeederAgent;
+import Agents.GantryFeederAgents.FeederLaneAgent;
+import Agents.GantryFeederAgents.GantryAgent;
+import Agents.GantryFeederAgents.GantryControllerAgent;
 import Agents.KitRobotAgents.KitConveyorAgent;
 import Agents.KitRobotAgents.KitRobotAgent;
 import Agents.KitRobotAgents.KitStandAgent;
@@ -29,6 +33,22 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	KitAssemblyProtocol kitPro;
 	LaneManagerProtocol lanePro;
 	PartsRobotProtocol partsPro;
+	
+	FeederAgent feeder1;
+	FeederAgent feeder2;
+	FeederAgent feeder3;
+	FeederAgent feeder4;
+	FeederLaneAgent fLane1;
+	FeederLaneAgent fLane2;
+	FeederLaneAgent fLane3;
+	FeederLaneAgent fLane4;
+	FeederLaneAgent fLane5;
+	FeederLaneAgent fLane6;
+	FeederLaneAgent fLane7;
+	FeederLaneAgent fLane8;
+	GantryAgent gantry1;
+	GantryAgent gantry2;
+	GantryControllerAgent gantryController;
 	
 	PartsRobotAgent partsRobotAgent;
 	
@@ -56,6 +76,39 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		kitTest = new ServerKitTestPanel(this);
 		partsTest = new ServerPartTestPanel(this);
 		laneTest = new ServerLaneTestPanel(this);
+		
+		feeder1 = new FeederAgent("feeder1", 5, fLane1, fLane2, this);
+		fLane1 = new FeederLaneAgent("left", 1, this);
+		fLane2 = new FeederLaneAgent("right", 2, this);
+		fLane1.setFeeder(feeder1);
+		fLane2.setFeeder(feeder1);
+		
+		feeder2 = new FeederAgent("feeder2", 5, fLane3, fLane4, this);
+		fLane3 = new FeederLaneAgent("left", 3, this);
+		fLane4 = new FeederLaneAgent("right", 4, this);
+		fLane3.setFeeder(feeder2);
+		fLane4.setFeeder(feeder2);
+		
+		feeder3 = new FeederAgent("feeder3", 5, fLane5, fLane6, this);
+		fLane5 = new FeederLaneAgent("left", 5, this);
+		fLane6 = new FeederLaneAgent("right", 6, this);
+		fLane5.setFeeder(feeder3);
+		fLane6.setFeeder(feeder3);
+		
+		feeder4 = new FeederAgent("feeder4", 5, fLane7, fLane8, this);
+		fLane7 = new FeederLaneAgent("left", 7, this);
+		fLane8 = new FeederLaneAgent("right", 8, this);
+		fLane7.setFeeder(feeder4);
+		fLane8.setFeeder(feeder4);
+		
+		gantryController = new GantryControllerAgent(this);
+		gantry1 = new GantryAgent("gantry1", this);
+		gantry2 = new GantryAgent("gantry2", this);
+		gantry1.setGantryController(gantryController);
+		gantry2.setGantryController(gantryController);
+		gantryController.msgGantryAdded(gantry1);
+		gantryController.msgGantryAdded(gantry2);
+		
 		
 		
 		kitRobotAgent = new KitRobotAgent(this);

@@ -11,6 +11,7 @@ import javax.swing.*;
 import Agents.KitRobotAgents.KitConveyorAgent;
 import Agents.KitRobotAgents.KitRobotAgent;
 import Agents.KitRobotAgents.KitStandAgent;
+import Agents.PartsRobotAgent.PartsRobotAgent;
 
 public class Server extends JFrame implements Runnable, ActionListener{
 	
@@ -27,6 +28,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	KitAssemblyProtocol kitPro;
 	LaneManagerProtocol lanePro;
 	PartsRobotProtocol partsPro;
+	
+	PartsRobotAgent partsRobotAgent;
 	
 	KitRobotAgent kitRobotAgent; 
 	KitStandAgent kitStandAgent;
@@ -161,7 +164,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     
     public void execute(String process, Integer nest, Integer grip){
     	if(process.equals("Get Part")){
-    		getPartsRobot().addCommand("grab," + nest + "," + grip);
+    		getPartsRobot().addCommand("grab," + (nest) + "," + (grip));
     	} 		
     }
     

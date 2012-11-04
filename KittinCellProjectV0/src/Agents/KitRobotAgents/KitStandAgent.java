@@ -83,7 +83,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 				stateChanged();
 				return;
 			}
-			
 		}
 		System.out.println("Error at msgKitIsDone");
 	}

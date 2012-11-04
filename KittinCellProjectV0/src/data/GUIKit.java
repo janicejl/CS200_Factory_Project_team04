@@ -16,13 +16,15 @@ public class GUIKit {
 		kit = k;
 		
 		try {
-			image = ImageIO.read(new File("src/data/graphics/kit.png"));
+			image = ImageIO.read(new File("images/kit.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void paintKit(Graphics2D g) {
+		kit.update();
+		
 		double x = kit.getX();
 		double y = kit.getY();
 		
@@ -39,7 +41,7 @@ public class GUIKit {
 			}
 			BufferedImage p;
 			try {
-				p = ImageIO.read(new File("src/data/graphics/" + parts.get(i).getID() + ".png"));
+				p = ImageIO.read(new File("images/" + parts.get(i).getID() + ".png"));
 				g.drawImage(p, (int)parts.get(i).getX(), (int)parts.get(i).getY(), null);
 			} catch (IOException e) {
 				e.printStackTrace();

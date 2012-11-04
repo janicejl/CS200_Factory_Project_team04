@@ -21,16 +21,11 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 	private int maxX;
 	private int maxY;
 	private Rectangle2D.Double backgroundRectangle;
-	private int counter;
-	private boolean emptyConveyorOn;
-	private double emptyConveyorMove;
+	private ArrayList<Boolean> emptyConveyorOnList;
+	private ArrayList<Double> emptyConveyorMoveList;
 	private BufferedImage conveyorImage; 
 	
-	//private Timer timer; 
-    
     public LaneGraphics() {
-    	counter = 0;
-
     	lanes.add(new Lane(this,600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(this,600,60)); 
     	lanes.add(new Lane(this,600,130)); 
@@ -47,75 +42,57 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	this.setSize(maxX, maxY);
     	this.setVisible(true);
 		
-    	emptyConveyorOn = true; 
-    	emptyConveyorMove = 0;
+    	emptyConveyorOnList  = new ArrayList<Boolean>(); 
+    	emptyConveyorMoveList = new ArrayList<Double> ();
+    	
+    	for(int i = 0; i < 8; i++) {
+    		emptyConveyorOnList.add(true);
+    		emptyConveyorMoveList.add(0.0);
+    	}
 		
 		try {
             conveyorImage = ImageIO.read(new File("images/conveyerLong.png"));
         } catch (IOException e) {
         	System.out.println("Image load issue");
-        }
-		
-		
+        }	
     }
     
     public void paintComponent(Graphics g) {
 
     	Graphics2D g2 = (Graphics2D)g;
-		counter++;
 		g2.setColor(Color.LIGHT_GRAY);
 		g2.fill( backgroundRectangle );
-		//g2.setColor( Color.RED );
-		
-		///for (int i = 0; i < 5; i++) {
-		//	g2.drawImage(beltImage, i*20, 50, null);
-		//}
-		 if(emptyConveyorOn){
-	            emptyConveyorMove += 0.23; //magic ratio
-	            if(emptyConveyorMove > 20.0){
-	                emptyConveyorMove = 0;
-	            }
-	        }
-
-	        for(int i = -1; i < 40; i++){ // main conveyor images
-	        	g2.drawImage(conveyorImage, i * 20 - (int)emptyConveyorMove,20,null); // empty conveyor   
-	        	g2.drawImage(conveyorImage, i * 20 - (int)emptyConveyorMove,90,null); // empty conveyor   
-	        	g2.drawImage(conveyorImage, i * 20 - (int)emptyConveyorMove,160,null); // empty conveyor   
-	        	g2.drawImage(conveyorImage, i * 20 - (int)emptyConveyorMove,230,null); // empty conveyor   
-	        	g2.drawImage(conveyorImage, i * 20 - (int)emptyConveyorMove,300,null); // empty conveyor   
-	        	g2.drawImage(conveyorImage, i * 20 - (int)emptyConveyorMove,370,null); // empty conveyor   
-	        	g2.drawImage(conveyorImage, i * 20 - (int)emptyConveyorMove,440,null); // empty conveyor   
-	        	g2.drawImage(conveyorImage, i * 20 - (int)emptyConveyorMove,510,null); // empty conveyor   
-	        	
-	        
-	        }  
-
-	        
-	        
-	        
-	        
-	        
-	        g2.setColor(Color.BLUE);		
-		
-		for (int i = 0; i < lanes.size(); i++) {
-			for (int j = 0; j < lanes.get(i).getItemList().size(); j++) {
-				g2.fill(new Ellipse2D.Double(lanes.get(i).getItemList().get(j).getX(),lanes.get(i).getItemList().get(j).getY(),20,20));
-						
-						
-						//lanes.get(i).getItemList().get(j));
-			}
-			for (int k = 0; k < lanes.get(i).getQueueList().size(); k++) {
-				//g2.fill(lanes.get(i).getQueueList().get(k));
-			}
+	
+		for (int i = 0; i < 8; i++) {
+			 if(emptyConveyorOnList.get(i)){
+		            emptyConveyorMoveList.set(i,emptyConveyorMoveList.get(i) + 0.23 * lanes.get(i).getConveyerBeltSpeed()); //magic ratio
+		            if(emptyConveyorMoveList.get(i) > 20.0){
+		                emptyConveyorMoveList.set(i, 0.0);
+		            }
+		        }
 		}
+			 
+        for(int i = -1; i < 40; i++){ // main conveyor images
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(0).intValue(),20,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(1).intValue(),90,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(2).intValue(),160,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(3).intValue(),230,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(4).intValue(),300,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(5).intValue(),370,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(6).intValue(),440,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(7).intValue(),510,null); // empty conveyor   
+        }  
+        
+        g2.setColor(Color.BLUE);		
+		for (int i = 0; i < lanes.size(); i++) 
+			for (int j = 0; j < lanes.get(i).getItemList().size(); j++) 
+				g2.fill(new Ellipse2D.Double(lanes.get(i).getItemList().get(j).getX(),lanes.get(i).getItemList().get(j).getY(),20,20));
     }
     
     public void setVibration() { //Unimplimented
     	System.out.println("Unimplemented");
     }
-  
-
-    
+      
     public void releaseItem(int lane) {
     	lanes.get(lane).releasePart();
     }

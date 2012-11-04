@@ -63,32 +63,29 @@ public class Lane implements ActionListener {
     }
     
     public Lane(LaneGraphics lg, int width, int verticalSpacing) {
-    	this.laneGraphics = lg;
-		this.maxX = width;
-		this.maxY = 100;
-    	this.counter = 0;
+    	laneGraphics = lg;
+		maxX = width;
+		maxY = 100;
+    	counter = 0;
     	this.verticalSpacing = verticalSpacing;
-	    this.conveyerBeltSpeed = 1;
-	    this.releaseSpeed = 50; //wait 50 cycles to release next part
-	    this.itemList = new ArrayList<Part> ();
-	    this.importList = new ArrayList<Part> ();
-	    this.queueList = new ArrayList<Part> ();
-	    this.nestList = new ArrayList<Part> ();
-		this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		this.timer = new Timer(10,this);
-		this.timer.start();
-		this.nestFull = false;
-		this.queueFull = false;		
-		//create an import list with 3 parts to test
-	    this.importList.add(new Part("Part1"));
-	    this.importList.add(new Part("Part2"));
-	    this.importList.add(new Part("Part3"));
+	    conveyerBeltSpeed = 1;
+	    releaseSpeed = 50; //wait 50 cycles to release next part
+	    itemList = new ArrayList<Part> ();
+	    importList = new ArrayList<Part> ();
+	    queueList = new ArrayList<Part> ();
+	    nestList = new ArrayList<Part> ();
+		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
+		timer = new Timer(10,this);
+		timer.start();
+		nestFull = false;
+		queueFull = false;		
+		importList.add(new Part("Part1"));
+	    importList.add(new Part("Part2"));
+	    importList.add(new Part("Part3"));
 	    for(int i = 0; i < importList.size(); i++) {
 	    	importList.get(i).setX(width);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
-	    	
 	    }
-	    //this.importList.add(new Ellipse2D.Double(maxX, maxY/2 + verticalSpacing, 20, 15));
     }
     
     public void actionPerformed( ActionEvent ae ) {
@@ -97,8 +94,6 @@ public class Lane implements ActionListener {
     			itemList.add(importList.remove(0));
     		}	//Create a button releases
     	}*/
-    	
-    	
     	counter++;
     	    	
 	    if(itemList.size() > 0) {
@@ -113,16 +108,9 @@ public class Lane implements ActionListener {
 		    	//	case 0:
 		    			//itemList.get(i).setFrame( itemList.get(i).getX() + queueBorder*i, maxY/2 + verticalSpacing, itemList.get(i).getWidth(), itemList.get(i).getHeight());  //Move 1 x-pixel and 1 y-pixel every 50 milliseconds
 				//    	break;
-		    	
-		    		
-		    		
-		    		}
-		    		
+		    		}		    		
 		    		//itemList.get(i).setFrame(queueBorder ,maxY/2, itemList.get(i).getWidth(), itemList.get(i).getHeight());  
 		    		//queueBorder+=20;
-		    		
-		    		
-		    		
 		    	//}
 		    	
 		    	/*else { 
@@ -161,9 +149,6 @@ public class Lane implements ActionListener {
 		    }
 	    }
 	    
-	    //////
-	    
-	    
 	    if(queueList.size() > 0) {
 		    for(int i = 0; i < queueList.size(); i++) {
 		    	//queueList.get(i).setFrame(120 + 30*i ,maxY/2 + verticalSpacing, queueList.get(i).getWidth(), queueList.get(i).getHeight());
@@ -171,10 +156,6 @@ public class Lane implements ActionListener {
 	    }
 		laneGraphics.repaint();
     } //Queue first, dont nest yet!
-    
-    public void paint() {
-    	
-    }
 
     public ArrayList<Part> getItemList() {
     	return this.itemList;
@@ -192,10 +173,6 @@ public class Lane implements ActionListener {
     	this.releaseSpeed = speed;
     }
   
-    //public void setImportList(ArrayList<Ellipse2D.Double> importList) {
-    	//this.importList = importList;
-    //}
-    
     public int getConveyerBeltSpeed() {
     	return this.conveyerBeltSpeed;
     }
@@ -206,7 +183,6 @@ public class Lane implements ActionListener {
 		}
     	System.out.println("release!");
     }
-    
     
     public void addPart(Part part) {
     	importList.add(part);

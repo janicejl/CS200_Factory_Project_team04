@@ -71,6 +71,19 @@ public class PartsRobotAgent extends Agent{
 		int nestindex = -1;
 		private Gripper(){};
 	}
+	
+	public PartsRobotAgent(KitStand stand, Server server)
+	{
+		kitstand = stand;
+		this.server = server;
+		kit1 = new MyKit(1);
+		kit2 = new MyKit(2);
+		for (int i = 0; i<4; i++)
+		{
+			grippers[i] = new Gripper();
+		}
+	}
+	
 	public PartsRobotAgent(List <NestAgent> nestagents, Vision visionagent, KitStand stand,Server server)
 	{
 		int index = 1;
@@ -110,7 +123,7 @@ public class PartsRobotAgent extends Agent{
 		stateChanged();
 	}
 	public void msgPartsApproved(int nestindex){
-		nests.get(nestindex-1).state = NestStatus.hasPart;
+		nests.get(nestindex).state = NestStatus.hasPart;
 		stateChanged();
 	}
 

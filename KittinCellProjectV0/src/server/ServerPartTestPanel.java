@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import MoveableObjects.Part;
+
 public class ServerPartTestPanel extends JPanel implements ActionListener{
 	Server server; //reference to server
 	ArrayList<JButton> buttons;
@@ -30,6 +32,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 		setMaximumSize(new Dimension(533, 400));
 		setMinimumSize(new Dimension(533, 400));
 		
+		createButton("Send Recipe");
 		createButton("Get Part");
         createButton("Load Kit 1");
         createButton("Load Kit 2");
@@ -76,8 +79,13 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent ae){
-		if("Get Part".equals(ae.getActionCommand())) {
-          server.execute("Get Part", (int)nestList.getSelectedIndex(), (int)gripList.getSelectedIndex());
+		if("Send Recipe".equals(ae.getActionCommand())){
+			server.getPartsRobotAgent().msgMakeThisKit(new ArrayList<Part.PartType>(1), 4);
+		}
+		else if("Get Part".equals(ae.getActionCommand())) {
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex());
+			//server.getPartsRobotAgent().msgAnimationDone();
+			//server.getPartsRobotAgent().msgAnimationDone();
         }
         else if("Load Kit 1".equals(ae.getActionCommand())) {
             server.execute("Load Kit 1");

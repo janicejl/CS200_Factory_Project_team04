@@ -26,7 +26,8 @@ public class PartsRobot implements Runnable, Serializable{
     double rotationSpeed = 4;
     double extensionSpeed = 4;
     boolean takePicture;
-
+    Boolean msg;
+    
     BufferedImage partsRobotImage;
 
     Vector<Boolean> gripperHolding;
@@ -55,7 +56,8 @@ public class PartsRobot implements Runnable, Serializable{
         }
         commands = new Vector<String>();
         subCommands = new Vector<String>();
-
+        msg = new Boolean(false);
+        
         try {
             partsRobotImage = ImageIO.read(new File("crate.png"));
         }
@@ -242,7 +244,15 @@ public class PartsRobot implements Runnable, Serializable{
         }
     }
 
-    public void update(){
+    public synchronized Boolean getMsg() {
+		return msg;
+	}
+
+	public synchronized void setMsg(Boolean msg) {
+		this.msg = msg;
+	}
+
+	public void update(){
         if(!paused){
             processing = false;
             if(y != newY){
@@ -255,6 +265,7 @@ public class PartsRobot implements Runnable, Serializable{
                 }
                 if(Math.abs(y - newY) < moveSpeed){
                     y = newY;
+                    msg = true;
                 }
             }
             if (angle != newAngle){

@@ -109,7 +109,15 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	lanes.get(lane).releasePart();
     }
     
-    public void addPartToLane(int lane, Part part) {
+    public synchronized void setLanes(ArrayList<Lane> lanes) {
+		this.lanes = lanes;
+	}
+    
+	public synchronized ArrayList<Lane> getLanes() {
+		return lanes;
+	}
+
+	public void addPartToLane(int lane, Part part) {
     	lanes.get(lane).addPart(part);
     }
     

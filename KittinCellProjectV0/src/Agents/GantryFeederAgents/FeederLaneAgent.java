@@ -82,5 +82,10 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 	public void setMaxQuantity(int quantity) {
 		this.maxQuantity = quantity;
 	}
+
+	@Override
+	public String getName() {
+		return this.name;
+	}
 	
 }

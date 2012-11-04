@@ -49,7 +49,8 @@ public class KitAssemblyManager implements Runnable, Serializable{
         finishedKits = new Vector<Kit>();
         nests = new Vector<Nest>();
         for (int i = 0; i < 8; i++) {
-        	nests.add(new Nest(320, 30+(i*70))); //Setting the position of the nest properly. 
+        	//for v0
+        	nests.add(new Nest(320, 30+(i*70), i)); //Setting the position of the nest properly. 
         }
         msg = new Boolean(false);
     }

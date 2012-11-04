@@ -129,6 +129,30 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
 		this.partsRobot = partsRobot;
 	}
 
+	public synchronized KitAssemblyClient getKitClient() {
+		return kitClient;
+	}
+
+	public synchronized void setKitClient(KitAssemblyClient kitClient) {
+		this.kitClient = kitClient;
+	}
+
+	public synchronized PartsManagerClient getPartsClient() {
+		return partsClient;
+	}
+
+	public synchronized void setPartsClient(PartsManagerClient partsClient) {
+		this.partsClient = partsClient;
+	}
+
+	public synchronized GUIKitAssemblyManager getKamPanel() {
+		return kamPanel;
+	}
+
+	public synchronized void setKamPanel(GUIKitAssemblyManager kamPanel) {
+		this.kamPanel = kamPanel;
+	}
+
 	public void initGraphicsPanel(){
         kamPanel = new GUIKitAssemblyManager(this);
     }
@@ -218,7 +242,7 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
             }
         }
         else if("Take Picture".equals(ae.getActionCommand())) {
-            partsRobot.takePicture();
+            partsRobot.takePicture(295, 150);
         }
         else if("Load Stand 1".equals(ae.getActionCommand())) {
             kitRobot.addCommand("load,0,1");

@@ -75,7 +75,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
         
         partsRobotAgent = new PartsRobotAgent(kitStandAgent, this);
 		partsRobotAgent.startThread();
-        partsRobot = new PartsRobot();
+        	partsRobot = new PartsRobot();
         new Thread(partsRobot).start();
 		
 		//start threads and timer
@@ -170,8 +170,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			getKitAssemblyManager().processCommand("spawn");
     		}
     	}
-    	
-    	if(process.equals("Feed Feeder")){
+    	else if(process.equals("Take Picture")){
+    		partsRobot.takePicture(295, 100 + 100*((num)/2));
+    	}
+    	else if(process.equals("Feed Feeder")){
     		
     	}
     	else if(process.equals("Feed Lane")){

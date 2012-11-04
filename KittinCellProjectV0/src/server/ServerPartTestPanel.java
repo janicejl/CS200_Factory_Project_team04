@@ -34,23 +34,24 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 		
 		createButton("Send Recipe");
 		createButton("Get Part");
-        createButton("Load Kit 1");
-        createButton("Load Kit 2");
+        createButton("Take Picture");
+		//createButton("Load Kit 1");
+        //createButton("Load Kit 2");
         createButton("Exit");
 		nestList = new JComboBox(nests);
-		nestList.setPreferredSize(new Dimension(100, 30));
-		nestList.setMaximumSize(new Dimension(100, 30));
-		nestList.setMinimumSize(new Dimension(100, 30));
+		nestList.setPreferredSize(new Dimension(100, 20));
+		nestList.setMaximumSize(new Dimension(100, 20));
+		nestList.setMinimumSize(new Dimension(100, 20));
 		gripList = new JComboBox(grips);
-		gripList.setPreferredSize(new Dimension(100, 30));
-		gripList.setMaximumSize(new Dimension(100, 30));
-		gripList.setMinimumSize(new Dimension(100, 30));
+		gripList.setPreferredSize(new Dimension(100, 20));
+		gripList.setMaximumSize(new Dimension(100, 20));
+		gripList.setMinimumSize(new Dimension(100, 20));
 		selection = new JPanel();
 		selection.setLayout(new BoxLayout(selection, BoxLayout.X_AXIS));
         
 		background = new ImageIcon("images/server.jpeg");
 		
-		add(Box.createRigidArea(new Dimension(0, 130)),"");
+		add(Box.createRigidArea(new Dimension(0, 120)),"");
 		selection.add(nestList, "");
 		selection.add(Box.createRigidArea(new Dimension(20, 0)), "");
 		selection.add(gripList, "");
@@ -64,9 +65,9 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 	
 	public void createButton(String s){
         JButton temp = new JButton(s);
-        temp.setPreferredSize(new Dimension(150, 30));
-        temp.setMaximumSize(new Dimension(150, 30));
-        temp.setMinimumSize(new Dimension(150, 30));
+        temp.setPreferredSize(new Dimension(150, 20));
+        temp.setMaximumSize(new Dimension(150, 20));
+        temp.setMinimumSize(new Dimension(150, 20));
         temp.setAlignmentX(CENTER_ALIGNMENT);
         temp.addActionListener(this);
         temp.setActionCommand(s);
@@ -90,6 +91,9 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 			//server.getPartsRobotAgent().msgAnimationDone();
 			//server.getPartsRobotAgent().msgAnimationDone();
         }
+		else if("Take Picture".equals(ae.getActionCommand())){
+			server.execute("Take Picture", nestList.getSelectedIndex());
+		}
         else if("Load Kit 1".equals(ae.getActionCommand())) {
             server.execute("Load Kit 1");
         }

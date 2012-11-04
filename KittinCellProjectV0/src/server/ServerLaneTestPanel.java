@@ -33,11 +33,11 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		feedPartButton = new JButton("Feed part into feeder");
 		background = new ImageIcon("images/server.jpeg");
 		
-		 feedPartButton.setPreferredSize(new Dimension(150, 30));
-		 feedPartButton.setMaximumSize(new Dimension(150, 30));
-		 feedPartButton.setMinimumSize(new Dimension(150, 30));
-		 feedPartButton.setAlignmentX(CENTER_ALIGNMENT);
-		 feedPartButton.setActionCommand("Feed Feeder");
+		feedPartButton.setPreferredSize(new Dimension(150, 30));
+		feedPartButton.setMaximumSize(new Dimension(150, 30));
+		feedPartButton.setMinimumSize(new Dimension(150, 30));
+		feedPartButton.setAlignmentX(CENTER_ALIGNMENT);
+		feedPartButton.setActionCommand("Feed Feeder");
 		    
 	    feedLaneButton.setPreferredSize(new Dimension(150, 30));
 	    feedLaneButton.setMaximumSize(new Dimension(150, 30));

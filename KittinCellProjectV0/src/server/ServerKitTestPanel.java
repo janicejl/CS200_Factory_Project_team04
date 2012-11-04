@@ -26,10 +26,12 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
 		
 		createButton("Load Config");
         createButton("Spawn Kit");
-        createButton("Load Stand 1");
+        /*createButton("Load Stand 1");
         createButton("Load Stand 2");
         createButton("Check 1");
-        createButton("Check 2");
+        createButton("Check 2");*/
+        createButton("Inspect 1");
+        createButton("Inspect 2");
         createButton("Remove Finished");
         createButton("Exit");
 		
@@ -37,13 +39,7 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
 		
 		add(Box.createRigidArea(new Dimension(0, 130)),"");
 		for(int i = 0; i < buttons.size(); i++){
-			subPanels.add(new JPanel());
-			subPanels.get(subPanels.size()-1).setLayout(new BoxLayout(subPanels.get(subPanels.size()-1), BoxLayout.X_AXIS));
-			subPanels.get(subPanels.size()-1).add(buttons.get(i), "");
-			i++;
-			subPanels.get(subPanels.size()-1).add(Box.createRigidArea(new Dimension(20, 0)),"");
-			subPanels.get(subPanels.size()-1).add(buttons.get(i), "");
-			add(subPanels.get(subPanels.size()-1), "");
+			add(buttons.get(i), "");
             add(Box.createRigidArea(new Dimension(0, 20)),"");
         }
 	}
@@ -53,6 +49,7 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
         temp.setPreferredSize(new Dimension(150, 30));
         temp.setMaximumSize(new Dimension(150, 30));
         temp.setMinimumSize(new Dimension(150, 30));
+        temp.setAlignmentX(CENTER_ALIGNMENT);
         temp.addActionListener(this);
         temp.setActionCommand(s);
         buttons.add(temp);
@@ -71,7 +68,13 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
             //server.execute("Spawn Kit", 1);
         	server.getKitRobotAgent().msgGetKits(1);
         }
-        else if("Load Stand 1".equals(ae.getActionCommand())) {
+        else if("Inspect 1".equals(ae.getActionCommand())) {
+        	server.getKitStandAgent().msgKitIsDone(0);
+        }
+        else if("Inpsect 2".equals(ae.getActionCommand())){
+        	server.getKitStandAgent().msgKitIsDone(1);
+        }
+        /*else if("Load Stand 1".equals(ae.getActionCommand())) {
         	server.execute("Load Stand 1");
         }
         else if("Load Stand 2".equals(ae.getActionCommand())) {
@@ -82,9 +85,9 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
         }
         else if("Check 2".equals(ae.getActionCommand())) {
         	server.execute("Check Kit 2");
-        }
+        }*/
         else if("Remove Finished".equals(ae.getActionCommand())) {
-        	server.execute("Remove Finished");
+        	server.getKitRobotAgent().msgKitInspected(true);
         }
         else if("Exit".equals(ae.getActionCommand())) {
         	System.exit(1);

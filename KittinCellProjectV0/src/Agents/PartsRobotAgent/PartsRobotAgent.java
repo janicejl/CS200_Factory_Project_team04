@@ -222,7 +222,7 @@ public class PartsRobotAgent extends Agent{
 		goToStand();
 		return true;
 	}
-	if(count!= 0 && (animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome)){
+	if(count!= 0 && (animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome) && !allGrippersFull()){
 		for(MyNest mn: nests)
 		{
 			if(mn.state == NestStatus.hasPart)
@@ -319,7 +319,7 @@ public class PartsRobotAgent extends Agent{
 						print("Moving To Nest " + nest.index + " to pick up part for kit1");
 						//Animation Call
 						animationstate = AnimationStatus.movingToNest;
-						server.execute("Get Part",nest.index,i+1);
+						server.execute("Get Part",nest.index-1,i);
 						break;
 
 					}
@@ -348,7 +348,7 @@ public class PartsRobotAgent extends Agent{
 						print("Moving To Nest " + nest.index + " to pick up part for kit2");
 						//Animation Call
 						animationstate = AnimationStatus.movingToNest;
-						server.execute("Get Part",nest.index,i+1);
+						server.execute("Get Part",nest.index-1,i);
 						break;
 					}
 				}
@@ -361,6 +361,8 @@ public class PartsRobotAgent extends Agent{
 			nest.state = NestStatus.assigned;
 		}
 		else{
+			print("Skipping part at nest " + nest.index + ". Will come back later");
+			
 			nest.state = NestStatus.skipped;
 		}
 		

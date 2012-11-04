@@ -84,10 +84,33 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 			ArrayList <Part.PartType> recipe = new ArrayList<Part.PartType>();
 			Part.PartType part1 = Part.PartType.part1;
 			recipe.add(part1);
+			Part.PartType part2 = Part.PartType.part2;
+			recipe.add(part2);
+			Part.PartType part3 = Part.PartType.part3;
+			recipe.add(part3);
+			Part.PartType part4 = Part.PartType.part4;
+			recipe.add(part4);
+			Part.PartType part5 = Part.PartType.part5;
+			recipe.add(part5);
+			Part.PartType part6 = Part.PartType.part6;
+			recipe.add(part6);
+			Part.PartType part7 = Part.PartType.part7;
+			recipe.add(part7);
+			Part.PartType part8 = Part.PartType.part8;
+			recipe.add(part3);
 			server.getPartsRobotAgent().msgMakeThisKit(recipe, 4);
 		}
 		else if("Get Part".equals(ae.getActionCommand())) {
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex());
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+1);
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+2);
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+3);
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+4);
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+5);
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+6);
+			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+7);
+
+
 			//server.getPartsRobotAgent().msgAnimationDone();
 			//server.getPartsRobotAgent().msgAnimationDone();
         }

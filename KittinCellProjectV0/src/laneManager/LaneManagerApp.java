@@ -23,7 +23,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 			releaseButtons.add(new JButton("Lane: " + (i+1)));
 			releaseButtons.get(i).addActionListener(this);
 			window.add(releaseButtons.get(i));
-			System.out.println("OAdding button: " + (i + 1));
+			System.out.println("Adding button: " + (i + 1));
 		}
 		window.setPreferredSize(new Dimension(800, 30));
 		window.setMaximumSize(new Dimension(800, 30));

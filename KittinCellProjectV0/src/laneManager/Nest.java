@@ -44,6 +44,11 @@ public class Nest {
 	}
 	
 	public void addPart(Part p) {
-		parts.add(p);
+		if (full != true) {
+			parts.add(p);
+		}
+		if (parts.size() >= 8) {
+			full = true;
+		}
 	}
 }

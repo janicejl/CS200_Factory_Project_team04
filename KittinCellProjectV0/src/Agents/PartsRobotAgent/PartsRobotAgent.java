@@ -6,16 +6,17 @@ import MoveableObjects.*;
 import Agents.KitRobotAgents.*;
 import java.util.*;
 
-
+import server.Server;
 
 public class PartsRobotAgent extends Agent{
 
 	String name = "PartsRobotAgent";
 	
+	
 	Vision camera;
 	KitStand kitstand;
 	boolean camerahasrecipe = false;
-	//PartsRobotGUI gui;
+	Server server;
 	TestGUI gui;
 
 	int count = 0;
@@ -44,6 +45,9 @@ public class PartsRobotAgent extends Agent{
 			this.nest = nest;
 			index = ind;
 		}
+		private MyNest (int ind){
+			index = ind;
+		}
 		
 	}
 	private enum NestStatus{noAction, assigned, hasPart,skipped}
@@ -63,14 +67,31 @@ public class PartsRobotAgent extends Agent{
 	MyKit kit1;
 	MyKit kit2;
 
-	private class Gripper{
+	private class Gripper
+	{
 		Part p;
 		int destinationkit;
 		boolean full = false;
 		int nestindex = -1;
 		private Gripper(){};
 	}
-	public PartsRobotAgent(List <NestAgent> nestagents, Vision visionagent, KitStand stand)
+	
+	public PartsRobotAgent(KitStand stand, Server server)
+	{
+		kitstand = stand;
+		this.server = server;
+		kit1 = new MyKit(1);
+		kit2 = new MyKit(2);
+		for (int i = 0; i<4; i++)
+		{
+			grippers[i] = new Gripper();
+		}
+		for(int i = 0; i<8; i++){
+			nests.add(new MyNest(i+1));
+		}
+	}
+	
+	public PartsRobotAgent(List <NestAgent> nestagents, Vision visionagent, KitStand stand,Server server)
 	{
 		int index = 1;
 		for(NestAgent nest:nestagents)
@@ -81,6 +102,7 @@ public class PartsRobotAgent extends Agent{
 		}
 		camera = visionagent;
 		kitstand = stand;
+		this.server = server;
 		kit1 = new MyKit(1);
 		kit2 = new MyKit(2);
 		for (int i = 0; i<4; i++)
@@ -108,7 +130,8 @@ public class PartsRobotAgent extends Agent{
 		stateChanged();
 	}
 	public void msgPartsApproved(int nestindex){
-		nests.get(nestindex-1).state = NestStatus.hasPart;
+		nests.get(nestindex).state = NestStatus.hasPart;
+		print("PartReady at nest " + nestindex);
 		stateChanged();
 	}
 
@@ -211,14 +234,17 @@ public class PartsRobotAgent extends Agent{
 	}
 	if(animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome)
 	{
-		for(int i = 0; i<4; i++)
-		{
-			if(grippers[i].full)
+		//if(kit1.state == KitStatus.available || kit2.state == KitStatus.available)
+		//{
+			for(int i = 0; i<4; i++)
 			{
-				goToStand();
-				return true;
+				if(grippers[i].full)
+				{
+					goToStand();
+					return true;
+				}
 			}
-		}
+		//}
 	}
 	/*if(animationstate == AnimationStatus.atNest || animationstate == AnimationStatus.atStand)
 	{
@@ -237,7 +263,7 @@ public class PartsRobotAgent extends Agent{
 		for(int i = 0; i < recipe.size(); i++)
 		{	
 			print("Assigning Part " + recipe.get(i) + " to nest " + nests.get(i).index);
-			nests.get(i).nest.msgNeedThisPart(recipe.get(i));
+			//nests.get(i).nest.msgNeedThisPart(recipe.get(i));
 			nests.get(i).state = NestStatus.assigned;
 			nests.get(i).type = recipe.get(i);
 		}
@@ -253,7 +279,7 @@ public class PartsRobotAgent extends Agent{
 		{
 			nestassignments.add(mn.type);
 		}
-		camera.msgHereIsSchematic(recipe, nestassignments);
+		//camera.msgHereIsSchematic(recipe, nestassignments);
 		camerahasrecipe = true;
 	}
 	private void requestEmptyKit()
@@ -268,6 +294,7 @@ public class PartsRobotAgent extends Agent{
 		
 	private void checkAvailableParts(MyNest nest)
 	{
+		print("Checking if I need part at nest " + nest.index);
 		Part.PartType type = nest.type;
 		Part.PartType parttoget = null;
 		boolean kit1needsthispart = false;
@@ -292,7 +319,7 @@ public class PartsRobotAgent extends Agent{
 						print("Moving To Nest " + nest.index + " to pick up part for kit1");
 						//Animation Call
 						animationstate = AnimationStatus.movingToNest;
-						gui.DoMoveToNest(nest.index);
+						server.execute("Get Part",nest.index,i+1);
 						break;
 
 					}
@@ -321,7 +348,7 @@ public class PartsRobotAgent extends Agent{
 						print("Moving To Nest " + nest.index + " to pick up part for kit2");
 						//Animation Call
 						animationstate = AnimationStatus.movingToNest;
-						gui.DoMoveToNest(nest.index);
+						server.execute("Get Part",nest.index,i+1);
 						break;
 					}
 				}
@@ -340,9 +367,19 @@ public class PartsRobotAgent extends Agent{
 	}
 	private void getPart(){
 		print("Picking up part");
-		//gui.DoGetPart();//Any sort of animation for getting the part from the nest
-		nests.get(currentnest-1).nest.msgGetPart();
 		animationstate = AnimationStatus.waitingForPart;
+
+		//gui.DoGetPart();//Any sort of animation for getting the part from the nest
+		//nests.get(currentnest-1).nest.msgGetPart();
+
+		// Hack for v0 with no Nests yet
+		Part.PartType parttype = nests.get(currentnest-1).type;
+
+		this.msgHereIsPart(new Part(parttype));
+		
+		//End of Hack
+		
+		
 	}
 		
 		
@@ -351,15 +388,28 @@ public class PartsRobotAgent extends Agent{
 		//AnimationCall
 		animationstate = AnimationStatus.movingToStand;
 
-		gui.DoGoToStand(); //Move to Kit Stand
+		boolean kit1 = false;
+		for(int i = 0; i<4; i++){
+			if(grippers[i].destinationkit == 1){
+				kit1 = true;
+			}
+		}
+		if(kit1)
+		{
+			server.execute("Load Kit 1");
+		}
+		else
+		{
+			server.execute("Load Kit 2");
+		}
 		print("Moving to Kit Stand");
+		placeParts();
 	}
 
 	public void placeParts()
 	{
 		print("Giving parts to kitstand");	
 		//AnimationCall
-		//gui.DoPlaceParts(); //Any sort of part placing animation
 		List <Part> kit1parts = new ArrayList<Part>();
 		for(int i = 0; i<4; i++)
 		{
@@ -371,7 +421,7 @@ public class PartsRobotAgent extends Agent{
 			}
 		}
 			
-
+		
 
 		kitstand.msgHereAreParts(kit1parts,0);
 		List<Part> kit2parts = new ArrayList<Part>();
@@ -384,6 +434,7 @@ public class PartsRobotAgent extends Agent{
 			}
 		} 
 		kitstand.msgHereAreParts(kit2parts,0);
+		
 		for(MyNest mn : nests)
 		{
 			if(mn.state == NestStatus.skipped){

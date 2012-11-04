@@ -12,6 +12,8 @@ public class MockVisionAgentV0 extends Agent implements Vision{
 	
 	String name = "VisionAgent";
 	
+	int nestindex=-1;
+	
 	public void setPartsRobot(PartsRobotAgent robot)
 	{
 		partsrobot = robot;
@@ -26,13 +28,21 @@ public class MockVisionAgentV0 extends Agent implements Vision{
 	public void msgImFull(PartType type, NestAgent nest) {
 			print("Inspecting part... Part good");
 			print("Part available at nest " + nest.index);
-			partsrobot.msgPartsApproved(nest.index);
+			nestindex = nest.index;
+			stateChanged();
 		
 		
 	}
 
 	
 	protected boolean pickAndExecuteAnAction() {
+		if(nestindex>-1)
+		{
+			partsrobot.msgPartsApproved(nestindex);
+			nestindex = -1;
+			return true;
+		}
+		
 		return false;
 	}
 

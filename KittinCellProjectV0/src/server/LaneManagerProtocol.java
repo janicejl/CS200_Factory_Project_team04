@@ -1,5 +1,4 @@
 package server;
-
 import java.io.*;
 import java.net.*;
 
@@ -12,7 +11,7 @@ public class LaneManagerProtocol implements Runnable{
 	String commandSent;
 	String type;
 	Thread thread;
-	
+
 	public LaneManagerProtocol(Socket _s, Server _app){
 		app = _app;
 		s = _s;
@@ -25,11 +24,11 @@ public class LaneManagerProtocol implements Runnable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		thread = new Thread(this, "Lane_Thread");
 		thread.start();
 	}
-	
+
 	public void run(){
 		try {
 			//confirm phase
@@ -37,8 +36,47 @@ public class LaneManagerProtocol implements Runnable{
 			out.reset();
 			command = (String)in.readObject();
 			if(command.equals("Confirmed")){
+				/*
+				while(true){
+					if(app.getStart()){ // check whether there is command from agent
+						commandSent = "start";
+						out.writeObject(commandSent);
+						break;
+					}
+					else{
+						commandSent = "idle";
+						out.writeObject(commandSent);
+						out.reset();
+						command = (String)in.readObject();
+					}
+				}
+				
+				commandSent = "idle";
+				//commandSent will stay idle until button click change its value
+				while(true){
+					command = (String)in.readObject();
+					out.writeObject(commandSent);
+					out.reset();
+					if(command.equals("idle")){
+						continue;
+					}
+					else if(command.equals("working")){
+						
+					}
+				}*/
 				
 			}
+			
+			commandSent = "Received";
+			while(true){
+				out.writeObject(app.getLane());
+				out.reset();
+				command = (String)in.readObject();
+				if(command.equals("Received")){
+					
+				}
+			}
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

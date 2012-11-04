@@ -1,5 +1,10 @@
 package GantryManager;
 
+import java.awt.*;
+import javax.imageio.*;
+import java.io.*;
+import java.awt.image.*;
+
 public class Gantry
 {
 	int xFinal;
@@ -8,6 +13,14 @@ public class Gantry
 	int yCurrent;
 	String state;
 	int box; //Array index of the box it is handling
+	protected BufferedImage image = null;
+	
+	public void paint(Graphics g)
+	{
+		Graphics2D g2 = (Graphics2D)g;
+		g2.drawImage(image, xCurrent, yCurrent,null);
+		
+	}
 		
 	public Gantry()
 	{
@@ -18,6 +31,11 @@ public class Gantry
 		yCurrent = 100;
 		state = "free";
 		box = -1; //default value indicates free
+		try
+		{
+			image = ImageIO.read(new File("images/gantryrobot.png"));
+		}
+		catch(IOException e){}
 	}
 	
 	public void setX(int p) //set destination x
@@ -127,6 +145,18 @@ public class Gantry
 		{
 			xFinal = 210;
 			yFinal = 465;
+		}
+	}
+	
+	public boolean done()
+	{
+		if(xFinal==xCurrent && yFinal==yCurrent)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 }

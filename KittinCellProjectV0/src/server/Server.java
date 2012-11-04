@@ -11,12 +11,14 @@ import javax.swing.*;
 import Agents.KitRobotAgents.KitConveyorAgent;
 import Agents.KitRobotAgents.KitRobotAgent;
 import Agents.KitRobotAgents.KitStandAgent;
+import Agents.PartsRobotAgent.PartsRobotAgent;
 
 public class Server extends JFrame implements Runnable, ActionListener{
 	
 	ServerPanel gui; //panel for gui
 	ServerKitTestPanel kitTest; //panel for kit assembly commands
 	ServerPartTestPanel partsTest; //panel for parts robot commands
+	ServerLaneTestPanel laneTest; //panel for lane commands
 	Integer phase;
 	
 	String clientType; //type of client to connect to
@@ -27,6 +29,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	KitAssemblyProtocol kitPro;
 	LaneManagerProtocol lanePro;
 	PartsRobotProtocol partsPro;
+	
+	PartsRobotAgent partsRobotAgent;
 	
 	KitRobotAgent kitRobotAgent; 
 	KitStandAgent kitStandAgent;
@@ -51,6 +55,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		add(gui, c);
 		kitTest = new ServerKitTestPanel(this);
 		partsTest = new ServerPartTestPanel(this);
+		laneTest = new ServerLaneTestPanel(this);
+		
 		
 		kitRobotAgent = new KitRobotAgent(this);
 		kitStandAgent = new KitStandAgent(this); 
@@ -67,6 +73,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		new Thread(kitAssemblyManager).start();
         new Thread(kitRobot).start();
         
+        partsRobotAgent = new PartsRobotAgent(kitStandAgent, this);
+		partsRobotAgent.startThread();
         partsRobot = new PartsRobot();
         new Thread(partsRobot).start();
 		
@@ -106,6 +114,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			}
 			else if(getClientType().equals("Lane Manager")){
 				lanePro = new LaneManagerProtocol(s, this);
+				GridBagConstraints c = new GridBagConstraints();
+				c.gridx = 0;	
+				c.gridy = 0;
+				add(laneTest, c);
+				phase=3;
 			}
 			else if(getClientType().equals("Parts Robot")){
 				partsPro = new PartsRobotProtocol(s, this);
@@ -157,11 +170,18 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			getKitAssemblyManager().processCommand("spawn");
     		}
     	}
+    	
+    	if(process.equals("Feed Lane")){
+    		
+    	}
+    	else if(process.equals("Feed Nest")){
+    		
+    	}
     }
     
     public void execute(String process, Integer nest, Integer grip){
     	if(process.equals("Get Part")){
-    		getPartsRobot().addCommand("grab," + nest + "," + grip);
+    		getPartsRobot().addCommand("grab," + (nest) + "," + (grip));
     	} 		
     }
     
@@ -188,6 +208,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		else if(phase.equals(2)){
 			partsTest.repaint();
 		}
+		else if(phase.equals(3)){
+			laneTest.repaint();
+		}
 		revalidate();
 	}
 	
@@ -195,6 +218,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gui.revalidate();
 		kitTest.revalidate();
 		partsTest.revalidate();
+		laneTest.revalidate();
 	}
 	
 	public static void main(String[] args) {
@@ -267,6 +291,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public synchronized void setPartsRobot(PartsRobot partsRobot) {
 		this.partsRobot = partsRobot;
+	}
+
+	public synchronized PartsRobotAgent getPartsRobotAgent() {
+		return partsRobotAgent;
+	}
+
+	public synchronized void setPartsRobotAgent(PartsRobotAgent partsRobotAgent) {
+		this.partsRobotAgent = partsRobotAgent;
 	}
 
 }

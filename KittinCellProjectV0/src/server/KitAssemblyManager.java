@@ -16,28 +16,33 @@ public class KitAssemblyManager implements Runnable, Serializable{
     Vector<Kit> emptyKits;
     Vector<Kit> finishedKits;
     Vector<Kit> stationKits;
-    Boolean finishedConveyorOn;
-    Boolean emptyConveyorOn;
+    boolean finishedConveyorOn;
+    boolean emptyConveyorOn;
+    boolean badConveyorOn;
+    boolean incompleteConveyorOn;
+    Boolean msg;
     int idCounter;
     double conveyorSpeed = 1;
-    Boolean msg;
-    
+
     public KitAssemblyManager(){
         stationOccupied = new Vector<Boolean>();
         stationKits = new Vector<Kit>();
+        idCounter = 0;
         for(int i = 0; i < 7; i++){
             stationOccupied.add(false);
             stationKits.add(new Kit(idCounter));
+            if(i == 3){
+                stationKits.get(i).setPosition(80,700);
+            }
+            else if(i == 4){
+                stationKits.get(i).setPosition(10,700);
+            }
             idCounter++;
         }
 
         emptyKits = new Vector<Kit>();
         finishedKits = new Vector<Kit>();
-        finishedConveyorOn = new Boolean(true);
-        emptyConveyorOn = new Boolean(true);
         msg = new Boolean(false);
-        idCounter = 0;
-    
     }
 
     public void run(){
@@ -48,52 +53,8 @@ public class KitAssemblyManager implements Runnable, Serializable{
             } catch (InterruptedException ignore) {}
         }
     }
-    
-	public void processCommand(String s){
-        String[] ss = s.split("\\,");
-        if(ss[0].equals("spawn")){
-            Kit temp = new Kit(getIdCounter());
-            int sz = getEmptyKits().size();
-            if(sz > 0 && getEmptyKits().get(sz-1).getY() < 0){
-                temp.setPosition(150,getEmptyKits().get(sz-1).getY() - 60);
-            }
-            getEmptyKits().add(temp);
-            setIdCounter(getIdCounter() + 1);
-        }
-    }
 
-    public void update(){
-        setEmptyConveyorOn(!getStationOccupied().get(0) && (getEmptyKits().size() > 0)); //conveyer on if there are kits spawned and station is not occupied
-        setFinishedConveyorOn((getFinishedKits().size() > 0));
-
-        if(getEmptyConveyorOn()){
-            for(Kit k : getEmptyKits()){
-                k.setPosition(k.getX(),k.getY() + getConveyorSpeed());
-            }
-        }
-
-        if(getEmptyKits().size() > 0 && getEmptyKits().get(0).getY() >= 155.0){
-            getStationOccupied().set(0,true);
-            setMsg(true);
-        }
-
-        if(getFinishedConveyorOn()){
-            for(Kit k : getFinishedKits()){
-                k.setPosition(k.getX(),k.getY() - getConveyorSpeed());
-            }
-        }
-
-        if(getFinishedKits().size() > 0){
-            if(getFinishedKits().get(getFinishedKits().size()-1).getY() < 155.0){
-                getStationOccupied().set(6,false);
-            }
-            if(getFinishedKits().get(0).getY() < -140.0){
-                getFinishedKits().remove(0);
-            }
-        }
-    }
-
-    public Kit getStationKit(int i){
+    public synchronized Kit getStationKit(int i){
         getStationOccupied().set(i,false);
         if(i == 0){
             Kit k = getEmptyKits().get(0);
@@ -105,13 +66,79 @@ public class KitAssemblyManager implements Runnable, Serializable{
         }
     }
 
-    public void setStationKit(int i, Kit k){
+    public synchronized void setStationKit(int i, Kit k){
+    	getStationOccupied().set(i,true);
         if(i == 6){
             getFinishedKits().add(k);
         }
-        else {
-            getStationOccupied().set(i,true);
+        else if(i == 3){
+            System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
             getStationKits().set(i,k);
+            getStationKits().get(3).setPosition(80,490);
+            System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
+        }
+        else if(i == 4){
+            System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
+            getStationKits().set(i,k);
+            getStationKits().get(4).setPosition(10,490);
+            System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
+        }
+        else {
+        	getStationKits().set(i,k);
+        }
+        System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
+    }
+
+    public void processCommand(String s){
+        String[] ss = s.split("\\,");
+        if(ss[0].equals("spawn")){
+            Kit temp = new Kit(getIdCounter());
+            int sz = getEmptyKits().size();
+            if(sz > 0 && getEmptyKits().get(sz-1).getY() < 0){
+                temp.setPosition(80,getEmptyKits().get(sz-1).getY() - 110);
+            }
+            getEmptyKits().add(temp);
+            setIdCounter(getIdCounter() + 1);
+        }
+    }
+
+    public void update(){
+        setEmptyConveyorOn(!getStationOccupied().get(0) && (getEmptyKits().size() > 0));
+        setFinishedConveyorOn((getFinishedKits().size() > 0));
+        setBadConveyorOn(getStationKits().get(4).getY() < 600);
+        setIncompleteConveyorOn(getStationKits().get(3).getY() < 600);
+
+        if(getEmptyConveyorOn()){
+            for(Kit k : getEmptyKits()){
+                k.setPosition(k.getX(),k.getY() + getConveyorSpeed());
+            }
+        }
+
+        if(getEmptyKits().size() > 0 && getEmptyKits().get(0).getY() >= 10.0){ // check if empty kit is ready to pickup
+            getStationOccupied().set(0,true);
+            setMsg(true);
+        }
+
+        if(getFinishedConveyorOn()){
+            for(Kit k : getFinishedKits()){
+                k.setPosition(k.getX(),k.getY() - getConveyorSpeed());
+            }
+        }
+        if(getIncompleteConveyorOn()){
+            getStationKits().get(3).setPosition(80,getStationKits().get(3).getY() + getConveyorSpeed());
+        }
+
+        if(getBadConveyorOn()){
+            getStationKits().get(4).setPosition(80,getStationKits().get(4).getY() + getConveyorSpeed());
+        }
+
+        if(getFinishedKits().size() > 0){
+            if(getFinishedKits().get(getFinishedKits().size()-1).getY() < -100.0){ // check if finished station is clear
+                getStationOccupied().set(6,false);
+            }
+            if(getFinishedKits().get(0).getY() < -200.0){ // check is image is off screen
+                getFinishedKits().remove(0);
+            }
         }
     }
     
@@ -121,6 +148,14 @@ public class KitAssemblyManager implements Runnable, Serializable{
 
     public synchronized boolean getFinishedConveyorOn(){
         return finishedConveyorOn;
+    }
+
+    public synchronized boolean getBadConveyorOn(){
+        return badConveyorOn;
+    }
+
+    public synchronized boolean getIncompleteConveyorOn(){
+        return incompleteConveyorOn;
     }
 
     public synchronized Vector<Kit> getEmptyKits(){
@@ -138,6 +173,14 @@ public class KitAssemblyManager implements Runnable, Serializable{
     public synchronized Vector<Boolean> getStationOccupied(){
         return stationOccupied;
     }
+    
+	public synchronized Boolean getMsg() {
+		return msg;
+	}
+
+	public synchronized void setMsg(Boolean msg) {
+		this.msg = msg;
+	}
 
 	public synchronized int getIdCounter() {
 		return idCounter;
@@ -179,19 +222,11 @@ public class KitAssemblyManager implements Runnable, Serializable{
 		this.emptyConveyorOn = emptyConveyorOn;
 	}
 
-	public synchronized void setFinishedConveyorOn(Boolean finishedConveyorOn) {
-		this.finishedConveyorOn = finishedConveyorOn;
+	public synchronized void setBadConveyorOn(boolean badConveyorOn) {
+		this.badConveyorOn = badConveyorOn;
 	}
 
-	public synchronized void setEmptyConveyorOn(Boolean emptyConveyorOn) {
-		this.emptyConveyorOn = emptyConveyorOn;
-	}
-
-	public synchronized Boolean getMsg() {
-		return msg;
-	}
-
-	public synchronized void setMsg(Boolean msg) {
-		this.msg = msg;
+	public synchronized void setIncompleteConveyorOn(boolean incompleteConveyorOn) {
+		this.incompleteConveyorOn = incompleteConveyorOn;
 	}
 }

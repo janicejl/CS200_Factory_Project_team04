@@ -82,8 +82,8 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         kam = app.getKitAssemblyManager();
         emptyConveyorOn = kam.getEmptyConveyorOn();
         finishedConveyorOn = kam.getFinishedConveyorOn();
-        badConveyorOn = kam.getBadConveyorOn();
-        incompleteConveyorOn = kam.getIncompleteConveyorOn();
+        //badConveyorOn = kam.getBadConveyorOn();
+        //incompleteConveyorOn = kam.getIncompleteConveyorOn();
         // System.out.println(incompleteConveyorOn);
         baseEmptyKits = kam.getEmptyKits();
         baseFinishedKits = kam.getFinishedKits();

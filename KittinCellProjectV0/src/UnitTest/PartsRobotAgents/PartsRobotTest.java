@@ -69,7 +69,8 @@ public class PartsRobotTest {
 		nests.add(nest6);
 		nests.add(nest7);
 		nests.add(nest8);
-		partsrobotagent = new PartsRobotAgent(nests,camera,kitstand);
+		Server server = new Server();
+		partsrobotagent = new PartsRobotAgent(nests,camera,kitstand,server);
 		TestGUI gui = new TestGUI(partsrobotagent);
 		partsrobotagent.setTestGUI(gui);
 		nest1.setPartsRobotAgent(partsrobotagent);

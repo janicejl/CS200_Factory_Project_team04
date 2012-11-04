@@ -1,177 +1,75 @@
 package GantryManager;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.awt.image.*;
-import javax.imageio.ImageIO;
+import java.util.*;
+import java.awt.*;
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.image.*;
+import javax.imageio.*;
+import java.io.*;
 
-public class GUIGantryManager extends JFrame implements ActionListener
+public class GUIGantryManager extends JPanel
 {
-	painterPanel paintPanel; //Panel to paint the GantryManager GUI
-	Gantry gantry; //Gantry robot
-	ArrayList<PartsBox> parts; //Parts boxes
-	ArrayList<Integer> feeders; //Indices for 4 feeders
-	int speed; //Speed of the timer
-	public Timer timer; //Calls actionPerformed every clock cycle
-	protected BufferedImage test = null; //Test image for the part
+	//Items that will always be painted, regardless of user input
+	protected BufferedImage background = null;
+	protected BufferedImage rail = null;
+	protected BufferedImage station = null;
+	protected BufferedImage lane = null;
+	protected BufferedImage feeder = null;
+	Gantry gantry;
+	ArrayList<PartsBox> boxes;
 	
-
-	
-
-	public GUIGantryManager() //Initializes all objects
+	public GUIGantryManager()
 	{
-		timer = new Timer(10,this);
-		gantry = new Gantry();
-		paintPanel = new painterPanel();
-		paintPanel.setGantry(gantry);
-
-		this.add(paintPanel);
 		try
 		{
-			test = ImageIO.read(new File("images/part.png"));
-		}
-		catch(IOException e)
-		{
-		}
-		
-		//Populates the Parts box with a base box
-		parts = new ArrayList<PartsBox>();
-		parts.add(new PartsBox(test,10));
-		
-		//Creates the four feeder indices and sets them as open
-		feeders = new ArrayList<Integer>();
-		feeders.add(0);
-		feeders.add(0);
-		feeders.add(0);
-		feeders.add(0);
-		
-		//links the parts boxes to the paintPanel
-		paintPanel.setPartsBoxes(parts);
+           	background = ImageIO.read(new File("images/background.png"));
+			rail = ImageIO.read(new File("images/rail.png"));
+			station = ImageIO.read(new File("images/station.png"));
+			feeder = ImageIO.read(new File("images/base.png"));
+			lane = ImageIO.read(new File("images/lanetemp.png"));
+       	} 
+		catch (IOException e) {}
 	}
 	
-	public static void main(String[] args)
+	public void paintComponent(Graphics g)
 	{
-		GUIGantryManager gui = new GUIGantryManager();
-		gui.setSize(345,600);
-		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		gui.setVisible(true);
-		gui.startTimer();
-	}
-	
-	public void actionPerformed(ActionEvent ae) //Controls the actual code for simulation
-	{
-
-		int i =0;
-		boolean go = true;
-		while(i<parts.size()) //Checks if a parts bin is waiting to be loaded or dumped
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D)g;
+		//Draw the base images
+		g2.drawImage(background,0,0,null);
+		g2.drawImage(station, 275,275,null);
+		g2.drawImage(feeder, 200, 75, null);
+		g2.drawImage(feeder, 50, 200, null);
+		g2.drawImage(feeder, 50, 350,null);
+		g2.drawImage(feeder,  200, 475, null);
+		g2.drawImage(lane, 0,50,null);
+		g2.drawImage(lane, -150, 175, null);
+		g2.drawImage(lane, -150, 325,null);
+		g2.drawImage(lane, 0, 450,null);
+		
+		int i=0;
+		while(i<boxes.size())
 		{
-			if(parts.get(i).getState() == "dump" || parts.get(i).getState()=="loading" || parts.get(i).getState()=="ready" || parts.get(i).getState()=="load")
-			{
-				go = false;
-			}
-			parts.get(i).update();
+			boxes.get(i).paint(g);
 			i++;
 		}
-		if(go == true) //If it is not, looks for parts that are moving, or waiting to move
-		{
-			go=false;
-			i=0;
-			while(i<parts.size() && go==false)
-			{
-				if(parts.get(i).getState()=="ready")
-				{
-					go = true;
-				}
-				else if(parts.get(i).getState()=="wait")
-				{
-					parts.get(i).setState("ready");
-					go = true;
-				}
-				i++;
-			}
-			if(go==false && parts.size()<4) //If there are none waiting (and there are less than 4 boxes, creates a new box)
-			{
-				parts.add(new PartsBox(test, 2));
-			}
-		}
 		
-		if(gantry.getState()=="free") //If the gantry is free
-		{
-			int c=0;
-			while(c<parts.size())
-			{
-				if(parts.get(c).getState()=="dump")//first look for parts bins waiting to be dumped
-				{
-					gantry.setX(parts.get(c).getXCurrent());
-					gantry.setY(parts.get(c).getYCurrent());
-					gantry.setBox(c);
-					gantry.setState("dumpi");
-				}
-				c++;
-			}
-			c=0;
-			while(c<parts.size())
-			{
-				if(parts.get(c).getState()=="load") //then look for ones to be loaded
-				{
-					gantry.setX(parts.get(c).getXCurrent()+5);
-					gantry.setY(parts.get(c).getYCurrent()-15);
-					gantry.setBox(c);
-					gantry.setState("load");
-				}
-				c++;
-			}
-		}
-		else if(gantry.getState() == "load") //if the gantry  is moving towards the load station
-		{
-			if(gantry.getX()==gantry.getXCurrent() && gantry.getY()==gantry.getYCurrent())
-			{
-				gantry.setState("loading");//once it has reached it, switch to a busy signal
-				int c=0;
-				while(c<feeders.size())
-				{
-					if(feeders.get(c)==0) //find an open feeder
-					{
-						gantry.setFeeder(c);
-						parts.get(gantry.getBox()).setX(gantry.getX()-5);
-						parts.get(gantry.getBox()).setY(gantry.getY()+15);
-						parts.get(gantry.getBox()).setState("moving");
-						feeders.set(c, 1);
-						break;
-					}
-					c++;
-				}
-			}
-		}
-		else if(gantry.getState()=="loading") //if busy
-		{
-			if(gantry.getX()==gantry.getXCurrent() && gantry.getY() == gantry.getYCurrent())
-			{
-				parts.get(gantry.getBox()).setState("feeding"); //once at the feeder, drop the box, and go back to free
-				gantry.setBox(-1);
-				gantry.setState("free");
-			}
-			
-		}
-		
-		
-		gantry.update(); //update the gantry robots position
-		paintPanel.repaint();
+		g2.drawImage(rail,gantry.getXCurrent()+10,0, null);
+		gantry.paint(g);
+		//I will implement proper image centering instead of the +10, -5 hack, but for now there are more important aspects
 	}
-	
-	public void startTimer()
-	{
-		timer.start();
-	}
-	
-	public void setTimerDelay(int d)
-	{
-		timer.setDelay(d);
-	}
-	
 
+	public synchronized void setGantry(Gantry g)//Links gantry with GUIGantryManager
+	{
+		gantry = g;
+	}
+	
+	public synchronized void setPartsBoxes(ArrayList<PartsBox> pb) //links parts box with GUIGantryManager
+	{
+		boxes = pb;
+	}
 	
 }
+
+		
 		

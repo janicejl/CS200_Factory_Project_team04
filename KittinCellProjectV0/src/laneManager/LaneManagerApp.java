@@ -1,5 +1,4 @@
 package laneManager;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
@@ -11,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 public class LaneManagerApp extends JFrame implements ActionListener {
-
 	private LaneGraphics laneGraphics;
 	private ArrayList<JButton> releaseButtons;
 	private JPanel window;
@@ -30,9 +28,6 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		window.setPreferredSize(new Dimension(800, 30));
 		window.setMaximumSize(new Dimension(800, 30));
 		window.setMinimumSize(new Dimension(800,30));
-		
-		
-		
 		laneGraphics = new LaneGraphics();
 		laneGraphics.setPreferredSize(new Dimension(600, 600));
 		laneGraphics.setMaximumSize(new Dimension(600, 600));
@@ -46,23 +41,16 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		this.setSize(800, 800);
     	this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
 	}
-	
 	
 	public static void main(String[] args) {
-		new LaneManagerApp();
-		
+		new LaneManagerApp();	
 	}
 
-
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		for (int i = 0; i < 8; i++)
-			if(e.getSource() == releaseButtons.get(i)) {
+			if(e.getSource() == releaseButtons.get(i)) 
 				laneGraphics.releaseItem(i);			
-			}		
 	}
 	
 }

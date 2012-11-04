@@ -12,7 +12,9 @@ import java.util.concurrent.*;
 import java.io.*;
 import javax.imageio.*;
 
-import kitAssemblyManager.Kit;
+//import kitAssemblyManager.Kit;
+
+import data.Kit;
 
 public class KitRobot implements Runnable, Serializable{
     boolean processing = false;

@@ -261,7 +261,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		}
     	}
     	else if(process.equals("Take Picture")){
-    		partsRobot.takePicture(295, 100 + 100*((num)/2));
+    		partsRobot.takePicture(320, 40 + 140*((num)/2));
     	}
     	else if(process.equals("Feed Feeder")){
     		Part temp = new Part("" + num);

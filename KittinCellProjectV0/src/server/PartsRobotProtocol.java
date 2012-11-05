@@ -58,7 +58,7 @@ public class PartsRobotProtocol implements Runnable{
 				if(command.equals("Received")){
 				}
 				else if(command.equals("Update")){
-					app.getPartsRobot().setTakePicture((Boolean)in.readObject());
+					app.getPartsRobot().setTakePicture(false);
 				}
 			}
 			

@@ -69,11 +69,6 @@ public class GUIGantryManager extends JPanel
 		boxes = pb;
 	}
 	
-	public void update(GantryManager gm)
-	{
-		gantry = gm.getGantry();
-		boxes = gm.getPartsBoxes();
-	}
 }
 
 		

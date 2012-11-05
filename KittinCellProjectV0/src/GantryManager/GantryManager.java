@@ -8,20 +8,27 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class GantryManager
+public class GantryManager extends JFrame implements ActionListener
 {
+	GUIGantryManager gui; //Panel to paint the GantryManager GUI
 	Gantry gantry; //Gantry robot
 	ArrayList<PartsBox> parts; //Parts boxes
 	ArrayList<Integer> feeders; //Indices for 4 feeders
 	int speed; //Speed of the timer
+	public Timer timer; //Calls actionPerformed every clock cycle
 	protected BufferedImage test = null; //Test image for the part
 	Random rand;
 	
 	public GantryManager() //Initializes all objects
 	{
+		timer = new Timer(10,this);
 		rand = new Random();
 		
 		gantry = new Gantry();
+		gui = new GUIGantryManager();
+		gui.setGantry(gantry);
+
+		this.add(gui);
 		
 		try
 		{
@@ -41,11 +48,38 @@ public class GantryManager
 		feeders.add(0);
 		
 		//links the parts boxes to the gui
+		gui.setPartsBoxes(parts);
 	}
-
+	
+	public static void main(String[] args)
+	{
+		GantryManager app = new GantryManager();
+		app.setSize(345,600);
+		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		app.setVisible(true);
+		app.startTimer();
+		app.setResizable(false);
+	}
+	
+	public void actionPerformed(ActionEvent ae) //Controls the actual code for simulation
+	{	
+		this.update();
+		gantry.update(); //update the gantry robots position
+		gui.repaint();
+	}
+	
+	public void startTimer()
+	{
+		timer.start();
+	}
+	
+	public void setTimerDelay(int d)
+	{
+		timer.setDelay(d);
+	}
+	
 	public void update()
 	{
-		gantry.update();
 		int i =0;
 		boolean go = true;
 		while(i<parts.size()) //Checks if a parts bin is waiting to be loaded or dumped
@@ -92,7 +126,6 @@ public class GantryManager
 					gantry.setY(parts.get(c).getYCurrent()-15);
 					gantry.setBox(c);
 					gantry.setState("load");
-					flip = false;
 				}
 				c++;
 			}
@@ -107,6 +140,7 @@ public class GantryManager
 						gantry.setBox(c);
 						gantry.setFeeder(parts.get(c).getFeeder());
 						gantry.setState("dumpi");
+						flip=false;
 					}
 					c++;
 				}
@@ -166,16 +200,6 @@ public class GantryManager
 				gantry.setBox(-1);
 			}
 		}
-	}
-	
-	public Gantry getGantry()
-	{
-		return gantry;
-	}
-	
-	public ArrayList<PartsBox> getPartsBoxes()
-	{
-		return parts;
 	}
 }
 		

@@ -14,7 +14,6 @@ public class GantryManager
 	ArrayList<PartsBox> parts; //Parts boxes
 	ArrayList<Integer> feeders; //Indices for 4 feeders
 	int speed; //Speed of the timer
-	protected BufferedImage test = null; //Test image for the part
 	Random rand;
 	
 	public GantryManager() //Initializes all objects
@@ -23,15 +22,9 @@ public class GantryManager
 		
 		gantry = new Gantry();
 		
-		try
-		{
-			test = ImageIO.read(new File("images/part.png"));
-		}
-		catch(IOException e){}
-		
 		//Populates the Parts box with a base box
 		parts = new ArrayList<PartsBox>();
-		parts.add(new PartsBox(test,100));
+		parts.add(new PartsBox(100));
 		
 		//Creates the four feeder indices and sets them as open
 		feeders = new ArrayList<Integer>();
@@ -76,7 +69,7 @@ public class GantryManager
 			}
 			if(go==false && parts.size()<4) //If there are none waiting (and there are less than 4 boxes, creates a new box)
 			{
-				parts.add(new PartsBox(test, (rand.nextInt(10)+1)*20));
+				parts.add(new PartsBox((rand.nextInt(10)+1)*20));
 			}
 		}
 		
@@ -88,8 +81,8 @@ public class GantryManager
 			{
 				if(parts.get(c).getState()=="load") //then look for ones to be loaded
 				{
-					gantry.setX(parts.get(c).getXCurrent()+5);
-					gantry.setY(parts.get(c).getYCurrent()-15);
+					gantry.setX(parts.get(c).getXCurrent()+10);
+					gantry.setY(parts.get(c).getYCurrent()+15);
 					gantry.setBox(c);
 					gantry.setState("load");
 					flip = false;
@@ -123,8 +116,8 @@ public class GantryManager
 					if(feeders.get(c)==0) //find an open feeder
 					{
 						gantry.setFeeder(c);
-						parts.get(gantry.getBox()).setX(gantry.getX()-5);
-						parts.get(gantry.getBox()).setY(gantry.getY()+15);
+						parts.get(gantry.getBox()).setX(gantry.getX()-10);
+						parts.get(gantry.getBox()).setY(gantry.getY()-15);
 						parts.get(gantry.getBox()).setState("moving");
 						parts.get(gantry.getBox()).setFeeder(c);
 						feeders.set(c, 1);
@@ -153,8 +146,8 @@ public class GantryManager
 				parts.get(gantry.getBox()).setState("dumpf");
 				gantry.setX(300);
 				gantry.setY(0);
-				parts.get(gantry.getBox()).setX(gantry.getX()-5);
-				parts.get(gantry.getBox()).setY(gantry.getY()+15);
+				parts.get(gantry.getBox()).setX(gantry.getX()-10);
+				parts.get(gantry.getBox()).setY(gantry.getY()-15);
 			}
 		}
 		else if(gantry.getState()=="dumpf")

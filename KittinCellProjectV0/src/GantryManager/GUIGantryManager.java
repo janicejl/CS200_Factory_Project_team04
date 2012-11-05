@@ -25,7 +25,7 @@ public class GUIGantryManager extends JPanel
            	background = ImageIO.read(new File("images/background.png"));
 			rail = ImageIO.read(new File("images/rail.png"));
 			station = ImageIO.read(new File("images/station.png"));
-			feeder = ImageIO.read(new File("images/base.png"));
+			feeder = ImageIO.read(new File("images/Feeder.png"));
 			lane = ImageIO.read(new File("images/lanetemp.png"));
        	} 
 		catch (IOException e) {}
@@ -38,10 +38,10 @@ public class GUIGantryManager extends JPanel
 		//Draw the base images
 		g2.drawImage(background,0,0,null);
 		g2.drawImage(station, 275,275,null);
-		g2.drawImage(feeder, 200, 75, null);
-		g2.drawImage(feeder, 50, 200, null);
-		g2.drawImage(feeder, 50, 350,null);
-		g2.drawImage(feeder,  200, 475, null);
+		g2.drawImage(feeder, 200, 35, null);
+		g2.drawImage(feeder, 50, 160, null);
+		g2.drawImage(feeder, 50, 315,null);
+		g2.drawImage(feeder,  200, 435, null);
 		g2.drawImage(lane, 0,50,null);
 		g2.drawImage(lane, -150, 175, null);
 		g2.drawImage(lane, -150, 325,null);

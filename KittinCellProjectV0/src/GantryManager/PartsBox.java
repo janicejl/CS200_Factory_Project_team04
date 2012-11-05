@@ -18,15 +18,19 @@ public class PartsBox
 	int feeder;
 	String state;
 	int cycles; //Number of clock cycles
+	static int xdim = 50;
+	static int ydim = 100;
+	static int xmax = 325;
+	static int ymax = 600;
 	
 	public PartsBox(BufferedImage p, int c)
 	{
 		part = p;
 		count = c;
-		xCurrent = 330;
-		xFinal =330; //Initial position is off of the screen
-		yFinal=280;
-		yCurrent=280;
+		xCurrent = xmax+5;
+		xFinal =xmax+5; //Initial position is off of the screen
+		yFinal= (ymax/2) - (ydim/2);
+		yCurrent= yFinal;
 		state = "wait";
 		cycles = 0;
 		feeder = -1;
@@ -42,13 +46,14 @@ public class PartsBox
 		try
 		{
 			part = ImageIO.read(new File("images/part.png"));
+			box = ImageIO.read(new File("images/crate.png"));
 		}
 		catch(IOException e){}
 		count = c;
-		xCurrent = 330;
-		xFinal =330; //Initial position is off of the screen
-		yFinal=280;
-		yCurrent=280;
+		xCurrent = xmax+5;
+		xFinal =xmax+5; //Initial position is off of the screen
+		yFinal=(ymax/2) - (ydim/2);
+		yCurrent=yFinal;
 		state = "wait";
 		cycles = 0;
 		feeder = -1;
@@ -60,7 +65,7 @@ public class PartsBox
 	{
 		Graphics2D g2 = (Graphics2D)g;
 		g2.drawImage(box, xCurrent, yCurrent, null);
-		g2.drawImage(part, xCurrent+15, yCurrent+15, null);
+		g2.drawImage(part, xCurrent+13, yCurrent+35, null);
 	}
 	
 	public BufferedImage getImage()
@@ -127,8 +132,8 @@ public class PartsBox
 		}
 		else if(state == "ready")
 		{
-				xFinal = 280;
-				yFinal = 280;
+				xFinal = xmax - xdim;
+				yFinal = (ymax/2)-(ydim/2);
 				state = "loading";
 		}
 		else if(state =="loading")

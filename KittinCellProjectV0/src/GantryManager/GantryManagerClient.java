@@ -5,7 +5,7 @@ import java.net.*;
 
 public class GantryManagerClient implements Runnable
 {
-	GantryManager manager;
+	GantryManagerApp app;
 	Socket s;
 	ObjectOutputStream out;
 	ObjectInputStream in;
@@ -14,9 +14,9 @@ public class GantryManagerClient implements Runnable
 	String serverName;
 	Thread thread;
 	
-	public GantryManagerClient(GantryManager gm)
+	public GantryManagerClient(GantryManagerApp a)
 	{
-		manager = gm;
+		app = a;
 		serverName = "localhost";
 		command = "";
 		commandSent = "";
@@ -73,7 +73,7 @@ public class GantryManagerClient implements Runnable
 			commandSent = "Received";
 			while(true)
 			{
-				manager.setGantryRobot((Gantry)in.readObject());
+				app.setGantryManager((GantryManager)in.readObject());
 				out.writeObject(commandSent);
 				out.reset();
 			}

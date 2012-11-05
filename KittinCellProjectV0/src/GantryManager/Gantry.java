@@ -128,22 +128,22 @@ public class Gantry
 	{
 		if(f==0)
 		{
-			xFinal = 210;
+			xFinal = 230;
 			yFinal = 65;
 		}
 		else if(f==1)
 		{
-			xFinal = 60;
+			xFinal = 80;
 			yFinal = 190;
 		}
 		else if(f==2)
 		{
-			xFinal = 60;
+			xFinal = 80;
 			yFinal = 340;
 		}
 		else if(f==3)
 		{
-			xFinal = 210;
+			xFinal = 230;
 			yFinal = 465;
 		}
 	}

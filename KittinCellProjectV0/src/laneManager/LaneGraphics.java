@@ -103,6 +103,7 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 			if(i < 4) //only four nests
 				gFeeders.get(i).paintNest(g2);
 			Vector<GUIPart> guiPart = new Vector<GUIPart>();
+			
 			for (int j = 0; j < lanes.get(i).getItemList().size(); j++){
 				guiPart.add(new GUIPart(lanes.get(i).getItemList().get(j)));
 				guiPart.get(j).paintPart(g2);

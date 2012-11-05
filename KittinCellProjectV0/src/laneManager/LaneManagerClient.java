@@ -52,6 +52,8 @@ public class LaneManagerClient implements Runnable {
 			command = (String)in.readObject();
 			if(command.equals("Confirmed")){
 				//start
+				out.writeObject("Confirmed");
+				out.reset();
 			}
 			else{
 				//error connection

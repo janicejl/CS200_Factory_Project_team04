@@ -1,8 +1,7 @@
 package Agents.GantryFeederAgents;
 
-import java.util.Vector;
-
-import server.Server;
+import java.util.ArrayList;
+import java.util.List;
 
 import Agent.Agent;
 import Interface.GantryFeederAgent.Feeder;
@@ -14,10 +13,9 @@ import MoveableObjects.Part.PartType;
 public class GantryControllerAgent extends Agent implements GantryController {
 
 	//Data
-	Vector<Bin> bins = new Vector<Bin>();
-	Vector<MyGantry> gantries = new Vector<MyGantry>();
-	Vector<MyFeeder> requests = new Vector<MyFeeder>();
-	Server app;
+	List<Bin> bins = new ArrayList<Bin>();
+	List<MyGantry> gantries = new ArrayList<MyGantry>();
+	List<MyFeeder> requests = new ArrayList<MyFeeder>();
 	enum FeederState{requested, sentGantry};
 	enum GantryState{waiting, delivering};
 	
@@ -44,15 +42,21 @@ public class GantryControllerAgent extends Agent implements GantryController {
 	}
 	
 	
-	public GantryControllerAgent(Server app){
-		this.app = app;
+	public GantryControllerAgent(){
+		
 	}
 	
 	//Messages
 
 	@Override
-	public void msgBinConfiguration(Vector<Bin> bins) {
+	public void msgBinConfiguration(ArrayList<Bin> bins,
+			ArrayList<Gantry> gantries) {
 		this.bins = bins;
+		MyGantry temp;
+		for(int i = 1; i<gantries.size(); i++){
+			temp = new MyGantry(gantries.get(i));
+			this.gantries.add(temp);			
+		}
 		stateChanged();
 	}
 

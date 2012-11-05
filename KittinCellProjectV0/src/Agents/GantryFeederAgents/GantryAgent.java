@@ -1,6 +1,5 @@
 package Agents.GantryFeederAgents;
 
-import server.Server;
 import Agent.Agent;
 import Interface.GantryFeederAgent.Feeder;
 import Interface.GantryFeederAgent.Gantry;
@@ -15,18 +14,15 @@ public class GantryAgent extends Agent implements Gantry {
 	Feeder currentFeeder;
 	Bin currentBin;
 	GantryController gc;
-	Server app;
 	enum FeederState{ready, pending, notReady};
 	FeederState fstate;
 	
 	
-	public GantryAgent(String name, Server app){
+	public GantryAgent(String name){
 		this.name = name;
 		currentFeeder = null;
 		currentBin = null;
 		fstate = FeederState.notReady;
-		this.app = app;
-		
 	}
 	
 	//Messages

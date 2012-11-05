@@ -71,7 +71,7 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
         else if("Inspect 1".equals(ae.getActionCommand())) {
         	server.getKitStandAgent().msgKitIsDone(0);
         }
-        else if("Inspect 2".equals(ae.getActionCommand())){
+        else if("Inpsect 2".equals(ae.getActionCommand())){
         	server.getKitStandAgent().msgKitIsDone(1);
         }
         /*else if("Load Stand 1".equals(ae.getActionCommand())) {

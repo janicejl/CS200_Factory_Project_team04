@@ -9,13 +9,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import Agents.GantryFeederAgents.FeederAgent;
-import Agents.GantryFeederAgents.FeederLaneAgent;
-import Agents.GantryFeederAgents.GantryAgent;
-import Agents.GantryFeederAgents.GantryControllerAgent;
 import Agents.KitRobotAgents.KitConveyorAgent;
 import Agents.KitRobotAgents.KitRobotAgent;
 import Agents.KitRobotAgents.KitStandAgent;
+import Agents.PartsRobotAgent.NestAgent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
 import data.Part;
 
@@ -36,6 +33,15 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	LaneManagerProtocol lanePro;
 	PartsRobotProtocol partsPro;
 	
+	PartsRobotAgent partsRobotAgent;
+	ArrayList<NestAgent> nests = new ArrayList<NestAgent>();
+	
+	KitRobotAgent kitRobotAgent; 
+	KitStandAgent kitStandAgent;
+	KitConveyorAgent kitConveyorAgent;
+	KitAssemblyManager kitAssemblyManager;
+	KitRobot kitRobot; //kit assembly robot
+	
 	FeederAgent feeder1;
 	FeederAgent feeder2;
 	FeederAgent feeder3;
@@ -51,6 +57,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	GantryAgent gantry1;
 	GantryAgent gantry2;
 	GantryControllerAgent gantryController;
+<<<<<<< HEAD
 	Vector<Lane> lanes;
 	
 	PartsRobotAgent partsRobotAgent;
@@ -61,6 +68,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	KitAssemblyManager kitAssemblyManager;
 	KitRobot kitRobot; //kit assembly robot
 	
+=======
+
+>>>>>>> 18b50bf303ad079eeac2cea8c9958da7f2991fe0
 	PartsRobot partsRobot;
 	
 	
@@ -114,6 +124,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryController.msgGantryAdded(gantry1);
 		gantryController.msgGantryAdded(gantry2);**/
 		
+<<<<<<< HEAD
 		lanes = new Vector<Lane>();
 		lanes.add(new Lane(600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(600,60)); 
@@ -126,6 +137,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
 		
+=======
+>>>>>>> 18b50bf303ad079eeac2cea8c9958da7f2991fe0
 		kitRobotAgent = new KitRobotAgent(this);
 		kitStandAgent = new KitStandAgent(this); 
 		kitConveyorAgent = new KitConveyorAgent(this);
@@ -141,7 +154,34 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		new Thread(kitAssemblyManager).start();
         new Thread(kitRobot).start();
         
-        partsRobotAgent = new PartsRobotAgent(kitStandAgent, this);
+        
+        NestAgent nest1 = new NestAgent(1,this);
+        NestAgent nest2 = new NestAgent(2,this);
+        NestAgent nest3 = new NestAgent(3,this);
+        NestAgent nest4 = new NestAgent(4,this);
+        NestAgent nest5 = new NestAgent(5,this);
+        NestAgent nest6 = new NestAgent(6,this);
+        NestAgent nest7 = new NestAgent(7,this);
+        NestAgent nest8 = new NestAgent(8,this);
+        nests.add(nest1);
+        nests.add(nest2);
+        nests.add(nest3);
+        nests.add(nest4);
+        nests.add(nest5);
+        nests.add(nest6);
+        nests.add(nest7);
+        nests.add(nest8);
+        for(NestAgent nest: nests)
+        {
+        	nest.startThread();
+        }
+
+        
+        partsRobotAgent = new PartsRobotAgent(nests, kitStandAgent, this);
+        for(NestAgent nest : nests)
+        {
+        	nest.setPartsRobotAgent(partsRobotAgent);
+        }
 		partsRobotAgent.startThread();
         	partsRobot = new PartsRobot();
         new Thread(partsRobot).start();
@@ -378,8 +418,17 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public synchronized void setPartsRobotAgent(PartsRobotAgent partsRobotAgent) {
 		this.partsRobotAgent = partsRobotAgent;
 	}
+<<<<<<< HEAD
 
 	public synchronized Vector<Lane> getLanes() {
+=======
+	public synchronized NestAgent getNestAgent(int index)
+	{
+		return nests.get(index);
+	}
+		
+	public synchronized ArrayList<Lane> getLanes() {
+>>>>>>> 18b50bf303ad079eeac2cea8c9958da7f2991fe0
 		return lanes;
 	}
 

@@ -4,11 +4,9 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import server.Lane;
-
 public class LaneManagerClient implements Runnable {
 	Socket s;
-	LaneManagerApp app;
+	LaneGraphics app;
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	String command;
@@ -20,7 +18,7 @@ public class LaneManagerClient implements Runnable {
 	
 	
 	
-	public LaneManagerClient(LaneManagerApp _app){
+	public LaneManagerClient(LaneGraphics _app){
 		serverName = "localhost";
 		command = "";
 		commandSent = "";

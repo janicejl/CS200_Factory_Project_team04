@@ -47,6 +47,7 @@ public class PartsRobotAgent extends Agent{
 		}
 		private MyNest (int ind){
 			index = ind;
+			nest = null;
 		}
 		
 	}
@@ -89,6 +90,7 @@ public class PartsRobotAgent extends Agent{
 		for(int i = 0; i<8; i++){
 			nests.add(new MyNest(i+1));
 		}
+		camera = null;
 	}
 	
 	public PartsRobotAgent(List <NestAgent> nestagents, Vision visionagent, KitStand stand,Server server)
@@ -101,6 +103,25 @@ public class PartsRobotAgent extends Agent{
 			index++;
 		}
 		camera = visionagent;
+		kitstand = stand;
+		this.server = server;
+		kit1 = new MyKit(1);
+		kit2 = new MyKit(2);
+		for (int i = 0; i<4; i++)
+		{
+			grippers[i] = new Gripper();
+		}
+	}
+	public PartsRobotAgent(List <NestAgent> nestagents, KitStand stand,Server server)
+	{
+		int index = 1;
+		for(NestAgent nest:nestagents)
+		{
+			MyNest mn = new MyNest(nest,index);
+			nests.add(mn);
+			index++;
+		}
+		camera = null;
 		kitstand = stand;
 		this.server = server;
 		kit1 = new MyKit(1);
@@ -263,7 +284,8 @@ public class PartsRobotAgent extends Agent{
 		for(int i = 0; i < recipe.size(); i++)
 		{	
 			print("Assigning Part " + recipe.get(i) + " to nest " + nests.get(i).index);
-			//nests.get(i).nest.msgNeedThisPart(recipe.get(i));
+			if(nests.get(i).nest!= null)
+				nests.get(i).nest.msgNeedThisPart(recipe.get(i));
 			nests.get(i).state = NestStatus.assigned;
 			nests.get(i).type = recipe.get(i);
 		}
@@ -279,7 +301,8 @@ public class PartsRobotAgent extends Agent{
 		{
 			nestassignments.add(mn.type);
 		}
-		//camera.msgHereIsSchematic(recipe, nestassignments);
+		if(camera != null)
+		camera.msgHereIsSchematic(recipe, nestassignments);
 		camerahasrecipe = true;
 	}
 	private void requestEmptyKit()
@@ -372,12 +395,12 @@ public class PartsRobotAgent extends Agent{
 		animationstate = AnimationStatus.waitingForPart;
 
 		//gui.DoGetPart();//Any sort of animation for getting the part from the nest
-		//nests.get(currentnest-1).nest.msgGetPart();
+		nests.get(currentnest-1).nest.msgGetPart();
 
 		// Hack for v0 with no Nests yet
-		Part.PartType parttype = nests.get(currentnest-1).type;
+		//Part.PartType parttype = nests.get(currentnest-1).type;
 
-		this.msgHereIsPart(new Part(parttype));
+		//this.msgHereIsPart(new Part(parttype));
 		
 		//End of Hack
 		

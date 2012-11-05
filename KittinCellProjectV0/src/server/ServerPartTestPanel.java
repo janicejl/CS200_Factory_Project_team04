@@ -101,6 +101,9 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 			server.getPartsRobotAgent().msgMakeThisKit(recipe, 4);
 		}
 		else if("Get Part".equals(ae.getActionCommand())) {
+			for(int i = 0; i<8; i++){
+				server.getNestAgent(i).msgHereIsPart(new Part(server.getNestAgent(i).getPartType()));
+			}
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex());
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+1);
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+2);

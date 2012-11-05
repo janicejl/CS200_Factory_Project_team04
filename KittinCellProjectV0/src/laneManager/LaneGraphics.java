@@ -6,8 +6,6 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import server.Lane;
-
 import data.Part;
 import Feeder.*;
 import java.awt.event.*;
@@ -68,9 +66,11 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     }
     
     public void paintComponent(Graphics g) {
+
     	Graphics2D g2 = (Graphics2D)g;
 		g2.setColor(Color.LIGHT_GRAY);
 		g2.fill( backgroundRectangle );
+		
 		for (int i = 0; i < 8; i++) {
 			 if(emptyConveyorOnList.get(i)){
 		            emptyConveyorMoveList.set(i,emptyConveyorMoveList.get(i) + 0.23 * lanes.get(i).getConveyerBeltSpeed()); //magic ratio
@@ -79,7 +79,7 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 		            }
 		        }
 		}
-			
+			 
         for(int i = -1; i < 40; i++){ // main conveyor images
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(0).intValue(),20,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(1).intValue(),90,null); // empty conveyor   
@@ -93,11 +93,13 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
         
         g2.setColor(Color.BLUE);		
 		for (int i = 0; i < lanes.size(); i++) {
-			if(i < 4) //only four nests
+			if(i < 4)
 				gFeeders.get(i).paintNest(g2);
 			for (int j = 0; j < lanes.get(i).getItemList().size(); j++) 
 				g2.fill(new Ellipse2D.Double(lanes.get(i).getItemList().get(j).getX(),lanes.get(i).getItemList().get(j).getY(),20,20));
 		}
+
+		
     }
     
     public void setVibration() { //Unimplimented
@@ -108,8 +110,13 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	lanes.get(lane).releasePart();
     }
     
+<<<<<<< HEAD
     public synchronized void setLanes(Vector<Lane> _lanes) {
 		this.lanes = _lanes;
+=======
+    public synchronized void setLanes(ArrayList<Lane> lanes) {
+		this.lanes = lanes;
+>>>>>>> 18b50bf303ad079eeac2cea8c9958da7f2991fe0
 	}
     
 	public synchronized Vector<Lane> getLanes() {
@@ -120,4 +127,4 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	lanes.get(lane).addPart(part);
     }
     
-}
+}  

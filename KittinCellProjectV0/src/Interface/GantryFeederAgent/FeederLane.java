@@ -7,5 +7,4 @@ public interface FeederLane {
 
 	void setMaxQuantity(int quantity);
 	String getName();
-	int getNumber();
 }

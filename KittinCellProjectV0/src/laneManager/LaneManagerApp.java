@@ -6,8 +6,6 @@ import java.util.Vector;
 
 import javax.swing.*;
 
-import server.Lane;
-
 import Feeder.Feeder;
 import Feeder.GUIFeeder;
 
@@ -31,7 +29,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 			releaseButtons.add(new JButton("Lane: " + (i+1)));
 			releaseButtons.get(i).addActionListener(this);
 			window.add(releaseButtons.get(i));
-			System.out.println("Adding button: " + (i + 1));
+			System.out.println("OAdding button: " + (i + 1));
 		}
 		window.setPreferredSize(new Dimension(800, 30));
 		window.setMaximumSize(new Dimension(800, 30));
@@ -56,6 +54,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		new LaneManagerApp();	
 	}
+<<<<<<< HEAD
 	
 
 	public synchronized Vector<Lane> getLanes() {
@@ -65,6 +64,8 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	public synchronized void setLanes(Vector<Lane> lanes) {
 		this.laneGraphics.setLanes(lanes);
 	}
+=======
+>>>>>>> 18b50bf303ad079eeac2cea8c9958da7f2991fe0
 
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == connect){

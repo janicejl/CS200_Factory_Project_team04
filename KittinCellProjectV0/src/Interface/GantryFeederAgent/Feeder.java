@@ -8,7 +8,6 @@ public interface Feeder {
 	void msgNeedThisPart(PartType p, String laneName);
 	void msgHaveParts(Gantry g1);
 	void msgHereAreParts(Bin b);
-	void msgHereAreParts(PartType p, int quantity);
 	void msgLaneIsFull(String laneName);
 	void msgLaneIsReadyForParts(String laneName);
 	

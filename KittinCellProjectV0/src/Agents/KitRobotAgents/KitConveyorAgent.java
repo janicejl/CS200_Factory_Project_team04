@@ -43,6 +43,7 @@ public class KitConveyorAgent extends Agent implements KitConveyor, Serializable
 	
 	public void msgKitHasArrived()
 	{
+		System.out.println("KitConveyor: Kit has arrived for pick up");
 		conveyor_events.add(ConveyorEvents.KitArrived);
 		stateChanged();
 	}

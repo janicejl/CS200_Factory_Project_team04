@@ -33,6 +33,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		
 	}
 	
+
 	
 	enum KitStandEvent {IsEmptySpot, IsEmptyKit,RemoveKit};
 	
@@ -50,6 +51,8 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		server = _server;
 	}
 	
+	
+	
 	public void msgCanIPlaceKit()
 	{
 		System.out.println("KitStand: Can a kit be placed?");
@@ -66,19 +69,23 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 			if(kit_h.state == KitState.NeedKit)
 			{
 				kit_h.kit = k;
+				stateChanged();
 				return;
 			}
 		}
-		stateChanged();
+		
 	}
 	
 	public void msgKitIsDone(int position)
 	{
 		System.out.println("KitStand:: kit is done!");
+		System.out.println("Kit is done:" + position);
 		for(KitHolder kit_h:kit_holder_list)
 		{
+			
 			if(kit_h.position == position)
 			{
+				System.out.println("Kit is done in for loop:" + kit_h.position);
 				kit_h.state = KitState.KitFinished;
 				stateChanged();
 				return;
@@ -97,13 +104,13 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 			{
 				inpspection_list.add(kit_h);
 				kit_h.state = KitState.BeingInspected;
-				kit_holder_list.remove(0);
+				kit_holder_list.remove(kit_h);
+			
 				stateChanged();
 				return;
 	
 			}
 		}
-		
 		System.out.println("Error at msgKitMoved");
 	}
 	
@@ -268,6 +275,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		{
 			if(kit.state == KitState.Empty)
 			{
+				System.out.println("Check empty kit " + kit.position);
 				parts_robot.msgEmptyKit(kit.position);
 			}
 		}
@@ -290,7 +298,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 			if(kit_holder_list.size() == 0)
 			{
 				kit_robot.msgPlaceKitAtPosition(0);
-				
+				kit_h.position = 0;
 				kit_h.state = KitState.NeedKit;
 				
 			}
@@ -299,13 +307,13 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 				if(kit_holder_list.get(0).position == 0)
 				{
 					kit_robot.msgPlaceKitAtPosition(1);
-					kit_h.position = 0;
+					kit_h.position = 1;
 					kit_h.state = KitState.NeedKit;
 				}
 				else
 				{
 					kit_robot.msgPlaceKitAtPosition(0);
-					kit_h.position = 1;
+					kit_h.position = 0;
 					kit_h.state = KitState.NeedKit;
 				}
 				

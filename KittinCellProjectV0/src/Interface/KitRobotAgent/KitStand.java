@@ -20,4 +20,5 @@ public interface KitStand {
 
 	void msgKitRemovedFromInspection();
 
+
 }

@@ -11,6 +11,7 @@ import java.util.Vector;
 import java.util.TreeMap;
 import java.util.concurrent.*;
 import java.io.*;
+
 import javax.imageio.*;
 
 import server.PartsRobot;
@@ -31,6 +32,8 @@ public class GUIPartsRobot{
     Vector<String> subCommands;
     Vector<String> nestLocations;
     Vector<String> kitLocations;
+    Vector<BufferedImage> partImages;
+    Vector<Integer> gripperPartIDs;
     float opacity, flashCounter;
     double cameraX;
     double cameraY;
@@ -58,12 +61,18 @@ public class GUIPartsRobot{
         subCommands = new Vector<String>();
         nestLocations = new Vector<String>();
         kitLocations = new Vector<String>();
+        partImages = new Vector<BufferedImage>();
+        gripperPartIDs = new Vector<Integer>();
 
         for (int i = 0; i < 4; i++) {
+        	gripperPartIDs.add(1);
             gripperExtensions.add(0.0);
         }
 
         try {
+        	for(int i=0; i<9;i++){
+        		partImages.add(ImageIO.read(new File("images/" + i + ".png")));
+        	}
             partsRobotImage = ImageIO.read(new File("images/partsrobot.png"));
             partsRobotRailImage = ImageIO.read(new File("images/rail.png"));
             partsRobotGripperImage = ImageIO.read(new File("images/gripper.png"));
@@ -84,6 +93,7 @@ public class GUIPartsRobot{
         angle = pr.getAngle();
         gripperExtensions = pr.getGripperExtensions();
         gripperHolding = pr.getGripperHolding();
+        gripperPartIDs = pr.getGripperPartIDs();
         if(takePicture == false && pr.getTakePicture()){
             takePicture = true;
             flashUp = true;
@@ -107,7 +117,7 @@ public class GUIPartsRobot{
             g2.drawImage(partsRobotGripperImage,at,null);
             if(gripperHolding.get(i)){
                 at.translate(5,0);
-                g2.drawImage(part,at,null);
+                g2.drawImage(partImages.get(gripperPartIDs.get(i)),at,null);
                 at.translate(-5,0);
             }
             at.translate(13,26);
@@ -128,22 +138,24 @@ public class GUIPartsRobot{
 
             //System.out.println(takePicture);
         if(takePicture){
-            // System.out.println(takePicture);
-            opacity = (float)Math.exp(flashCounter) - 1;
+             
+            //opacity = (float)Math.exp(flashCounter) - 1;
             //System.out.println(opacity);
-            if(opacity > 1){
-                flashUp = false;
-                flashDown = true;
-                opacity = (float)0.98;
-            }
+            
             if(flashUp){
-                flashCounter += 0.15;
+                opacity += 0.5;
+                if(opacity > 1){
+                    flashUp = false;
+                    flashDown = true;
+                    opacity = 1f;
+                }
             }
             else if (flashDown){
-                flashCounter -= 0.01;
-                if(opacity < 0.05){
+                opacity -= 0.5;
+                if(opacity < 0){
                 	opacity = 0f;
                     takePicture = false;
+                    //System.out.println(takePicture);
                     server.getPartsClient().setCommandSent("Update");
                     flashCounter = 1;
                 }

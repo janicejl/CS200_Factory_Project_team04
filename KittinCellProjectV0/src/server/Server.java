@@ -310,7 +310,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     
     public void execute(String process, Integer nest, Integer grip){
     	if(process.equals("Get Part")){
-    		getPartsRobot().addCommand("grab," + (nest) + "," + (grip));
+    		getPartsRobot().addCommand("grab," + (nest) + "," + (grip) + "," + nest);
     	} 		
     }
     

@@ -262,7 +262,7 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         else if("Get Part".equals(ae.getActionCommand())) {
             int nest = (int)nestList.getSelectedIndex();
             int grip = (int)gripList.getSelectedIndex();
-            partsRobot.addCommand("grab," + nest + "," + grip);
+            partsRobot.addCommand("grab," + nest + "," + grip + ",5" );
         }
         else if("Load Kit 1".equals(ae.getActionCommand())) {
             int nest = (int)nestList.getSelectedIndex();

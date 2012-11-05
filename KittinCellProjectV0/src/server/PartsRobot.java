@@ -39,6 +39,7 @@ public class PartsRobot implements Runnable, Serializable{
     Vector<String> subCommands;
     Vector<String> nestLocations;
     Vector<String> kitLocations;
+    Vector<Integer> gripperPartIDs;
     int[] nl = {55,125,195,265,335,405,475,545};
     int[] kl = {190,410};
 
@@ -53,7 +54,9 @@ public class PartsRobot implements Runnable, Serializable{
         newGripperExtensions = new Vector<Double>();
         nestLocations = new Vector<String>();
         kitLocations = new Vector<String>();
+        gripperPartIDs = new Vector<Integer>();
         for(int i = 0; i < 4; i++){
+        	gripperPartIDs.add(2);
             gripperHolding.add(false);
             gripperExtensions.add(0.0);
             newGripperExtensions.add(0.0);
@@ -93,6 +96,7 @@ public class PartsRobot implements Runnable, Serializable{
                 grp = Integer.parseInt(ss[2]);
             }
             catch (Exception e){}
+            gripperPartIDs.set(grp, new Integer(ss[3]));
             subCommands.add(0,"m," + (nl[src]));
             if (grp == 0) {
                 subCommands.add(1,"r,90");
@@ -254,6 +258,10 @@ public class PartsRobot implements Runnable, Serializable{
     public synchronized Boolean getMsg() {
 		return msg;
 	}
+    
+    public synchronized Vector<Integer> getGripperPartIDs(){
+    	return gripperPartIDs;
+    }
 
 	public synchronized void setMsg(Boolean msg) {
 		this.msg = msg;

@@ -2,8 +2,14 @@ package data;
 
 import java.io.Serializable;
 
+import MoveableObjects.Part.PartType;
+
 public class Part implements Serializable{
 
+	public enum PartType{part1, part2, part3, part4, part5, part6, part7, part8, none};
+	
+	public PartType type;
+	
 	private String id;
 	private double x;
 	private double y;

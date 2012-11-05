@@ -40,7 +40,7 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 	@Override
 	//Received from GUI
 	public void msgRemovePart() {
-		quantity --;
+		quantity--;
 		stateChanged();
 	}
 	

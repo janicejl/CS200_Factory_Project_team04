@@ -38,6 +38,30 @@ public class Lane implements ActionListener, Serializable{
 		this.queueFull = false;
 	 }
     
+    public Lane(int width, int verticalSpacing) {
+
+		maxX = width;
+		maxY = 100;
+    	this.verticalSpacing = verticalSpacing;
+	    conveyerBeltSpeed = 1;
+	    itemList = new Vector<Part> ();
+	    importList = new Vector<Part> ();
+	    queueList = new Vector<Part> ();
+		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
+		timer = new Timer(10,this);
+		timer.start();
+		nestFull = false;
+		queueFull = false;		
+		/*importList.add(new Part("1"));
+		importList.add(new Part("2"));
+	    importList.add(new Part("3"));*/
+	    for(int i = 0; i < importList.size(); i++) {
+	    	importList.get(i).setX(width-80);
+	    	importList.get(i).setY(maxY/2 + verticalSpacing);
+	    }
+    }
+    
+    
     public Lane(int width, int verticalSpacing, Feeder f) {
 
 		maxX = width;

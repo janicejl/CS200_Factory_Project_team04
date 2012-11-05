@@ -1,11 +1,13 @@
 package Agents.VisionAgent;
 
 import java.util.*;
+import server.Server;
 import java.util.concurrent.*;
 
 import Agent.*;
 import Agents.KitRobotAgents.*;
 import Agents.PartsRobotAgent.*;
+import Interface.PartsRobotAgent.Vision;
 import MoveableObjects.*;
 import MoveableObjects.Part.*;
 
@@ -40,17 +42,19 @@ public class VisionAgent extends Agent {
 	PartsRobotAgent partsRobotAgent;
 	NestAgent nest1;
 	NestAgent nest2;
+	Server server;
 	
 	boolean approved;
 	
 	/////////////////////////////////////////////////////////////
 	/** CONSTRUCTOR **/
 	
-	public VisionAgent (String type, KitRobotAgent kra, PartsRobotAgent pra) {
+	public VisionAgent (String type, KitRobotAgent kra, PartsRobotAgent pra, Server server) {
 		approved=false;
 		
 		kitRobotAgent = kra;
 		partsRobotAgent = pra;
+		this.server = server;
 		
 		initializeVisionAgent(type);
 	}
@@ -64,6 +68,9 @@ public class VisionAgent extends Agent {
 		// receive a list of all the parts that a kit needs, and a list of all the nests
 		this.nestsList = nestsList;
 		this.neededPartsList = partsList;
+		for(Part p : partsList){
+			fullNestsPartsList.add(p.type);
+		}
 		approved = false;
 		state = State.SCHEMATIC_RECEIVED;
 		stateChanged();
@@ -76,6 +83,8 @@ public class VisionAgent extends Agent {
 		// i can do this differently if we later decide not to do this, but this makes it easier for me to organize parts
 		
 		fullNestsMap.put(nest.getNumber(), nest);
+		print("Need to check nest " + nest.getNumber());
+		stateChanged();
 	}
 	
 	// sent by KitStandAgent
@@ -100,14 +109,14 @@ public class VisionAgent extends Agent {
 	}
 	
 	private void takePicture() {
-		DoTakePicture(); // ~*~** working on it **~*~
+		//server.execute("Take Picture",nest2.index/2);
 		state = state.PICTURE_TAKEN;
-		print ("taking a picture");
+		print ("taking a picture at " + nest2.index / 2);
 		stateChanged();
 	}
 	
 	private void checkForConsecutiveNests() {
-		for (int i=0; i<fullNestsMap.size(); i++) {
+		for (int i=1; i<9; i++) {
 			if (fullNestsMap.containsKey(i) && fullNestsMap.containsKey(i+1) && i%2==1) {
 				nest1 = fullNestsMap.get(i);
 				nest2 = fullNestsMap.get(i+1);
@@ -140,25 +149,26 @@ public class VisionAgent extends Agent {
 		boolean nest1Approved=false;
 		boolean nest2Approved=false;
 		
+		print("Test: " + nest1.getPartType() + fullNestsPartsList.get( nest1.getNumber()-1));
 		// nest1.getPartType should return the string of the name that the nest should hold
-		if (nest1.getPartType() == fullNestsPartsList.get( nest1.getNumber()) ) {
+		if (nest1.getPartType() == fullNestsPartsList.get( nest1.getNumber()-1) ) {
 			nest1Approved=true;
-			print(nest1.getName() + "approved");
+			print(nest1.getName() + " approved");
 		}
 		else {
 			nest2Approved=false;
 			nest1.msgBadParts();
-			print(nest1.getName() + "not approved");
+			print(nest1.getName() + " not approved");
 		}
 				
-		if (nest2.getPartType() == fullNestsPartsList.get(nest2.getNumber()) ) { 
+		if (nest2.getPartType() == fullNestsPartsList.get(nest2.getNumber()-1) ) { 
 			nest2Approved=true;
-			print(nest2.getName() + "approved");
+			print(nest2.getName() + " approved");
 		}
 		else {
 			nest2Approved=false;
 			nest2.msgBadParts();
-			print(nest2.getName() + "not approved");
+			print(nest2.getName() + " not approved");
 		}
 			
 		if (nest1Approved && nest2Approved) {
@@ -169,6 +179,7 @@ public class VisionAgent extends Agent {
 			approved=false;
 			print("consecutive not approved");
 		}
+		approveOrDenyParts();
 		
 	}
 	
@@ -187,7 +198,12 @@ public class VisionAgent extends Agent {
 			kitRobotAgent.msgKitInspected(approved);
 		}
 		
-		state=State.IDLE;
+		state=State.SCHEMATIC_RECEIVED;
+		fullNestsMap.remove(nest1.getNumber());
+		fullNestsMap.remove(nest2.getNumber());
+		nest1 = null;
+		nest2 = null;
+		
 		stateChanged();
 		
 	}

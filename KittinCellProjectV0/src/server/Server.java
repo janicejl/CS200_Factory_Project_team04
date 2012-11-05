@@ -1,6 +1,7 @@
 package server;
 
 import java.net.*;
+
 import java.util.Vector;
 import java.util.Scanner;
 import java.util.Vector;
@@ -19,6 +20,7 @@ import Agents.KitRobotAgents.KitRobotAgent;
 import Agents.KitRobotAgents.KitStandAgent;
 import Agents.PartsRobotAgent.NestAgent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
+import Agents.VisionAgent.VisionAgent;
 import data.Part;
 
 public class Server extends JFrame implements Runnable, ActionListener{
@@ -42,6 +44,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	PartsRobot partsRobot;
 	PartsRobotAgent partsRobotAgent;
 	Vector<NestAgent> nests = new Vector<NestAgent>();
+	VisionAgent nestvisionagent1;
+	VisionAgent nestvisionagent2;
+	VisionAgent nestvisionagent3;
+	VisionAgent nestvisionagent4;
 	
 	KitRobotAgent kitRobotAgent; 
 	KitStandAgent kitStandAgent;
@@ -165,6 +171,33 @@ public class Server extends JFrame implements Runnable, ActionListener{
         	nest.setPartsRobotAgent(partsRobotAgent);
         	nest.startThread();
         }
+        nestvisionagent1 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
+        nestvisionagent2 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
+        nestvisionagent3 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
+        nestvisionagent4 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
+        nests.get(0).setVisionAgent(nestvisionagent1);
+        nests.get(1).setVisionAgent(nestvisionagent1);
+        nests.get(2).setVisionAgent(nestvisionagent2);
+        nests.get(3).setVisionAgent(nestvisionagent2);
+        nests.get(4).setVisionAgent(nestvisionagent3);
+        nests.get(5).setVisionAgent(nestvisionagent3);
+        nests.get(6).setVisionAgent(nestvisionagent4);
+        nests.get(7).setVisionAgent(nestvisionagent4);
+        Vector <VisionAgent> visions = new Vector<VisionAgent>();
+        visions.add(nestvisionagent1);
+        visions.add(nestvisionagent2);
+        visions.add(nestvisionagent3);
+        visions.add(nestvisionagent4);
+        partsRobotAgent.setVisionAgents(visions);
+
+        
+        nestvisionagent1.startThread();
+        nestvisionagent2.startThread();
+        nestvisionagent3.startThread();
+        nestvisionagent4.startThread();
+
+
+        
 		partsRobotAgent.startThread();
         	partsRobot = new PartsRobot();
         new Thread(partsRobot).start();

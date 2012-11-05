@@ -1,6 +1,7 @@
 package Agents.PartsRobotAgent;
 
 import  Agent.*;
+import Agents.VisionAgent.VisionAgent;
 import server.Server;
 import MoveableObjects.*;
 import MoveableObjects.Part.PartType;
@@ -13,7 +14,7 @@ public class NestAgent extends Agent{
 	Part[] nestslots = new Part[9];
 	PartsRobotAgent partsrobot;
 	Lane lane;
-	Vision camera;
+	VisionAgent camera;
 	String name;
 	Server server;
 		
@@ -29,7 +30,7 @@ public class NestAgent extends Agent{
 	NestStatus neststate = NestStatus.noParts;
 	AnimationStatus animationstate = AnimationStatus.noAction;
 	
-	public NestAgent(Lane lane, Vision camera, int index)
+	public NestAgent(Lane lane, VisionAgent camera, int index)
 	{
 		this.lane = lane;
 		this.camera = camera;
@@ -192,7 +193,7 @@ public class NestAgent extends Agent{
 		print("I am full and need inspection");
 		neststate = NestStatus.noAction;
 		if(camera!= null)
-		camera.msgImFull(parttype,this);
+		camera.msgImFull(this);
 	}
 	
 	private void settleNest()
@@ -236,6 +237,10 @@ public class NestAgent extends Agent{
 
 	public PartType getPartType() {
 		return parttype;
+	}
+	
+	public void setVisionAgent(VisionAgent camera){
+		this.camera = camera;
 	}
 	
 

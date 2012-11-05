@@ -4,6 +4,8 @@ import Interface.PartsRobotAgent.*;
 import Interface.KitRobotAgent.*;
 import MoveableObjects.*;
 import Agents.KitRobotAgents.*;
+import Agents.VisionAgent.VisionAgent;
+
 import java.util.*;
 
 import server.Server;
@@ -13,7 +15,7 @@ public class PartsRobotAgent extends Agent{
 	String name = "PartsRobotAgent";
 	
 	
-	Vision camera;
+	List<VisionAgent> cameras = new ArrayList<VisionAgent>();
 	KitStand kitstand;
 	boolean camerahasrecipe = false;
 	Server server;
@@ -21,6 +23,7 @@ public class PartsRobotAgent extends Agent{
 
 	int count = 0;
 	List <Part.PartType> recipe = new ArrayList<Part.PartType>();
+	List <Part> camerarecipe = new ArrayList<Part>();
 	List <MyNest> nests = new ArrayList<MyNest>();
 	Gripper[] grippers = new Gripper[4];
 	RobotState state;
@@ -100,7 +103,6 @@ public class PartsRobotAgent extends Agent{
 			nests.add(mn);
 			index++;
 		}
-		camera = null;
 		kitstand = stand;
 		this.server = server;
 		kit1 = new MyKit(1);
@@ -111,7 +113,7 @@ public class PartsRobotAgent extends Agent{
 		}
 	}
 	
-	public PartsRobotAgent(List <NestAgent> nestagents, Vision visionagent, KitStand stand,Server server)
+	public PartsRobotAgent(List <NestAgent> nestagents, List <VisionAgent> cameralist, KitStand stand,Server server)
 	{
 		int index = 1;
 		for(NestAgent nest:nestagents)
@@ -120,7 +122,9 @@ public class PartsRobotAgent extends Agent{
 			nests.add(mn);
 			index++;
 		}
-		camera = visionagent;
+		for(VisionAgent cam:cameralist){
+			cameras.add(cam);
+		}
 		kitstand = stand;
 		this.server = server;
 		kit1 = new MyKit(1);
@@ -144,13 +148,16 @@ public class PartsRobotAgent extends Agent{
 			kit1.partsneeded.add(type);
 			kit2.partsneeded.add(type);
 		}
+		for(Part.PartType type: kitrecipe){
+			camerarecipe.add(new Part(type));
+		}
 		kit1.state = KitStatus.notAvailable;
 		kit2.state = KitStatus.notAvailable;
 		state = RobotState.mustOrderParts;
 		stateChanged();
 	}
 	public void msgPartsApproved(int nestindex){
-		nests.get(nestindex).state = NestStatus.hasPart;
+		nests.get(nestindex-1).state = NestStatus.hasPart;
 		print("PartReady at nest " + nestindex);
 		stateChanged();
 	}
@@ -283,7 +290,7 @@ public class PartsRobotAgent extends Agent{
 		for(int i = 0; i < recipe.size(); i++)
 		{	
 			print("Assigning Part " + recipe.get(i) + " to nest " + nests.get(i).index);
-			//nests.get(i).nest.msgNeedThisPart(recipe.get(i));
+			nests.get(i).nest.msgNeedThisPart(recipe.get(i));
 			nests.get(i).state = NestStatus.assigned;
 			nests.get(i).type = recipe.get(i);
 		}
@@ -293,13 +300,20 @@ public class PartsRobotAgent extends Agent{
 	private void giveCameraRecipe()
 	{
 			
-		print("Giving Recipe to VisionAgent");
-		List<Part.PartType> nestassignments = new ArrayList<Part.PartType>();
+		print("Giving Recipe to VisionAgents");
+		List<NestAgent> nestassignments = new ArrayList<NestAgent>();
 		for(MyNest mn : nests)
 		{
-			nestassignments.add(mn.type);
+			nestassignments.add(mn.nest);
 		}
-		//camera.msgHereIsSchematic(recipe, nestassignments);
+		if(!cameras.isEmpty())
+		{
+			for(VisionAgent camera : cameras)
+			{
+				print("Giving to camera");
+				camera.msgHereIsSchematic(camerarecipe, nestassignments);
+			}
+		}
 		camerahasrecipe = true;
 	}
 	private void requestEmptyKit()
@@ -392,12 +406,12 @@ public class PartsRobotAgent extends Agent{
 		animationstate = AnimationStatus.waitingForPart;
 
 		//gui.DoGetPart();//Any sort of animation for getting the part from the nest
-		//nests.get(currentnest-1).nest.msgGetPart();
+		nests.get(currentnest-1).nest.msgGetPart();
 
 		// Hack for v0 with no Nests yet
-		Part.PartType parttype = nests.get(currentnest-1).type;
+		//Part.PartType parttype = nests.get(currentnest-1).type;
 
-		this.msgHereIsPart(new Part(parttype));
+		//this.msgHereIsPart(new Part(parttype));
 		
 		//End of Hack
 		
@@ -518,5 +532,10 @@ public class PartsRobotAgent extends Agent{
 	}
 	public void setTestGUI(TestGUI test){
 		gui = test;
+	}
+	public void setVisionAgents(List <VisionAgent> cams){
+		for(VisionAgent cam : cams){
+			cameras.add(cam);
+		}
 	}
 }

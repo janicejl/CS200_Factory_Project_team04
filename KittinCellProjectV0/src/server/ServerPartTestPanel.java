@@ -101,7 +101,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 			server.getPartsRobotAgent().msgMakeThisKit(recipe, 4);
 		}
 		else if("Get Part".equals(ae.getActionCommand())) {
-			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex());
+			/*server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex());
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+1);
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+2);
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+3);
@@ -109,6 +109,10 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+5);
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+6);
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+7);
+			*/
+			for(int i = 0; i<8; i++){
+				server.getNestAgent(i).msgHereIsPart(new Part(server.getNestAgent(i).getPartType()));
+			}
 
 
 			//server.getPartsRobotAgent().msgAnimationDone();

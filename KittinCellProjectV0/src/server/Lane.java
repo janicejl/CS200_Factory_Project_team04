@@ -1,24 +1,15 @@
 package server;
-import java.awt.*;
 import java.awt.geom.*;
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.TreeMap;
-
-import laneManager.LaneGraphics;
+import java.io.Serializable;
+import java.util.Vector;
 import data.Part;
 
-public class Lane implements ActionListener {
-    private ArrayList<Part> importList;  //Item Collection that is imported
-	private ArrayList<Part> itemList;  //items moving down 
-    private ArrayList<Part> queueList; 
+public class Lane implements ActionListener, Serializable{
+    private Vector<Part> importList;  //Item Collection that is imported
+	private Vector<Part> itemList;  //items moving down 
+    private Vector<Part> queueList; 
     private Rectangle2D.Double backgroundRectangle;
     private int conveyerBeltSpeed;
     private int maxX;
@@ -28,15 +19,15 @@ public class Lane implements ActionListener {
     private Timer timer; 
     private boolean nestFull;
     private boolean queueFull; //Unimplemented, we need to determine a limit.
-    
+
     private Lane() {
     	this.maxX = 600;
 		this.maxY = 100;
     	this.verticalSpacing = 0;
 	    this.conveyerBeltSpeed = 1;
-	    this.itemList = new ArrayList<Part> ();
-	    this.importList = new ArrayList<Part> ();
-	    this.queueList = new ArrayList<Part> ();
+	    this.itemList = new Vector<Part> ();
+	    this.importList = new Vector<Part> ();
+	    this.queueList = new Vector<Part> ();
 		this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		this.timer = new Timer(10,this);
 		this.timer.start();
@@ -45,13 +36,14 @@ public class Lane implements ActionListener {
 	 }
     
     public Lane(int width, int verticalSpacing) {
-    	maxX = width;
+
+		maxX = width;
 		maxY = 100;
     	this.verticalSpacing = verticalSpacing;
 	    conveyerBeltSpeed = 1;
-	    itemList = new ArrayList<Part> ();
-	    importList = new ArrayList<Part> ();
-	    queueList = new ArrayList<Part> ();
+	    itemList = new Vector<Part> ();
+	    importList = new Vector<Part> ();
+	    queueList = new Vector<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		timer = new Timer(10,this);
 		timer.start();
@@ -79,11 +71,11 @@ public class Lane implements ActionListener {
 	    } //Queue first, dont nest yet!
     }
 	    
-    public ArrayList<Part> getItemList() {
+    public Vector<Part> getItemList() {
     	return this.itemList;
     }
     
-    public ArrayList<Part> getQueueList() {
+    public Vector<Part> getQueueList() {
     	return this.queueList;
     }
     

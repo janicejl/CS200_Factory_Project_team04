@@ -49,8 +49,8 @@ public class KitAssemblyProtocol implements Runnable{
 				out.writeObject(app.getKitRobot());
 				out.reset();
 				if(app.getKitAssemblyManager().getMsg().equals(true)){
-					app.getKitConveyorAgent().msgKitHasArrived();
 					app.getKitAssemblyManager().setMsg(false);
+					app.getKitConveyorAgent().msgKitHasArrived();
 				}
 				out.writeObject(app.getKitAssemblyManager());
 				out.reset();

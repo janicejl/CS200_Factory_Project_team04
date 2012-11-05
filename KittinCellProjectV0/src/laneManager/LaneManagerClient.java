@@ -18,8 +18,6 @@ public class LaneManagerClient implements Runnable {
 	
 	 //data received from server
 	
-	
-	
 	public LaneManagerClient(LaneManagerApp _app){
 		serverName = "localhost";
 		command = "";
@@ -108,7 +106,6 @@ public class LaneManagerClient implements Runnable {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.exit(1);
 		}
 	}
 

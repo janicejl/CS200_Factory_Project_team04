@@ -17,6 +17,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	private JPanel window;
 	private LaneManagerClient client;
 	private JButton connect;
+	private Timer timer;
 	
 	public LaneManagerApp() {
 		this.setLayout(new GridBagLayout());
@@ -51,12 +52,14 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		client = new LaneManagerClient(this);
+		timer = new Timer(10, this);
+		timer.start();
 	}
 	
 	public static void main(String[] args) {
 		new LaneManagerApp();	
 	}
-	
+
 	public synchronized Vector<Lane> getLanes() {
 		return laneGraphics.getLanes();
 	}
@@ -79,6 +82,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 			if(e.getSource() == releaseButtons.get(i)) 
 				laneGraphics.releaseItem(i);		
 		}
+		laneGraphics.repaint();
 	}
 	
 }

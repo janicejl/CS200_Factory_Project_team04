@@ -7,6 +7,7 @@ import Interface.KitRobotAgent.KitStand;
 import MoveableObjects.Kit;
 import MoveableObjects.Part;
 import UnitTest.KitRobotAgents.EventLog;
+import UnitTest.KitRobotAgents.LoggedEvent;
 
 public class MockKitStand extends MockAgent implements KitStand{
 
@@ -22,31 +23,40 @@ public class MockKitStand extends MockAgent implements KitStand{
 	@Override
 	public void msgCanIPlaceKit() {
 		
-		log.add(new UnitTest.KitRobotAgents.LoggedEvent("Can I place kit"));
+		log.add(new LoggedEvent("Can I place kit"));
 		
 	}
 
 	@Override
 	public void msgPlacingKit(Kit kit) {
 		
-		log.add(new UnitTest.KitRobotAgents.LoggedEvent("Kit being placed"));
+		log.add(new LoggedEvent("Kit being placed"));
 	}
 
 	@Override
 	public void msgIsThereEmptyKit() {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("Is there an empty kit"));		
 	}
 
 	@Override
 	public void msgHereAreParts(List<Part> parts, int index) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("Got parts"));		
 	}
 
 	@Override
 	public void msgKitIsDone(int index) {
-		// TODO Auto-generated method stub
+		log.add(new LoggedEvent("Kit is done"));
+	}
+
+	@Override
+	public void msgKitMoved(int i) {
+		log.add(new LoggedEvent("Kit moved to inspection"));
+		
+	}
+
+	@Override
+	public void msgKitRemovedFromInspection() {
+		log.add(new LoggedEvent("Kit done with inspection"));
 		
 	}
 

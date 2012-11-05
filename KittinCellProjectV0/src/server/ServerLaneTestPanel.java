@@ -36,12 +36,12 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		laneSelectBox = new JComboBox(lanes);
 		feedLaneButton = new JButton("Feed Lane");
 		feedNestButton = new JButton("Feed Nest");
-		feedPartButton = new JButton("Dump Part in Feeder");
+		feedPartButton = new JButton("Feed part into feeder");
 		background = new ImageIcon("images/server.jpeg");
 		
-		feedPartButton.setPreferredSize(new Dimension(170, 30));
-		feedPartButton.setMaximumSize(new Dimension(170, 30));
-		feedPartButton.setMinimumSize(new Dimension(170, 30));
+		feedPartButton.setPreferredSize(new Dimension(150, 30));
+		feedPartButton.setMaximumSize(new Dimension(150, 30));
+		feedPartButton.setMinimumSize(new Dimension(150, 30));
 		feedPartButton.setAlignmentX(CENTER_ALIGNMENT);
 		feedPartButton.setActionCommand("Feed Feeder");
 		    
@@ -60,6 +60,7 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		laneSelectBox.setPreferredSize(new Dimension(100, 30));
 		laneSelectBox.setMaximumSize(new Dimension(100, 30));
 		laneSelectBox.setMinimumSize(new Dimension(100, 30));
+		
 		add(Box.createRigidArea(new Dimension(0, 130)),"");
 		add(laneSelectBox);
 		add(Box.createRigidArea(new Dimension(0, 20)),"");

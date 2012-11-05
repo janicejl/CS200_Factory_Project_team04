@@ -3,6 +3,7 @@ package server;
 import java.net.*;
 import java.util.Vector;
 import java.util.Scanner;
+import java.util.Vector;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.awt.*;
@@ -37,6 +38,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	LaneManagerProtocol lanePro;
 	PartsRobotProtocol partsPro;
 	
+
 	PartsRobot partsRobot;
 	PartsRobotAgent partsRobotAgent;
 	Vector<NestAgent> nests = new Vector<NestAgent>();
@@ -46,7 +48,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	KitConveyorAgent kitConveyorAgent;
 	KitAssemblyManager kitAssemblyManager;
 	KitRobot kitRobot; //kit assembly robot
-	
+
 	FeederAgent feeder1;
 	FeederAgent feeder2;
 	FeederAgent feeder3;
@@ -62,8 +64,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	GantryAgent gantry1;
 	GantryAgent gantry2;
 	GantryControllerAgent gantryController;
+
 	Vector<Lane> lanes;
-	
+
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
 	
@@ -112,7 +115,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantry2.setGantryController(gantryController);
 		gantryController.msgGantryAdded(gantry1);
 		gantryController.msgGantryAdded(gantry2);**/
-		
+
 		lanes = new Vector<Lane>();
 		lanes.add(new Lane(600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(600,60)); 
@@ -140,34 +143,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		new Thread(kitAssemblyManager).start();
         new Thread(kitRobot).start();
         
-        
-        NestAgent nest1 = new NestAgent(1,this);
-        NestAgent nest2 = new NestAgent(2,this);
-        NestAgent nest3 = new NestAgent(3,this);
-        NestAgent nest4 = new NestAgent(4,this);
-        NestAgent nest5 = new NestAgent(5,this);
-        NestAgent nest6 = new NestAgent(6,this);
-        NestAgent nest7 = new NestAgent(7,this);
-        NestAgent nest8 = new NestAgent(8,this);
-        nests.add(nest1);
-        nests.add(nest2);
-        nests.add(nest3);
-        nests.add(nest4);
-        nests.add(nest5);
-        nests.add(nest6);
-        nests.add(nest7);
-        nests.add(nest8);
-        for(NestAgent nest: nests)
-        {
-        	nest.startThread();
-        }
-
-        
-        partsRobotAgent = new PartsRobotAgent(nests, kitStandAgent, this);
-        for(NestAgent nest : nests)
-        {
-        	nest.setPartsRobotAgent(partsRobotAgent);
-        }
+        partsRobotAgent = new PartsRobotAgent(kitStandAgent, this);
 		partsRobotAgent.startThread();
         	partsRobot = new PartsRobot();
         new Thread(partsRobot).start();
@@ -227,6 +203,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		
 		
 	}
 	
@@ -293,12 +271,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		else if(phase.equals(1)){
 			remove(kitTest);
-		}
-		else if(phase.equals(2)){
-			remove(partsTest);
-		}
-		else if(phase.equals(3)){
-			remove(laneTest);
 		}
 	}
 	
@@ -404,6 +376,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public synchronized void setPartsRobotAgent(PartsRobotAgent partsRobotAgent) {
 		this.partsRobotAgent = partsRobotAgent;
 	}
+
 
 	public synchronized NestAgent getNestAgent(int index)
 	{

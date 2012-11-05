@@ -50,8 +50,8 @@ public class Lane implements ActionListener, Serializable{
 		nestFull = false;
 		queueFull = false;		
 		/*importList.add(new Part("1"));
-		importList.add(new Part("2"));
-	    importList.add(new Part("3"));*/
+		importList.add(new Part("2"));*/
+	    importList.add(new Part("3"));
 	    for(int i = 0; i < importList.size(); i++) {
 	    	importList.get(i).setX(width-80);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
@@ -90,12 +90,13 @@ public class Lane implements ActionListener, Serializable{
     public void releasePart() {
     	if(importList.size() != 0) {
 			itemList.add(importList.remove(0));
+			System.out.println("release!");
 		}
-    	System.out.println("release!");
     }
     
     public void addPart(Part part) {
     	importList.add(part);
+    	System.out.println("hi");
     }
     
 }  

@@ -8,6 +8,12 @@ public class Part implements Serializable{
 	private double x;
 	private double y;
 
+	public void copy(Part p){
+		id = p.getID();
+		x = p.getX();
+		y = p.getY();
+	}
+	
 	public Part(String name) {
 		id = name;
 		x = 0;

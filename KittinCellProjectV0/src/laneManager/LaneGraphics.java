@@ -107,9 +107,17 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     public void setVibration() { //Unimplimented
     	System.out.println("Unimplemented");
     }
+    
+    public void feedItem(int lane){
+    	lanes.get(lane).addPart(new Part("" + lane));
+    }
       
     public void releaseItem(int lane) {
     	lanes.get(lane).releasePart();
+    }
+    
+    public void removeItem(int lane){
+    	lanes.get(lane).releaseQueue();
     }
     
     public synchronized void setLanes(Vector<Lane> _lanes) {

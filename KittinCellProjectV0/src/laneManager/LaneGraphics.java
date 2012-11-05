@@ -91,8 +91,16 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 		for (int i = 0; i < lanes.size(); i++) {
 			if(i < 4) //only four nests
 				gFeeders.get(i).paintNest(g2);
-			for (int j = 0; j < lanes.get(i).getItemList().size(); j++) 
-				g2.fill(new Ellipse2D.Double(lanes.get(i).getItemList().get(j).getX(),lanes.get(i).getItemList().get(j).getY(),20,20));
+			for (int j = 0; j < lanes.get(i).getItemList().size(); j++){
+				BufferedImage p;
+				try {
+					p = ImageIO.read(new File("images/" + lanes.get(i).getItemList().get(j).getID() + ".png"));
+					g2.drawImage(p, (int)lanes.get(i).getItemList().get(j).getX(), (int)lanes.get(i).getItemList().get(j).getY(), null);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+				//g2.fill(new Ellipse2D.Double(lanes.get(i).getItemList().get(j).getX(),lanes.get(i).getItemList().get(j).getY(),20,20));
 		}
     }
     

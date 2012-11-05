@@ -221,9 +221,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Check Kit 2")){
     		getKitRobot().addCommand("load,2,5");
     	}
-    	else if(process.equals("Take Picture")){
-    		
-    	}
+    	
     	else if(process.equals("Remove Finished")){
     		getKitRobot().addCommand("load,5,6");
     	}
@@ -245,7 +243,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		partsRobot.takePicture(295, 100 + 100*((num)/2));
     	}
     	else if(process.equals("Feed Feeder")){
-    		lanes.get(num).addPart(new Part("p"+num));
+    		Part temp = new Part("" + num);
+    		lanes.get(num).addPart(new Part("" + num));
     	}
     	else if(process.equals("Feed Lane")){
     		lanes.get(num).releasePart();

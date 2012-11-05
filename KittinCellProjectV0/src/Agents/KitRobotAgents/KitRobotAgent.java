@@ -73,11 +73,11 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 				return;	
 			}
 		}
-		
 	}
 	
 	public void msgMoveKitToInspection(int i)
 	{
+		System.out.println("Move to inspection " + i);
 		System.out.println("KitRobot: move kit to inspection");
 		for(KitHolder kit_h:kit_list)
 		{
@@ -92,6 +92,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	//telling where to place a kit
 	public void msgPlaceKitAtPosition(int position)
 	{
+		System.out.println("Place kit at position" + position);
 		System.out.println("KitRobot: place kit an position");
 		event_list.add(KitRobotEvent.CanPlaceKit);
 		KitHolder kit_h = new KitHolder();
@@ -201,6 +202,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	{
 		server.execute("Remove Finished");
 		System.out.println("KitRobot: Finished a kit!");
+		kit_stand.msgKitRemovedFromInspection();
 		kit_conveyor.msgHereIsFinishedKit(kit.kit);
 		kit_list.remove(kit);
 	}
@@ -210,13 +212,16 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		if(kit.position_on_stand  == 0)
 		{
 			server.execute("Check Kit 1");
+			kit_stand.msgKitMoved(kit.position_on_stand);
 		}
 		else
 		{
 			server.execute("Check Kit 2");
+			kit_stand.msgKitMoved(kit.position_on_stand);
 		}
 		kit.state = KitState.WaitingForInspection;
 		System.out.println("KitRobot: Moving kit to inspection");
+		
 	}
 	
 	

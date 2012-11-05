@@ -16,4 +16,9 @@ public interface KitStand {
 
 	void msgKitIsDone(int index);
 
+	void msgKitMoved(int i);
+
+	void msgKitRemovedFromInspection();
+
+
 }

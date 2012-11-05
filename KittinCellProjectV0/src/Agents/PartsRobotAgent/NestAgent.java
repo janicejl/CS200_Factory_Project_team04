@@ -1,6 +1,7 @@
 package Agents.PartsRobotAgent;
 
 import  Agent.*;
+import server.Server;
 import MoveableObjects.*;
 import MoveableObjects.Part.PartType;
 import Interface.PartsRobotAgent.*;
@@ -14,9 +15,8 @@ public class NestAgent extends Agent{
 	Lane lane;
 	Vision camera;
 	String name;
-	
-	//GUIObject gui;
-	
+	Server server;
+		
 	public int index;
 
 	private enum LaneStatus {hasPart, gettingParts, noAction}
@@ -40,6 +40,18 @@ public class NestAgent extends Agent{
 		}
 	}
 	
+	public NestAgent(int index,Server server)
+	{
+		this.lane = null;
+		this.camera = null;
+		this.index = index;
+		this.server = server;
+		name = "NestAgent " + index;
+		for(int i = 0; i<9; i++){
+			nestslots[i]=null;
+		}
+	}	
+
 	public void setPartsRobotAgent(PartsRobotAgent robot){
 		this.partsrobot = robot;
 	}
@@ -160,7 +172,7 @@ public class NestAgent extends Agent{
 	private void purgeNest(){
 		print("Purging");
 		//Animation Call
-		//gui.DoPurge(); // Run the purge animation
+		//server.DoPurge(); // Run the purge animation
 		
 		animationstate = AnimationStatus.purging;
 		for(int i = 0; i<9; i++)
@@ -179,6 +191,7 @@ public class NestAgent extends Agent{
 	{
 		print("I am full and need inspection");
 		neststate = NestStatus.noAction;
+		if(camera!= null)
 		camera.msgImFull(parttype,this);
 	}
 	
@@ -208,6 +221,7 @@ public class NestAgent extends Agent{
 	private void askForParts()
 	{
 		print("Please give me a part");
+		if(lane!= null)
 		lane.msgNeedThisPart (parttype);
 		partsrobotstate = PartsRobotStatus.waitingForParts;
 	}

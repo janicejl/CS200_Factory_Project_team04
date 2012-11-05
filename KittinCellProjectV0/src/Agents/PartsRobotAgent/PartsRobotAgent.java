@@ -91,6 +91,26 @@ public class PartsRobotAgent extends Agent{
 		}
 	}
 	
+	public PartsRobotAgent(List <NestAgent> nestagents, KitStand stand,Server server)
+	{
+		int index = 1;
+		for(NestAgent nest:nestagents)
+		{
+			MyNest mn = new MyNest(nest,index);
+			nests.add(mn);
+			index++;
+		}
+		camera = null;
+		kitstand = stand;
+		this.server = server;
+		kit1 = new MyKit(1);
+		kit2 = new MyKit(2);
+		for (int i = 0; i<4; i++)
+		{
+			grippers[i] = new Gripper();
+		}
+	}
+	
 	public PartsRobotAgent(List <NestAgent> nestagents, Vision visionagent, KitStand stand,Server server)
 	{
 		int index = 1;

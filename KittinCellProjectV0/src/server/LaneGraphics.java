@@ -1,12 +1,10 @@
-package laneManager;
+package server;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
-import server.Lane;
 
 import data.Part;
 import Feeder.*;

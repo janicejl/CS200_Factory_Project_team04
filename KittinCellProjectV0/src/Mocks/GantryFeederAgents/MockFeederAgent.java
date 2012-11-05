@@ -34,6 +34,11 @@ public class MockFeederAgent extends MockAgent implements Feeder {
 	}
 
 	@Override
+	public void msgHereAreParts(PartType p, int quantity) {
+		log.add(new LoggedEvent("msgHereAreParts received from GUI"));
+	}
+	
+	@Override
 	public void msgLaneIsFull(String laneName) {
 		log.add(new LoggedEvent("msgLaneIsFull received from lane " + laneName + "."));
 	}
@@ -42,7 +47,7 @@ public class MockFeederAgent extends MockAgent implements Feeder {
 	public void msgLaneIsReadyForParts(String laneName) {
 		log.add(new LoggedEvent("msgLaneIsReadyForParts received from lane " + laneName +"."));
 	}
-
+	
 	@Override
 	public void setGantry(Gantry g1) {
 		log.add(new LoggedEvent("Gantry " + g1.getName() + "set to gantry."));
@@ -59,5 +64,7 @@ public class MockFeederAgent extends MockAgent implements Feeder {
 	public void setGantryController(GantryController gc) {
 		this.gc = gc;
 	}
+
+	
 
 }

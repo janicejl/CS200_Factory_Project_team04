@@ -1,4 +1,4 @@
-package laneManager;
+package server;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
+
+import laneManager.LaneGraphics;
 import data.Part;
 
 public class Lane implements ActionListener {

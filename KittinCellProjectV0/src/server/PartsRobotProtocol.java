@@ -59,6 +59,9 @@ public class PartsRobotProtocol implements Runnable{
 				}
 				else if(command.equals("Update")){
 					app.getPartsRobot().setTakePicture(false);
+					for(int i = 0; i<4; i++){
+						app.getVisions().get(i).msgAnimationDone();
+					}
 				}
 			}
 			

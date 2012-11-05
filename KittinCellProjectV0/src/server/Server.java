@@ -1,6 +1,7 @@
 package server;
 
 import java.net.*;
+import java.util.concurrent.*;
 
 import java.util.Vector;
 import java.util.Scanner;
@@ -40,7 +41,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	LaneManagerProtocol lanePro;
 	PartsRobotProtocol partsPro;
 	
-
+	
 	PartsRobot partsRobot;
 	PartsRobotAgent partsRobotAgent;
 	Vector<NestAgent> nests = new Vector<NestAgent>();
@@ -48,6 +49,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	VisionAgent nestvisionagent2;
 	VisionAgent nestvisionagent3;
 	VisionAgent nestvisionagent4;
+	Vector<VisionAgent> visions = new Vector<VisionAgent>();
+	Semaphore flashpermit;
 	
 	KitRobotAgent kitRobotAgent; 
 	KitStandAgent kitStandAgent;
@@ -175,6 +178,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
         nestvisionagent2 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
         nestvisionagent3 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
         nestvisionagent4 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
+        
+        flashpermit = new Semaphore(1);
+        nestvisionagent1.setFlashPermit(flashpermit);
+        nestvisionagent2.setFlashPermit(flashpermit);
+        nestvisionagent3.setFlashPermit(flashpermit);
+        nestvisionagent4.setFlashPermit(flashpermit);
+        
         nests.get(0).setVisionAgent(nestvisionagent1);
         nests.get(1).setVisionAgent(nestvisionagent1);
         nests.get(2).setVisionAgent(nestvisionagent2);
@@ -183,7 +193,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
         nests.get(5).setVisionAgent(nestvisionagent3);
         nests.get(6).setVisionAgent(nestvisionagent4);
         nests.get(7).setVisionAgent(nestvisionagent4);
-        Vector <VisionAgent> visions = new Vector<VisionAgent>();
         visions.add(nestvisionagent1);
         visions.add(nestvisionagent2);
         visions.add(nestvisionagent3);
@@ -294,7 +303,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		}
     	}
     	else if(process.equals("Take Picture")){
-    		partsRobot.takePicture(320, 40 + 140*((num)/2));
+    		partsRobot.takePicture(320, 40 + 140*((num-1)/2));
     	}
     	else if(process.equals("Feed Feeder")){
     		Part temp = new Part("" + num);
@@ -443,5 +452,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public synchronized void setLanes(Vector<Lane> lanes) {
 		this.lanes = lanes;
 	}
-
+	public synchronized Vector<VisionAgent> getVisions(){
+		return this.visions;
+	}
 }

@@ -46,6 +46,15 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		new LaneManagerApp();	
 	}
+	
+
+	public synchronized ArrayList<Lane> getLanes() {
+		return laneGraphics.getLanes();
+	}
+
+	public synchronized void setLanes(ArrayList<Lane> lanes) {
+		this.laneGraphics.setLanes(lanes);
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		for (int i = 0; i < 8; i++)

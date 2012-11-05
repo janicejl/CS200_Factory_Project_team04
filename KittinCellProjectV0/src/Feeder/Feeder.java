@@ -92,4 +92,8 @@ public class Feeder implements Serializable{
 	public Vector<Part> getParts() {
 		return parts;
 	}
+
+	public synchronized void setPartAmount(double partAmount) {
+		this.partAmount = partAmount;
+	}
 }

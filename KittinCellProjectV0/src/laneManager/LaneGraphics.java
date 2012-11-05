@@ -66,6 +66,12 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
         }	
     }
     
+    public void updateGUIFeeders(){
+    	for(int i = 0; i < 4; i++){
+    		gFeeders.get(i).setFeeder(feeders.get(i));
+    	}
+    }
+    
     public void paintComponent(Graphics g) {
     	Graphics2D g2 = (Graphics2D)g;
 		g2.setColor(Color.LIGHT_GRAY);
@@ -136,6 +142,7 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 
 	public synchronized void setFeeders(Vector<Feeder> feeders) {
 		this.feeders = feeders;
+		updateGUIFeeders();
 	}
 
 	public void addPartToLane(int lane, Part part) {

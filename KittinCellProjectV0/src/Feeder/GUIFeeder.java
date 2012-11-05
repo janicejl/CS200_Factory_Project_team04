@@ -21,7 +21,7 @@ public class GUIFeeder {
 	public GUIFeeder(Feeder f){
 		feeder = f;
 		feederStatus = new Rectangle((int)feeder.getX() + 4, 
-					(int)feeder.getY() + 86,
+					(int)feeder.getY() + 130,
 					75, 10);
 		try {
 			image = ImageIO.read(new File("images/feeder.png"));
@@ -34,7 +34,6 @@ public class GUIFeeder {
 		double x = feeder.getX();
 		double y = feeder.getY();
 		int statusWidth;
-		
 		g2.drawImage(image, (int)x, (int)y, null);
 		g2.setColor(Color.ORANGE);
 		if (feeder.getPartAmount() > 0){
@@ -47,7 +46,7 @@ public class GUIFeeder {
 		g2.fill(feederStatus);
 		
 		Vector<GUIPart> parts = new Vector<GUIPart>();
-		for (int i = 0, j = 0; i < parts.size(); i++) {
+		for (int i = 0, j = 0; i < feeder.getPartAmount(); i++) {
 			feeder.getParts().get(i).setX(feeder.getX() + ((i % 4) * 25));		//25 = size of testing image parts. 
 			feeder.getParts().get(i).setY(feeder.getY()+ (j * 25));
 			
@@ -56,11 +55,18 @@ public class GUIFeeder {
 			}
 			
 			parts.add(new GUIPart(feeder.getParts().get(i)));
-			
 			parts.get(i).paintPart(g2);
 		}
 		
 		
+	}
+
+	public synchronized Feeder getFeeder() {
+		return feeder;
+	}
+
+	public synchronized void setFeeder(Feeder feeder) {
+		this.feeder = feeder;
 	}
 
 	

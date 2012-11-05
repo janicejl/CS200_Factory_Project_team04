@@ -14,6 +14,7 @@ import Agents.KitRobotAgents.KitRobotAgent;
 import Agents.KitRobotAgents.KitStandAgent;
 import Agents.PartsRobotAgent.NestAgent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
+import data.Part;
 
 public class Server extends JFrame implements Runnable, ActionListener{
 	
@@ -42,6 +43,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	KitRobot kitRobot; //kit assembly robot
 	
 	PartsRobot partsRobot;
+	
+	ArrayList<Lane> lanes;
 	
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
@@ -107,6 +110,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		partsRobotAgent.startThread();
         	partsRobot = new PartsRobot();
         new Thread(partsRobot).start();
+        
+        lanes = new ArrayList<Lane>();
 		
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");
@@ -204,10 +209,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		partsRobot.takePicture(295, 100 + 100*((num)/2));
     	}
     	else if(process.equals("Feed Feeder")){
-    		
+    		lanes.get(num).addPart(new Part("p"+num));
     	}
     	else if(process.equals("Feed Lane")){
-    		
+    		lanes.get(num).releasePart();
     	}
     	else if(process.equals("Feed Nest")){
     		
@@ -340,4 +345,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return nests.get(index);
 	}
 		
+	public synchronized ArrayList<Lane> getLanes() {
+		return lanes;
+	}
+
+	public synchronized void setLanes(ArrayList<Lane> lanes) {
+		this.lanes = lanes;
+	}
+
 }

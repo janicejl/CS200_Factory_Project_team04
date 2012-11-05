@@ -56,5 +56,17 @@ public class MockKitStandV0 extends Agent implements KitStand {
 		print("Removing kit at index" + index);
 		
 	}
+
+	@Override
+	public void msgKitMoved(int i) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgKitRemovedFromInspection() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

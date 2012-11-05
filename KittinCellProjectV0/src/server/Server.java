@@ -128,6 +128,23 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
 
+    	NestAgent nest1 = new NestAgent(1,this);
+    	NestAgent nest2 = new NestAgent(2,this);
+    	NestAgent nest3 = new NestAgent(3,this);
+    	NestAgent nest4 = new NestAgent(4,this);
+    	NestAgent nest5 = new NestAgent(5,this);
+    	NestAgent nest6 = new NestAgent(6,this);
+    	NestAgent nest7 = new NestAgent(7,this);
+    	NestAgent nest8 = new NestAgent(8,this);
+    	nests.add(nest1);
+    	nests.add(nest2);
+    	nests.add(nest3);
+    	nests.add(nest4);
+    	nests.add(nest5);
+    	nests.add(nest6);
+    	nests.add(nest7);
+    	nests.add(nest8);
+    	
 		kitRobotAgent = new KitRobotAgent(this);
 		kitStandAgent = new KitStandAgent(this); 
 		kitConveyorAgent = new KitConveyorAgent(this);
@@ -143,7 +160,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		new Thread(kitAssemblyManager).start();
         new Thread(kitRobot).start();
         
-        partsRobotAgent = new PartsRobotAgent(kitStandAgent, this);
+        partsRobotAgent = new PartsRobotAgent(nests, kitStandAgent, this);
+        for(NestAgent nest : nests){
+        	nest.setPartsRobotAgent(partsRobotAgent);
+        	nest.startThread();
+        }
 		partsRobotAgent.startThread();
         	partsRobot = new PartsRobot();
         new Thread(partsRobot).start();

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import server.Lane;
+
 import Feeder.Feeder;
 import Feeder.GUIFeeder;
 

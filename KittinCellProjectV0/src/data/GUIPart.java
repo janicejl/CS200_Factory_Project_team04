@@ -14,9 +14,9 @@ public class GUIPart {
 	public GUIPart (Part p) {
 		part = p;
 		try {
-			image = ImageIO.read(new File("graphics/" + p.getID() + ".png"));
+			image = ImageIO.read(new File("images/" + p.getID() + ".png"));
 			//image = new BufferedImage(i.getWidth(), i.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			System.out.println("Picture found.");
+			//System.out.println("Picture found.");
 		} catch (IOException e) {
 			System.out.println("Picture not found.");
 			e.printStackTrace();

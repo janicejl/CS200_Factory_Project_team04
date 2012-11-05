@@ -39,7 +39,7 @@ public class PartsRobot implements Runnable, Serializable{
     Vector<String> subCommands;
     Vector<String> nestLocations;
     Vector<String> kitLocations;
-    int[] nl = {125,175,225,275,325,375,425,475};
+    int[] nl = {55,125,195,265,335,405,475,545};
     int[] kl = {190,410};
 
     public PartsRobot(){

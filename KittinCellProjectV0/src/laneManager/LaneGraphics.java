@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import server.Lane;
 
+import data.GUIPart;
 import data.Part;
 import Feeder.*;
 import java.io.File;
@@ -75,7 +76,9 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 		            }
 		        }
 		}
-			
+		
+		
+		
         for(int i = -1; i < 40; i++){ // main conveyor images
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(0).intValue(),20,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(1).intValue(),90,null); // empty conveyor   
@@ -91,14 +94,11 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 		for (int i = 0; i < lanes.size(); i++) {
 			if(i < 4) //only four nests
 				gFeeders.get(i).paintNest(g2);
+			Vector<GUIPart> guiPart = new Vector<GUIPart>();
 			for (int j = 0; j < lanes.get(i).getItemList().size(); j++){
-				BufferedImage p;
-				try {
-					p = ImageIO.read(new File("images/" + lanes.get(i).getItemList().get(j).getID() + ".png"));
-					g2.drawImage(p, (int)lanes.get(i).getItemList().get(j).getX(), (int)lanes.get(i).getItemList().get(j).getY(), null);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				guiPart.add(new GUIPart(lanes.get(i).getItemList().get(j)));
+				guiPart.get(j).paintPart(g2);
+				//g2.drawImage(p, (int)lanes.get(i).getItemList().get(j).getX(), (int)lanes.get(i).getItemList().get(j).getY(), null);
 			}
 				//g2.fill(new Ellipse2D.Double(lanes.get(i).getItemList().get(j).getX(),lanes.get(i).getItemList().get(j).getY(),20,20));
 		}
@@ -107,9 +107,17 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     public void setVibration() { //Unimplimented
     	System.out.println("Unimplemented");
     }
+    
+    public void feedItem(int lane){
+    	lanes.get(lane).addPart(new Part("" + lane));
+    }
       
     public void releaseItem(int lane) {
     	lanes.get(lane).releasePart();
+    }
+    
+    public void removeItem(int lane){
+    	lanes.get(lane).releaseQueue();
     }
     
     public synchronized void setLanes(Vector<Lane> _lanes) {

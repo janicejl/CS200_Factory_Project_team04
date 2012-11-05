@@ -67,8 +67,6 @@ public class PartsManagerClient implements Runnable {
 				out.writeObject(commandSent);
 				out.reset();
 				if(commandSent.equals("Update")){
-					out.writeObject(app.getKamPanel().getPartsRobot().getTakePicture());
-					out.reset();
 					commandSent = "Received";
 				}
 				

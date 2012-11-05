@@ -66,6 +66,7 @@ public class Lane implements ActionListener, Serializable{
 		    	}	    	
 		    	else {
 		    	///NEST ALGORITHM HERE!////
+		    		itemList.get(i).setDestination(true);
 		    	}
 	    	}
 	    } //Queue first, dont nest yet!
@@ -90,12 +91,23 @@ public class Lane implements ActionListener, Serializable{
     public void releasePart() {
     	if(importList.size() != 0) {
 			itemList.add(importList.remove(0));
+			System.out.println("release!");
 		}
-    	System.out.println("release!");
     }
     
     public void addPart(Part part) {
+    	part.setX(maxX-80);
+    	part.setY(maxY/2 + verticalSpacing);
     	importList.add(part);
+    	System.out.println("hi");
     }
     
+    public Part releaseQueue(){
+    	if(itemList.size() != 0){
+    		if(itemList.get(0).getDestination() == true){
+    			return itemList.remove(0);	
+    		}
+    	}
+    	return null;
+    }
 }  

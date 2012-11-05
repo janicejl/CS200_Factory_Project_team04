@@ -70,6 +70,7 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		add(Box.createRigidArea(new Dimension(0, 20)),"");
 		add(feedNestButton);
 		
+		feedPartButton.addActionListener(this);
 		feedLaneButton.addActionListener(this);
 		feedNestButton.addActionListener(this);
 		

@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import Feeder.Feeder;
+
 import server.Lane;
 
 public class LaneManagerClient implements Runnable {
@@ -63,6 +65,7 @@ public class LaneManagerClient implements Runnable {
 			commandSent = "Received";
 			while(true){
 				app.setLanes((Vector<Lane>)in.readObject());
+				app.getLaneGraphics().setFeeders((Vector<Feeder>)in.readObject());
 				out.writeObject(commandSent);
 				out.reset();
 			}

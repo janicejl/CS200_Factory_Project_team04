@@ -25,6 +25,7 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 	private Vector<Double> emptyConveyorMoveList;
 	private BufferedImage conveyorImage; 
 	private Vector<GUIFeeder> gFeeders;
+	private Vector<Feeder> feeders = new Vector<Feeder>();
 	
     public LaneGraphics() {
     	lanes.add(new Lane(600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
@@ -54,7 +55,8 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	}
     	
     	for (int i = 0; i < 4; i++) {
-    		gFeeders.add(new GUIFeeder(new Feeder(525,20 + i*140)));
+    		feeders.add(new Feeder(525,20 + i*140));
+    		gFeeders.add(new GUIFeeder(feeders.get(i)));
     	}
 		
 		try {
@@ -126,6 +128,14 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     
 	public synchronized Vector<Lane> getLanes() {
 		return lanes;
+	}
+
+	public synchronized Vector<Feeder> getFeeders() {
+		return feeders;
+	}
+
+	public synchronized void setFeeders(Vector<Feeder> feeders) {
+		this.feeders = feeders;
 	}
 
 	public void addPartToLane(int lane, Part part) {

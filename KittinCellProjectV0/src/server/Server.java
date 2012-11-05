@@ -22,6 +22,7 @@ import Agents.KitRobotAgents.KitStandAgent;
 import Agents.PartsRobotAgent.NestAgent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
 import Agents.VisionAgent.VisionAgent;
+import Feeder.Feeder;
 import data.Part;
 
 public class Server extends JFrame implements Runnable, ActionListener{
@@ -74,6 +75,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	GantryAgent gantry2;
 	GantryControllerAgent gantryController;
 
+	Vector<Feeder> feeders;
 	Vector<Lane> lanes;
 
 	Timer timer; //timer for server
@@ -125,6 +127,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryController.msgGantryAdded(gantry1);
 		gantryController.msgGantryAdded(gantry2);**/
 
+		feeders = new Vector<Feeder>();
+		for(int i = 0; i < 4; i++){
+			feeders.add(new Feeder(525,20 + i*140));
+		}
 		lanes = new Vector<Lane>();
 		lanes.add(new Lane(600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(600,60)); 
@@ -454,5 +460,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	}
 	public synchronized Vector<VisionAgent> getVisions(){
 		return this.visions;
+	}
+
+	public synchronized Vector<Feeder> getFeeders() {
+		return feeders;
+	}
+
+	public synchronized void setFeeders(Vector<Feeder> feeders) {
+		this.feeders = feeders;
 	}
 }

@@ -71,6 +71,8 @@ public class LaneManagerProtocol implements Runnable{
 			while(true){
 				out.writeObject(app.getLanes());
 				out.reset();
+				out.writeObject(app.getFeeders());
+				out.reset();
 				command = (String)in.readObject();
 				if(command.equals("Received")){
 					

@@ -1,12 +1,13 @@
 package Feeder;
 
+import java.io.Serializable;
 import java.util.*;
 
 import data.Part;
 
 
 
-public class Feeder {
+public class Feeder implements Serializable{
 	
 	private double x;
 	private double y;

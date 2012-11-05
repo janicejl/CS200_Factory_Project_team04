@@ -95,6 +95,8 @@ public class Lane implements ActionListener, Serializable{
     }
     
     public void addPart(Part part) {
+    	part.setX(maxX-80);
+    	part.setY(maxY/2 + verticalSpacing);
     	importList.add(part);
     	System.out.println("hi");
     }

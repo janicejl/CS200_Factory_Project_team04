@@ -1,7 +1,12 @@
+package Agents.PartsRobotAgent;
+
 import java.util.*;
 import java.util.concurrent.*;
+import MoveableObjects.*;
+import Agents.KitRobotAgents.*;
+import server.Server;
 
-import agent.Agent;
+import Agent.Agent;
 
 public class VisionAgent extends Agent {
 	
@@ -34,6 +39,7 @@ public class VisionAgent extends Agent {
 	PartsRobotAgent partsRobotAgent;
 	NestAgent nest1;
 	NestAgent nest2;
+	Server server;
 	
 	boolean approved;
 	
@@ -49,6 +55,9 @@ public class VisionAgent extends Agent {
 		initializeVisionAgent(type);
 	}
 	
+	public VisionAgent (Server server){
+		
+	}
 	
 	/////////////////////////////////////////////////////////////
 	/** MESSAGES **/
@@ -93,7 +102,7 @@ public class VisionAgent extends Agent {
 	}
 	
 	private void takePicture() {
-		DoTakePicture();
+		//DoTakePicture();
 		state = state.PICTURE_TAKEN;
 		stateChanged();
 	}
@@ -129,7 +138,7 @@ public class VisionAgent extends Agent {
 		boolean nest2Approved=false;
 		
 		// nest1.getPartType should return the string of the name that the nest should hold
-		if (nest1.getPartType() == fullNestsPartsList.at( nest1.getNumber()).partType ) {
+		if (nest1.getPartType() == fullNestsPartsList.get( nest1.getNumber()).type ) {
 			nest1Approved=true;
 		}
 		else {
@@ -137,8 +146,8 @@ public class VisionAgent extends Agent {
 			nest1.msgBadParts();
 		}
 				
-		if (nest2.getPartType() == fullNestsPartsList.at( nest2.getNumber()).partType ) { 
-			nest2Aproved=true;
+		if (nest2.getPartType() == fullNestsPartsList.get( nest2.getNumber()).type ) { 
+			nest2Approved=true;
 		}
 		else {
 			nest2Approved=false;
@@ -157,8 +166,8 @@ public class VisionAgent extends Agent {
 	private void approveOrDenyParts() {
 		if (type==Type.NESTS_INSPECTOR) {
 			if (approved) {
-				partsRobotAgent.msgPartsApproved(nest1);
-				partsRobotAgent.msgPartsApproved(nest2);
+				partsRobotAgent.msgPartsApproved(nest1.index);
+				partsRobotAgent.msgPartsApproved(nest2.index);
 			}
 /*			else {
 				// nestAgent.msgBadParts();

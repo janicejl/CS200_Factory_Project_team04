@@ -1,6 +1,7 @@
 package server;
 
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -11,6 +12,7 @@ import javax.swing.*;
 import Agents.KitRobotAgents.KitConveyorAgent;
 import Agents.KitRobotAgents.KitRobotAgent;
 import Agents.KitRobotAgents.KitStandAgent;
+import Agents.PartsRobotAgent.NestAgent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
 
 public class Server extends JFrame implements Runnable, ActionListener{
@@ -31,6 +33,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	PartsRobotProtocol partsPro;
 	
 	PartsRobotAgent partsRobotAgent;
+	ArrayList<NestAgent> nests = new ArrayList<NestAgent>();
 	
 	KitRobotAgent kitRobotAgent; 
 	KitStandAgent kitStandAgent;
@@ -73,7 +76,34 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		new Thread(kitAssemblyManager).start();
         new Thread(kitRobot).start();
         
-        partsRobotAgent = new PartsRobotAgent(kitStandAgent, this);
+        
+        NestAgent nest1 = new NestAgent(1,this);
+        NestAgent nest2 = new NestAgent(2,this);
+        NestAgent nest3 = new NestAgent(3,this);
+        NestAgent nest4 = new NestAgent(4,this);
+        NestAgent nest5 = new NestAgent(5,this);
+        NestAgent nest6 = new NestAgent(6,this);
+        NestAgent nest7 = new NestAgent(7,this);
+        NestAgent nest8 = new NestAgent(8,this);
+        nests.add(nest1);
+        nests.add(nest2);
+        nests.add(nest3);
+        nests.add(nest4);
+        nests.add(nest5);
+        nests.add(nest6);
+        nests.add(nest7);
+        nests.add(nest8);
+        for(NestAgent nest: nests)
+        {
+        	nest.startThread();
+        }
+
+        
+        partsRobotAgent = new PartsRobotAgent(nests, kitStandAgent, this);
+        for(NestAgent nest : nests)
+        {
+        	nest.setPartsRobotAgent(partsRobotAgent);
+        }
 		partsRobotAgent.startThread();
         	partsRobot = new PartsRobot();
         new Thread(partsRobot).start();
@@ -305,5 +335,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public synchronized void setPartsRobotAgent(PartsRobotAgent partsRobotAgent) {
 		this.partsRobotAgent = partsRobotAgent;
 	}
-
+	public synchronized NestAgent getNestAgent(int index)
+	{
+		return nests.get(index);
+	}
+		
 }

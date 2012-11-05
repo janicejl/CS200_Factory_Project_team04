@@ -130,20 +130,21 @@ public class GUIPartsRobot{
         if(takePicture){
             // System.out.println(takePicture);
             opacity = (float)Math.exp(flashCounter) - 1;
-            System.out.println(opacity);
+            //System.out.println(opacity);
             if(opacity > 1){
                 flashUp = false;
                 flashDown = true;
-                opacity = (float)0.99;
-                System.out.println("hit");
+                opacity = (float)0.98;
+                //System.out.println("hit");
             }
             if(flashUp){
                 flashCounter += 0.15;
             }
             else if (flashDown){
-                System.out.println("down");
-                flashCounter -= 0.007;
-                if(opacity < 0){
+                //System.out.println("down");
+                flashCounter -= 0.01;
+                if(opacity < 0.05){
+                	opacity = 0f;
                     takePicture = false;
                     server.getPartsClient().setCommandSent("Update");
                     flashCounter = 1;

@@ -32,6 +32,10 @@ public class VisionAgent extends Agent {
 	enum State {IDLE, SCHEMATIC_RECEIVED, READY_TO_TAKE_PICTURE, PICTURE_TAKEN};
 	enum Type {NESTS_INSPECTOR, KIT_INSPECTOR};
 	
+	Semaphore flashpermit; //Hack because CS200 team's picture animation can only take 1 picture at a time. We realize that the fact
+	//that all the visionagents share this semaphore violates the no-shared data rule but due to the limitations of the gui
+	//this was the most elegant solution
+	
 	State state;
 	Type type;
 	
@@ -83,7 +87,6 @@ public class VisionAgent extends Agent {
 		// i can do this differently if we later decide not to do this, but this makes it easier for me to organize parts
 		
 		fullNestsMap.put(nest.getNumber(), nest);
-		print("Need to check nest " + nest.getNumber());
 		stateChanged();
 	}
 	
@@ -94,6 +97,13 @@ public class VisionAgent extends Agent {
 		state = State.READY_TO_TAKE_PICTURE;
 		stateChanged();
 	}
+	
+	//sent by GUI
+	public void msgAnimationDone(){
+		flashpermit.drainPermits();
+		flashpermit.release();
+	}
+	
 	
 	/////////////////////////////////////////////////////////////
 	/** ACTIONS**/
@@ -109,9 +119,18 @@ public class VisionAgent extends Agent {
 	}
 	
 	private void takePicture() {
-		//server.execute("Take Picture",nest2.index/2);
-		state = state.PICTURE_TAKEN;
-		print ("taking a picture at " + nest2.index / 2);
+		
+		try{
+		flashpermit.acquire();
+		}catch (InterruptedException e){
+			print("error with flashpermit");
+		}
+		server.execute("Take Picture", nest2.index);
+
+		print ("taking a picture at " + nest2.index);
+		
+		state = State.PICTURE_TAKEN;
+
 		stateChanged();
 	}
 	
@@ -149,7 +168,6 @@ public class VisionAgent extends Agent {
 		boolean nest1Approved=false;
 		boolean nest2Approved=false;
 		
-		print("Test: " + nest1.getPartType() + fullNestsPartsList.get( nest1.getNumber()-1));
 		// nest1.getPartType should return the string of the name that the nest should hold
 		if (nest1.getPartType() == fullNestsPartsList.get( nest1.getNumber()-1) ) {
 			nest1Approved=true;
@@ -242,6 +260,9 @@ public class VisionAgent extends Agent {
 		}
 		
 		return false;
+	}
+	public void setFlashPermit(Semaphore flashpermit){
+		this.flashpermit = flashpermit;
 	}
 	
 	/////////////////////////////////////////////////////////////

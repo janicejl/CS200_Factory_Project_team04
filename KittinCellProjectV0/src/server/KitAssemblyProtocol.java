@@ -35,6 +35,7 @@ public class KitAssemblyProtocol implements Runnable{
 			command = (String)in.readObject();
 			if(!command.equals("KitAssembly")){
 				commandSent = "Denied";
+				System.exit(1);
 			}
 			//confirm phase
 			out.writeObject(commandSent);

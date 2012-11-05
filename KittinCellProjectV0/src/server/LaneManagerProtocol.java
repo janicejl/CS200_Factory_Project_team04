@@ -31,6 +31,11 @@ public class LaneManagerProtocol implements Runnable{
 
 	public void run(){
 		try {
+			command = (String)in.readObject();
+			if(!command.equals("Lane Manager")){
+				commandSent = "Denied";
+				System.exit(1);
+			}			
 			//confirm phase
 			out.writeObject("Confirmed");
 			out.reset();

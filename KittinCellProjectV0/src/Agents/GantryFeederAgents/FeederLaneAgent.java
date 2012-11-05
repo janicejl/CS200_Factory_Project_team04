@@ -3,6 +3,8 @@ package Agents.GantryFeederAgents;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import server.Server;
+
 import Agent.Agent;
 import Interface.GantryFeederAgent.Feeder;
 import Interface.GantryFeederAgent.FeederLane;
@@ -11,17 +13,19 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 
 	//Data
 	String name;
+	int number;
 	int quantity;
 	int maxQuantity;
-	Timer t;
 	Feeder feeder;
+	Server app;
 	
 	enum FeederState{feeding, stopped, pending};
 	FeederState state;
 	
-	public FeederLaneAgent(String name, Feeder f1){
+	public FeederLaneAgent(String name, int number, Server app){
 		this.name = name;
-		this.feeder = f1;
+		this.number = number;
+		this.app = app;
 	}
 	
 	//Messages
@@ -34,6 +38,7 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 	}
 
 	@Override
+	//Received from GUI
 	public void msgRemovePart() {
 		quantity --;
 		stateChanged();
@@ -49,10 +54,6 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 		}
 		else if(state == FeederState.stopped && quantity < maxQuantity){
 			StartFeeder();
-			return true;
-		}
-		else if(quantity < 0){
-			RemoveParts();
 			return true;
 		}
 		return false;
@@ -71,11 +72,6 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 		state = FeederState.pending;
 	}
 	
-	private void RemoveParts(){
-		t.schedule(new TimerTask(){public void run(){msgRemovePart();}}, 5000);
-	}
-
-	
 	//Extra
 	
 	@Override
@@ -86,6 +82,14 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 	@Override
 	public String getName() {
 		return this.name;
+	}
+	
+	public void setFeeder(Feeder f1){
+		this.feeder = f1;
+	}
+	
+	public int getNumber(){
+		return this.number;
 	}
 	
 }

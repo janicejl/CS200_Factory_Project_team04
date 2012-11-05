@@ -6,6 +6,8 @@ import java.util.Vector;
 
 import javax.swing.*;
 
+import server.Lane;
+
 import Feeder.Feeder;
 import Feeder.GUIFeeder;
 
@@ -54,9 +56,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		new LaneManagerApp();	
 	}
-<<<<<<< HEAD
 	
-
 	public synchronized Vector<Lane> getLanes() {
 		return laneGraphics.getLanes();
 	}
@@ -64,8 +64,6 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	public synchronized void setLanes(Vector<Lane> lanes) {
 		this.laneGraphics.setLanes(lanes);
 	}
-=======
->>>>>>> 18b50bf303ad079eeac2cea8c9958da7f2991fe0
 
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == connect){

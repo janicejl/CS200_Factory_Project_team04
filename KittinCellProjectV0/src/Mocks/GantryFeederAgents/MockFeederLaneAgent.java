@@ -29,4 +29,10 @@ public class MockFeederLaneAgent extends MockAgent implements FeederLane {
 		log.add(new LoggedEvent("maxQuantity updated to " + quantity + "."));
 	}
 
+	@Override
+	public int getNumber() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

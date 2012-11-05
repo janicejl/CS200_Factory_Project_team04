@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import server.Lane;
+
 import data.Part;
 import Feeder.*;
 import java.awt.event.*;
@@ -110,13 +112,8 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	lanes.get(lane).releasePart();
     }
     
-<<<<<<< HEAD
     public synchronized void setLanes(Vector<Lane> _lanes) {
 		this.lanes = _lanes;
-=======
-    public synchronized void setLanes(ArrayList<Lane> lanes) {
-		this.lanes = lanes;
->>>>>>> 18b50bf303ad079eeac2cea8c9958da7f2991fe0
 	}
     
 	public synchronized Vector<Lane> getLanes() {

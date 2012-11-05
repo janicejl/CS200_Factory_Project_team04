@@ -1,5 +1,6 @@
 package Agents.GantryFeederAgents;
 
+import server.Server;
 import Agent.Agent;
 import Interface.GantryFeederAgent.Feeder;
 import Interface.GantryFeederAgent.FeederLane;
@@ -16,16 +17,18 @@ public class FeederAgent extends Agent implements Feeder {
 	PartType requestedPart = PartType.none;
 	int partsInFeeder = 0;
 	int lowParts;
+	int number;
 	Bin myBin;
 	
 	
-	enum FeederState{feeding, low, waitingLane, purging, waitingGantry};
+	enum FeederState{feeding, low, waitingLane, purging, waitingGantry, beingFed};
 	FeederState fstate = FeederState.waitingGantry;
 	
 	MyLane left;
 	MyLane right;
 	Gantry gantry;
-	GantryController gc; 
+	GantryController gc;
+	Server app;
 	
 	private class MyLane{
 		FeederLane fLane1;
@@ -39,12 +42,14 @@ public class FeederAgent extends Agent implements Feeder {
 		}
 	}
 	
-	public FeederAgent(String name, int lowParts, FeederLane left, FeederLane right){
+	public FeederAgent(String name, int lowParts, FeederLane left, FeederLane right, int number, Server app){
 		this.name = name;
 		this.lowParts = lowParts;
 		this.gantry = null;
 		this.left = new MyLane(left);
 		this.right = new MyLane(right);
+		this.number = number;
+		this.app = app;
 	}
 	
 	//Messages
@@ -75,7 +80,15 @@ public class FeederAgent extends Agent implements Feeder {
 		currentPart = bin.getPartType();
 		partsInFeeder = bin.getQuantity();
 		myBin = bin;
-		fstate = FeederState.waitingLane;	
+		fstate = FeederState.beingFed;	
+		stateChanged();
+	}
+	
+	//will be from GUI
+	public void msgHereAreParts(PartType part, int quantity){
+		currentPart = part;
+		partsInFeeder = quantity;
+		fstate = FeederState.beingFed;
 		stateChanged();
 	}
 
@@ -114,6 +127,11 @@ public class FeederAgent extends Agent implements Feeder {
 			return true;
 		}
 		
+		if(fstate == FeederState.beingFed){
+			FeedFeeder();
+			return true;
+		}
+		
 		if(fstate == FeederState.waitingLane || fstate == FeederState.low){
 			if(currentPart == left.partWanted && left.readyForParts){
 				FeedParts(true);
@@ -146,11 +164,13 @@ public class FeederAgent extends Agent implements Feeder {
 			left.fLane1.msgHereIsAPart();
 			partsInFeeder --;
 			//DoGiveLeftLaneAPart();
+			app.execute("Feed Lane", left.fLane1.getNumber());
 		}
 		else{
 			right.fLane1.msgHereIsAPart();
 			partsInFeeder--;
 			//DoGiveRightLaneAPart();
+			app.execute("Feed Lane", right.fLane1.getNumber());
 		}
 	}
 	
@@ -170,6 +190,12 @@ public class FeederAgent extends Agent implements Feeder {
 		gantry.msgReadyForParts();
 		fstate = FeederState.waitingGantry;
 		
+	}
+	
+	private void FeedFeeder(){
+		//DoFeedFeeder();
+		app.execute("Feed Feeder", number);
+		fstate = FeederState.waitingLane;
 	}
 	
 	

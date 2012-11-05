@@ -33,8 +33,9 @@ public class PartsRobotProtocol implements Runnable{
 	public void run(){
 		try {
 			command = (String)in.readObject();
-			if(!command.equals("KitAssembly")){
+			if(!command.equals("PartsRobot")){
 				commandSent = "Denied";
+				System.exit(1);
 			}			
 			//confirm phase
 			out.writeObject("Confirmed");

@@ -21,6 +21,7 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 	JButton feedLaneButton;
 	JButton feedNestButton;
 	JButton feedPartButton;
+	JButton exit;
 	
 	ImageIcon background;
 	
@@ -37,29 +38,40 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		feedLaneButton = new JButton("Feed Lane");
 		feedNestButton = new JButton("Feed Nest");
 		feedPartButton = new JButton("Feed part into feeder");
+		exit = new JButton("Exit");
 		background = new ImageIcon("images/server.jpeg");
 		
-		feedPartButton.setPreferredSize(new Dimension(150, 30));
-		feedPartButton.setMaximumSize(new Dimension(150, 30));
-		feedPartButton.setMinimumSize(new Dimension(150, 30));
+		feedPartButton.setPreferredSize(new Dimension(170, 25));
+		feedPartButton.setMaximumSize(new Dimension(170, 25));
+		feedPartButton.setMinimumSize(new Dimension(170, 25));
 		feedPartButton.setAlignmentX(CENTER_ALIGNMENT);
 		feedPartButton.setActionCommand("Feed Feeder");
-		    
-	    feedLaneButton.setPreferredSize(new Dimension(150, 30));
-	    feedLaneButton.setMaximumSize(new Dimension(150, 30));
-	    feedLaneButton.setMinimumSize(new Dimension(150, 30));
+		feedPartButton.addActionListener(this);
+		
+	    feedLaneButton.setPreferredSize(new Dimension(125, 25));
+	    feedLaneButton.setMaximumSize(new Dimension(125, 25));
+	    feedLaneButton.setMinimumSize(new Dimension(125, 25));
 	    feedLaneButton.setAlignmentX(CENTER_ALIGNMENT);
 	    feedLaneButton.setActionCommand("Feed Lane");
+	    feedLaneButton.addActionListener(this);
 	    
-	    feedNestButton.setPreferredSize(new Dimension(150, 30));
-	    feedNestButton.setMaximumSize(new Dimension(150, 30));
-	    feedNestButton.setMinimumSize(new Dimension(150, 30));
+	    feedNestButton.setPreferredSize(new Dimension(125, 25));
+	    feedNestButton.setMaximumSize(new Dimension(125, 25));
+	    feedNestButton.setMinimumSize(new Dimension(125, 25));
 	    feedNestButton.setAlignmentX(CENTER_ALIGNMENT);
 	    feedNestButton.setActionCommand("Feed Nest");
+	    feedNestButton.addActionListener(this);
+	     
+	    exit.setPreferredSize(new Dimension(125, 25));
+	    exit.setMaximumSize(new Dimension(125, 25));
+	    exit.setMinimumSize(new Dimension(125, 25));
+	    exit.setAlignmentX(CENTER_ALIGNMENT);
+	    exit.setActionCommand("Exit");
+	    exit.addActionListener(this);
 	    
-		laneSelectBox.setPreferredSize(new Dimension(100, 30));
-		laneSelectBox.setMaximumSize(new Dimension(100, 30));
-		laneSelectBox.setMinimumSize(new Dimension(100, 30));
+		laneSelectBox.setPreferredSize(new Dimension(100, 25));
+		laneSelectBox.setMaximumSize(new Dimension(100, 25));
+		laneSelectBox.setMinimumSize(new Dimension(100, 25));
 		
 		add(Box.createRigidArea(new Dimension(0, 130)),"");
 		add(laneSelectBox);
@@ -69,10 +81,8 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		add(feedLaneButton);
 		add(Box.createRigidArea(new Dimension(0, 20)),"");
 		add(feedNestButton);
-		
-		feedPartButton.addActionListener(this);
-		feedLaneButton.addActionListener(this);
-		feedNestButton.addActionListener(this);
+		add(Box.createRigidArea(new Dimension(0, 20)),"");
+		add(exit);
 		
 	}
 	
@@ -94,6 +104,9 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 	    else if("Feed Feeder".equals(ae.getActionCommand())){
 	    	server.execute("Feed Feeder", (int)laneSelectBox.getSelectedIndex());
 	    	//msg to MockLaneAgent
+	    }
+	    else if("Exit".equals(ae.getActionCommand())){
+	    	System.exit(1);
 	    }
 	}
 	

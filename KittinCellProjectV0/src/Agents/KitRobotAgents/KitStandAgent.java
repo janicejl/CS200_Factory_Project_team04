@@ -19,7 +19,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	
 	class KitHolder
 	{
-		
 		public Kit kit;
 		public KitState state;
 		public List<Part> parts_to_add;
@@ -30,17 +29,15 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 			parts_to_add = _parts;
 			state = KitState.None;
 		}
-		
 	}
-	
 
-	
-	enum KitStandEvent {IsEmptySpot, IsEmptyKit,RemoveKit};
-	
+	enum KitStandEvent {IsEmptySpot, IsEmptyKit,RemoveKit,KitRemoved};
 	List<KitStandEvent> stand_events = Collections.synchronizedList( new ArrayList<KitStandEvent>());
 	List<KitHolder> kit_holder_list =Collections.synchronizedList( new ArrayList<KitHolder>());
 	List<KitHolder> inpspection_list = Collections.synchronizedList( new ArrayList<KitHolder>());
-	enum KitState {BeingInspected,AddParts,Empty,None,KitFinished, NeedKit}
+
+	enum KitState {BeingInspected,AddParts,Empty,None,KitFinished, NeedKit, WaitinForInspectionQueueToClear}
+
 	PartsRobotAgent parts_robot;
 	KitRobot kit_robot;
 	Server server;
@@ -51,8 +48,14 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		server = _server;
 	}
 	
+
+	public void msgInspectionSlotIsClear()
+	{
+		stand_events.add(KitStandEvent.KitRemoved);
+		stateChanged();
+	}
 	
-	
+
 	public void msgCanIPlaceKit()
 	{
 		System.out.println("KitStand: Can a kit be placed?");
@@ -73,23 +76,20 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 				return;
 			}
 		}
-		
 	}
 	
 	public void msgKitIsDone(int position)
 	{
 		System.out.println("KitStand:: kit is done!");
-		System.out.println("Kit is done:" + position);
 		for(KitHolder kit_h:kit_holder_list)
 		{
-			
 			if(kit_h.position == position)
 			{
-				System.out.println("Kit is done in for loop:" + kit_h.position);
 				kit_h.state = KitState.KitFinished;
 				stateChanged();
 				return;
 			}
+			
 		}
 		System.out.println("Error at msgKitIsDone");
 	}
@@ -104,13 +104,13 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 			{
 				inpspection_list.add(kit_h);
 				kit_h.state = KitState.BeingInspected;
-				kit_holder_list.remove(kit_h);
-			
+				kit_holder_list.remove(0);
 				stateChanged();
 				return;
 	
 			}
 		}
+		
 		System.out.println("Error at msgKitMoved");
 	}
 	
@@ -177,6 +177,19 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 			}
 		}
 		
+		if(!stand_events.isEmpty())
+		{
+			for(KitStandEvent event:stand_events)
+			{
+				if(event == KitStandEvent.KitRemoved)
+				{
+					stand_events.remove(event);
+					CheckForQueuedFinishedKits();
+					return true;
+				}
+			}
+		}
+		
 
 		if(!stand_events.isEmpty())
 		{
@@ -237,12 +250,33 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	
 	//ACTIONS/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
+			
+	private void CheckForQueuedFinishedKits()
+	{
+		for(KitHolder kit_h:kit_holder_list)
+		{
+			if(kit_h.state == KitState.WaitinForInspectionQueueToClear)
+			{
+				kit_robot.msgMoveKitToInspection(kit_h.position);
+				kit_h.state = KitState.None;
+				return;
+			}
+		}
+	}
 	
 	private void MoveToBeInspected(KitHolder kit_h)
 	{
 		System.out.println("KitStand: Telling robot to move kit");
-		kit_robot.msgMoveKitToInspection(kit_h.position);
-		kit_h.state = KitState.None;
+		if(inpspection_list.size() == 0)
+		{
+			kit_robot.msgMoveKitToInspection(kit_h.position);
+			kit_h.state = KitState.None;
+		}
+		else
+		{
+			
+			kit_h.state = KitState.WaitinForInspectionQueueToClear;
+		}
 	}
 	
 	
@@ -257,6 +291,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	private void RemoveKit()
 	{
 		System.out.println("KitStand: Removing kit");
+		msgInspectionSlotIsClear();
 		inpspection_list.remove(0);		
 	}
 	
@@ -275,13 +310,11 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		{
 			if(kit.state == KitState.Empty)
 			{
-				System.out.println("Check empty kit " + kit.position);
 				parts_robot.msgEmptyKit(kit.position);
 			}
 		}
 		
 	}
-	
 	
 	//what do i message the robot
 	private void CheckEmptySpot()

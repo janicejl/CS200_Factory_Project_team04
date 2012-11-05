@@ -259,7 +259,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		    	b_ask_for_kit = true;
 		    	stateChanged();
 		    }
-		}, (rn.nextInt(5000)+5000));
+		}, (rn.nextInt(1000)+1000));
 	}
 	
 	public void SetConveyorAgent(KitConveyor conv)

@@ -26,16 +26,22 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 	
 	public ServerLaneTestPanel(Server _server){
 		server = _server;
+		
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setPreferredSize(new Dimension(533, 400));
+		setMaximumSize(new Dimension(533, 400));
+		setMinimumSize(new Dimension(533, 400));
+		
 		String[] lanes = {"Lane 1", "Lane 2", "Lane 3", "Lane 4", "Lane 5", "Lane 6", "Lane 7", "Lane 8" };
 		laneSelectBox = new JComboBox(lanes);
 		feedLaneButton = new JButton("Feed Lane");
 		feedNestButton = new JButton("Feed Nest");
-		feedPartButton = new JButton("Feed part into feeder");
+		feedPartButton = new JButton("Dump Part in Feeder");
 		background = new ImageIcon("images/server.jpeg");
 		
-		feedPartButton.setPreferredSize(new Dimension(150, 30));
-		feedPartButton.setMaximumSize(new Dimension(150, 30));
-		feedPartButton.setMinimumSize(new Dimension(150, 30));
+		feedPartButton.setPreferredSize(new Dimension(170, 30));
+		feedPartButton.setMaximumSize(new Dimension(170, 30));
+		feedPartButton.setMinimumSize(new Dimension(170, 30));
 		feedPartButton.setAlignmentX(CENTER_ALIGNMENT);
 		feedPartButton.setActionCommand("Feed Feeder");
 		    
@@ -54,10 +60,13 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		laneSelectBox.setPreferredSize(new Dimension(100, 30));
 		laneSelectBox.setMaximumSize(new Dimension(100, 30));
 		laneSelectBox.setMinimumSize(new Dimension(100, 30));
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(Box.createRigidArea(new Dimension(0, 130)),"");
 		add(laneSelectBox);
+		add(Box.createRigidArea(new Dimension(0, 20)),"");
 		add(feedPartButton);
+		add(Box.createRigidArea(new Dimension(0, 20)),"");
 		add(feedLaneButton);
+		add(Box.createRigidArea(new Dimension(0, 20)),"");
 		add(feedNestButton);
 		
 		feedLaneButton.addActionListener(this);

@@ -1,7 +1,7 @@
 package server;
 
 import java.net.*;
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.Scanner;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -51,6 +51,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	GantryAgent gantry1;
 	GantryAgent gantry2;
 	GantryControllerAgent gantryController;
+	Vector<Lane> lanes;
 	
 	PartsRobotAgent partsRobotAgent;
 	
@@ -62,7 +63,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	PartsRobot partsRobot;
 	
-	ArrayList<Lane> lanes;
+	
 	
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
@@ -113,7 +114,17 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryController.msgGantryAdded(gantry1);
 		gantryController.msgGantryAdded(gantry2);**/
 		
-		
+		lanes = new Vector<Lane>();
+		lanes.add(new Lane(600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
+    	lanes.add(new Lane(600,60)); 
+    	lanes.add(new Lane(600,130)); 
+    	lanes.add(new Lane(600,200));
+    	lanes.add(new Lane(600,270)); 
+    	lanes.add(new Lane(600,340));
+    	lanes.add(new Lane(600,410)); 
+    	lanes.add(new Lane(600,480));
+    	lanes.get(1).setConveyerBeltSpeed(4);
+    	lanes.get(2).setConveyerBeltSpeed(3);
 		
 		kitRobotAgent = new KitRobotAgent(this);
 		kitStandAgent = new KitStandAgent(this); 
@@ -134,8 +145,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		partsRobotAgent.startThread();
         	partsRobot = new PartsRobot();
         new Thread(partsRobot).start();
-        
-        lanes = new ArrayList<Lane>();
 		
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");
@@ -171,14 +180,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 				add(kitTest, c);
 				phase = 1;
 			}
-			else if(getClientType().equals("Lane Manager")){
-				lanePro = new LaneManagerProtocol(s, this);
-				GridBagConstraints c = new GridBagConstraints();
-				c.gridx = 0;	
-				c.gridy = 0;
-				add(laneTest, c);
-				phase=3;
-			}
 			else if(getClientType().equals("Parts Robot")){
 				partsPro = new PartsRobotProtocol(s, this);
 				removeCenter();
@@ -188,11 +189,18 @@ public class Server extends JFrame implements Runnable, ActionListener{
 				add(partsTest, c);
 				phase = 2;
 			}
+			else if(getClientType().equals("Lane Manager")){
+				lanePro = new LaneManagerProtocol(s, this);
+				removeCenter();
+				GridBagConstraints c = new GridBagConstraints();
+				c.gridx = 0;	
+				c.gridy = 0;
+				add(laneTest, c);
+				phase = 3;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
 		
 	}
 	
@@ -259,6 +267,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		else if(phase.equals(1)){
 			remove(kitTest);
+		}
+		else if(phase.equals(2)){
+			remove(partsTest);
+		}
+		else if(phase.equals(3)){
+			remove(laneTest);
 		}
 	}
 	
@@ -365,11 +379,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.partsRobotAgent = partsRobotAgent;
 	}
 
-	public synchronized ArrayList<Lane> getLanes() {
+	public synchronized Vector<Lane> getLanes() {
 		return lanes;
 	}
 
-	public synchronized void setLanes(ArrayList<Lane> lanes) {
+	public synchronized void setLanes(Vector<Lane> lanes) {
 		this.lanes = lanes;
 	}
 

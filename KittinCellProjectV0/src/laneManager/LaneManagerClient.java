@@ -26,13 +26,6 @@ public class LaneManagerClient implements Runnable {
 		commandSent = "";
 		app = _app;
 		thread = new Thread(this, "LaneManagerClient_Thread");
-		int i = connect();
-		if(i == -1){
-			System.exit(1);
-		}
-		else if(i == 1){
-			thread.start();
-		}
 	}
 
 	public Integer connect(){
@@ -71,7 +64,7 @@ public class LaneManagerClient implements Runnable {
 			
 			commandSent = "Received";
 			while(true){
-				app.setLanes((ArrayList<Lane>)in.readObject());
+				app.setLanes((Vector<Lane>)in.readObject());
 				out.writeObject(commandSent);
 				out.reset();
 			}
@@ -115,6 +108,15 @@ public class LaneManagerClient implements Runnable {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
+	}
+
+	public synchronized Thread getThread() {
+		return thread;
+	}
+
+	public synchronized void setThread(Thread thread) {
+		this.thread = thread;
 	}
 }

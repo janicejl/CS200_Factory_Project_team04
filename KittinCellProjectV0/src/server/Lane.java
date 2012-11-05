@@ -28,7 +28,7 @@ public class Lane implements ActionListener {
     private Timer timer; 
     private boolean nestFull;
     private boolean queueFull; //Unimplemented, we need to determine a limit.
-    private LaneGraphics laneGraphics;
+    
     private Lane() {
     	this.maxX = 600;
 		this.maxY = 100;
@@ -44,9 +44,8 @@ public class Lane implements ActionListener {
 		this.queueFull = false;
 	 }
     
-    public Lane(LaneGraphics lg, int width, int verticalSpacing) {
-    	laneGraphics = lg;
-		maxX = width;
+    public Lane(int width, int verticalSpacing) {
+    	maxX = width;
 		maxY = 100;
     	this.verticalSpacing = verticalSpacing;
 	    conveyerBeltSpeed = 1;
@@ -77,7 +76,6 @@ public class Lane implements ActionListener {
 		    	///NEST ALGORITHM HERE!////
 		    	}
 	    	}
-	    laneGraphics.repaint();
 	    } //Queue first, dont nest yet!
     }
 	    

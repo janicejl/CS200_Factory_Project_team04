@@ -14,29 +14,30 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.Random;
 import java.util.TreeMap;
 
 public class LaneGraphics extends JPanel /*implements ActionListener*/ {
-	private ArrayList<Lane> lanes = new ArrayList<Lane> ();
+	private Vector<Lane> lanes;
 	private int maxX;
 	private int maxY;
 	private Rectangle2D.Double backgroundRectangle;
-	private ArrayList<Boolean> emptyConveyorOnList;
-	private ArrayList<Double> emptyConveyorMoveList;
+	private Vector<Boolean> emptyConveyorOnList;
+	private Vector<Double> emptyConveyorMoveList;
 	private BufferedImage conveyorImage; 
-	private ArrayList<GUIFeeder> gFeeders;
+	private Vector<GUIFeeder> gFeeders;
 	
     public LaneGraphics() {
-    	lanes.add(new Lane(this,600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
-    	lanes.add(new Lane(this,600,60)); 
-    	lanes.add(new Lane(this,600,130)); 
-    	lanes.add(new Lane(this,600,200));
-    	lanes.add(new Lane(this,600,270)); 
-    	lanes.add(new Lane(this,600,340));
-    	lanes.add(new Lane(this,600,410)); 
-    	lanes.add(new Lane(this,600,480));
+    	lanes = new Vector<Lane>();
+    	lanes.add(new Lane(600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
+    	lanes.add(new Lane(600,60)); 
+    	lanes.add(new Lane(600,130)); 
+    	lanes.add(new Lane(600,200));
+    	lanes.add(new Lane(600,270)); 
+    	lanes.add(new Lane(600,340));
+    	lanes.add(new Lane(600,410)); 
+    	lanes.add(new Lane(600,480));
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
     	maxX = 600;
@@ -46,9 +47,9 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	this.setSize(maxX, maxY);
     	this.setVisible(true);
 		
-    	emptyConveyorOnList  = new ArrayList<Boolean>(); 
-    	emptyConveyorMoveList = new ArrayList<Double> ();
-    	gFeeders = new ArrayList<GUIFeeder> ();
+    	emptyConveyorOnList  = new Vector<Boolean>(); 
+    	emptyConveyorMoveList = new Vector<Double> ();
+    	gFeeders = new Vector<GUIFeeder> ();
     	
     	for(int i = 0; i < 8; i++) {
     		emptyConveyorOnList.add(true);
@@ -107,11 +108,11 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	lanes.get(lane).releasePart();
     }
     
-    public synchronized void setLanes(ArrayList<Lane> _lanes) {
+    public synchronized void setLanes(Vector<Lane> _lanes) {
 		this.lanes = _lanes;
 	}
     
-	public synchronized ArrayList<Lane> getLanes() {
+	public synchronized Vector<Lane> getLanes() {
 		return lanes;
 	}
 

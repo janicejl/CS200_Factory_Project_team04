@@ -2,7 +2,7 @@ package laneManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.*;
 
@@ -13,14 +13,20 @@ import Feeder.GUIFeeder;
 
 public class LaneManagerApp extends JFrame implements ActionListener {
 	private LaneGraphics laneGraphics;
-	private ArrayList<JButton> releaseButtons;
+	private Vector<JButton> releaseButtons;
 	private JPanel window;
+	private LaneManagerClient client;
+	private JButton connect;
 	
 	public LaneManagerApp() {
 		this.setLayout(new GridBagLayout());
-		releaseButtons = new ArrayList<JButton> ();
+		
+		releaseButtons = new Vector<JButton> ();
 		window = new JPanel();
 		window.setLayout(new BoxLayout(window, BoxLayout.X_AXIS));
+		connect = new JButton("Connect Lane");
+		connect.addActionListener(this);
+		window.add(connect);
 		for(int i = 0; i < 8; i++) {
 			releaseButtons.add(new JButton("Lane: " + (i+1)));
 			releaseButtons.get(i).addActionListener(this);
@@ -43,6 +49,8 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		this.setSize(800, 800);
     	this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		client = new LaneManagerClient(this);
 	}
 	
 	public static void main(String[] args) {
@@ -50,18 +58,28 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	}
 	
 
-	public synchronized ArrayList<Lane> getLanes() {
+	public synchronized Vector<Lane> getLanes() {
 		return laneGraphics.getLanes();
 	}
 
-	public synchronized void setLanes(ArrayList<Lane> lanes) {
+	public synchronized void setLanes(Vector<Lane> lanes) {
 		this.laneGraphics.setLanes(lanes);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		for (int i = 0; i < 8; i++)
+		if(e.getSource() == connect){
+			int i = client.connect();
+			if(i == -1){
+				System.exit(1);
+			}
+			else if(i == 1){
+				client.getThread().start();
+			}
+		}
+		for (int i = 0; i < 8; i++){
 			if(e.getSource() == releaseButtons.get(i)) 
-				laneGraphics.releaseItem(i);			
+				laneGraphics.releaseItem(i);		
+		}
 	}
 	
 }

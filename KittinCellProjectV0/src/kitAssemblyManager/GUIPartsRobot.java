@@ -140,7 +140,6 @@ public class GUIPartsRobot{
                 flashCounter += 0.15;
             }
             else if (flashDown){
-                //System.out.println("down");
                 flashCounter -= 0.01;
                 if(opacity < 0.05){
                 	opacity = 0f;

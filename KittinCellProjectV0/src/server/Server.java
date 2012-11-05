@@ -1,6 +1,7 @@
 package server;
 
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -16,6 +17,7 @@ import Agents.KitRobotAgents.KitConveyorAgent;
 import Agents.KitRobotAgents.KitRobotAgent;
 import Agents.KitRobotAgents.KitStandAgent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
+import data.Part;
 
 public class Server extends JFrame implements Runnable, ActionListener{
 	
@@ -60,6 +62,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	PartsRobot partsRobot;
 	
+	ArrayList<Lane> lanes;
+	
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
 	
@@ -77,37 +81,37 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		partsTest = new ServerPartTestPanel(this);
 		laneTest = new ServerLaneTestPanel(this);
 		
-		feeder1 = new FeederAgent("feeder1", 5, fLane1, fLane2, this);
+		feeder1 = new FeederAgent("feeder1", 5, fLane1, fLane2, 1, this);
 		fLane1 = new FeederLaneAgent("left", 1, this);
 		fLane2 = new FeederLaneAgent("right", 2, this);
 		fLane1.setFeeder(feeder1);
 		fLane2.setFeeder(feeder1);
 		
-		feeder2 = new FeederAgent("feeder2", 5, fLane3, fLane4, this);
+		feeder2 = new FeederAgent("feeder2", 5, fLane3, fLane4, 2, this);
 		fLane3 = new FeederLaneAgent("left", 3, this);
 		fLane4 = new FeederLaneAgent("right", 4, this);
 		fLane3.setFeeder(feeder2);
 		fLane4.setFeeder(feeder2);
 		
-		feeder3 = new FeederAgent("feeder3", 5, fLane5, fLane6, this);
+		feeder3 = new FeederAgent("feeder3", 5, fLane5, fLane6, 3, this);
 		fLane5 = new FeederLaneAgent("left", 5, this);
 		fLane6 = new FeederLaneAgent("right", 6, this);
 		fLane5.setFeeder(feeder3);
 		fLane6.setFeeder(feeder3);
 		
-		feeder4 = new FeederAgent("feeder4", 5, fLane7, fLane8, this);
+		feeder4 = new FeederAgent("feeder4", 5, fLane7, fLane8, 4, this);
 		fLane7 = new FeederLaneAgent("left", 7, this);
 		fLane8 = new FeederLaneAgent("right", 8, this);
 		fLane7.setFeeder(feeder4);
 		fLane8.setFeeder(feeder4);
 		
-		gantryController = new GantryControllerAgent(this);
+		/**gantryController = new GantryControllerAgent(this);
 		gantry1 = new GantryAgent("gantry1", this);
 		gantry2 = new GantryAgent("gantry2", this);
 		gantry1.setGantryController(gantryController);
 		gantry2.setGantryController(gantryController);
 		gantryController.msgGantryAdded(gantry1);
-		gantryController.msgGantryAdded(gantry2);
+		gantryController.msgGantryAdded(gantry2);**/
 		
 		
 		
@@ -130,6 +134,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		partsRobotAgent.startThread();
         	partsRobot = new PartsRobot();
         new Thread(partsRobot).start();
+        
+        lanes = new ArrayList<Lane>();
 		
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");
@@ -227,10 +233,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		partsRobot.takePicture(295, 100 + 100*((num)/2));
     	}
     	else if(process.equals("Feed Feeder")){
-    		
+    		lanes.get(num).addPart(new Part("p"+num));
     	}
     	else if(process.equals("Feed Lane")){
-    		
+    		lanes.get(num).releasePart();
     	}
     	else if(process.equals("Feed Nest")){
     		
@@ -357,6 +363,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public synchronized void setPartsRobotAgent(PartsRobotAgent partsRobotAgent) {
 		this.partsRobotAgent = partsRobotAgent;
+	}
+
+	public synchronized ArrayList<Lane> getLanes() {
+		return lanes;
+	}
+
+	public synchronized void setLanes(ArrayList<Lane> lanes) {
+		this.lanes = lanes;
 	}
 
 }

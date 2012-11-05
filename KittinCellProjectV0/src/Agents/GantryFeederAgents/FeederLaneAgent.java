@@ -16,7 +16,6 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 	int number;
 	int quantity;
 	int maxQuantity;
-	Timer t;
 	Feeder feeder;
 	Server app;
 	
@@ -39,6 +38,7 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 	}
 
 	@Override
+	//Received from GUI
 	public void msgRemovePart() {
 		quantity --;
 		stateChanged();
@@ -54,10 +54,6 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 		}
 		else if(state == FeederState.stopped && quantity < maxQuantity){
 			StartFeeder();
-			return true;
-		}
-		else if(quantity < 0){
-			RemoveParts();
 			return true;
 		}
 		return false;
@@ -76,11 +72,6 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 		state = FeederState.pending;
 	}
 	
-	private void RemoveParts(){
-		t.schedule(new TimerTask(){public void run(){msgRemovePart();}}, 5000);
-	}
-
-	
 	//Extra
 	
 	@Override
@@ -95,6 +86,10 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 	
 	public void setFeeder(Feeder f1){
 		this.feeder = f1;
+	}
+	
+	public int getNumber(){
+		return this.number;
 	}
 	
 }

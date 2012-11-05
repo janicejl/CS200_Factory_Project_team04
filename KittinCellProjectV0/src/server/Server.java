@@ -271,7 +271,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		lanes.get(num).releasePart();
     	}
     	else if(process.equals("Feed Nest")){
-    		
+    		lanes.get(num).releaseQueue();
     	}
     }
     

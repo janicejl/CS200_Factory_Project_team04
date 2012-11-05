@@ -7,17 +7,20 @@ public class Part implements Serializable{
 	private String id;
 	private double x;
 	private double y;
+	private boolean destination; // if part is at destination
 
 	public void copy(Part p){
 		id = p.getID();
 		x = p.getX();
 		y = p.getY();
+		destination = p.getDestination();
 	}
 	
 	public Part(String name) {
 		id = name;
 		x = 0;
 		y = 0;
+		destination = false;
 	}
 
 	public double getX() {
@@ -42,5 +45,21 @@ public class Part implements Serializable{
 
 	public void setID(String nID) {
 		id = nID;
+	}
+
+	public synchronized String getId() {
+		return id;
+	}
+
+	public synchronized void setId(String id) {
+		this.id = id;
+	}
+
+	public synchronized boolean getDestination() {
+		return destination;
+	}
+
+	public synchronized void setDestination(boolean destination) {
+		this.destination = destination;
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.io.Serializable;
 import java.util.Vector;
 import data.Part;
+import Feeder.Feeder;
 
 public class Lane implements ActionListener, Serializable{
     private Vector<Part> importList;  //Item Collection that is imported
@@ -19,6 +20,8 @@ public class Lane implements ActionListener, Serializable{
     private Timer timer; 
     private boolean nestFull;
     private boolean queueFull; //Unimplemented, we need to determine a limit.
+    
+    private Feeder feeder;
 
     private Lane() {
     	this.maxX = 600;
@@ -35,7 +38,7 @@ public class Lane implements ActionListener, Serializable{
 		this.queueFull = false;
 	 }
     
-    public Lane(int width, int verticalSpacing) {
+    public Lane(int width, int verticalSpacing, Feeder f) {
 
 		maxX = width;
 		maxY = 100;
@@ -56,6 +59,8 @@ public class Lane implements ActionListener, Serializable{
 	    	importList.get(i).setX(width-80);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
 	    }
+	    
+	    feeder = f;
     }
     
     public void actionPerformed( ActionEvent ae ) {	
@@ -99,6 +104,7 @@ public class Lane implements ActionListener, Serializable{
     	part.setX(maxX-80);
     	part.setY(maxY/2 + verticalSpacing);
     	importList.add(part);
+    	
     	System.out.println("hi");
     }
     

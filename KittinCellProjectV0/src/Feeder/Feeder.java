@@ -1,6 +1,6 @@
 package Feeder;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import data.Part;
 
@@ -14,11 +14,11 @@ public class Feeder {
 	
 	private boolean topLane;
 	private boolean empty;
-	private ArrayList<Part> parts;
+	private Vector<Part> parts;
 	public Feeder(double nX, double nY){
 		x = nX;
 		y = nY;
-		parts = new ArrayList<Part> ();
+		parts = new Vector<Part> ();
 		
 		partAmount = 0;
 		empty = true;
@@ -60,7 +60,7 @@ public class Feeder {
 		}
 	}
 	
-	public void setParts(ArrayList<Part> parts) {
+	public void setParts(Vector<Part> parts) {
 		this.parts = parts;
 	}
 	
@@ -86,5 +86,9 @@ public class Feeder {
 	// returns false if the diverter is set to Bottom Lane
 	public boolean getLane(){
 		return topLane;
+	}
+	
+	public Vector<Part> getParts() {
+		return parts;
 	}
 }

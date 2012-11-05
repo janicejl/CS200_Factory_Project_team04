@@ -135,7 +135,6 @@ public class GUIPartsRobot{
                 flashUp = false;
                 flashDown = true;
                 opacity = (float)0.98;
-                //System.out.println("hit");
             }
             if(flashUp){
                 flashCounter += 0.15;

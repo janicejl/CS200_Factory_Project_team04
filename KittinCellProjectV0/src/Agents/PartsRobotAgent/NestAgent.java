@@ -3,8 +3,8 @@ package Agents.PartsRobotAgent;
 import  Agent.*;
 import Agents.VisionAgent.VisionAgent;
 import server.Server;
-import MoveableObjects.*;
-import MoveableObjects.Part.PartType;
+import data.*;
+import data.Part.PartType;
 import Interface.PartsRobotAgent.*;
 
 public class NestAgent extends Agent{

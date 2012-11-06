@@ -1,7 +1,7 @@
 package Mocks.KitRobotAgents;
 
 import Interface.KitRobotAgent.KitRobot;
-import MoveableObjects.Kit;
+import data.Kit;
 import UnitTest.KitRobotAgents.EventLog;
 
 public class MockKitRobot extends MockAgent implements KitRobot{

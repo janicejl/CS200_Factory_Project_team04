@@ -10,7 +10,8 @@ import server.Server;
 import Agent.Agent;
 import Interface.KitRobotAgent.KitConveyor;
 import Interface.KitRobotAgent.KitRobot;
-import MoveableObjects.Kit;
+import data.Part;
+import data.Kit;
 
 public class KitConveyorAgent extends Agent implements KitConveyor, Serializable{
 
@@ -116,4 +117,7 @@ public class KitConveyorAgent extends Agent implements KitConveyor, Serializable
 	{
 		kit_robot = robot;
 	}
+
+
+	
 }

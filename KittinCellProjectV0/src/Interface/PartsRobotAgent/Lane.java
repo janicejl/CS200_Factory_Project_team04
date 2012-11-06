@@ -1,6 +1,6 @@
 package Interface.PartsRobotAgent;
 
-import MoveableObjects.Part;
+import data.Part;
 
 public interface Lane {
 

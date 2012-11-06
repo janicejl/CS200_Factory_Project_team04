@@ -3,7 +3,7 @@ package Interface.PartsRobotAgent;
 import java.util.List;
 
 import Agents.PartsRobotAgent.NestAgent;
-import MoveableObjects.Part;
+import data.Part;
 
 public interface Vision {
 

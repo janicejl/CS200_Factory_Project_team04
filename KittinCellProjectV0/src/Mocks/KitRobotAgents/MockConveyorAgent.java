@@ -2,7 +2,7 @@ package Mocks.KitRobotAgents;
 
 
 import Interface.KitRobotAgent.KitConveyor;
-import MoveableObjects.Kit;
+import data.Kit;
 import UnitTest.KitRobotAgents.EventLog;
 
 public class MockConveyorAgent extends MockAgent implements KitConveyor{

@@ -11,7 +11,7 @@ import Agents.KitRobotAgents.KitRobotAgent;
 import Agents.KitRobotAgents.KitStandAgent;
 import Mocks.KitRobotAgents.MockConveyorAgent;
 import Mocks.KitRobotAgents.MockKitStand;
-import MoveableObjects.Kit;
+import data.Kit;
 
 public class KitRobotTest {
 

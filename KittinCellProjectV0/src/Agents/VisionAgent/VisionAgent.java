@@ -9,7 +9,8 @@ import Agents.KitRobotAgents.*;
 import Agents.PartsRobotAgent.*;
 import Interface.PartsRobotAgent.Vision;
 import MoveableObjects.*;
-import MoveableObjects.Part.*;
+import data.Part.PartType;
+import data.*;
 
 public class VisionAgent extends Agent {
 	

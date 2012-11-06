@@ -4,7 +4,7 @@ import java.util.List;
 
 import Agent.Agent;
 import Interface.PartsRobotAgent.Vision;
-import MoveableObjects.Part.PartType;
+import data.Part.PartType;
 
 public class MockVisionAgentV0 extends Agent implements Vision{
 

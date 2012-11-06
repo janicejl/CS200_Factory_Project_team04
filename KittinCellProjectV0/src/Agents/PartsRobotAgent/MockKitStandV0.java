@@ -4,8 +4,8 @@ import java.util.List;
 
 import Interface.KitRobotAgent.*;
 import Agent.*;
-import MoveableObjects.Kit;
-import MoveableObjects.Part;
+import data.Kit;
+import data.Part;
 
 
 public class MockKitStandV0 extends Agent implements KitStand {

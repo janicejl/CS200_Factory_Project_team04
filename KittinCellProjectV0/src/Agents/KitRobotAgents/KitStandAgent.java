@@ -11,8 +11,8 @@ import Agent.Agent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
 import Interface.KitRobotAgent.KitRobot;
 import Interface.KitRobotAgent.KitStand;
-import MoveableObjects.Kit;
-import MoveableObjects.Part;
+import data.Part;
+import data.Kit;
 
 public class KitStandAgent extends Agent implements KitStand, Serializable{
 

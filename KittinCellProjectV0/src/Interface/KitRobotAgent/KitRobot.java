@@ -1,6 +1,6 @@
 package Interface.KitRobotAgent;
 
-import MoveableObjects.Kit;
+import data.Kit;
 
 public interface KitRobot {
 

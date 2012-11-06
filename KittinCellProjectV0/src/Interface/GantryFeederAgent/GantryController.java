@@ -3,7 +3,7 @@ package Interface.GantryFeederAgent;
 import java.util.Vector;
 
 import MoveableObjects.Bin;
-import MoveableObjects.Part.PartType;
+import data.Part.PartType;
 
 public interface GantryController {
 

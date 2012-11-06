@@ -9,7 +9,7 @@ import Interface.GantryFeederAgent.Feeder;
 import Interface.GantryFeederAgent.Gantry;
 import Interface.GantryFeederAgent.GantryController;
 import MoveableObjects.Bin;
-import MoveableObjects.Part.PartType;
+import data.Part.PartType;
 
 public class GantryControllerAgent extends Agent implements GantryController {
 

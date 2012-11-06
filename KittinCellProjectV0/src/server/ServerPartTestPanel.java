@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import MoveableObjects.Part;
+import data.Part;
 
 public class ServerPartTestPanel extends JPanel implements ActionListener{
 	Server server; //reference to server

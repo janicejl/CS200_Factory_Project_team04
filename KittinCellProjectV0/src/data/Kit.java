@@ -22,6 +22,11 @@ public class Kit implements Serializable {
 		
 		parts = new Vector<Part>();
 	}
+	//blank kit
+	public Kit()
+	{
+		
+	}
 	
 	public String getID() {
 		return id;

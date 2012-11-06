@@ -1,7 +1,7 @@
 package Interface.GantryFeederAgent;
 
 import MoveableObjects.Bin;
-import MoveableObjects.Part.PartType;
+import data.Part.PartType;
 
 public interface Feeder {
 	

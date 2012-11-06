@@ -2,7 +2,7 @@ package Agents.PartsRobotAgent;
 import Agent.*;
 import Interface.PartsRobotAgent.*;
 import Interface.KitRobotAgent.*;
-import MoveableObjects.*;
+import data.*;
 import Agents.KitRobotAgents.*;
 import Agents.VisionAgent.VisionAgent;
 

@@ -4,7 +4,7 @@ import Interface.GantryFeederAgent.Feeder;
 import Interface.GantryFeederAgent.Gantry;
 import Interface.GantryFeederAgent.GantryController;
 import MoveableObjects.Bin;
-import MoveableObjects.Part.PartType;
+import data.Part.PartType;
 import UnitTest.GantryFeederAgents.EventLog;
 import UnitTest.GantryFeederAgents.LoggedEvent;
 

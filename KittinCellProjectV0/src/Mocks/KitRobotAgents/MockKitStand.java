@@ -4,8 +4,7 @@ package Mocks.KitRobotAgents;
 import java.util.List;
 
 import Interface.KitRobotAgent.KitStand;
-import MoveableObjects.Kit;
-import MoveableObjects.Part;
+import data.*;
 import UnitTest.KitRobotAgents.EventLog;
 import UnitTest.KitRobotAgents.LoggedEvent;
 

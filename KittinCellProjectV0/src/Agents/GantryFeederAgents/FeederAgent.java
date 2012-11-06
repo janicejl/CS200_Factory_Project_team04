@@ -7,7 +7,7 @@ import Interface.GantryFeederAgent.FeederLane;
 import Interface.GantryFeederAgent.Gantry;
 import Interface.GantryFeederAgent.GantryController;
 import MoveableObjects.Bin;
-import MoveableObjects.Part.PartType;
+import data.Part.PartType;
 
 public class FeederAgent extends Agent implements Feeder {
 

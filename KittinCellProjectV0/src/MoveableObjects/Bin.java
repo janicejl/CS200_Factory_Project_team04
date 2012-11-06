@@ -1,6 +1,6 @@
 package MoveableObjects;
 
-import MoveableObjects.Part.PartType;
+import data.Part.PartType;
 
 
 public class Bin {

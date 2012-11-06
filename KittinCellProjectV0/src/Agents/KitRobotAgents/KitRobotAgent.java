@@ -14,7 +14,6 @@ import Agent.Agent;
 import Interface.KitRobotAgent.KitConveyor;
 import Interface.KitRobotAgent.KitRobot;
 import Interface.KitRobotAgent.KitStand;
-import data.Part;
 import data.Kit;
 
 public class KitRobotAgent extends Agent implements KitRobot, Serializable{

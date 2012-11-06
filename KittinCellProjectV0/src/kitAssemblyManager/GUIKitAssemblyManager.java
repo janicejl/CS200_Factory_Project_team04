@@ -14,7 +14,6 @@ import laneManager.GUINest;
 
 import java.awt.image.*;
 import java.io.*;
-import java.awt.geom.*;
 
 public class GUIKitAssemblyManager extends JPanel implements ActionListener {
     KitAssemblyApp app;

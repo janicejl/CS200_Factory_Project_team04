@@ -8,7 +8,7 @@ import Agent.*;
 import Agents.KitRobotAgents.*;
 import Agents.PartsRobotAgent.*;
 import Interface.PartsRobotAgent.Vision;
-import MoveableObjects.*;
+import data.Part;
 import data.Part.PartType;
 import data.*;
 

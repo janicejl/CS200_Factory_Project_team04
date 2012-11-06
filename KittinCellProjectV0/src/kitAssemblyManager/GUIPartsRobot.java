@@ -3,17 +3,10 @@ package kitAssemblyManager;
 
 import java.awt.*;
 import java.awt.geom.*;
-import javax.swing.*;
-import java.awt.event.*;
 import java.awt.image.*;
-import java.util.Random;
 import java.util.Vector;
-import java.util.TreeMap;
-import java.util.concurrent.*;
 import java.io.*;
-
 import javax.imageio.*;
-
 import server.PartsRobot;
 
 public class GUIPartsRobot{

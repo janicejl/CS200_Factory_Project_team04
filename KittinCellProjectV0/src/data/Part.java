@@ -2,6 +2,7 @@ package data;
 
 import java.io.Serializable;
 
+
 public class Part implements Serializable{
 
 	public enum PartType{part1, part2, part3, part4, part5, part6, part7, part8, none};
@@ -18,6 +19,12 @@ public class Part implements Serializable{
 		x = p.getX();
 		y = p.getY();
 		destination = p.getDestination();
+	}
+	
+
+	
+	public Part(Part.PartType type){
+		this.type = type;
 	}
 	
 	public Part(String name) {

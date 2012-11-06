@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.*;
 
 import server.KitAssemblyManager;
-import server.KitRobot;
 import server.PartsRobot;
 
 public class PartsManagerClient implements Runnable {

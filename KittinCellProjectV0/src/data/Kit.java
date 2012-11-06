@@ -1,7 +1,11 @@
 package data;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
+
 
 public class Kit implements Serializable {
 	private String id;
@@ -11,8 +15,8 @@ public class Kit implements Serializable {
 	private double destinationX;
 	private double destinationY;
 	
-	Vector<Part> parts;
-	
+	//Vector<Part> parts;
+	List<Part> partsList = Collections.synchronizedList( new ArrayList<Part>() );
 	public Kit(String name, double nX, double nY) {
 		id = name;
 		x = nX;
@@ -20,12 +24,16 @@ public class Kit implements Serializable {
 		destinationX = nX;
 		destinationY = nY;
 		
-		parts = new Vector<Part>();
+		
 	}
 	//blank kit
 	public Kit()
 	{
 		
+	}
+	
+	public List<Part> peekParts() {
+		return partsList;
 	}
 	
 	public String getID() {
@@ -68,7 +76,7 @@ public class Kit implements Serializable {
 		destinationY = nY;
 	}
 	public void addPart(Part p) {
-		parts.add(p);
+		partsList.add(p);
 	}
 	
 	public void update() {

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 
 import javax.imageio.*;
 
@@ -30,7 +31,7 @@ public class GUIKit {
 		
 		g.drawImage(image, (int)x, (int)y, null);
 		
-		Vector<Part> parts = kit.parts;
+		List<Part> parts = kit.partsList;
 		//Setting the position of each individual part. 
 		for (int i = 0, j = 0; i < parts.size(); i++) {
 			parts.get(i).setX(x + ((i % 2) * 32));		//32 = size of testing image parts. 

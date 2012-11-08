@@ -17,7 +17,6 @@ public class Lane implements ActionListener, Serializable{
     private int maxY;
     private int verticalSpacing;
     private int queueBorder = 120;
-    private Timer timer; 
     private boolean nestFull;
     private boolean queueFull; //Unimplemented, we need to determine a limit.
     
@@ -32,8 +31,6 @@ public class Lane implements ActionListener, Serializable{
 	    this.importList = new Vector<Part> ();
 	    this.queueList = new Vector<Part> ();
 		this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		this.timer = new Timer(10,this);
-		this.timer.start();
 		this.nestFull = false;
 		this.queueFull = false;
 	 }
@@ -48,8 +45,6 @@ public class Lane implements ActionListener, Serializable{
 	    importList = new Vector<Part> ();
 	    queueList = new Vector<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		timer = new Timer(10,this);
-		timer.start();
 		nestFull = false;
 		queueFull = false;		
 		/*importList.add(new Part("1"));
@@ -72,8 +67,6 @@ public class Lane implements ActionListener, Serializable{
 	    importList = new Vector<Part> ();
 	    queueList = new Vector<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		timer = new Timer(10,this);
-		timer.start();
 		nestFull = false;
 		queueFull = false;		
 		/*importList.add(new Part("1"));

@@ -149,7 +149,7 @@ public class PartsRobotAgent extends Agent{
 			kit2.partsneeded.add(type);
 		}
 		for(Part.PartType type: kitrecipe){
-			camerarecipe.add(new Part(type));
+			camerarecipe.add(new Part(type)); //new Part(kitrecipe.get(i).getName(), kitrecipe.get(i).getImagePath())
 		}
 		kit1.state = KitStatus.notAvailable;
 		kit2.state = KitStatus.notAvailable;

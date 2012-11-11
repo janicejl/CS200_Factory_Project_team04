@@ -38,7 +38,6 @@ public class PartsPanel extends JPanel implements ActionListener{
 		background.paintIcon(this, g, 0, 0);
 		partListPanel.repaint();
 		managePanel.repaint();
-		revalidate();
 	}
 	
 	public void actionPerformed(ActionEvent ae){
@@ -61,6 +60,7 @@ public class PartsPanel extends JPanel implements ActionListener{
 		else if(ae.getSource()==managePanel.manageButtons.get(2)){
 			//remove all button
 			partListPanel.removeAll();
+			app.getPartsList().clear();
 		}
 	}
 	

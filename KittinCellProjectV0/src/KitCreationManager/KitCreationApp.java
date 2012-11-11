@@ -12,7 +12,7 @@ public class KitCreationApp extends JFrame{
 		km=new GUIKitModification();
 		kc=new GUIKitCreation();
 		kp=new JTabbedPane();
-		kp.addTab("kit creation", kc.base);
+		kp.addTab("kit creation", kc.bob);
 		kp.addTab("kit modification", km.base);
 		this.add(kp);
 	}

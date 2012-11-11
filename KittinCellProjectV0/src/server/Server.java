@@ -138,20 +138,16 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		nestList.add(new Nest(0, 30+(i*70)));	//x coordinate is zero for laneManagerApp
     	}
 		lanes = new Vector<Lane>();
-		lanes.add(new Lane(600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
-    	lanes.add(new Lane(600,60)); 
-    	lanes.add(new Lane(600,130)); 
-    	lanes.add(new Lane(600,200));
-    	lanes.add(new Lane(600,270)); 
-    	lanes.add(new Lane(600,340));
-    	lanes.add(new Lane(600,410)); 
-    	lanes.add(new Lane(600,480));
+		lanes.add(new Lane(600,-10, nestList.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
+    	lanes.add(new Lane(600,60, nestList.get(1))); 
+    	lanes.add(new Lane(600,130, nestList.get(2))); 
+    	lanes.add(new Lane(600,200, nestList.get(3)));
+    	lanes.add(new Lane(600,270, nestList.get(4))); 
+    	lanes.add(new Lane(600,340, nestList.get(5)));
+    	lanes.add(new Lane(600,410, nestList.get(6))); 
+    	lanes.add(new Lane(600,480, nestList.get(7)));
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
-    	
-    	for (int i = 0; i < 8; i++ ) {
-    		lanes.get(i).addNest(nestList.get(i));
-    	}
     	
     	NestAgent nest1 = new NestAgent(1,this);
     	NestAgent nest2 = new NestAgent(2,this);
@@ -336,6 +332,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	}
     	else if(process.equals("Feed Feeder")){
     		Part temp = new Part("" + num);
+    		temp.setImagePath("images/kt" + temp.getId() + ".png");
     		lanes.get(num).addPart(temp);
     		feeders.get(num/2).addParts(temp);
     	}
@@ -357,11 +354,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public void actionPerformed(ActionEvent e){
 		for(int i = 0; i < lanes.size(); i++){
 			lanes.get(i).actionPerformed(e);
-			for (Nest n: nestList) {
-				if (n.isFull() != true) {
-					n.addPart(lanes.get(i).releaseQueue());
-				}
-			}
 		}
 		repaint();
 	}

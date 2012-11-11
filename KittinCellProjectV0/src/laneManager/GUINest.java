@@ -1,12 +1,13 @@
 package laneManager;
 
 import data.Part;
+import data.GUIPart;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 
@@ -14,9 +15,13 @@ public class GUINest {
 	
 	Nest nest;
 	BufferedImage image;
+	Vector<Part> parts;
+	Vector<GUIPart> gParts;
 	
 	public GUINest(Nest n) {
 		nest = n;
+		parts = new Vector<Part>();
+		gParts = new Vector<GUIPart>();
 		try {
 			image = ImageIO.read(new File("images/nest.png"));
 		} catch (IOException e) {
@@ -30,8 +35,9 @@ public class GUINest {
 		
 		g.drawImage(image, (int)x, (int)y, null);
 		
-		ArrayList<Part> parts = nest.parts;
+		parts = nest.getParts();
 		
+		gParts.clear();
 		for (int i = 0, j = 0; i < parts.size(); i++) {
 			parts.get(i).setX(x + ((i % 4) * 25));		//25 = size of testing image parts. 
 			parts.get(i).setY(y + (j * 25));
@@ -39,9 +45,14 @@ public class GUINest {
 			if (i % 4 == 3) {
 				j++;
 			}
+			
+			gParts.add(new GUIPart(parts.get(i)));
 		}
 		
-		BufferedImage part;
+		for (int i = 0; i < gParts.size(); i++) {
+			gParts.get(i).paintPart(g);
+		}
+		/*BufferedImage part;
 		if (parts.size() > 0) {
 			try {
 				part = ImageIO.read(new File("images/" + parts.get(0).getID() + ".png"));
@@ -52,7 +63,7 @@ public class GUINest {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 				
 	}
 	

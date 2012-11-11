@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -24,7 +25,7 @@ import data.Kit;
 import data.Part;
 
 public class GUIKitCreation implements ActionListener{
-	JPanel base, partSelect, displaySel;
+	JPanel base, partSelect, displaySel,back,bob;
 	JButton create, clear;
 	JTextField enterName;
 	JLabel name,sap;
@@ -36,8 +37,12 @@ public class GUIKitCreation implements ActionListener{
 	ArrayList<Kit> produced;
 	
 	public GUIKitCreation(){
+		bob=new JPanel();
+		bob.setSize(300,370);
 		base=new JPanel();
 		base.setSize(300,370);
+		back=new JPanel();
+		back.setSize(300,370);
 		partSelect=new JPanel();
 		displaySel=new JPanel();
 		create=new JButton("Create");
@@ -62,25 +67,33 @@ public class GUIKitCreation implements ActionListener{
 		clear.addActionListener(this);
 		selection=new ArrayList<Part>();
 		selectionMade=new ArrayList<JButton>();
-		for (int i=0;i<8;i++){
-			JButton temp=new JButton();
-			temp.addActionListener(this);
-			temp.setPreferredSize(new Dimension(50,30));
-			selectionMade.add(temp);
-			displaySel.add(selectionMade.get(i));
-		}
+		
 		parts=new ArrayList<Part>();
 		produced=new ArrayList<Kit>();
 		partList.setSelectedIndex(0);
 		
-		
+		bob.setLayout(new GridBagLayout());
 		base.setLayout(new GridBagLayout());
+		back.setLayout(new FlowLayout());
+		//base.setOpaque(false);
+		
 		base.setBackground(Color.orange);
+		JLabel bg=new JLabel(new ImageIcon("images/b1.png"));
+		back.add(bg);
 		partSelect.setLayout(new BoxLayout(partSelect,BoxLayout.Y_AXIS));
 		partSelect.setOpaque(false);
 		displaySel.setLayout(new GridLayout(2,4));
-		displaySel.setSize(250,100);
+		displaySel.setPreferredSize(new Dimension(230,65));
+		displaySel.setMaximumSize(new Dimension(230,65));
+		displaySel.setMinimumSize(new Dimension(230,65));
 		displaySel.setOpaque(false);
+		for (int i=0;i<8;i++){
+			JButton temp=new JButton();
+			temp.addActionListener(this);
+			temp.setSize(60,30);
+			selectionMade.add(temp);
+			displaySel.add(selectionMade.get(i));
+		}
 		partSelect.add(name);
 		partSelect.add(enterName);
 		partSelect.add(sap);
@@ -97,6 +110,16 @@ public class GUIKitCreation implements ActionListener{
 		base.add(clear,c);
 		c.insets=new Insets(180,100,0,0);
 		base.add(create,c);
+		
+		GridBagConstraints x=new GridBagConstraints();
+		x.gridx=0;
+		x.gridy=0;
+		x.insets=new Insets(0,0,0,0);
+		bob.add(base,x);
+		bob.add(back,x);
+		bob.revalidate();
+		bob.repaint();
+		
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -109,13 +132,16 @@ public class GUIKitCreation implements ActionListener{
 			
 		}
 		
-		if(ae.getSource().equals(partList)){
-			if(partList.getSelectedIndex()==1){
-				for (int i=0;i<8;i++){
-					selectionMade.get(i).setText(""+i);
+		
+		for(int i=0;i<selectionMade.size();i++){
+			if(ae.getSource().equals(selectionMade.get(i))){
+				if(partList.getSelectedIndex()==1){
+					selectionMade.get(i).setText("test");
 				}
 			}
 		}
+		
+		
 		base.revalidate();
 		base.repaint();
 		

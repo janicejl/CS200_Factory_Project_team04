@@ -23,9 +23,9 @@ public class Lane implements ActionListener, Serializable{
     
     private Feeder feeder;
     
-    private Nest nest;
+    private Nest n;
 
-    private Lane(Nest n) {
+    private Lane() {
     	this.maxX = 600;
 		this.maxY = 100;
     	this.verticalSpacing = 0;
@@ -37,11 +37,11 @@ public class Lane implements ActionListener, Serializable{
 		//this.nestFull = false;
 		this.queueFull = false;
 		
-		nest = n;
+		//nest = n;
 	 }
     
-    public Lane(int width, int verticalSpacing) {
-
+    public Lane(int width, int verticalSpacing, Nest _n) {
+    	n = _n;
 		maxX = width;
 		maxY = 100;
     	this.verticalSpacing = verticalSpacing;
@@ -61,7 +61,8 @@ public class Lane implements ActionListener, Serializable{
 	    }
     }
     
-    public Lane(int width, int verticalSpacing, Nest n) {
+    
+    public Lane(int width, int verticalSpacing, Feeder f) {
 
 		maxX = width;
 		maxY = 100;
@@ -73,40 +74,15 @@ public class Lane implements ActionListener, Serializable{
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		//nestFull = false;
 		queueFull = false;		
-		/*importList.add(new Part("1"));
+		importList.add(new Part("1"));
 		importList.add(new Part("2"));
-	    importList.add(new Part("3"));*/
-	    for(int i = 0; i < importList.size(); i++) {
-	    	importList.get(i).setX(width-80);
-	    	importList.get(i).setY(maxY/2 + verticalSpacing);
-	    }
-	    
-	    nest = n;
-    }
-    
-    
-    public Lane(int width, int verticalSpacing, Feeder f, Nest n) {
-
-		maxX = width;
-		maxY = 100;
-    	this.verticalSpacing = verticalSpacing;
-	    conveyerBeltSpeed = 1;
-	    itemList = new Vector<Part> ();
-	    importList = new Vector<Part> ();
-	    queueList = new Vector<Part> ();
-		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		//nestFull = false;
-		queueFull = false;		
-		/*importList.add(new Part("1"));
-		importList.add(new Part("2"));
-	    importList.add(new Part("3"));*/
+	    importList.add(new Part("3"));
 	    for(int i = 0; i < importList.size(); i++) {
 	    	importList.get(i).setX(width-80);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
 	    }
 	    
 	    feeder = f;
-	    nest = n;
     }
     
     public void actionPerformed( ActionEvent ae ) {	
@@ -150,24 +126,23 @@ public class Lane implements ActionListener, Serializable{
     	part.setX(maxX-80);
     	part.setY(maxY/2 + verticalSpacing);
     	importList.add(part);
-    	
-    	System.out.println("hi");
     }
     
-    public Part releaseQueue(){
+    public void releaseQueue(){
     	if(itemList.size() != 0){
     		if(itemList.get(0).getDestination() == true){
-    			return itemList.remove(0);	
+    			n.addPart(itemList.remove(0));	
     		}
     	}
-    	return null;
+    	System.out.println("Rawr");
+    	return;
     }
     
-    public void addNest(Nest n) {
+/*    public void addNest(Nest n) {
     	this.nest = n;
     }
     
     public Nest getNest() {
     	return nest;
-    }
+    }*/
 }  

@@ -138,7 +138,7 @@ public class PartsRobotAgent extends Agent{
 	
 	//Messages:
 
-	public void msgMakeThisKit(List<Part.PartType> kitrecipe, int ct){
+	public void msgMakeThisKit(List<Part.PartType> kitrecipe, int ct){ //will pass in KitInfo instead of List of parts
 		count = ct;
 		recipe = kitrecipe;
 		camerahasrecipe = false;

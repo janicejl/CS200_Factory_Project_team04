@@ -13,13 +13,13 @@ public class KitAssemblyProtocol implements Runnable{
 	String type;
 	Thread thread;
 	
-	public KitAssemblyProtocol(Socket _s, Server _app, ObjectOutputStream _out, ObjectInputStream _in){
+	public KitAssemblyProtocol(Socket _s, Server _app){
 		app = _app;
 		s = _s;
 		try {
-			out = new ObjectOutputStream(_out);
+			out = new ObjectOutputStream(s.getOutputStream());
 			out.flush();
-			in = _in;
+			in = new ObjectInputStream(s.getInputStream());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

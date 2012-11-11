@@ -18,11 +18,8 @@ public class Lane implements ActionListener, Serializable{
     private int maxY;
     private int verticalSpacing;
     private int queueBorder = 120;
-    //private boolean nestFull; not necessary because it can be seen from the nest
-    private boolean queueFull; //Unimplemented, we need to determine a limit.
-    
+    private boolean queueFull; 
     private Feeder feeder;
-    
     private Nest n;
 
     private Lane() {
@@ -34,10 +31,7 @@ public class Lane implements ActionListener, Serializable{
 	    this.importList = new Vector<Part> ();
 	    this.queueList = new Vector<Part> ();
 		this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		//this.nestFull = false;
 		this.queueFull = false;
-		
-		//nest = n;
 	 }
     
     public Lane(int width, int verticalSpacing, Nest n) {
@@ -72,12 +66,8 @@ public class Lane implements ActionListener, Serializable{
 	    importList = new Vector<Part> ();
 	    queueList = new Vector<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		//nestFull = false;
 		queueFull = false;		
-		/*importList.add(new Part("1"));
-		importList.add(new Part("2"));
-	    importList.add(new Part("3"));*/
-	    for(int i = 0; i < importList.size(); i++) {
+		for(int i = 0; i < importList.size(); i++) {
 	    	importList.get(i).setX(width-80);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
 	    }
@@ -92,11 +82,10 @@ public class Lane implements ActionListener, Serializable{
 		    		itemList.get(i).setX(itemList.get(i).getX() - conveyerBeltSpeed);
 		    	}	    	
 		    	else {
-		    	///NEST ALGORITHM HERE!////
 		    		itemList.get(i).setDestination(true);
 		    	}
 	    	}
-	    } //Queue first, dont nest yet!
+	    } 
     }
 	    
     public Vector<Part> getItemList() {
@@ -138,11 +127,4 @@ public class Lane implements ActionListener, Serializable{
     	return;
     }
     
-/*    public void addNest(Nest n) {
-    	this.nest = n;
-    }
-    
-    public Nest getNest() {
-    	return nest;
-    }*/
 }  

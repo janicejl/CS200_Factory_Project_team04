@@ -68,6 +68,7 @@ public class LaneManagerClient implements Runnable {
 			while(true){
 				app.setLanes((Vector<Lane>)in.readObject());
 				app.getLaneGraphics().setFeeders((Vector<Feeder>)in.readObject());
+				app.getLaneGraphics().setNests((Vector<Nest>)in.readObject());
 				out.writeObject(commandSent);
 				out.reset();
 			}

@@ -28,25 +28,26 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 	private Vector<Feeder> feeders = new Vector<Feeder>();
 	
 	private Vector<GUINest> gNests = new Vector<GUINest>();
-	//private Vector<Nest> nests = new Vector<Nest>();
+	private Vector<Nest> nests = new Vector<Nest>();
 	
     public LaneGraphics() {
-    	lanes.add(new Lane(600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
-    	lanes.add(new Lane(600,60)); 
-    	lanes.add(new Lane(600,130)); 
-    	lanes.add(new Lane(600,200));
-    	lanes.add(new Lane(600,270)); 
-    	lanes.add(new Lane(600,340));
-    	lanes.add(new Lane(600,410)); 
-    	lanes.add(new Lane(600,480));
+    	for (int i = 0; i < 8; i++) {
+    		nests.add(new Nest(0, 30+(i*70)));
+    	}
+    	
+    	lanes.add(new Lane(600,-10, nests.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
+    	lanes.add(new Lane(600,60, nests.get(1))); 
+    	lanes.add(new Lane(600,130, nests.get(2))); 
+    	lanes.add(new Lane(600,200, nests.get(3)));
+    	lanes.add(new Lane(600,270, nests.get(4))); 
+    	lanes.add(new Lane(600,340, nests.get(5)));
+    	lanes.add(new Lane(600,410, nests.get(6))); 
+    	lanes.add(new Lane(600,480, nests.get(7)));
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
     	maxX = 600;
     	maxY = 700;
     	
-    	for (int i = 0; i < lanes.size(); i++) {
-    		lanes.get(i).addNest(new Nest(0, 30+(i*70)));
-    	}
     	
     	this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
     	this.setSize(maxX, maxY);
@@ -67,8 +68,8 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	}
     	
     	for (int i = 0; i < 8; i++) {
-    		//nests.add(new Nest(0, 30+(i*70)));
-    		gNests.add(new GUINest(lanes.get(i).getNest()));
+    		nests.add(new Nest(0, 30+(i*70)));
+    		gNests.add(new GUINest(nests.get(i)));
     	}
 		
 		try {
@@ -86,7 +87,7 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     
     public void updateGUINests() {
     	for (int i = 0; i < 8; i++) {
-    		gNests.get(i).setNest(lanes.get(i).getNest());
+    		gNests.get(i).setNest(nests.get(i));
     	}
     }
     
@@ -117,6 +118,7 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
         }  
         
         g2.setColor(Color.BLUE);		
+        updateGUIFeeders();
 		for (int i = 0; i < lanes.size(); i++) {
 			if(i < 4) //only four nests
 				gFeeders.get(i).paintNest(g2);
@@ -130,6 +132,7 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 				//g2.fill(new Ellipse2D.Double(lanes.get(i).getItemList().get(j).getX(),lanes.get(i).getItemList().get(j).getY(),20,20));
 		}
 		
+		updateGUINests();
 		for (int i = 0; i < gNests.size(); i++) {
 			gNests.get(i).paintNest(g2);
 		}
@@ -167,16 +170,19 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 		this.feeders = feeders;
 		updateGUIFeeders();
 	}
+	
+	public synchronized Vector<Nest> getNests() {
+		return nests;
+	}
+	
+	public synchronized void setNests(Vector<Nest> nests) {
+		this.nests = nests;
+		updateGUINests();
+	}
 
 	public void addPartToLane(int lane, Part part) {
     	lanes.get(lane).addPart(part);
     }
 	
-	public void addPartToNest(int lane) {
-		if (lanes.get(lane).getNest().isFull() == false && lanes.get(lane).getItemList().size() != 0) {		
-			lanes.get(lane).getNest().addPart(lanes.get(lane).getItemList().get(0));	
-			lanes.get(lane).getItemList().remove(0);
-		}
-	}
     
 }

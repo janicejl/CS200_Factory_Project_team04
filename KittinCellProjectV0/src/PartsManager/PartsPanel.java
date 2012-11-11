@@ -12,11 +12,13 @@ public class PartsPanel extends JPanel implements ActionListener{
 	PartsManagerApp app;
 	ManagePanel managePanel;
 	PartListPanel partListPanel;
+	ImageIcon background;
 	
 	public PartsPanel(PartsManagerApp _app){
 		app = _app;
 		managePanel = new ManagePanel();
 		partListPanel = new PartListPanel();
+		background = new ImageIcon("images/background.png");
 		
 		setLayout(new GridLayout(2,1));
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -27,6 +29,13 @@ public class PartsPanel extends JPanel implements ActionListener{
 		for(int i=0;i<managePanel.manageButtons.size();i++){
 			managePanel.manageButtons.get(i).addActionListener(this);
 		}
+	}
+	
+	public void paintComponent(Graphics g){
+		background.paintIcon(this, g, 0, 0);
+		partListPanel.repaint();
+		managePanel.repaint();
+		revalidate();
 	}
 	
 	public void actionPerformed(ActionEvent ae){
@@ -107,6 +116,10 @@ public class PartsPanel extends JPanel implements ActionListener{
 			
 		}
 		
+		public void paintComponent(Graphics g){
+			revalidate();
+		}
+		
 		private void createButtons(){
 			manageButtons.add(new JButton("Create"));
 			manageButtons.add(new JButton("Clear"));
@@ -137,60 +150,107 @@ public class PartsPanel extends JPanel implements ActionListener{
 	public class PartListPanel extends JPanel implements ActionListener{
 		ArrayList<JLabel> partLabels;
 		ArrayList<JButton> removeButtons;
+		ArrayList<JPanel> horizPanel;
 		JScrollPane scrollPane;
 		JPanel basePanel, labelPanel, buttonPanel;
 		public PartListPanel(){
+			setLayout(new BorderLayout());
 			partLabels = new ArrayList<JLabel>();
 			removeButtons = new ArrayList<JButton>();
 			scrollPane = new JScrollPane();
 			labelPanel = new JPanel();
 			basePanel = new JPanel();
 			buttonPanel = new JPanel();
+			horizPanel = new ArrayList<JPanel>();
 			
 			labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.Y_AXIS));
 			buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-			basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.X_AXIS));
-			basePanel.add(labelPanel);
-			basePanel.add(buttonPanel);
+			basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.Y_AXIS));
+			//basePanel.add(labelPanel);
+			//basePanel.add(buttonPanel);
+			basePanel.setPreferredSize(new Dimension(300, 100));
+			basePanel.setMaximumSize(new Dimension(300, 100));
+			basePanel.setMinimumSize(new Dimension(300, 100));
 			
-			scrollPane.add(basePanel);
-			add(basePanel);
+			scrollPane.setPreferredSize(new Dimension(300, 200));
+			scrollPane.setMaximumSize(new Dimension(300, 200));
+			scrollPane.setMinimumSize(new Dimension(300, 200));
+			scrollPane.getViewport().add(basePanel);
+			add(scrollPane, BorderLayout.CENTER);
 			
 		}
 		
 		public void addPart(String name){
-			partLabels.add(new JLabel(name));
-			removeButtons.add(new JButton("Remove"));
-			labelPanel.add(partLabels.get(partLabels.size()-1));
-			buttonPanel.add(removeButtons.get(removeButtons.size()-1));
+			JLabel temp = new JLabel(name);
+			temp.setPreferredSize(new Dimension(100, 27));
+			temp.setMaximumSize(new Dimension(100, 27));
+			temp.setMinimumSize(new Dimension(100, 27));
+			partLabels.add(temp);
 			
-			removeButtons.get(removeButtons.size()-1).setActionCommand("remove"+(removeButtons.size()-1));
+			JButton remove = new JButton("Remove");
+			remove.setPreferredSize(new Dimension(100, 27));
+			remove.setMaximumSize(new Dimension(100, 27));
+			remove.setMinimumSize(new Dimension(100, 27));
+			removeButtons.add(remove);
+			
+			JPanel panel = new JPanel();
+			panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+			panel.setPreferredSize(new Dimension(250, 30));
+			panel.setMaximumSize(new Dimension(250, 30));
+			panel.setMinimumSize(new Dimension(250, 30));
+			panel.add(temp);
+			panel.add(Box.createRigidArea(new Dimension(20, 0)));
+			panel.add(remove);
+			horizPanel.add(panel);
+			basePanel.add(horizPanel.get(horizPanel.size()-1));
+			basePanel.setPreferredSize(new Dimension(250, horizPanel.size()*30));
+			basePanel.setMaximumSize(new Dimension(250, horizPanel.size()*30));
+			basePanel.setMinimumSize(new Dimension(250, horizPanel.size()*30));
+			
+			//labelPanel.add(partLabels.get(partLabels.size()-1));
+			//buttonPanel.add(removeButtons.get(removeButtons.size()-1));
+			
 			removeButtons.get(removeButtons.size()-1).addActionListener(this);
 			revalidate();
 			
 		}
 		
 		public void removeAll(){
-			for(int i=0;i<partLabels.size();i++){
+			/*for(int i=0;i<partLabels.size();i++){
 				labelPanel.remove(partLabels.get(i));
 			}
 			for(int i=0;i<removeButtons.size();i++){
 				buttonPanel.remove(removeButtons.get(i));
 			}
+			*/
 			
+			for(int i = 0; i < horizPanel.size(); i++){
+				horizPanel.get(i).removeAll();
+				
+			}
+			horizPanel.clear();
 			partLabels.clear();
 			removeButtons.clear();
+			basePanel.removeAll();
+			
+			revalidate();
+		}
+		
+		public void paintComponent(Graphics g){
 			revalidate();
 		}
 		
 		public void actionPerformed(ActionEvent ae){
 			
 			for(int i=0;i<removeButtons.size();i++){
-				if(("remove"+i).equals(ae.getActionCommand())){
-					labelPanel.remove(partLabels.get(i));
-					buttonPanel.remove(removeButtons.get(i));
+				if(ae.getSource() == removeButtons.get(i)){
+					horizPanel.get(i).removeAll();
+					horizPanel.remove(i);
+					/*labelPanel.remove(partLabels.get(i));
+					buttonPanel.remove(removeButtons.get(i));*/
 					partLabels.remove(i);
 					removeButtons.remove(i);
+					basePanel.remove(i);
 					revalidate();
 					break;
 				}

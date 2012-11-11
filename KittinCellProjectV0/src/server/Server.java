@@ -24,6 +24,7 @@ import Agents.PartsRobotAgent.PartsRobotAgent;
 import Agents.VisionAgent.VisionAgent;
 import Feeder.Feeder;
 import data.Part;
+import laneManager.Nest;
 
 public class Server extends JFrame implements Runnable, ActionListener{
 	
@@ -77,7 +78,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	Vector<Feeder> feeders;
 	Vector<Lane> lanes;
-	//Add vector of nests - todo by Janice
+	Vector<Nest> nestList;
 
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
@@ -143,6 +144,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	lanes.add(new Lane(600,480));
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
+    	
+    	nestList = new Vector<Nest>();
+    	for (int i = 0; i < 8; i++) {
+    		nestList.add(new Nest(0, 30+(i*70)));	//x coordinate is zero for laneManagerApp
+    	}
 
     	NestAgent nest1 = new NestAgent(1,this);
     	NestAgent nest2 = new NestAgent(2,this);
@@ -474,5 +480,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public synchronized void setFeeders(Vector<Feeder> feeders) {
 		this.feeders = feeders;
+	}
+	
+	public synchronized Vector<Nest> getNests() {
+		return nestList;
+	}
+	
+	public synchronized void setNests(Vector<Nest> nests) {
+		this.nestList = nests;
 	}
 }

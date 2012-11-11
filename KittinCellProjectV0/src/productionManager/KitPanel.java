@@ -54,35 +54,35 @@ public class KitPanel extends JPanel {
 		four.setLayout(new BoxLayout(four, BoxLayout.X_AXIS));
 		four.setOpaque(false);
 		
-		ImageIcon icon = new ImageIcon("images/1.png");
+		ImageIcon icon = new ImageIcon("images/kt1.png");
 		part1 = new JButton(icon);
 		add(part1);
 		
-		icon = new ImageIcon("images/2.png");
+		icon = new ImageIcon("images/kt2.png");
 		part2 = new JButton(icon);
 		add(part2);
 		
-		icon = new ImageIcon("images/3.png");
+		icon = new ImageIcon("images/kt3.png");
 		part3 = new JButton(icon);
 		add(part3);
 		
-		icon = new ImageIcon("images/4.png");
+		icon = new ImageIcon("images/kt4.png");
 		part4 = new JButton(icon);
 		add(part4);
 		
-		icon = new ImageIcon("images/5.png");
+		icon = new ImageIcon("images/kt5.png");
 		part5 = new JButton(icon);
 		add(part5);
 		
-		icon = new ImageIcon("images/6.png");
+		icon = new ImageIcon("images/kt6.png");
 		part6 = new JButton(icon);
 		add(part6);
 		
-		icon = new ImageIcon("images/7.png");
+		icon = new ImageIcon("images/kt7.png");
 		part7 = new JButton(icon);
 		add(part7);
 		
-		icon = new ImageIcon("images/8.png");
+		icon = new ImageIcon("images/kt8.png");
 		part8 = new JButton(icon);
 		add(part8);
 		

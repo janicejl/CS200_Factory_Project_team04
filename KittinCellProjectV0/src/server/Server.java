@@ -133,6 +133,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		for(int i = 0; i < 4; i++){
 			feeders.add(new Feeder(525,20 + i*140));
 		}
+		nestList = new Vector<Nest>();
+    	for (int i = 0; i < 8; i++) {
+    		nestList.add(new Nest(0, 30+(i*70)));	//x coordinate is zero for laneManagerApp
+    	}
 		lanes = new Vector<Lane>();
 		lanes.add(new Lane(600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(600,60)); 
@@ -145,11 +149,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
     	
-    	nestList = new Vector<Nest>();
-    	for (int i = 0; i < 8; i++) {
-    		nestList.add(new Nest(0, 30+(i*70)));	//x coordinate is zero for laneManagerApp
+    	for (int i = 0; i < 8; i++ ) {
+    		lanes.get(i).addNest(nestList.get(i));
     	}
-
+    	
     	NestAgent nest1 = new NestAgent(1,this);
     	NestAgent nest2 = new NestAgent(2,this);
     	NestAgent nest3 = new NestAgent(3,this);

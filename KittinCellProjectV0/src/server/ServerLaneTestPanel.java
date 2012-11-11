@@ -29,9 +29,9 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		server = _server;
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setPreferredSize(new Dimension(533, 400));
-		setMaximumSize(new Dimension(533, 400));
-		setMinimumSize(new Dimension(533, 400));
+		setPreferredSize(new Dimension(100, 400));
+		setMaximumSize(new Dimension(100, 400));
+		setMinimumSize(new Dimension(100, 400));
 		
 		String[] lanes = {"Lane 1", "Lane 2", "Lane 3", "Lane 4", "Lane 5", "Lane 6", "Lane 7", "Lane 8" };
 		laneSelectBox = new JComboBox(lanes);
@@ -87,7 +87,7 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 	}
 	
 	public void paintComponent(Graphics g){
-		background.paintIcon(this, g, 0, 0);
+		//background.paintIcon(this, g, 0, 0);
 		revalidate();
 	}
 	

@@ -5,9 +5,10 @@ import java.net.*;
 
 import server.KitAssemblyManager;
 import server.KitRobot;
+import server.PartsRobot;
 
 public class KitAssemblyClient implements Runnable {
-	KitAssemblyApp app;
+	GUIKitAssemblyManager app;
 	Socket s;
 	ObjectOutputStream out;
 	ObjectInputStream in;
@@ -16,7 +17,7 @@ public class KitAssemblyClient implements Runnable {
 	String serverName; //keep track of what server to connect to...default localhost
 	Thread thread;
 	
-	public KitAssemblyClient(KitAssemblyApp _app){
+	public KitAssemblyClient(GUIKitAssemblyManager _app){
 		app = _app;
 		serverName = "localhost";
 		command = "";
@@ -64,12 +65,14 @@ public class KitAssemblyClient implements Runnable {
 			
 //**************START CODE***************************
 			commandSent = "Received";
+			/*
 			while(true){
 				app.setKitRobot((KitRobot)in.readObject());
 				app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
 				out.writeObject(commandSent);
 				out.reset();
 			}
+			*/
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -80,6 +83,16 @@ public class KitAssemblyClient implements Runnable {
 	
 	public synchronized Thread getThread() {
 		return thread;
+	}
+	
+	public synchronized void updateThread() {
+		try {
+			app.setKitRobot((KitRobot)in.readObject());
+			app.setPartsRobot((PartsRobot)in.readObject());
+			app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
+			out.writeObject(commandSent);
+			out.reset();
+		} catch (Exception ignore){}
 	}
 
 	public synchronized void setThread(Thread thread) {

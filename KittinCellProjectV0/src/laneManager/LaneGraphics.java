@@ -142,9 +142,9 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	System.out.println("Unimplemented");
     }
     
-    public void feedItem(int lane){
-    	lanes.get(lane).addPart(new Part("" + lane));
-    }
+  /*  public void feedItem(int lane){
+    	lanes.get(lane).addPart(new Part("" + lane, "images/kt" + lane + ".png"));
+    }*/
       
     public void releaseItem(int lane) {
     	lanes.get(lane).releasePart();

@@ -125,7 +125,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		}
 		for (int i = 0; i < 8; i++){
 			if(e.getSource() == feedButtons.get(i)) 
-				laneGraphics.feedItem(i);		
+				//laneGraphics.feedItem(i);		
 		}
 		for (int i = 0; i < 8; i++){
 			if(e.getSource() == releaseButtons.get(i)) 

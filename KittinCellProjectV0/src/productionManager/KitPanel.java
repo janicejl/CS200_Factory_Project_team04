@@ -1,11 +1,15 @@
 package productionManager;
 
+import java.awt.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
 public class KitPanel extends JPanel {
 
 	TitledBorder title;
+	ImageIcon background;
+	ProductionManagerPanel app;
 	
 	JPanel content;
 	
@@ -14,92 +18,103 @@ public class KitPanel extends JPanel {
 	JPanel three;
 	JPanel four;
 	
-	JLabel part1;
-	JLabel part2;
-	JLabel part3;
-	JLabel part4;
-	JLabel part5;
-	JLabel part6;
-	JLabel part7;
-	JLabel part8;
+	JButton part1;
+	JButton part2;
+	JButton part3;
+	JButton part4;
+	JButton part5;
+	JButton part6;
+	JButton part7;
+	JButton part8;
 	
-	public KitPanel() {
-		setSize(400, 300);
-		setVisible(true);
+	public KitPanel(ProductionManagerPanel _app) {
+		app = _app;
+		background = new ImageIcon("images/background.png");
 		
 		title = BorderFactory.createTitledBorder("  Kit 3  ");
 		title.setTitleJustification(TitledBorder.CENTER);
+		Font f = new Font("Cabrilli", Font.BOLD, 16);
+		title.setTitleFont(f);
 		setBorder(title);
 		
 		content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+		content.setOpaque(false);
 		
 		one = new JPanel();
 		one.setLayout(new BoxLayout(one, BoxLayout.X_AXIS));
+		one.setOpaque(false);
 		two = new JPanel();
 		two.setLayout(new BoxLayout(two, BoxLayout.X_AXIS));
+		two.setOpaque(false);
 		three = new JPanel();
 		three.setLayout(new BoxLayout(three, BoxLayout.X_AXIS));
+		three.setOpaque(false);
 		four = new JPanel();
 		four.setLayout(new BoxLayout(four, BoxLayout.X_AXIS));
+		four.setOpaque(false);
 		
 		ImageIcon icon = new ImageIcon("images/1.png");
-		part1 = new JLabel(icon);
+		part1 = new JButton(icon);
 		add(part1);
 		
 		icon = new ImageIcon("images/2.png");
-		part2 = new JLabel(icon);
+		part2 = new JButton(icon);
 		add(part2);
 		
 		icon = new ImageIcon("images/3.png");
-		part3 = new JLabel(icon);
+		part3 = new JButton(icon);
 		add(part3);
 		
 		icon = new ImageIcon("images/4.png");
-		part4 = new JLabel(icon);
+		part4 = new JButton(icon);
 		add(part4);
 		
 		icon = new ImageIcon("images/5.png");
-		part5 = new JLabel(icon);
+		part5 = new JButton(icon);
 		add(part5);
 		
 		icon = new ImageIcon("images/6.png");
-		part6 = new JLabel(icon);
+		part6 = new JButton(icon);
 		add(part6);
 		
 		icon = new ImageIcon("images/7.png");
-		part7 = new JLabel(icon);
+		part7 = new JButton(icon);
 		add(part7);
 		
 		icon = new ImageIcon("images/8.png");
-		part8 = new JLabel(icon);
+		part8 = new JButton(icon);
 		add(part8);
 		
 		
 		one.add(part1);
-		one.add(new JLabel("    "));
+		one.add(Box.createRigidArea(new Dimension(30, 0)));
 		one.add(part2);
 		two.add(part3);
-		two.add(new JLabel("    "));
+		two.add(Box.createRigidArea(new Dimension(30, 0)));
 		two.add(part4);
 		three.add(part5);
-		three.add(new JLabel("    "));
+		three.add(Box.createRigidArea(new Dimension(30, 0)));
 		three.add(part6);
 		four.add(part7);
-		four.add(new JLabel("    "));
+		four.add(Box.createRigidArea(new Dimension(30, 0)));
 		four.add(part8);
 		
-		content.add(new JLabel("    "));
-		content.add(new JLabel("    "));
+		content.add(Box.createRigidArea(new Dimension(0, 20)));
 		content.add(one);
-		content.add(new JLabel("    "));
+		content.add(Box.createRigidArea(new Dimension(0, 5)));
 		content.add(two);
-		content.add(new JLabel("    "));
+		content.add(Box.createRigidArea(new Dimension(0, 5)));
 		content.add(three);
-		content.add(new JLabel("    "));
+		content.add(Box.createRigidArea(new Dimension(0, 5)));
 		content.add(four);
 		
 		add(content);
+	}
+	
+	public void paintComponent(Graphics g){
+		background.paintIcon(this, g, 0, 0);
+		revalidate();
 	}
 	
 }

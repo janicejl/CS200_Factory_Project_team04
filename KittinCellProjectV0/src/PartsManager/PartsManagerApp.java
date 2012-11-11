@@ -19,7 +19,7 @@ public class PartsManagerApp extends JFrame implements ActionListener{
 	
 	public void actionPerformed(ActionEvent e){
 		repaint();
-		revalidate();
+		//revalidate();
 	}
 	
 	public void paint(Graphics g){

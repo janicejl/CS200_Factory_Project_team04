@@ -22,7 +22,7 @@ import data.Kit;
 
 public class GUIKitModification implements ActionListener{
 	JPanel base,partDisplay,up;
-	JScrollPane displayKit;
+	//JScrollPane displayKit;
 	JButton confirm;
 	JComboBox kitList;
 	Vector kitName;
@@ -70,6 +70,7 @@ public class GUIKitModification implements ActionListener{
 		
 		partDisplay.setLayout(new GridBagLayout());
 		partDisplay.setOpaque(false);
+		partDisplay.setPreferredSize(new Dimension(300,270));
 		
 		kitList.setSelectedIndex(0);
 		
@@ -85,12 +86,12 @@ public class GUIKitModification implements ActionListener{
 			c.gridy+=2;
 		}*/
 		
-		displayKit=new JScrollPane(partDisplay);
-		displayKit.setBackground(Color.orange);
-		displayKit.setPreferredSize(new Dimension(300,270));
+		//displayKit=new JScrollPane(partDisplay);
+		//displayKit.setBackground(Color.orange);
+		//displayKit.setPreferredSize(new Dimension(300,270));
 
 		base.add(up);
-		base.add(displayKit);
+		base.add(partDisplay);
 		
 	}
 

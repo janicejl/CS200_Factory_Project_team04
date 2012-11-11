@@ -65,7 +65,7 @@ public class GUIKitCreation implements ActionListener{
 		for (int i=0;i<8;i++){
 			JButton temp=new JButton();
 			temp.addActionListener(this);
-			temp.setPreferredSize(new Dimension(50,30));
+			temp.setPreferredSize(new Dimension(60,30));
 			selectionMade.add(temp);
 			displaySel.add(selectionMade.get(i));
 		}
@@ -109,13 +109,16 @@ public class GUIKitCreation implements ActionListener{
 			
 		}
 		
-		if(ae.getSource().equals(partList)){
-			if(partList.getSelectedIndex()==1){
-				for (int i=0;i<8;i++){
-					selectionMade.get(i).setText(""+i);
+		
+		for(int i=0;i<selectionMade.size();i++){
+			if(ae.getSource().equals(selectionMade.get(i))){
+				if(partList.getSelectedIndex()==1){
+					selectionMade.get(i).setText("test");
 				}
 			}
 		}
+		
+		
 		base.revalidate();
 		base.repaint();
 		

@@ -1,6 +1,7 @@
 package KitCreationManager;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,6 +10,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -27,7 +29,9 @@ public class GUIKitCreation implements ActionListener{
 	JTextField enterName;
 	JLabel name,sap;
 	JComboBox partList;
+	Vector partsName;
 	ArrayList<JButton> selectionMade;
+	ArrayList<Part> selection;
 	ArrayList<Part> parts;
 	ArrayList<Kit> produced;
 	
@@ -43,17 +47,31 @@ public class GUIKitCreation implements ActionListener{
 		enterName=new JTextField(10);
 		name=new JLabel("Enter the kit's name:");
 		sap=new JLabel("Select parts");
-		partList=new JComboBox();
+		
+		partsName=new Vector();
+		partsName.add("");
+		partsName.add("part XXX");
+		partList=new JComboBox(partsName);
+		partList.addActionListener(this);
 		partList.setOpaque(false);
+		
+		
 		create=new JButton("Create");
+		create.addActionListener(this);
 		clear=new JButton("Clear");
+		clear.addActionListener(this);
+		selection=new ArrayList<Part>();
 		selectionMade=new ArrayList<JButton>();
 		for (int i=0;i<8;i++){
-			selectionMade.add(new JButton(""+i));
+			JButton temp=new JButton();
+			temp.addActionListener(this);
+			temp.setPreferredSize(new Dimension(50,30));
+			selectionMade.add(temp);
 			displaySel.add(selectionMade.get(i));
 		}
 		parts=new ArrayList<Part>();
 		produced=new ArrayList<Kit>();
+		partList.setSelectedIndex(0);
 		
 		
 		base.setLayout(new GridBagLayout());
@@ -83,7 +101,28 @@ public class GUIKitCreation implements ActionListener{
 
 	public void actionPerformed(ActionEvent ae) {
 		
+		if(ae.getSource().equals(clear)){
+			selection.clear();
+			for(int i=0;i<8;i++){
+				selectionMade.get(i).setText("");
+			}
+			
+		}
+		
+		if(ae.getSource().equals(partList)){
+			if(partList.getSelectedIndex()==1){
+				for (int i=0;i<8;i++){
+					selectionMade.get(i).setText(""+i);
+				}
+			}
+		}
+		base.revalidate();
+		base.repaint();
+		
 	}
-
+	
+	public void displayButtons(){
+		
+	}
 	
 }

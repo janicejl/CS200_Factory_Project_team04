@@ -77,6 +77,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	Vector<Feeder> feeders;
 	Vector<Lane> lanes;
+	//Add vector of nests - todo by Janice
 
 	Timer timer; //timer for server
 	Thread thread; //thread for the server

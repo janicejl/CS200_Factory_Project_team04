@@ -9,14 +9,8 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
+import javax.swing.border.*;
 
 public class ManagePanel extends JPanel{
 	
@@ -77,6 +71,8 @@ public class ManagePanel extends JPanel{
 		c.gridx = 3;
 		add(manageButtons.get(2), c);
 		
+		TitledBorder border = new TitledBorder("Part Creation");
+		setBorder(border);
 	}
 	
 	public void paintComponent(Graphics g){

@@ -7,6 +7,9 @@ import java.util.Vector;
 
 import javax.swing.*;
 
+import data.Part;
+import data.PartInfo;
+
 public class PartsPanel extends JPanel implements ActionListener{
 	
 	PartsManagerApp app;
@@ -17,7 +20,7 @@ public class PartsPanel extends JPanel implements ActionListener{
 	public PartsPanel(PartsManagerApp _app){
 		app = _app;
 		managePanel = new ManagePanel();
-		partListPanel = new PartListPanel();
+		partListPanel = new PartListPanel(app);
 		background = new ImageIcon("images/background.png");
 		
 		setLayout(new GridLayout(2,1));
@@ -40,7 +43,12 @@ public class PartsPanel extends JPanel implements ActionListener{
 	
 	public void actionPerformed(ActionEvent ae){
 		
-		if(ae.getSource()==managePanel.manageButtons.get(0)){
+		if(ae.getSource()== managePanel.manageButtons.get(0)){
+			//create Part
+			PartInfo tempPart = new PartInfo(managePanel.nameField.getText(), "images/kt" + managePanel.imagesSelectBox.getSelectedIndex() + ".png");
+			tempPart.setType(managePanel.imagesSelectBox.getSelectedIndex());
+			app.getPartsList().add(tempPart);
+			
 			//create button
 			partListPanel.addPart(managePanel.nameField.getText(), (ImageIcon)managePanel.imagesSelectBox.getSelectedItem());
 			managePanel.nameField.setText("");

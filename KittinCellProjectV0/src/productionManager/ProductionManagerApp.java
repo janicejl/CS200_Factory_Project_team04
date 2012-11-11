@@ -32,8 +32,16 @@ public class ProductionManagerApp extends JFrame implements ActionListener {
 	}
 	
 	public void paint(Graphics g){
-		panel.repaint();
+		try{
+			panel.repaint();
+		} catch(Exception e){
+			
+		}
 		revalidate();
+	}
+	
+	public void revalidate(){
+		panel.revalidate();
 	}
 	
 	public void actionPerformed(ActionEvent e){

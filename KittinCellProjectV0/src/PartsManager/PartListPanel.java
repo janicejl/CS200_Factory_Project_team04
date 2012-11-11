@@ -11,6 +11,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class PartListPanel extends JPanel implements ActionListener{
+	
+	PartsManagerApp app;
 	ArrayList<JLabel> partLabels;
 	ArrayList<JLabel> imageLabels;
 	ArrayList<JButton> removeButtons;
@@ -18,7 +20,10 @@ public class PartListPanel extends JPanel implements ActionListener{
 	JScrollPane scrollPane;
 	JPanel basePanel, labelPanel, buttonPanel, titlePanel;
 	JLabel nameLabel, imageLabel;
-	public PartListPanel(){
+	
+	public PartListPanel(PartsManagerApp _app){
+		
+		app = _app;
 		setLayout(new BorderLayout());
 		partLabels = new ArrayList<JLabel>();
 		imageLabels = new ArrayList<JLabel>();
@@ -112,15 +117,7 @@ public class PartListPanel extends JPanel implements ActionListener{
 		
 	}
 	
-	public void removeAll(){
-		/*for(int i=0;i<partLabels.size();i++){
-			labelPanel.remove(partLabels.get(i));
-		}
-		for(int i=0;i<removeButtons.size();i++){
-			buttonPanel.remove(removeButtons.get(i));
-		}
-		*/
-		
+	public void removeAll(){		
 		for(int i = 0; i < horizPanel.size(); i++){
 			horizPanel.get(i).removeAll();
 			
@@ -143,8 +140,6 @@ public class PartListPanel extends JPanel implements ActionListener{
 			if(ae.getSource() == removeButtons.get(i)){
 				horizPanel.get(i).removeAll();
 				horizPanel.remove(i);
-				/*labelPanel.remove(partLabels.get(i));
-				buttonPanel.remove(removeButtons.get(i));*/
 				partLabels.remove(i);
 				removeButtons.remove(i);
 				basePanel.remove(i);

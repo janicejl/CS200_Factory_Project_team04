@@ -28,9 +28,9 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 		server = _server;
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setPreferredSize(new Dimension(533, 400));
-		setMaximumSize(new Dimension(533, 400));
-		setMinimumSize(new Dimension(533, 400));
+		setPreferredSize(new Dimension(150, 400));
+		setMaximumSize(new Dimension(150, 400));
+		setMinimumSize(new Dimension(150, 400));
 		
 		createButton("Send Recipe");
 		createButton("Get Part");
@@ -75,7 +75,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
     }
 	
 	public void paintComponent(Graphics g){
-		background.paintIcon(this, g, 0, 0);
+		//background.paintIcon(this, g, 0, 0);
 		revalidate();
 	}
 	

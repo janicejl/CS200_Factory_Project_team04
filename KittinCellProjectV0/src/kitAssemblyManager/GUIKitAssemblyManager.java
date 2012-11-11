@@ -93,6 +93,13 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 			partsClient.getThread().start();
 		}
 		*/
+        int i = kitClient.connect();
+		if(i == -1){
+			System.exit(1);
+		}
+		else if(i == 1){
+			kitClient.getThread().start();
+		}
         
         timer = new javax.swing.Timer(10, this);
         timer.start();
@@ -105,13 +112,7 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         } catch (IOException e) {}
         
         
-    	int i = kitClient.connect();
-		if(i == -1){
-			System.exit(1);
-		}
-		else if(i == 1){
-			kitClient.getThread().start();
-		}
+    	
 			
     }
 

@@ -5,6 +5,7 @@ import java.net.*;
 
 import server.KitAssemblyManager;
 import server.KitRobot;
+import server.PartsRobot;
 
 public class KitAssemblyClient implements Runnable {
 	GUIKitAssemblyManager app;
@@ -87,6 +88,7 @@ public class KitAssemblyClient implements Runnable {
 	public synchronized void updateThread() {
 		try {
 			app.setKitRobot((KitRobot)in.readObject());
+			app.setPartsRobot((PartsRobot)in.readObject());
 			app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
 			out.writeObject(commandSent);
 			out.reset();

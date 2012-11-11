@@ -27,6 +27,9 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 	private Vector<GUIFeeder> gFeeders;
 	private Vector<Feeder> feeders = new Vector<Feeder>();
 	
+	private Vector<GUINest> gNests = new Vector<GUINest>();
+	private Vector<Nest> nests = new Vector<Nest>();
+	
     public LaneGraphics() {
     	lanes.add(new Lane(600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(600,60)); 
@@ -58,6 +61,11 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     		feeders.add(new Feeder(525,20 + i*140));
     		gFeeders.add(new GUIFeeder(feeders.get(i)));
     	}
+    	
+    	for (int i = 0; i < 8; i++) {
+    		nests.add(new Nest(0, 30+(i*70)));
+    		gNests.add(new GUINest(nests.get(i)));
+    	}
 		
 		try {
             conveyorImage = ImageIO.read(new File("images/conveyerLong.png"));
@@ -69,6 +77,12 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     public void updateGUIFeeders(){
     	for(int i = 0; i < 4; i++){
     		gFeeders.get(i).setFeeder(feeders.get(i));
+    	}
+    }
+    
+    public void updateGUINests() {
+    	for (int i = 0; i < 8; i++) {
+    		gNests.get(i).setNest(nests.get(i));
     	}
     }
     
@@ -110,6 +124,10 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 				//g2.drawImage(p, (int)lanes.get(i).getItemList().get(j).getX(), (int)lanes.get(i).getItemList().get(j).getY(), null);
 			}
 				//g2.fill(new Ellipse2D.Double(lanes.get(i).getItemList().get(j).getX(),lanes.get(i).getItemList().get(j).getY(),20,20));
+		}
+		
+		for (int i = 0; i < 8; i++) {
+			gNests.get(i).paintNest(g2);
 		}
     }
     

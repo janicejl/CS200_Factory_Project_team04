@@ -55,4 +55,8 @@ public class GUINest {
 		}
 				
 	}
+	
+	public void setNest(Nest nest) {
+		this.nest = nest;
+	}
 }

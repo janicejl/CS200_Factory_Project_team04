@@ -26,17 +26,14 @@ public class LaneManagerClient implements Runnable {
 		commandSent = "";
 		app = _app;
 		thread = new Thread(this, "LaneManagerClient_Thread");
-		try {
-			out = new ObjectOutputStream(s.getOutputStream()); //output stream
-			in = new ObjectInputStream(s.getInputStream()); //input stream
-		} catch (Exception ignore) {}
+		
 	}
 
 	public Integer connect(){
 		try {
 			s = new Socket(serverName, 61337); //attempt to connect to servername
-			//out = new ObjectOutputStream(s.getOutputStream()); //output stream
-			//in = new ObjectInputStream(s.getInputStream()); //input stream
+			out = new ObjectOutputStream(s.getOutputStream()); //output stream
+			in = new ObjectInputStream(s.getInputStream()); //input stream
 		} catch (UnknownHostException e) {
 			System.err.println("Can't find server " + serverName);
             return -1;
@@ -131,6 +128,7 @@ public class LaneManagerClient implements Runnable {
 			app.setNests((Vector<Nest>)in.readObject());
 			out.writeObject(commandSent);
 			out.reset();
+			System.out.println("got it");
 		} catch (Exception ignore){}
 	}
 

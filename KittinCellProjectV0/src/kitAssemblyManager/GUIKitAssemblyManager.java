@@ -1,5 +1,6 @@
 package kitAssemblyManager;
 
+import server.*;
 
 import java.util.*;
 import java.awt.*;
@@ -16,16 +17,21 @@ import java.awt.image.*;
 import java.io.*;
 
 public class GUIKitAssemblyManager extends JPanel implements ActionListener {
+	KitAssemblyClient kitClient;
+	PartsManagerClient partsClient;
+	
     KitAssemblyApp app;
     KitAssemblyManager kam;
-    GUIKitRobot kitRobot;
-    GUIPartsRobot partsRobot;
+    GUIKitRobot gKitRobot;
+    GUIPartsRobot gPartsRobot;
+    KitRobot kitRobot;
+    PartsRobot partsRobot;
 
     double emptyConveyorMove = 0;
     double finishedConveyorMove = 0;
     double badConveyorMove = 0;
     double incompleteConveyorMove = 0;
-    BufferedImage crateImage = null;
+    BufferedImage kitImage = null;
     BufferedImage background = null;
     BufferedImage stand = null;
     BufferedImage conveyorImage = null;
@@ -57,13 +63,17 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 
     javax.swing.Timer timer;
 
-    public GUIKitAssemblyManager(KitAssemblyApp _app){
-        app = _app;
+    public GUIKitAssemblyManager(){
+        kitClient = new KitAssemblyClient(this);
+    	partsClient = new PartsManagerClient(this);
+    	
+    	kam = new KitAssemblyManager();
+    	kitRobot = new KitRobot(kam);
+    	partsRobot = new PartsRobot();    	
+    	
         setPreferredSize(new Dimension (450,600));
-
-        //kitAssemblyManager = kam;
-        kitRobot = new GUIKitRobot(app);
-        partsRobot = new GUIPartsRobot(app);
+        gKitRobot = new GUIKitRobot(this);
+        gPartsRobot = new GUIPartsRobot(this);
         stationOccupied = new Vector<Boolean>();
         emptyKits = new Vector<GUIKit>();
         finishedKits = new Vector<GUIKit>();
@@ -73,24 +83,44 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 
         gNests = new Vector<GUINest>();
         
+        /*
+		
+        int i = partsClient.connect();
+		if(i == -1){
+			System.exit(1);
+		}
+		else if(i == 1){
+			partsClient.getThread().start();
+		}
+		*/
+        int i = kitClient.connect();
+		if(i == -1){
+			System.exit(1);
+		}
+		else if(i == 1){
+			kitClient.getThread().start();
+		}
+        
         timer = new javax.swing.Timer(10, this);
         timer.start();
 
         try {
             background = ImageIO.read(new File("images/background.png"));
-            crateImage = ImageIO.read(new File("images/crate.png"));
+            kitImage = ImageIO.read(new File("images/crate.png"));
             stand = ImageIO.read(new File("images/stand.png"));
             conveyorImage = ImageIO.read(new File("images/conveyor.png"));
         } catch (IOException e) {}
+        
+        
+    	
+			
     }
 
     public void update(){
-        kam = app.getKitAssemblyManager();
+    	partsClient.updateThread();
+    	kitClient.updateThread();
         emptyConveyorOn = kam.getEmptyConveyorOn();
         finishedConveyorOn = kam.getFinishedConveyorOn();
-        //badConveyorOn = kam.getBadConveyorOn();
-        //incompleteConveyorOn = kam.getIncompleteConveyorOn();
-        // System.out.println(incompleteConveyorOn);
         baseEmptyKits = kam.getEmptyKits();
         baseFinishedKits = kam.getFinishedKits();
         baseStationKits = kam.getStationKits();
@@ -128,22 +158,12 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         }
     }
 
-    public void paintComponent(Graphics g){ // Pant game background and
+    public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.drawImage(background, 0, 0, null);
         g2.drawImage(stand,150,130,70,340,null); // kit stand
         g2.setColor(Color.BLACK);
-        /*
-        g2.drawRect(320,100,50,50);
-        g2.drawRect(320,150,50,50);
-        g2.drawRect(320,200,50,50);
-        g2.drawRect(320,250,50,50);
-        g2.drawRect(320,300,50,50);
-        g2.drawRect(320,350,50,50);
-        g2.drawRect(320,400,50,50);
-        g2.drawRect(320,450,50,50);
-        */
         
         for (GUINest gN : gNests) {
         	gN.paintNest(g2);
@@ -178,38 +198,61 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 
 
         for(Kit k : baseEmptyKits){ // draw empty kits
-            g2.drawImage(crateImage,80, (int)k.getY(),null);
+            g2.drawImage(kitImage,80, (int)k.getY(),null);
         }
         for(Kit k : baseFinishedKits){ // draw finished kits
-            g2.drawImage(crateImage,10, (int)k.getY(),null);
+            g2.drawImage(kitImage,10, (int)k.getY(),null);
         }
 
         for (int i = 1; i < stationOccupied.size()-1; i++) { // draw station kits
             if(stationOccupied.get(i)){
                 if(i == 3) {
-                    g2.drawImage(crateImage,stationPositions[i*2-2],(int)baseStationKits.get(i).getY(),null);
+                    g2.drawImage(kitImage,stationPositions[i*2-2],(int)baseStationKits.get(i).getY(),null);
 
                 }
                 else if (i == 4) {
-                    g2.drawImage(crateImage,stationPositions[i*2-2],(int)baseStationKits.get(i).getY(),null);
+                    g2.drawImage(kitImage,stationPositions[i*2-2],(int)baseStationKits.get(i).getY(),null);
                     //System.out.println(baseStationKits.get(4).getY());
                 }
                 else {
-                    g2.drawImage(crateImage,stationPositions[i*2-2],stationPositions[i*2-1],null);
+                    g2.drawImage(kitImage,stationPositions[i*2-2],stationPositions[i*2-1],null);
                 }
 
             }
         }
-        partsRobot.paintPartsRobot(g2);
-        kitRobot.paintKitRobot(g2);
+        gPartsRobot.paintPartsRobot(g2);
+        gKitRobot.paintKitRobot(g2);
     }
 
     public void actionPerformed(ActionEvent ae) {
-        update();
-        partsRobot.update();
-        kitRobot.update();
-        repaint();
+    	if(ae.getSource() == timer){
+	        update();	
+	        gPartsRobot.update();
+	        gKitRobot.update();
+	        repaint();
+    	}
     }
+    
+    public synchronized void connectKitRobot(){
+		int i = kitClient.connect();
+		if(i == -1){
+			System.exit(1);
+		}
+		else if(i == 1){
+			kitClient.getThread().start();
+			timer.start();
+		}
+	}
+    public synchronized void connectPartsRobot(){
+		int i = partsClient.connect();
+		if(i == -1){
+			System.exit(1);
+		}
+		else if(i == 1){
+			partsClient.getThread().start();
+			timer.start();
+		}
+	}
 
 	public synchronized Vector<Kit> getBaseEmptyKits() {
 		return baseEmptyKits;
@@ -226,20 +269,28 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 	public synchronized void setBaseFinishedKits(Vector<Kit> baseFinishedKits) {
 		this.baseFinishedKits = baseFinishedKits;
 	}
+	
+	public synchronized PartsManagerClient getPartsClient() {
+		return partsClient;
+	}	
 
-	public synchronized GUIKitRobot getKitRobot() {
+	public synchronized KitRobot getKitRobot() {
 		return kitRobot;
 	}
+	
+	public synchronized PartsRobot getPartsRobot() {
+		return partsRobot;
+	}
+	
+    public synchronized void setKitAssemblyManager(KitAssemblyManager kitAssemblyManager) {
+		kam = kitAssemblyManager;
+	}
 
-	public synchronized void setKitRobot(GUIKitRobot kitRobot) {
+	public synchronized void setKitRobot(KitRobot kitRobot) {
 		this.kitRobot = kitRobot;
 	}
 
-	public synchronized GUIPartsRobot getPartsRobot() {
-		return partsRobot;
-	}
-
-	public synchronized void setPartsRobot(GUIPartsRobot partsRobot) {
+	public synchronized void setPartsRobot(PartsRobot partsRobot) {
 		this.partsRobot = partsRobot;
 	}
 }

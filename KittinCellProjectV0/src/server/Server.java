@@ -220,7 +220,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
         
 		partsRobotAgent.startThread();
-        	partsRobot = new PartsRobot();
+        partsRobot = new PartsRobot();
         new Thread(partsRobot).start();
 		
 		//start threads and timer
@@ -230,6 +230,16 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	}
 	
 	public Integer start(){
+		removeCenter();
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;	
+		c.gridy = 0;
+		add(kitTest, c);
+		c.gridx = 1;
+		add(partsTest, c);
+		c.gridx = 2;
+		add(laneTest, c);
+		phase = 1;
 		try{
 			ss = new ServerSocket(61337); //attempt to start at indicated port #
 		} catch (IOException e) {
@@ -246,42 +256,44 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	}
 	
 	public void run(){
-		try {
-			s = ss.accept();
-			//determine = new DetermineProtocol(s, this);
-			if(getClientType().equals("Kit Assembly")){
-				kitPro = new KitAssemblyProtocol(s, this); //create proper protocol
-				removeCenter();
-				GridBagConstraints c = new GridBagConstraints();
-				c.gridx = 0;	
-				c.gridy = 0;
-				add(kitTest, c);
-				phase = 1;
-			}
-			else if(getClientType().equals("Parts Robot")){
-				partsPro = new PartsRobotProtocol(s, this);
-				removeCenter();
-				GridBagConstraints c = new GridBagConstraints();
-				c.gridx = 0;	
-				c.gridy = 0;
-				add(partsTest, c);
-				phase = 2;
-			}
-			else if(getClientType().equals("Lane Manager")){
-				lanePro = new LaneManagerProtocol(s, this);
-				removeCenter();
-				GridBagConstraints c = new GridBagConstraints();
-				c.gridx = 0;	
-				c.gridy = 0;
-				add(laneTest, c);
-				phase = 3;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
-		
-		
+		while(true){
+			try {
+				s = ss.accept();
+				new Protocols(s, this);
+				
+				/*determine = new DetermineProtocol(s, this);
+				if(getClientType().equals("Kit Assembly")){
+					//kitPro = new KitAssemblyProtocol(s, this); //create proper protocol
+					removeCenter();
+					GridBagConstraints c = new GridBagConstraints();
+					c.gridx = 0;	
+					c.gridy = 0;
+					add(kitTest, c);
+					phase = 1;
+				}
+				else if(getClientType().equals("Parts Robot")){
+					partsPro = new PartsRobotProtocol(s, this);
+					removeCenter();
+					GridBagConstraints c = new GridBagConstraints();
+					c.gridx = 0;	
+					c.gridy = 0;
+					add(partsTest, c);
+					phase = 2;
+				}
+				else if(getClientType().equals("Lane Manager")){
+					lanePro = new LaneManagerProtocol(s, this);
+					removeCenter();
+					GridBagConstraints c = new GridBagConstraints();
+					c.gridx = 0;	
+					c.gridy = 0;
+					add(laneTest, c);
+					phase = 3;
+				}
+	*/		} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}		
 	}
 	
 	public void execute(String process){
@@ -383,6 +395,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		factory.setSize(533, 400);
 		factory.setVisible(true);
 		factory.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		factory.start();
 	}
 
 	public synchronized KitAssemblyManager getKitAssemblyManager() {

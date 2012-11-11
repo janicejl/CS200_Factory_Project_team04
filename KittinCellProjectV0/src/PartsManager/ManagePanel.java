@@ -28,7 +28,7 @@ public class ManagePanel extends JPanel{
 		nameField.setMinimumSize(new Dimension(175, 25));
 		partImages = new Vector<ImageIcon>();
 		for(int i=0;i<10;i++){
-			partImages.add(new ImageIcon("images/"+i+".png"));
+			partImages.add(new ImageIcon("images/kt"+i+".png"));
 		}
 		imagesSelectBox = new JComboBox(partImages);
 		imagesSelectBox.setPreferredSize(new Dimension(175, 25));

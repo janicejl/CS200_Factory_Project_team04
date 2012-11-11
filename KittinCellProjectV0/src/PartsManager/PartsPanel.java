@@ -48,9 +48,10 @@ public class PartsPanel extends JPanel implements ActionListener{
 			PartInfo tempPart = new PartInfo(managePanel.nameField.getText(), "images/kt" + managePanel.imagesSelectBox.getSelectedIndex() + ".png");
 			tempPart.setType(managePanel.imagesSelectBox.getSelectedIndex());
 			app.getPartsList().add(tempPart);
+			app.save("partsInfo.sav");
 			
 			//create button
-			partListPanel.addPart(managePanel.nameField.getText(), (ImageIcon)managePanel.imagesSelectBox.getSelectedItem());
+			partListPanel.addPart(managePanel.nameField.getText(), new ImageIcon(tempPart.getImagePath()));
 			managePanel.nameField.setText("");
 		}
 		else if(ae.getSource()==managePanel.manageButtons.get(1)){
@@ -63,4 +64,9 @@ public class PartsPanel extends JPanel implements ActionListener{
 		}
 	}
 	
+	public void updateLoad(){
+		for(int i = 0; i < app.getPartsList().size(); i++){
+			partListPanel.addPart(app.getPartsList().get(i).getName(), new ImageIcon(app.getPartsList().get(i).getImagePath()));
+		}
+	}
 }

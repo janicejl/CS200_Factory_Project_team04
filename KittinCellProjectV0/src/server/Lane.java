@@ -40,8 +40,8 @@ public class Lane implements ActionListener, Serializable{
 		//nest = n;
 	 }
     
-    public Lane(int width, int verticalSpacing, Nest _n) {
-    	n = _n;
+    public Lane(int width, int verticalSpacing, Nest n) {
+    	this.n = n;
 		maxX = width;
 		maxY = 100;
     	this.verticalSpacing = verticalSpacing;

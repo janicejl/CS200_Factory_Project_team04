@@ -249,8 +249,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public void run(){
 		try {
 			s = ss.accept();
+			determine = new DetermineProtocol(s, this);
 			if(getClientType().equals("Kit Assembly")){
-				kitPro = new KitAssemblyProtocol(s, this); //create proper protocol
+				//kitPro = new KitAssemblyProtocol(s, this); //create proper protocol
 				removeCenter();
 				GridBagConstraints c = new GridBagConstraints();
 				c.gridx = 0;	

@@ -42,7 +42,7 @@ public class KitAssemblyClient implements Runnable {
 	
 	public void run(){
 		try {
-			commandSent = "KitAssembly";
+			commandSent = "Kit Assembly";
 			out.writeObject(commandSent); //send to server identifying what client this is
 			out.reset();
 			command = (String)in.readObject();

@@ -2,10 +2,13 @@ package data;
 
 import java.io.*;
 
+import data.Part.PartType;
+
 public class PartInfo implements Serializable{
 
 	String name;
 	String imagePath;
+	PartType type; 
 	
 	public PartInfo(String n, String i){
 		name = n;
@@ -26,5 +29,13 @@ public class PartInfo implements Serializable{
 
 	public synchronized void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+
+	public synchronized PartType getType() {
+		return type;
+	}
+
+	public synchronized void setType(PartType type) {
+		this.type = type;
 	}
 }

@@ -10,6 +10,8 @@ public class Part implements Serializable{
 	public PartType type;
 	
 	private String id;
+	
+	
 	private double x;
 	private double y;
 	private boolean destination; // if part is at destination

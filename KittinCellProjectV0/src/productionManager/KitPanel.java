@@ -1,11 +1,15 @@
 package productionManager;
 
+import java.awt.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
 public class KitPanel extends JPanel {
 
 	TitledBorder title;
+	ImageIcon background;
+	ProductionManagerPanel app;
 	
 	JPanel content;
 	
@@ -23,12 +27,14 @@ public class KitPanel extends JPanel {
 	JLabel part7;
 	JLabel part8;
 	
-	public KitPanel() {
-		setSize(400, 300);
-		setVisible(true);
+	public KitPanel(ProductionManagerPanel _app) {
+		app = _app;
+		background = new ImageIcon("images/background.png");
 		
 		title = BorderFactory.createTitledBorder("  Kit 3  ");
 		title.setTitleJustification(TitledBorder.CENTER);
+		Font f = new Font("Cabrilli", Font.BOLD, 16);
+		title.setTitleFont(f);
 		setBorder(title);
 		
 		content = new JPanel();
@@ -100,6 +106,11 @@ public class KitPanel extends JPanel {
 		content.add(four);
 		
 		add(content);
+	}
+	
+	public void paintComponent(Graphics g){
+		background.paintIcon(this, g, 0, 0);
+		revalidate();
 	}
 	
 }

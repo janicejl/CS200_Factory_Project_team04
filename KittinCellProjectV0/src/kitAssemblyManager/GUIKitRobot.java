@@ -30,9 +30,9 @@ public class GUIKitRobot {
     BufferedImage hinge = null;
     BufferedImage base2 = null;
 
-    KitAssemblyApp app;
+    GUIKitAssemblyManager app;
 
-    public GUIKitRobot(KitAssemblyApp _app){
+    public GUIKitRobot(GUIKitAssemblyManager _app){
         app = _app;
         x = 25;
         y = 300;

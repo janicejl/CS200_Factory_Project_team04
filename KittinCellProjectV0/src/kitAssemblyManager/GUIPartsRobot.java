@@ -37,10 +37,10 @@ public class GUIPartsRobot{
     double y;
     double angle;
 
-    KitAssemblyApp server;
+    GUIKitAssemblyManager app;
 
-    public GUIPartsRobot(KitAssemblyApp s){
-        server = s;
+    public GUIPartsRobot(GUIKitAssemblyManager s){
+        app = s;
         x = 265;
         y = 300;
         angle = 0;
@@ -79,7 +79,7 @@ public class GUIPartsRobot{
     }
 
     public void update(){
-        pr = server.getPartsRobot();
+        pr = app.getPartsRobot();
         y = pr.getY();
         cameraX = pr.getCameraX();
         cameraY = pr.getCameraY();
@@ -149,7 +149,7 @@ public class GUIPartsRobot{
                 	opacity = 0f;
                     takePicture = false;
                     //System.out.println(takePicture);
-                    server.getPartsClient().setCommandSent("Update");
+                    app.getPartsClient().setCommandSent("Update");
                     flashCounter = 1;
                 }
             }

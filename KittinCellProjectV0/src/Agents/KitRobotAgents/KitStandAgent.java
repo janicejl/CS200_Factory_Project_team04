@@ -11,6 +11,7 @@ import Agent.Agent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
 import Interface.KitRobotAgent.KitRobot;
 import Interface.KitRobotAgent.KitStand;
+import Interface.PartsRobotAgent.Vision;
 import data.Part;
 import data.Kit;
 
@@ -41,6 +42,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 
 	PartsRobotAgent parts_robot;
 	KitRobot kit_robot;
+	Vision vision;
 	Server server;
 	
 	
@@ -285,7 +287,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	private void InspectKitByVision(KitHolder kit_h)
 	{
 		server.execute("Take Picture");
-		//have vision take picture
+		vision.msgTakePicture(kit_h.kit);
 		kit_h.state = KitState.None;
 		System.out.println("KitStand: Inspect kit by vision");
 	}
@@ -299,7 +301,10 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	
 	private void AppPartsToKit(KitHolder kit_h)
 	{
-		//kit_h.kit.AddPartsPartsToKit(kit_h.parts_to_add); ANIMATION
+		for(Part part:kit_h.parts_to_add)
+		{
+			kit_h.kit.addPart(part);
+		}
 		System.out.println("KitStand: Add Parts to kit");
 		kit_h.state = KitState.None;
 		kit_h.parts_to_add = null;
@@ -367,7 +372,16 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		kit_robot = robot;
 	}
 
+	public void SetPartsRobotAgent(PartsRobotAgent robot)
+	{
+		parts_robot = robot;
+	}
 	
+	
+	public void SetVisionAgent(Vision vision_)
+	{
+		vision = vision_;
+	}
 		
 }
 	

@@ -27,7 +27,7 @@ public class Nest implements Serializable{
 		
 		//for v0
 		while (full != true) {
-			Part p = new Part(""+n);
+			Part p = new Part(""+n, "images/kt" + n + ".png");
 			addPart(p);
 		}
 	}

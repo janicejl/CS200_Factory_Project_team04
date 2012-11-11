@@ -74,9 +74,9 @@ public class Lane implements ActionListener, Serializable{
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		//nestFull = false;
 		queueFull = false;		
-		importList.add(new Part("1"));
+		/*importList.add(new Part("1"));
 		importList.add(new Part("2"));
-	    importList.add(new Part("3"));
+	    importList.add(new Part("3"));*/
 	    for(int i = 0; i < importList.size(); i++) {
 	    	importList.get(i).setX(width-80);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);

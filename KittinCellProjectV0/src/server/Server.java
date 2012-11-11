@@ -319,7 +319,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		partsRobot.takePicture(320, 40 + 140*((num-1)/2));
     	}
     	else if(process.equals("Feed Feeder")){
-    		Part temp = new Part("" + num);
+    		Part temp = new Part("" + num, "images/kt" + num + ".png");
     		temp.setImagePath("images/kt" + temp.getId() + ".png");
     		lanes.get(num).addPart(temp);
     		feeders.get(num/2).addParts(temp);

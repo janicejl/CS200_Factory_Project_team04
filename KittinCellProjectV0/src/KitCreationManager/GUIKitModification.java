@@ -21,7 +21,7 @@ import javax.swing.JScrollPane;
 import data.Kit;
 
 public class GUIKitModification implements ActionListener{
-	JPanel base,partDisplay,up;
+	JPanel base,partDisplay,up,back;
 	//JScrollPane displayKit;
 	JButton confirm;
 	JComboBox kitList;

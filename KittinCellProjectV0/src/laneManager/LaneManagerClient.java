@@ -10,7 +10,7 @@ import server.Lane;
 
 public class LaneManagerClient implements Runnable {
 	Socket s;
-	LaneManagerApp app;
+	LaneGraphics app;
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	String command;
@@ -20,19 +20,23 @@ public class LaneManagerClient implements Runnable {
 	
 	 //data received from server
 	
-	public LaneManagerClient(LaneManagerApp _app){
+	public LaneManagerClient(LaneGraphics _app){
 		serverName = "localhost";
 		command = "";
 		commandSent = "";
 		app = _app;
 		thread = new Thread(this, "LaneManagerClient_Thread");
+		try {
+			out = new ObjectOutputStream(s.getOutputStream()); //output stream
+			in = new ObjectInputStream(s.getInputStream()); //input stream
+		} catch (Exception ignore) {}
 	}
 
 	public Integer connect(){
 		try {
 			s = new Socket(serverName, 61337); //attempt to connect to servername
-			out = new ObjectOutputStream(s.getOutputStream()); //output stream
-			in = new ObjectInputStream(s.getInputStream()); //input stream
+			//out = new ObjectOutputStream(s.getOutputStream()); //output stream
+			//in = new ObjectInputStream(s.getInputStream()); //input stream
 		} catch (UnknownHostException e) {
 			System.err.println("Can't find server " + serverName);
             return -1;
@@ -65,13 +69,13 @@ public class LaneManagerClient implements Runnable {
 			
 			
 			commandSent = "Received";
-			while(true){
+			/*while(true){
 				app.setLanes((Vector<Lane>)in.readObject());
-				app.getLaneGraphics().setFeeders((Vector<Feeder>)in.readObject());
-				app.getLaneGraphics().setNests((Vector<Nest>)in.readObject());
+				app.setFeeders((Vector<Feeder>)in.readObject());
+				app.setNests((Vector<Nest>)in.readObject());
 				out.writeObject(commandSent);
 				out.reset();
-			}
+			}*/
 			
 			/*commandSent = "idle";
 			while(true){
@@ -118,6 +122,16 @@ public class LaneManagerClient implements Runnable {
 
 	public synchronized Thread getThread() {
 		return thread;
+	}
+	
+	public synchronized void updateThread(){
+		try {
+			app.setLanes((Vector<Lane>)in.readObject());
+			app.setFeeders((Vector<Feeder>)in.readObject());
+			app.setNests((Vector<Nest>)in.readObject());
+			out.writeObject(commandSent);
+			out.reset();
+		} catch (Exception ignore){}
 	}
 
 	public synchronized void setThread(Thread thread) {

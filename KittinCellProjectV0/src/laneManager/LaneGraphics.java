@@ -1,5 +1,6 @@
 package laneManager;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 
@@ -14,9 +15,9 @@ import Feeder.*;
 import java.io.File;
 import java.io.IOException;
 
-import java.util.Vector;
+import java.util.*;
 
-public class LaneGraphics extends JPanel /*implements ActionListener*/ {
+public class LaneGraphics extends JPanel implements ActionListener {
 	private Vector<Lane> lanes = new Vector<Lane> ();
 	private int maxX;
 	private int maxY;
@@ -29,8 +30,23 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 	
 	private Vector<GUINest> gNests = new Vector<GUINest>();
 	private Vector<Nest> nests = new Vector<Nest>();
+	private LaneManagerClient client;
+	private javax.swing.Timer timer;
 	
     public LaneGraphics() {
+    	client = new LaneManagerClient(this);
+    	
+
+		int j = client.connect();
+		if(j == -1){
+			System.exit(1);
+		}
+		else if(j == 1){
+			client.getThread().start();
+		}
+	
+    	
+    	
     	for (int i = 0; i < 8; i++) {
     		nests.add(new Nest(0, 30+(i*70)));
     	}
@@ -77,6 +93,8 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
         } catch (IOException e) {
         	System.out.println("Image load issue");
         }	
+		timer = new javax.swing.Timer(10, this);
+		timer.start();
     }
     
     public void updateGUIFeeders(){
@@ -183,6 +201,13 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 	public void addPartToLane(int lane, Part part) {
     	lanes.get(lane).addPart(part);
     }
+	
+	public void actionPerformed(ActionEvent e){
+		if(e.getSource() == timer){
+			client.updateThread();
+			repaint();
+		}
+	}
 	
     
 }

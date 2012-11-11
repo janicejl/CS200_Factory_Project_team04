@@ -36,8 +36,7 @@ public class PartsPanel extends JPanel implements ActionListener{
 	
 	public void paintComponent(Graphics g){
 		background.paintIcon(this, g, 0, 0);
-		partListPanel.repaint();
-		managePanel.repaint();
+		revalidate();
 	}
 	
 	public void actionPerformed(ActionEvent ae){

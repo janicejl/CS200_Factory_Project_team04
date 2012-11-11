@@ -1,20 +1,25 @@
 package productionManager;
 
+import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import data.Job;
+
 public class ProductionManagerApp extends JFrame implements ActionListener {
 
 	ProductionManagerPanel panel;
-	Timer timer;
+	javax.swing.Timer timer;
 	
-	JPanel blank;
+	ArrayList<Job> jobs;
 	
 	public ProductionManagerApp(){
 		setSize(1000, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		
+		jobs = new ArrayList<Job>();
 		
 		panel = new ProductionManagerPanel(this);
 		panel.setPreferredSize(new Dimension(1000, 600));
@@ -23,7 +28,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener {
 		
 		add(panel);
 		
-		timer = new Timer(10, this);
+		timer = new javax.swing.Timer(10, this);
 	}
 	
 	public void paint(Graphics g){

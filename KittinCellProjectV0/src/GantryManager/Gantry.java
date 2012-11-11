@@ -161,7 +161,29 @@ public class Gantry
 			return false;
 		}
 	}
-	
+	public void checkFeeder()
+	{
+		if(feed==0)
+		{
+			xFinal = 230;
+			yFinal = 65;
+		}
+		else if(feed==1)
+		{
+			xFinal = 80;
+			yFinal = 190;
+		}
+		else if(feed==2)
+		{
+			xFinal = 80;
+			yFinal = 340;
+		}
+		else if(feed==3)
+		{
+			xFinal = 230;
+			yFinal = 465;
+		}
+	}
 	public int getFeeder()
 	{
 		return feed;

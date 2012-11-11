@@ -12,6 +12,7 @@ public class Gantry
 	int xCurrent;
 	int yCurrent;
 	String state;
+	int feed;
 	int box; //Array index of the box it is handling
 	protected BufferedImage image = null;
 	
@@ -126,6 +127,7 @@ public class Gantry
 	
 	public void setFeeder(int f) //Given the feeder number, will adjust it's coordinates, this function will also be made more adaptable later
 	{
+		feed = f;
 		if(f==0)
 		{
 			xFinal = 230;
@@ -158,5 +160,32 @@ public class Gantry
 		{
 			return false;
 		}
+	}
+	public void checkFeeder()
+	{
+		if(feed==0)
+		{
+			xFinal = 230;
+			yFinal = 65;
+		}
+		else if(feed==1)
+		{
+			xFinal = 80;
+			yFinal = 190;
+		}
+		else if(feed==2)
+		{
+			xFinal = 80;
+			yFinal = 340;
+		}
+		else if(feed==3)
+		{
+			xFinal = 230;
+			yFinal = 465;
+		}
+	}
+	public int getFeeder()
+	{
+		return feed;
 	}
 }

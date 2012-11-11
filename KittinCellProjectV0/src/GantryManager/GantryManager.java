@@ -73,9 +73,8 @@ public class GantryManager
 			}
 		}
 		
-		if(gantry.getState()=="free") //If the gantry is free
+		else if(gantry.getState() == "load") //if the gantry  is moving towards the load station
 		{
-			boolean flip = true;
 			int c=0;
 			while(c<parts.size())
 			{
@@ -84,58 +83,28 @@ public class GantryManager
 					gantry.setX(parts.get(c).getXCurrent()+10);
 					gantry.setY(parts.get(c).getYCurrent()+15);
 					gantry.setBox(c);
-					gantry.setState("load");
-					flip = false;
 				}
 				c++;
 			}
-			
-			c=0;
-			if(flip==true)
-			{
-				while(c<parts.size())
-				{
-					if(parts.get(c).getState()=="dump")//first look for parts bins waiting to be dumped
-					{
-						gantry.setBox(c);
-						gantry.setFeeder(parts.get(c).getFeeder());
-						gantry.setState("dumpi");
-					}
-					c++;
-				}
-			}
-		}
-		else if(gantry.getState() == "load") //if the gantry  is moving towards the load station
-		{
+
 			if(gantry.done())
 			{
 				gantry.setState("loading");//once it has reached it, switch to a busy signal
-				int c=0;
-				while(c<feeders.size())
-				{
-					if(feeders.get(c)==0) //find an open feeder
-					{
-						gantry.setFeeder(c);
-						parts.get(gantry.getBox()).setX(gantry.getX()-10);
-						parts.get(gantry.getBox()).setY(gantry.getY()-15);
-						parts.get(gantry.getBox()).setState("moving");
-						parts.get(gantry.getBox()).setFeeder(c);
-						feeders.set(c, 1);
-						break;
-					}
-					c++;
-				}
 			}
 		}
 		else if(gantry.getState()=="loading") //if busy
 		{
+			gantry.checkFeeder();
+			parts.get(gantry.getBox()).setX(gantry.getX()-10);
+			parts.get(gantry.getBox()).setY(gantry.getY()-15);
+			parts.get(gantry.getBox()).setState("moving");
+			parts.get(gantry.getBox()).setFeeder(gantry.getFeeder());
 			if(gantry.done())
 			{
 				parts.get(gantry.getBox()).setState("feeding"); //once at the feeder, drop the box, and go back to free
 				gantry.setBox(-1);
 				gantry.setState("free");
 			}
-			
 		}
 		else if(gantry.getState()=="dumpi")
 		{

@@ -26,13 +26,13 @@ public class DetermineProtocol implements Runnable {
 	}
 	
 	public void typeDetermine(String _type){
-		if(_type.equals("KitAssembly")){
-			app.kitPro = new KitAssemblyProtocol(s, app);
+		if(_type.equals("Kit Assembly")){
+			app.kitPro = new KitAssemblyProtocol(s, app, out, in);
 		}
-		else if(_type.equals("LaneManager")){
+		else if(_type.equals("Lane Manager")){
 			app.lanePro = new LaneManagerProtocol(s, app);
 		}
-		else if(_type.equals("PartsRobot")){
+		else if(_type.equals("Parts Robot")){
 			app.partsPro = new PartsRobotProtocol(s, app);
 		}
 	}

@@ -55,4 +55,8 @@ public class GUINest {
 		}
 				
 	}
+	
+	public synchronized void setNest(Nest nest) {
+		this.nest = nest;
+	}
 }

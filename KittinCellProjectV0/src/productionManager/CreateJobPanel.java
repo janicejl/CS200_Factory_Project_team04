@@ -13,9 +13,9 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 	TitledBorder title;
 	JPanel selectionDetails;
 	JLabel kitLabel;
-	JComboBox availableKits;
-	JLabel textLabel;
-	JTextField kitsToMake;
+	JComboBox kitBox;
+	JLabel amtLabel;
+	JTextField amtText;
 	JButton addJob;
 	
 	public CreateJobPanel(ProductionManagerPanel _app) {		
@@ -44,27 +44,28 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 		kitLabel.setMaximumSize(new Dimension(40, 30));
 		kitLabel.setMinimumSize(new Dimension(40, 30));
 		
-		availableKits = new JComboBox();
-		availableKits.setPreferredSize(new Dimension(100, 30));
-		availableKits.setMaximumSize(new Dimension(100, 30));
-		availableKits.setMinimumSize(new Dimension(100, 30));
+		kitBox = new JComboBox();
+		kitBox.setPreferredSize(new Dimension(100, 30));
+		kitBox.setMaximumSize(new Dimension(100, 30));
+		kitBox.setMinimumSize(new Dimension(100, 30));
 		
-		textLabel = new JLabel("Amount:");
-		textLabel.setPreferredSize(new Dimension(70, 30));
-		textLabel.setMaximumSize(new Dimension(70, 30));
-		textLabel.setMinimumSize(new Dimension(70, 30));
+		amtLabel = new JLabel("Amount:");
+		amtLabel.setPreferredSize(new Dimension(70, 30));
+		amtLabel.setMaximumSize(new Dimension(70, 30));
+		amtLabel.setMinimumSize(new Dimension(70, 30));
 		
-		kitsToMake = new JTextField(10);
-		kitsToMake.setPreferredSize(new Dimension(70, 30));
-		kitsToMake.setMaximumSize(new Dimension(70, 30));
-		kitsToMake.setMinimumSize(new Dimension(70, 30));
+		amtText = new JTextField(10);
+		amtText.setPreferredSize(new Dimension(70, 30));
+		amtText.setMaximumSize(new Dimension(70, 30));
+		amtText.setMinimumSize(new Dimension(70, 30));
 		
 		selectionDetails.add(Box.createRigidArea(new Dimension(20, 0)));
 		selectionDetails.add(kitLabel);
-		selectionDetails.add(availableKits);
+		selectionDetails.add(kitBox);
 		selectionDetails.add(Box.createRigidArea(new Dimension(50, 0)));
-		selectionDetails.add(textLabel);
-		selectionDetails.add(kitsToMake);
+		selectionDetails.add(amtLabel);
+		selectionDetails.add(amtText);
+		selectionDetails.add(Box.createRigidArea(new Dimension(20, 0)));
 		
 		addJob = new JButton("Add to Job List");
 		addJob.addActionListener(this);
@@ -88,7 +89,15 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == addJob) {
-			app.getListPanel().getJobs().create("Hello", 5);
+			Integer amt = new Integer(0);
+			try{
+				amt = Integer.parseInt(amtText.getText());
+			}
+			catch(NumberFormatException ne){
+				JOptionPane.showMessageDialog(null, "Invalid Amount", "Exception", JOptionPane.OK_OPTION);
+				return;
+			}
+			app.getListPanel().getJobs().create("Hello", amt);
 		}
 	}
 

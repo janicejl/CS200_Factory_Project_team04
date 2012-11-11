@@ -27,6 +27,9 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 	private Vector<GUIFeeder> gFeeders;
 	private Vector<Feeder> feeders = new Vector<Feeder>();
 	
+	private Vector<GUINest> gNests = new Vector<GUINest>();
+	//private Vector<Nest> nests = new Vector<Nest>();
+	
     public LaneGraphics() {
     	lanes.add(new Lane(600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(600,60)); 
@@ -40,6 +43,10 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     	lanes.get(2).setConveyerBeltSpeed(3);
     	maxX = 600;
     	maxY = 700;
+    	
+    	for (int i = 0; i < lanes.size(); i++) {
+    		lanes.get(i).addNest(new Nest(0, 30+(i*70)));
+    	}
     	
     	this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
     	this.setSize(maxX, maxY);
@@ -58,6 +65,11 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     		feeders.add(new Feeder(525,20 + i*140));
     		gFeeders.add(new GUIFeeder(feeders.get(i)));
     	}
+    	
+    	for (int i = 0; i < 8; i++) {
+    		//nests.add(new Nest(0, 30+(i*70)));
+    		gNests.add(new GUINest(lanes.get(i).getNest()));
+    	}
 		
 		try {
             conveyorImage = ImageIO.read(new File("images/conveyerLong.png"));
@@ -69,6 +81,12 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
     public void updateGUIFeeders(){
     	for(int i = 0; i < 4; i++){
     		gFeeders.get(i).setFeeder(feeders.get(i));
+    	}
+    }
+    
+    public void updateGUINests() {
+    	for (int i = 0; i < 8; i++) {
+    		gNests.get(i).setNest(lanes.get(i).getNest());
     	}
     }
     
@@ -111,6 +129,10 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 			}
 				//g2.fill(new Ellipse2D.Double(lanes.get(i).getItemList().get(j).getX(),lanes.get(i).getItemList().get(j).getY(),20,20));
 		}
+		
+		for (int i = 0; i < gNests.size(); i++) {
+			gNests.get(i).paintNest(g2);
+		}
     }
     
     public void setVibration() { //Unimplimented
@@ -149,5 +171,12 @@ public class LaneGraphics extends JPanel /*implements ActionListener*/ {
 	public void addPartToLane(int lane, Part part) {
     	lanes.get(lane).addPart(part);
     }
+	
+	public void addPartToNest(int lane) {
+		if (lanes.get(lane).getNest().isFull() == false && lanes.get(lane).getItemList().size() != 0) {		
+			lanes.get(lane).getNest().addPart(lanes.get(lane).getItemList().get(0));	
+			lanes.get(lane).getItemList().remove(0);
+		}
+	}
     
 }

@@ -13,18 +13,27 @@ public class KitAssemblyProtocol implements Runnable{
 	String type;
 	Thread thread;
 	
-	public KitAssemblyProtocol(Socket _s, Server _app){
+	public KitAssemblyProtocol(Socket _s, Server _app, ObjectOutputStream _out, ObjectInputStream _in){
 		app = _app;
 		s = _s;
+		try {
+			out = new ObjectOutputStream(_out);
+			out.flush();
+			in = _in;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		command = "";
 		commandSent = "Confirmed";
-		try {
+		/*try {
 			out = new ObjectOutputStream(s.getOutputStream());
 			out.flush();
 			in = new ObjectInputStream(s.getInputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
 		thread = new Thread(this, "Kit_Thread");
 		thread.start();
@@ -32,11 +41,11 @@ public class KitAssemblyProtocol implements Runnable{
 	
 	public synchronized void run(){
 		try {
-			command = (String)in.readObject();
+			/*command = (String)in.readObject();
 			if(!command.equals("KitAssembly")){
 				commandSent = "Denied";
 				System.exit(1);
-			}
+			}*/
 			//confirm phase
 			out.writeObject(commandSent);
 			out.reset();

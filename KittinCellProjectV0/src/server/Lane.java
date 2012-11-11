@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Vector;
 import data.Part;
 import Feeder.Feeder;
+import laneManager.Nest;
 
 public class Lane implements ActionListener, Serializable{
     private Vector<Part> importList;  //Item Collection that is imported
@@ -17,12 +18,14 @@ public class Lane implements ActionListener, Serializable{
     private int maxY;
     private int verticalSpacing;
     private int queueBorder = 120;
-    private boolean nestFull;
+    //private boolean nestFull; not necessary because it can be seen from the nest
     private boolean queueFull; //Unimplemented, we need to determine a limit.
     
     private Feeder feeder;
+    
+    private Nest nest;
 
-    private Lane() {
+    private Lane(Nest n) {
     	this.maxX = 600;
 		this.maxY = 100;
     	this.verticalSpacing = 0;
@@ -31,8 +34,10 @@ public class Lane implements ActionListener, Serializable{
 	    this.importList = new Vector<Part> ();
 	    this.queueList = new Vector<Part> ();
 		this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		this.nestFull = false;
+		//this.nestFull = false;
 		this.queueFull = false;
+		
+		nest = n;
 	 }
     
     public Lane(int width, int verticalSpacing) {
@@ -45,7 +50,7 @@ public class Lane implements ActionListener, Serializable{
 	    importList = new Vector<Part> ();
 	    queueList = new Vector<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		nestFull = false;
+		//nestFull = false;
 		queueFull = false;		
 		/*importList.add(new Part("1"));
 		importList.add(new Part("2"));
@@ -56,8 +61,7 @@ public class Lane implements ActionListener, Serializable{
 	    }
     }
     
-    
-    public Lane(int width, int verticalSpacing, Feeder f) {
+    public Lane(int width, int verticalSpacing, Nest n) {
 
 		maxX = width;
 		maxY = 100;
@@ -67,7 +71,31 @@ public class Lane implements ActionListener, Serializable{
 	    importList = new Vector<Part> ();
 	    queueList = new Vector<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		nestFull = false;
+		//nestFull = false;
+		queueFull = false;		
+		/*importList.add(new Part("1"));
+		importList.add(new Part("2"));
+	    importList.add(new Part("3"));*/
+	    for(int i = 0; i < importList.size(); i++) {
+	    	importList.get(i).setX(width-80);
+	    	importList.get(i).setY(maxY/2 + verticalSpacing);
+	    }
+	    
+	    nest = n;
+    }
+    
+    
+    public Lane(int width, int verticalSpacing, Feeder f, Nest n) {
+
+		maxX = width;
+		maxY = 100;
+    	this.verticalSpacing = verticalSpacing;
+	    conveyerBeltSpeed = 1;
+	    itemList = new Vector<Part> ();
+	    importList = new Vector<Part> ();
+	    queueList = new Vector<Part> ();
+		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
+		//nestFull = false;
 		queueFull = false;		
 		/*importList.add(new Part("1"));
 		importList.add(new Part("2"));
@@ -78,6 +106,7 @@ public class Lane implements ActionListener, Serializable{
 	    }
 	    
 	    feeder = f;
+	    nest = n;
     }
     
     public void actionPerformed( ActionEvent ae ) {	
@@ -132,5 +161,13 @@ public class Lane implements ActionListener, Serializable{
     		}
     	}
     	return null;
+    }
+    
+    public void addNest(Nest n) {
+    	this.nest = n;
+    }
+    
+    public Nest getNest() {
+    	return nest;
     }
 }  

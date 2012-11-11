@@ -344,6 +344,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public void actionPerformed(ActionEvent e){
 		for(int i = 0; i < lanes.size(); i++){
 			lanes.get(i).actionPerformed(e);
+			for (Nest n: nestList) {
+				if (n.isFull() != true) {
+					n.addPart(lanes.get(i).releaseQueue());
+				}
+			}
 		}
 		repaint();
 	}

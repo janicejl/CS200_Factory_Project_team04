@@ -75,6 +75,18 @@ public class GantryManager
 		
 		else if(gantry.getState() == "load") //if the gantry  is moving towards the load station
 		{
+			int c=0;
+			while(c<parts.size())
+			{
+				if(parts.get(c).getState()=="load") //then look for ones to be loaded
+				{
+					gantry.setX(parts.get(c).getXCurrent()+10);
+					gantry.setY(parts.get(c).getYCurrent()+15);
+					gantry.setBox(c);
+				}
+				c++;
+			}
+
 			if(gantry.done())
 			{
 				gantry.setState("loading");//once it has reached it, switch to a busy signal
@@ -82,6 +94,7 @@ public class GantryManager
 		}
 		else if(gantry.getState()=="loading") //if busy
 		{
+			gantry.checkFeeder();
 			parts.get(gantry.getBox()).setX(gantry.getX()-10);
 			parts.get(gantry.getBox()).setY(gantry.getY()-15);
 			parts.get(gantry.getBox()).setState("moving");

@@ -25,6 +25,7 @@ import Agents.VisionAgent.VisionAgent;
 import Feeder.Feeder;
 import data.Part;
 import laneManager.Nest;
+import GantryManager.GantryManager;
 
 public class Server extends JFrame implements Runnable, ActionListener{
 	
@@ -32,6 +33,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	ServerKitTestPanel kitTest; //panel for kit assembly commands
 	ServerPartTestPanel partsTest; //panel for parts robot commands
 	ServerLaneTestPanel laneTest; //panel for lane commands
+	//ServerGantryTestPanel gantryTest;
 	Integer phase;
 	
 	String clientType; //type of client to connect to
@@ -42,6 +44,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	KitAssemblyProtocol kitPro;
 	LaneManagerProtocol lanePro;
 	PartsRobotProtocol partsPro;
+	GantryManagerProtocol gantryPro;
 	
 	
 	PartsRobot partsRobot;
@@ -53,6 +56,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	VisionAgent nestvisionagent4;
 	Vector<VisionAgent> visions = new Vector<VisionAgent>();
 	Semaphore flashpermit;
+	
+	GantryManager gantryManager;
 	
 	KitRobotAgent kitRobotAgent; 
 	KitStandAgent kitStandAgent;
@@ -137,6 +142,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantry2.setGantryController(gantryController);
 		gantryController.msgGantryAdded(gantry1);
 		gantryController.msgGantryAdded(gantry2);**/
+		gantryManager = new GantryManager();
+		
 
 		feeders = new Vector<Feeder>();
 		for(int i = 0; i < 4; i++){
@@ -513,5 +520,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	public synchronized void setNests(Vector<Nest> nests) {
 		this.nestList = nests;
+	}
+	
+	public synchronized GantryManager getGantryManager()
+	{
+		return gantryManager;
 	}
 }

@@ -23,7 +23,7 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		
 		partsList = new ArrayList<PartInfo>();
 		
-		load("partsInfo.sav");
+		load("partsList.sav");
 		partPanel.updateLoad();
 		
 		new Timer(10, this).start();
@@ -107,7 +107,7 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		save("partsInfo.sav");		
+		save("partsList.sav");		
 	}
 
 	@Override

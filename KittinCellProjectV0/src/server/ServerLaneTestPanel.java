@@ -28,6 +28,7 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 	public ServerLaneTestPanel(Server _server){
 		server = _server;
 		
+		setOpaque(false);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(100, 400));
 		setMaximumSize(new Dimension(100, 400));

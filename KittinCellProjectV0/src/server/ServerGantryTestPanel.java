@@ -65,51 +65,34 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 		if("Load Parts Box 1".equals(ae.getActionCommand()))
 		{
 			server.execute("Load Parts Box 1");
-			System.out.println("WOOHOO");
-			//server.getGantryManager().getGantry().setState("load");
-			//server.getGantryManager().getGantry().setFeeder(0);
 		}
 		else if("Load Parts Box 2".equals(ae.getActionCommand()))
 		{
 			server.execute("Load Parts Box 2");
-			//server.getGantryManager().getGantry().setState("load");
-			//server.getGantryManager().getGantry().setFeeder(1);
 		}
 		else if("Load Parts Box 3".equals(ae.getActionCommand()))
 		{
 			server.execute("Load Parts Box 3");
-			//server.getGantryManager().getGantry().setState("load");
-			//server.getGantryManager().getGantry().setFeeder(2);
 		}
 		else if("Load Parts Box 4".equals(ae.getActionCommand()))
 		{
 			server.execute("Load Parts Box 4");
-			//server.getGantryManager().getGantry().setState("load");
-			//server.getGantryManager().getGantry().setFeeder(3);
 		}
 		else if("Dump Feeder 1".equals(ae.getActionCommand()))
 		{
 			server.execute("Dump Feeder 1");
-			//server.getGantryManager().getGantry().setState("dumpi");
-			//server.getGantryManager().getGantry().setFeeder(0);
 		}
 		else if("Dump Feeder 2".equals(ae.getActionCommand()))
 		{
 			server.execute("Dump Feeder 2");
-			//server.getGantryManager().getGantry().setState("dumpi");
-			//server.getGantryManager().getGantry().setFeeder(1);
 		}
 		else if("Dump Feeder 3".equals(ae.getActionCommand()))
 		{
 			server.execute("Dump Feeder 3");
-			//server.getGantryManager().getGantry().setState("dumpi");
-			//server.getGantryManager().getGantry().setFeeder(2);
 		}
 		else if("Dump Feeder 4".equals(ae.getActionCommand()))
 		{
 			server.execute("Dump Feeder 4");
-			//server.getGantryManager().getGantry().setState("dumpi");
-			//server.getGantryManager().getGantry().setFeeder(3);
 		}
 	}
 }

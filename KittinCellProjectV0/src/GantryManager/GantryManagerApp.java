@@ -1,27 +1,18 @@
 package GantryManager;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
-import java.awt.event.*;
 
-public class GantryManagerApp extends JFrame
+public class GantryManagerApp extends JFrame implements ActionListener
 {
-	GUIGantryManager gui;
-	GantryManager manager;
-	GantryManagerClient client;
-	int speed;
-	public Timer timer;
+	private GUIGantryManager gui;
 	
 	public GantryManagerApp()
 	{
-		manager = new GantryManager();
-
-		gui = new GUIGantryManager(manager);
-		gui.update();
-		
-		client = new GantryManagerClient(this);
-		client.connect();
-		
+		gui = new GUIGantryManager();
 		this.add(gui);
+		gui.setVisible(true);
 	}
 	
 	public static void main(String[] args)
@@ -31,27 +22,15 @@ public class GantryManagerApp extends JFrame
 		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		app.setVisible(true);
 		app.setResizable(false);
-		app.start();
 	}
 	
-	public void update()
+	public void actionPerformed(ActionEvent ae)
 	{
-		gui.repaint();
+		
 	}
 	
-	public synchronized void setGantryManager(GantryManager gm)
+	public synchronized  void setManager(GantryManager gm)
 	{
-		manager = gm;
+		gui.setGantryManager(gm);
 	}
-	
-	public synchronized GantryManager getGantryManager()
-	{
-		return manager;
-	}
-	
-	public synchronized void start()
-	{
-		manager.run();
-	}
-	
 }

@@ -255,6 +255,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		add(partsTest, c);
 		c.gridx = 2;
 		add(laneTest, c);
+		c.gridx = 3;
+		add(gantryTest,c);
 		phase = 1;
 		try{
 			ss = new ServerSocket(61337); //attempt to start at indicated port #

@@ -40,7 +40,6 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 			this.add(buttons.get(i));
 			i++;
 		}
-		server.add(this);
 	}
 	
 	public void createButton(String s)

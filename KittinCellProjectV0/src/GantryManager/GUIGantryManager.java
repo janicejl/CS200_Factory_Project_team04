@@ -4,10 +4,11 @@ import java.util.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.image.*;
+import java.awt.event.*;
 import javax.imageio.*;
 import java.io.*;
 
-public class GUIGantryManager extends JPanel
+public class GUIGantryManager extends JPanel implements ActionListener
 {
 	//Items that will always be painted, regardless of user input
 	protected BufferedImage background = null;
@@ -19,9 +20,12 @@ public class GUIGantryManager extends JPanel
 	GUIGantry guigantry;
 	ArrayList<PartsBox> boxes;
 	ArrayList<GUIPartsBox> gboxes;
+	javax.swing.Timer timer;
+	GantryManager manager;
 	
-	public GUIGantryManager()
+	public GUIGantryManager(GantryManager gm)
 	{
+		manager = gm;
 		try
 		{
            	background = ImageIO.read(new File("images/background.png"));
@@ -31,6 +35,9 @@ public class GUIGantryManager extends JPanel
 			lane = ImageIO.read(new File("images/lanetemp.png"));
        	} 
 		catch (IOException e) {}
+		
+		timer = new javax.swing.Timer(10,this);
+		timer.start();
 	}
 	
 	public void paintComponent(Graphics g)
@@ -60,7 +67,6 @@ public class GUIGantryManager extends JPanel
 		
 		g2.drawImage(rail,gantry.getXCurrent()+10,0, null);
 		guigantry.update(gantry.getXCurrent(), gantry.getYCurrent());
-		System.out.println(gantry.getState());
 		guigantry.paint(g);
 		//I will implement proper image centering instead of the +10, -5 hack, but for now there are more important aspects
 	}
@@ -76,11 +82,11 @@ public class GUIGantryManager extends JPanel
 		gboxes = gpb;
 	}
 	
-	public synchronized void update(GantryManager gm)
+	public synchronized void update()
 	{
-		gantry = gm.getGantry();
+		gantry = manager.getGantry();
 		guigantry = new GUIGantry(gantry);
-		boxes = gm.getPartsBoxes();
+		boxes = manager.getPartsBoxes();
 
 		gboxes = new ArrayList<GUIPartsBox>();
 		int i =0;
@@ -89,6 +95,17 @@ public class GUIGantryManager extends JPanel
 			gboxes.add(new GUIPartsBox(boxes.get(i)));
 			i++;
 		}
+	}
+	
+	public void actionPerformed(ActionEvent ae)
+	{
+		this.update();
+		this.repaint();
+	}
+	
+	public synchronized void setGantryManager(GantryManager gm)
+	{
+		manager = gm;
 	}
 }
 

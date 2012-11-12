@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class GantryManager implements Serializable
+public class GantryManager implements Serializable,Runnable
 {
 	Gantry gantry; //Gantry robot
 	ArrayList<PartsBox> parts; //Parts boxes
@@ -36,6 +36,18 @@ public class GantryManager implements Serializable
 		//links the parts boxes to the gui
 	}
 
+	public void run()
+	{
+		while(true)
+		{
+			update();
+			try
+			{
+				Thread.sleep(10);
+			}catch(InterruptedException ignore){}
+			
+		}
+	}
 	public void update()
 	{
 		gantry.update();
@@ -53,6 +65,7 @@ public class GantryManager implements Serializable
 		}
 		if(go == true) //If it is not, looks for parts that are moving, or waiting to move
 		{
+			System.out.println("What");
 			go=false;
 			i=0;
 			while(i<parts.size() && go==false)
@@ -141,5 +154,6 @@ public class GantryManager implements Serializable
 	{
 		return parts;
 	}
+	
 }
 		

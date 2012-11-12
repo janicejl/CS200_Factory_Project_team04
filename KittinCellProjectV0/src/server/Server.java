@@ -134,18 +134,27 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			feeders.add(new Feeder(525,20 + i*140));
 		}
 		nestList = new Vector<Nest>();
-    	for (int i = 0; i < 8; i++) {
-    		nestList.add(new Nest(0, 30+(i*70)));	//x coordinate is zero for laneManagerApp
-    	}
+    	
+    	
+    	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 100));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 170));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 240));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 310));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 380));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 450));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 520));	//x coordinate is zero for laneManagerApp
+    	
+    	
 		lanes = new Vector<Lane>();
-		lanes.add(new Lane(600,-10, nestList.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
-    	lanes.add(new Lane(600,60, nestList.get(1))); 
-    	lanes.add(new Lane(600,130, nestList.get(2))); 
-    	lanes.add(new Lane(600,200, nestList.get(3)));
-    	lanes.add(new Lane(600,270, nestList.get(4))); 
-    	lanes.add(new Lane(600,340, nestList.get(5)));
-    	lanes.add(new Lane(600,410, nestList.get(6))); 
-    	lanes.add(new Lane(600,480, nestList.get(7)));
+		lanes.add(new Lane(600,30, nestList.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
+    	lanes.add(new Lane(600,100, nestList.get(1))); 
+    	lanes.add(new Lane(600,170, nestList.get(2))); 
+    	lanes.add(new Lane(600,240, nestList.get(3)));
+    	lanes.add(new Lane(600,310, nestList.get(4))); 
+    	lanes.add(new Lane(600,380, nestList.get(5)));
+    	lanes.add(new Lane(600,450, nestList.get(6))); 
+    	lanes.add(new Lane(600,520, nestList.get(7)));
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
     	

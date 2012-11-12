@@ -53,12 +53,12 @@ public class LaneGraphics extends JPanel implements ActionListener {
     	
     	lanes.add(new Lane(600,-10, nests.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(600,60, nests.get(1))); 
-    	lanes.add(new Lane(600,130, nests.get(2))); 
-    	lanes.add(new Lane(600,200, nests.get(3)));
-    	lanes.add(new Lane(600,270, nests.get(4))); 
-    	lanes.add(new Lane(600,340, nests.get(5)));
-    	lanes.add(new Lane(600,410, nests.get(6))); 
-    	lanes.add(new Lane(600,480, nests.get(7)));
+    	lanes.add(new Lane(600,120, nests.get(2))); 
+    	lanes.add(new Lane(600,170, nests.get(3)));
+    	lanes.add(new Lane(600,230, nests.get(4))); 
+    	lanes.add(new Lane(600,290, nests.get(5)));
+    	lanes.add(new Lane(600,350, nests.get(6))); 
+    	lanes.add(new Lane(600,410, nests.get(7)));
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
     	maxX = 600;

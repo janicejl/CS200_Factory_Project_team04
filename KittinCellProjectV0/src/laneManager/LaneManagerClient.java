@@ -50,6 +50,7 @@ public class LaneManagerClient implements Runnable {
 			commandSent = "Lane Manager";
 			out.writeObject(commandSent); //send to server identifying what client this is
 			out.reset();
+			/*
 			command = (String)in.readObject();
 			if(command.equals("Confirmed")){
 				//start
@@ -65,7 +66,7 @@ public class LaneManagerClient implements Runnable {
 //**************START CODE***************************
 			
 			
-			commandSent = "Received";
+			commandSent = "Received";*/
 			/*while(true){
 				app.setLanes((Vector<Lane>)in.readObject());
 				app.setFeeders((Vector<Feeder>)in.readObject());
@@ -109,8 +110,6 @@ public class LaneManagerClient implements Runnable {
 				}
 			}
 			*/
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -126,8 +125,6 @@ public class LaneManagerClient implements Runnable {
 			app.setLanes((Vector<Lane>)in.readObject());
 			app.setFeeders((Vector<Feeder>)in.readObject());
 			app.setNests((Vector<Nest>)in.readObject());
-			out.writeObject(commandSent);
-			out.reset();
 		} catch (Exception ignore){}
 	}
 

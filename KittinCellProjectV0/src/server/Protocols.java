@@ -29,7 +29,7 @@ public class Protocols implements Runnable{
 		// TODO Auto-generated catch block
 			e.printStackTrace();
 		}				
-		
+		protocolName = command;
 		thread = new Thread(this, "protocol thread");
 		thread.start();
 	}
@@ -84,12 +84,6 @@ public class Protocols implements Runnable{
 	
 	public synchronized void runKitProtocol(){
 		try {
-			out.writeObject("Confirmed");
-			out.reset();
-			command = (String)in.readObject();
-			if(command.equals("Confirmed")){
-				
-			}
 			out.writeObject(app.getKitRobot());
 			out.reset();
 			if(app.getKitAssemblyManager().getMsg().equals(true)){
@@ -121,10 +115,6 @@ public class Protocols implements Runnable{
 			out.reset();
 			out.writeObject(app.getNests());
 			out.reset();
-			command = (String)in.readObject();
-			if(command.equals("Received")){
-				
-			}
 		} catch (Exception ignore){}
 	}
 }

@@ -46,7 +46,7 @@ public class KitAssemblyClient implements Runnable {
 			commandSent = "Kit Assembly";
 			out.writeObject(commandSent); //send to server identifying what client this is
 			out.reset();
-			command = (String)in.readObject();
+		/*	//command = (String)in.readObject();
 			if(command.equals("Confirmed")){
 				//commandSent = "Confirmed";
 				//out.writeObject(commandSent);
@@ -64,7 +64,7 @@ public class KitAssemblyClient implements Runnable {
 			}
 			
 //**************START CODE***************************
-			commandSent = "Received";
+			commandSent = "Received";*/
 			/*
 			while(true){
 				app.setKitRobot((KitRobot)in.readObject());
@@ -73,8 +73,6 @@ public class KitAssemblyClient implements Runnable {
 				out.reset();
 			}
 			*/
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -90,11 +88,6 @@ public class KitAssemblyClient implements Runnable {
 			app.setKitRobot((KitRobot)in.readObject());
 			app.setPartsRobot((PartsRobot)in.readObject());
 			app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
-			out.writeObject(commandSent);
-			out.reset();
-			if(commandSent.equals("Update")){
-				commandSent = "Received";
-			}
 		} catch (Exception ignore){
 			ignore.printStackTrace();
 		}

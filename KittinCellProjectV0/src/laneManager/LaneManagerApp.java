@@ -23,9 +23,9 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	private JLabel removeLabel;
 	private JPanel removeSection;
 	private JPanel window;
-	private LaneManagerClient client;
+	
 	private JButton connect;
-	private Timer timer;
+	
 	
 	public LaneManagerApp() {
 		this.setLayout(new GridBagLayout());
@@ -86,18 +86,14 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		this.add(laneGraphics,c);
 		this.setSize(800, 750);
     	this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		client = new LaneManagerClient(this);
-		timer = new Timer(10, this);
-		timer.start();
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 	}
 	
 	public static void main(String[] args) {
 		new LaneManagerApp();	
 	}
 
-	public synchronized Vector<Lane> getLanes() {
+	/*public synchronized Vector<Lane> getLanes() {
 		return laneGraphics.getLanes();
 	}
 
@@ -113,9 +109,23 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 
 	public synchronized void setLaneGraphics(LaneGraphics laneGraphics) {
 		this.laneGraphics = laneGraphics;
-	}
+	}*/
 
 	public void actionPerformed(ActionEvent e) {
+
+		
+		/*for (int i = 0; i < 8; i++){
+			if(e.getSource() == feedButtons.get(i)) 
+				//laneGraphics.feedItem(i);		
+		}
+		for (int i = 0; i < 8; i++){
+			if(e.getSource() == releaseButtons.get(i)) 
+				laneGraphics.releaseItem(i);		
+		}
+		for (int i = 0; i < 8; i++){
+			if(e.getSource() == removeButtons.get(i)) 
+				laneGraphics.removeItem(i);		
+		}
 		if(e.getSource() == connect){
 			int i = client.connect();
 			if(i == -1){
@@ -137,7 +147,9 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 //			if(e.getSource() == removeButtons.get(i)) 
 //				laneGraphics.removeItem(i);		
 //		}
+>>>>>>> dc501fcdf2117749a1a7bc1d0e1be1dc30d4cd2f
 		laneGraphics.repaint();
+		*/
 	}
 	
 }

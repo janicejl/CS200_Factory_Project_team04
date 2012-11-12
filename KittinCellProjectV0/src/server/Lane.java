@@ -59,7 +59,7 @@ public class Lane implements ActionListener, Serializable{
     public Lane(int width, int verticalSpacing, Feeder f) {
 
 		maxX = width;
-		maxY = 100;
+		maxY = 50;
     	this.verticalSpacing = verticalSpacing;
 	    conveyerBeltSpeed = 1;
 	    itemList = new Vector<Part> ();

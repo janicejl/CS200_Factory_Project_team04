@@ -12,7 +12,7 @@ import Feeder.Feeder;
 import Feeder.GUIFeeder;
 
 public class LaneManagerApp extends JFrame implements ActionListener {
-	private LaneGraphics laneGraphics;
+	private LaneGraphics laneGraphics; //30,100,170... 
 	private Vector<JButton> releaseButtons;
 	private JLabel releaseLabel;
 	private JPanel releaseSection;
@@ -24,7 +24,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	private JPanel removeSection;
 	private JPanel window;
 	
-	private JButton connect;
+	//private JButton connect;
 	
 	
 	public LaneManagerApp() {
@@ -46,9 +46,9 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		
 		window = new JPanel();
 		window.setLayout(new BoxLayout(window, BoxLayout.Y_AXIS));
-		connect = new JButton("Connect Lane");
-		connect.addActionListener(this);
-		window.add(connect);
+		//connect = new JButton("Connect Lane");
+		//connect.addActionListener(this);
+		//window.add(connect);
 //		feedSection.add(feedLabel);
 //		for(int i = 0; i < 8; i++) {
 //			feedButtons.add(new JButton("Lane: " + (i+1)));

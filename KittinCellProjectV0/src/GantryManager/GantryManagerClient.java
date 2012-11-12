@@ -73,13 +73,14 @@ public class GantryManagerClient implements Runnable
 	{
 		try
 		{
+			Thread.sleep(20);
 			String t = "0";
 			commandSent = "Received";
 			t = (String)in.readObject();
 			int h = (Integer)in.readObject();
-			System.out.println(t);
 			if(!t.equals("null") && !t.equals("0"))
 			{
+				System.out.println(t);
 				gui.manager.getGantry().setState(t);
 			}
 			System.out.println(h);

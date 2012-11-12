@@ -78,6 +78,7 @@ public class GUIGantryManager extends JPanel implements ActionListener
 	
 	public synchronized void update()
 	{
+		client.update();
 		manager.update();
 	}
 	
@@ -85,7 +86,7 @@ public class GUIGantryManager extends JPanel implements ActionListener
 	{
 		if(ae.getSource()==timer)
 		{
-			client.update();
+			this.update();
 			this.repaint();
 		}
 	}

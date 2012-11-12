@@ -33,6 +33,10 @@ public class GantryManager implements Serializable
 	
 	public synchronized void update()
 	{
+		try
+		{
+			Thread.sleep(10);
+		}catch(Exception e){}
 		gantry.update();
 		int i=0;
 		boolean go = true;

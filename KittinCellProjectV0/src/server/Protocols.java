@@ -54,14 +54,18 @@ public class Protocols implements Runnable{
 		{
 			command = "Received";
 			String outs = app.getGantryManager().getGantry().getState();
-			System.out.println(outs);
+
 			out.writeObject(outs);
-			app.getGantryManager().getGantry().setState("null");
+
+			if(!outs.equals("null"))
+			{
+				System.out.println(outs);
+				app.getGantryManager().getGantry().setState("null");
+			}
+
 			out.reset();
-			out.flush();
 			System.out.println(app.getGantryManager().getGantry().getFeed());
 			out.writeObject((Integer)app.getGantryManager().getGantry().getFeed());
-			out.flush();
 			//out.writeObject(app.getGantryManager());
 			out.reset();
 		}

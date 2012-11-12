@@ -1,14 +1,9 @@
 package GantryManager;
 
-import java.awt.*;
-import java.awt.image.*;
 import java.io.*;
-import javax.imageio.*;
 
-public class PartsBox 
+public class PartsBox implements Serializable
 {
-	protected BufferedImage part = null;
-	protected BufferedImage box = null;
 	int xFinal; //destination
 	int yFinal;
 	int xCurrent; //current position
@@ -23,9 +18,8 @@ public class PartsBox
 	static int xmax = 325;
 	static int ymax = 600;
 	
-	public PartsBox(BufferedImage p, int c)
+	public PartsBox(int c)
 	{
-		part = p;
 		count = c;
 		xCurrent = xmax+5;
 		xFinal =xmax+5; //Initial position is off of the screen
@@ -34,44 +28,8 @@ public class PartsBox
 		state = "wait";
 		cycles = 0;
 		feeder = -1;
-		try
-		{
-			box = ImageIO.read(new File("images/crate.png"));
-		}
-		catch(IOException e){}
 	}
 	
-	public PartsBox(int c)
-	{
-		try
-		{
-			part = ImageIO.read(new File("images/part.png"));
-			box = ImageIO.read(new File("images/crate.png"));
-		}
-		catch(IOException e){}
-		count = c;
-		xCurrent = xmax+5;
-		xFinal =xmax+5; //Initial position is off of the screen
-		yFinal=(ymax/2) - (ydim/2);
-		yCurrent=yFinal;
-		state = "wait";
-		cycles = 0;
-		feeder = -1;
-		
-		
-	}
-	
-	public void paint(Graphics g)
-	{
-		Graphics2D g2 = (Graphics2D)g;
-		g2.drawImage(box, xCurrent, yCurrent, null);
-		g2.drawImage(part, xCurrent+13, yCurrent+35, null);
-	}
-	
-	public BufferedImage getImage()
-	{
-		return part;
-	}
 	public void setX(int m) //Set the destination x
 	{
 		xFinal =m;

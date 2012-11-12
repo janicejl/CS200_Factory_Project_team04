@@ -27,7 +27,7 @@ public class GantryManagerClient implements Runnable
 	{
 		try
 		{
-			s = new Socket(serverName, 69696);
+			s = new Socket(serverName, 61337);
 			out = new ObjectOutputStream(s.getOutputStream());
 			in = new ObjectInputStream(s.getInputStream());
 		}
@@ -42,6 +42,7 @@ public class GantryManagerClient implements Runnable
 			return -1;
 		}
 		System.out.println("Connected to " + serverName);
+		thread.start();
 		return 1;
 	}
 	
@@ -49,7 +50,7 @@ public class GantryManagerClient implements Runnable
 	{
 		try
 		{
-			commandSent = "GantryManager";
+			commandSent = "Gantry Manager";
 			out.writeObject(commandSent);
 			out.reset();
 			command = (String)in.readObject();
@@ -75,6 +76,10 @@ public class GantryManagerClient implements Runnable
 			{
 				app.setGantryManager((GantryManager)in.readObject());
 				out.writeObject(commandSent);
+				while(!app.getGantryManager().getGantry().getState().equals("free"))
+				{	System.out.println("STATE");
+					System.out.println(app.getGantryManager().getGantry().getState());}
+				out.writeObject(app.getGantryManager());
 				out.reset();
 			}
 		}

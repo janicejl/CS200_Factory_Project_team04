@@ -29,6 +29,8 @@ public class PartsRobot implements Runnable, Serializable{
     double cameraX;
     double cameraY;
     Boolean msg;
+    boolean flashUp, flashDown;
+    KitAssemblyManager app;
     
     BufferedImage partsRobotImage;
 
@@ -42,8 +44,11 @@ public class PartsRobot implements Runnable, Serializable{
     Vector<Integer> gripperPartIDs;
     int[] nl = {55,125,195,265,335,405,475,545};
     int[] kl = {190,410};
+    float opacity;
+    boolean animationDone;
 
-    public PartsRobot(){
+    public PartsRobot(KitAssemblyManager _app){
+    	app = _app;
         y = 300;
         newY = y;
         cameraX = 350;
@@ -55,6 +60,10 @@ public class PartsRobot implements Runnable, Serializable{
         nestLocations = new Vector<String>();
         kitLocations = new Vector<String>();
         gripperPartIDs = new Vector<Integer>();
+        flashDown = false;
+        flashUp = false;
+        animationDone = false;
+        opacity = 0.0f;
         for(int i = 0; i < 4; i++){
         	gripperPartIDs.add(2);
             gripperHolding.add(false);
@@ -148,6 +157,7 @@ public class PartsRobot implements Runnable, Serializable{
 
     public void takePicture(double x, double y){
         takePicture = true;
+        flashUp = true;
         cameraX = x;
         cameraY = y;
     }
@@ -286,10 +296,42 @@ public class PartsRobot implements Runnable, Serializable{
 	public synchronized void setTakePicture(boolean takePicture) {
 		this.takePicture = takePicture;
 	}
+	
+	public synchronized float getOpacity(){
+		return opacity;
+		
+	}
+	
+	public boolean getAnimationDone(){
+		return animationDone;
+	}
+	
+	public void setAnimationDone(boolean b){
+		animationDone = b;
+	}
 
 	public void update(){
         if(!paused){
             processing = false;
+            if(takePicture){
+	            if(flashUp){
+	                opacity += 0.1;
+	                if(opacity >= 1){
+	                	flashUp = false;
+	                	flashDown = true;
+	                }
+	            }
+	            else if(flashDown){
+	            	opacity -= 0.1;
+	            	if(opacity <= 0){
+	            		opacity = 0;
+	            		flashDown = false;
+	            		takePicture = false;
+	            		animationDone = true;
+	            	}	            			
+	            }
+            }
+            
             if(y != newY){
                 processing = true;
                 if(y < newY){

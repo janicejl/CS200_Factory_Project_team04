@@ -44,7 +44,7 @@ public class GUIPartsRobot{
         x = 265;
         y = 300;
         angle = 0;
-        opacity = 0.01f;
+        opacity = 0.0f;
         flashCounter = 1.0f;
         cameraX = 350;
         cameraY = 100;
@@ -64,7 +64,7 @@ public class GUIPartsRobot{
 
         try {
         	for(int i=0; i<9;i++){
-        		partImages.add(ImageIO.read(new File("images/" + i + ".png")));
+        		partImages.add(ImageIO.read(new File("images/kt" + i + ".png")));
         	}
             partsRobotImage = ImageIO.read(new File("images/partsrobot.png"));
             partsRobotRailImage = ImageIO.read(new File("images/rail.png"));
@@ -84,19 +84,16 @@ public class GUIPartsRobot{
         cameraX = pr.getCameraX();
         cameraY = pr.getCameraY();
         angle = pr.getAngle();
+        opacity = pr.getOpacity();
+        
+        takePicture = pr.getTakePicture();        
         gripperExtensions = pr.getGripperExtensions();
         gripperHolding = pr.getGripperHolding();
         gripperPartIDs = pr.getGripperPartIDs();
-        if(takePicture == false && pr.getTakePicture()){
+        if(takePicture){
             takePicture = true;
             flashUp = true;
-            flashCounter = 0;
-            opacity = 0;
         }
-    }
-
-    public void takePicture(Graphics2D g2){
-
     }
 
     public void paintPartsRobot(Graphics2D g2){
@@ -129,32 +126,8 @@ public class GUIPartsRobot{
         at.translate(x-8,y-10);
         g2.drawImage(topImage,at,null);
 
-            //System.out.println(takePicture);
+     
         if(takePicture){
-             
-            //opacity = (float)Math.exp(flashCounter) - 1;
-            //System.out.println(opacity);
-            
-            if(flashUp){
-                opacity += 0.5;
-                if(opacity > 1){
-                    flashUp = false;
-                    flashDown = true;
-                    opacity = 1f;
-                }
-            }
-            else if (flashDown){
-                opacity -= 0.5;
-                if(opacity < 0){
-                	opacity = 0f;
-                    takePicture = false;
-                    //System.out.println(takePicture);
-                    app.getPartsClient().setCommandSent("Update");
-                    flashCounter = 1;
-                }
-            }
-
-
             try {
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
                 g2.drawImage(flash,(int)cameraX,(int)cameraY,null);

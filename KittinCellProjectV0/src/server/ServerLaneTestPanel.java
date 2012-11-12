@@ -40,7 +40,7 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		feedNestButton = new JButton("Feed Nest");
 		feedPartButton = new JButton("Feed part into feeder");
 		exit = new JButton("Exit");
-		background = new ImageIcon("images/server.jpeg");
+		background = new ImageIcon("images/server3.jpeg");
 		
 		feedPartButton.setPreferredSize(new Dimension(170, 25));
 		feedPartButton.setMaximumSize(new Dimension(170, 25));
@@ -88,7 +88,7 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 	}
 	
 	public void paintComponent(Graphics g){
-		//background.paintIcon(this, g, 0, 0);
+		background.paintIcon(this, g, 0, 0);
 		revalidate();
 	}
 	

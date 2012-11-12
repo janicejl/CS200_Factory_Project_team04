@@ -4,10 +4,11 @@ import java.util.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.image.*;
+import java.awt.event.*;
 import javax.imageio.*;
 import java.io.*;
 
-public class GUIGantryManager extends JPanel
+public class GUIGantryManager extends JPanel implements ActionListener
 {
 	//Items that will always be painted, regardless of user input
 	protected BufferedImage background = null;
@@ -16,10 +17,15 @@ public class GUIGantryManager extends JPanel
 	protected BufferedImage lane = null;
 	protected BufferedImage feeder = null;
 	Gantry gantry;
+	GUIGantry guigantry;
 	ArrayList<PartsBox> boxes;
+	ArrayList<GUIPartsBox> gboxes;
+	javax.swing.Timer timer;
+	GantryManager manager;
 	
-	public GUIGantryManager()
+	public GUIGantryManager(GantryManager gm)
 	{
+		manager = gm;
 		try
 		{
            	background = ImageIO.read(new File("images/background.png"));
@@ -29,6 +35,9 @@ public class GUIGantryManager extends JPanel
 			lane = ImageIO.read(new File("images/lanetemp.png"));
        	} 
 		catch (IOException e) {}
+		
+		timer = new javax.swing.Timer(10,this);
+		timer.start();
 	}
 	
 	public void paintComponent(Graphics g)
@@ -47,15 +56,18 @@ public class GUIGantryManager extends JPanel
 		g2.drawImage(lane, -150, 325,null);
 		g2.drawImage(lane, 0, 450,null);
 		
+		
 		int i=0;
 		while(i<boxes.size())
 		{
-			boxes.get(i).paint(g);
+			gboxes.get(i).update(boxes.get(i).getXCurrent(),boxes.get(i).getYCurrent());
+			gboxes.get(i).paint(g);
 			i++;
 		}
 		
 		g2.drawImage(rail,gantry.getXCurrent()+10,0, null);
-		gantry.paint(g);
+		guigantry.update(gantry.getXCurrent(), gantry.getYCurrent());
+		guigantry.paint(g);
 		//I will implement proper image centering instead of the +10, -5 hack, but for now there are more important aspects
 	}
 
@@ -64,15 +76,36 @@ public class GUIGantryManager extends JPanel
 		gantry = g;
 	}
 	
-	public synchronized void setPartsBoxes(ArrayList<PartsBox> pb) //links parts box with GUIGantryManager
+	public synchronized void setPartsBoxes(ArrayList<PartsBox> pb,ArrayList<GUIPartsBox> gpb) //links parts box with GUIGantryManager
 	{
 		boxes = pb;
+		gboxes = gpb;
 	}
 	
-	public void update(GantryManager gm)
+	public synchronized void update()
 	{
-		gantry = gm.getGantry();
-		boxes = gm.getPartsBoxes();
+		gantry = manager.getGantry();
+		guigantry = new GUIGantry(gantry);
+		boxes = manager.getPartsBoxes();
+
+		gboxes = new ArrayList<GUIPartsBox>();
+		int i =0;
+		while(i<boxes.size())
+		{
+			gboxes.add(new GUIPartsBox(boxes.get(i)));
+			i++;
+		}
+	}
+	
+	public void actionPerformed(ActionEvent ae)
+	{
+		this.update();
+		this.repaint();
+	}
+	
+	public synchronized void setGantryManager(GantryManager gm)
+	{
+		manager = gm;
 	}
 }
 

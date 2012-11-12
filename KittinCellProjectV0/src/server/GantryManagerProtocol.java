@@ -2,6 +2,7 @@ package server;
 
 import java.io.*;
 import java.net.*;
+import GantryManager.GantryManager;
 
 public class GantryManagerProtocol implements Runnable
 {
@@ -37,7 +38,7 @@ public class GantryManagerProtocol implements Runnable
 		try
 		{
 			command = (String)in.readObject();
-			if(!command.equals("GantryManager"))
+			if(!command.equals("Gantry Manager"))
 			{
 				commandSent = "Denied";
 				System.exit(1);
@@ -54,6 +55,8 @@ public class GantryManagerProtocol implements Runnable
 			{
 				out.writeObject(app.getGantryManager());
 				command = (String)in.readObject();
+				GantryManager g = (GantryManager)in.readObject();
+				app.setGantryManager(g);
 			}
 		}
 		catch(ClassNotFoundException e)

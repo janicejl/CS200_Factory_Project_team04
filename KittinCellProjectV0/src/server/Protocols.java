@@ -2,6 +2,7 @@ package server;
 
 import java.io.*;
 import java.net.*;
+import GantryManager.GantryManager;
 
 public class Protocols implements Runnable{
 	Server app;
@@ -21,8 +22,6 @@ public class Protocols implements Runnable{
 			out = new ObjectOutputStream(s.getOutputStream());
 			out.flush();
 			in = new ObjectInputStream(s.getInputStream());
-			out.writeObject("Confirmed");
-			out.reset();
 			command = (String)in.readObject();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -31,7 +30,6 @@ public class Protocols implements Runnable{
 		// TODO Auto-generated catch block
 			e.printStackTrace();
 		}				
-		
 		protocolName = command;
 		thread = new Thread(this, "protocol thread");
 		thread.start();
@@ -45,6 +43,46 @@ public class Protocols implements Runnable{
 			else if (protocolName.equals("Lane Manager")) {
 				runLaneProtocol();				
 			}
+			else if (protocolName.equals("Gantry Manager")){
+				runGantryProtocol();
+				System.out.println("Gantry running");
+			}
+		}
+	}
+	
+	public synchronized void runGantryProtocol(){
+		try
+		{
+			out.writeObject("Confirmed");
+			out.reset();
+			command = (String)in.readObject();
+			if(command.equals("Confirmed"))
+			{
+				
+			}
+			commandSent = "Received";
+			while(true)
+			{
+				out.writeObject(app.getGantryManager());
+				out.reset();
+				command = (String)in.readObject();
+				GantryManager g = (GantryManager)in.readObject();
+				app.setGantryManager(g);
+				if(command.equals("Received")){
+					
+				}
+				else{
+					System.exit(1);
+				}
+			}
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
 		}
 	}
 	
@@ -64,10 +102,12 @@ public class Protocols implements Runnable{
 			}
 			out.writeObject(app.getKitAssemblyManager());
 			out.reset();
-			command = (String)in.readObject();
-			if(command.equals("Received")){
-				
-			}
+			if(app.getPartsRobot().getAnimationDone()){
+				for(int i = 0; i<4; i++){
+					app.getVisions().get(i).msgAnimationDone();
+				}
+				app.getPartsRobot().setAnimationDone(false);
+			}		
 		}
 		catch(Exception ignore){}
 	}
@@ -79,10 +119,6 @@ public class Protocols implements Runnable{
 			out.reset();
 			out.writeObject(app.getNests());
 			out.reset();
-			command = (String)in.readObject();
-			if(command.equals("Received")){
-				
-			}
 		} catch (Exception ignore){}
 	}
 }

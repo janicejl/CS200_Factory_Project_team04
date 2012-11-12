@@ -2,7 +2,6 @@ package PartsManager;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.*;

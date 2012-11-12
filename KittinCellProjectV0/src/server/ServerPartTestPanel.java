@@ -50,7 +50,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 		selection = new JPanel();
 		selection.setLayout(new BoxLayout(selection, BoxLayout.X_AXIS));
         
-		background = new ImageIcon("images/server.jpeg");
+		background = new ImageIcon("images/server2.jpeg");
 		
 		add(Box.createRigidArea(new Dimension(0, 120)),"");
 		selection.add(nestList, "");
@@ -76,7 +76,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
     }
 	
 	public void paintComponent(Graphics g){
-		//background.paintIcon(this, g, 0, 0);
+		background.paintIcon(this, g, 0, 0);
 		revalidate();
 	}
 	
@@ -98,7 +98,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 			Part.PartType part7 = Part.PartType.part7;
 			recipe.add(part7);
 			Part.PartType part8 = Part.PartType.part8;
-			recipe.add(part3);
+			recipe.add(part8);
 			server.getPartsRobotAgent().msgMakeThisKit(recipe, 4);
 		}
 		else if("Get Part".equals(ae.getActionCommand())) {

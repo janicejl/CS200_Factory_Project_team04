@@ -2,7 +2,7 @@ package PartsManager;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.Vector;
 import java.io.*;
 
 import javax.swing.*;
@@ -11,7 +11,7 @@ import data.PartInfo;
 
 public class PartsManagerApp extends JFrame implements ActionListener, Serializable, WindowListener{
 	PartsPanel partPanel;
-	ArrayList<PartInfo> partsList;
+	Vector<PartInfo> partsList;
 	
 	public PartsManagerApp(){
 		addWindowListener(this);
@@ -21,7 +21,7 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		setSize(400, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		partsList = new ArrayList<PartInfo>();
+		partsList = new Vector<PartInfo>();
 		
 		load("partsList.sav");
 		partPanel.updateLoad();
@@ -50,7 +50,7 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		try{
 			FileInputStream fileIn = new FileInputStream(path); //access  file
 			ObjectInputStream streamIn = new ObjectInputStream(fileIn); //inputstream
-			partsList = ((ArrayList<PartInfo>) streamIn.readObject()); //load
+			partsList = ((Vector<PartInfo>) streamIn.readObject()); //load
 			streamIn.close();
 			fileIn.close();
 		}
@@ -85,11 +85,11 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		this.partPanel = partPanel;
 	}
 
-	public synchronized ArrayList<PartInfo> getPartsList() {
+	public synchronized Vector<PartInfo> getPartsList() {
 		return partsList;
 	}
 
-	public synchronized void setPartsList(ArrayList<PartInfo> partsList) {
+	public synchronized void setPartsList(Vector<PartInfo> partsList) {
 		this.partsList = partsList;
 	}
 

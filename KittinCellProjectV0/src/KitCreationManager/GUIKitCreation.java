@@ -9,7 +9,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.TreeMap;
+import java.util.Vector;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
@@ -22,21 +23,24 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import data.Kit;
+import data.KitInfo;
 import data.Part;
+import data.PartInfo;
 
 public class GUIKitCreation implements ActionListener{
+	KitCreationApp app;
 	JPanel base, partSelect, displaySel,back,bob;
 	JButton create, clear;
 	JTextField enterName;
 	JLabel name,sap;
-	JComboBox partList;
-	Vector partsName;
-	ArrayList<JButton> selectionMade;
-	ArrayList<Part> selection;
-	ArrayList<Part> parts;
-	ArrayList<Kit> produced;
+	JComboBox partsList;
+	Vector<JButton> selectionMade;
+	TreeMap<Integer, PartInfo> selection;
+	Vector<String> parts;
+	Vector<Kit> produced;
 	
-	public GUIKitCreation(){
+	public GUIKitCreation(KitCreationApp _app){
+		app = _app;
 		bob=new JPanel();
 		bob.setSize(300,370);
 		base=new JPanel();
@@ -45,32 +49,34 @@ public class GUIKitCreation implements ActionListener{
 		back.setSize(300,370);
 		partSelect=new JPanel();
 		displaySel=new JPanel();
-		create=new JButton("Create");
-		create.addActionListener(this);
-		clear=new JButton("Clear");
-		clear.addActionListener(this);
+		
 		enterName=new JTextField(10);
 		name=new JLabel("Enter the kit's name:");
 		sap=new JLabel("Select parts");
 		
-		partsName=new Vector();
-		partsName.add("");
-		partsName.add("part XXX");
-		partList=new JComboBox(partsName);
-		partList.addActionListener(this);
-		partList.setOpaque(false);
+		parts=new Vector<String>();
+		if(app.getPartsList().size() == 0){
+			parts.add("");
+		}
+		for(int i = 0; i < app.getPartsList().size(); i++){
+			parts.add(app.getPartsList().get(i).getName());
+		}
+		
+		partsList=new JComboBox(parts);
+		partsList.addActionListener(this);
+		partsList.setOpaque(false);
 		
 		
 		create=new JButton("Create");
 		create.addActionListener(this);
 		clear=new JButton("Clear");
 		clear.addActionListener(this);
-		selection=new ArrayList<Part>();
-		selectionMade=new ArrayList<JButton>();
+		selection=new TreeMap<Integer, PartInfo>();
+		selectionMade=new Vector<JButton>();
 		
-		parts=new ArrayList<Part>();
-		produced=new ArrayList<Kit>();
-		partList.setSelectedIndex(0);
+		
+		produced=new Vector<Kit>();
+		partsList.setSelectedIndex(0);
 		
 		bob.setLayout(new GridBagLayout());
 		base.setLayout(new GridBagLayout());
@@ -97,7 +103,7 @@ public class GUIKitCreation implements ActionListener{
 		partSelect.add(name);
 		partSelect.add(enterName);
 		partSelect.add(sap);
-		partSelect.add(partList);
+		partSelect.add(partsList);
 		GridBagConstraints c=new GridBagConstraints();
 		c.gridx=0;
 		c.gridy=0;
@@ -120,24 +126,42 @@ public class GUIKitCreation implements ActionListener{
 		bob.revalidate();
 		bob.repaint();
 		
+		clear();
 	}
 
+	public void clear(){
+		enterName.setText("");
+		for(int i=0;i<8;i++){
+			selectionMade.get(i).setIcon(new ImageIcon("images/none.png"));
+			selection.put(i, null);
+		}
+	}
+	
 	public void actionPerformed(ActionEvent ae) {
 		
 		if(ae.getSource().equals(clear)){
-			selection.clear();
-			for(int i=0;i<8;i++){
-				selectionMade.get(i).setText("");
-			}
-			
+			clear();
 		}
-		
+		else if(ae.getSource().equals(create)){
+			Vector<PartInfo> temp = new Vector<PartInfo>();
+			for(int i = 0; i < selection.size(); i++){
+				if(selection.get(i) == null){
+					temp.add(new PartInfo(null, "images/none.png"));
+				}
+				else{
+					temp.add(selection.get(i));
+				}
+			}
+			KitInfo tempKit = new KitInfo(enterName.getText());
+			tempKit.setParts(temp);
+			app.getKitsList().add(tempKit);
+			clear();
+		}
 		
 		for(int i=0;i<selectionMade.size();i++){
 			if(ae.getSource().equals(selectionMade.get(i))){
-				if(partList.getSelectedIndex()==1){
-					selectionMade.get(i).setText("test");
-				}
+				selectionMade.get(i).setIcon(new ImageIcon(app.getPartsList().get(partsList.getSelectedIndex()).getImagePath()));
+				selection.put(i, app.getPartsList().get(partsList.getSelectedIndex()));
 			}
 		}
 		

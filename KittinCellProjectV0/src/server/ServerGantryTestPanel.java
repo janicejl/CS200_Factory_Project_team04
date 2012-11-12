@@ -19,9 +19,9 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 		server = _server;
 		
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-		setPreferredSize(new Dimension(100,400));
-		setMaximumSize(new Dimension(100,400));
-		setMinimumSize(new Dimension(100,400));
+		setPreferredSize(new Dimension(200,400));
+		setMaximumSize(new Dimension(200,400));
+		setMinimumSize(new Dimension(200,400));
 		
 		createButton("Load Config");
 		createButton("Load Parts Box 1");
@@ -32,7 +32,7 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 		createButton("Dump Feeder 2");
 		createButton("Dump Feeder 3");
 		createButton("Dump Feeder 4");
-		background = new ImageIcon("images/server.jpeg");
+		background = new ImageIcon("images/server3.jpeg");
 		
 		int i=0;
 		while(i<buttons.size())
@@ -56,6 +56,7 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 	
 	public void paintComponent(Graphics g)
 	{
+		background.paintIcon(this, g, 0, 0);
 		revalidate();
 	}
 	

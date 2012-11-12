@@ -439,6 +439,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			kitTest.repaint();
 			partsTest.repaint();
 			laneTest.repaint();
+			gantryTest.repaint();
 		}
 		else if(phase.equals(2)){
 			partsTest.repaint();
@@ -454,11 +455,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		kitTest.revalidate();
 		partsTest.revalidate();
 		laneTest.revalidate();
+		gantryTest.revalidate();
 	}
 	
 	public static void main(String[] args) {
 		Server factory = new Server();
-		factory.setSize(900, 400);
+		factory.setSize(1100, 400);
 		factory.setVisible(true);
 		factory.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		factory.start();

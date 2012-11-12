@@ -17,6 +17,7 @@ public class GantryManagerProtocol implements Runnable
 	
 	public GantryManagerProtocol(Socket _s, Server _app)
 	{
+		System.out.println("WORKING");
 		app = _app;
 		s = _s;
 		command = "";
@@ -31,18 +32,22 @@ public class GantryManagerProtocol implements Runnable
 		{
 			e.printStackTrace();
 		}
+		thread = new Thread(this,"GantryManagerClient_Thread");
+		thread.start();
 	}
 	
 	public void run()
 	{
 		try
 		{
+			System.out.println("HAR");
 			command = (String)in.readObject();
 			if(!command.equals("Gantry Manager"))
 			{
 				commandSent = "Denied";
 				System.exit(1);
 			}
+			System.out.println("HERE");
 			out.writeObject("Confirmed");
 			out.reset();
 			command = (String)in.readObject();
@@ -53,10 +58,10 @@ public class GantryManagerProtocol implements Runnable
 			commandSent = "Received";
 			while(true)
 			{
+				System.out.println("WHERE IS D");
 				out.writeObject(app.getGantryManager());
+				out.reset();
 				command = (String)in.readObject();
-				GantryManager g = (GantryManager)in.readObject();
-				app.setGantryManager(g);
 			}
 		}
 		catch(ClassNotFoundException e)

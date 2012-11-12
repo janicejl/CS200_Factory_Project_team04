@@ -1,122 +1,100 @@
 package GantryManager;
 
 import java.io.*;
-import java.util.Random;
 import java.util.ArrayList;
-import java.awt.image.*;
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.event.*;
+import java.util.Random;
 
-public class GantryManager implements Serializable,Runnable
+public class GantryManager implements Serializable
 {
-	Gantry gantry; //Gantry robot
-	ArrayList<PartsBox> parts; //Parts boxes
-	ArrayList<Integer> feeders; //Indices for 4 feeders
-	int speed; //Speed of the timer
+	Gantry gantry;
+	ArrayList<PartsBox> parts;
+	ArrayList<Integer> feeders;
+	int speed;
 	Random rand;
 	
-	public GantryManager() //Initializes all objects
+	public GantryManager()
 	{
 		rand = new Random();
-		
 		gantry = new Gantry();
 		
-		//Populates the Parts box with a base box
 		parts = new ArrayList<PartsBox>();
 		parts.add(new PartsBox(100));
 		
-		//Creates the four feeder indices and sets them as open
 		feeders = new ArrayList<Integer>();
-		feeders.add(0);
-		feeders.add(0);
-		feeders.add(0);
-		feeders.add(0);
-		
-		//links the parts boxes to the gui
-	}
-
-	public void run()
-	{
-		while(true)
+		int i=0;
+		while(i<4)
 		{
-			update();
-			try
-			{
-				Thread.sleep(10);
-			}catch(InterruptedException ignore){}
-			
+			feeders.add(0);
+			i++;
 		}
+		
+		
 	}
-	public void update()
+	
+	public synchronized void update()
 	{
-		gantry.update();
-		gantry.checkFeeder();
-		int i =0;
-		boolean go = true;
-		while(i<parts.size()) //Checks if a parts bin is waiting to be loaded or dumped
+		try
 		{
-			if(parts.get(i).getState() == "dump" || parts.get(i).getState()=="loading" || parts.get(i).getState()=="ready" || parts.get(i).getState()=="load" || parts.get(i).getState()=="dumpf")
-			{
+			Thread.sleep(10);
+		}catch(Exception e){}
+		gantry.update();
+		int i=0;
+		boolean go = true;
+		while(i<parts.size())
+		{
+			if(parts.get(i).getState().equals("load") || parts.get(i).getState().equals("dump") || parts.get(i).getState().equals("ready") || parts.get(i).getState().equals("loading"))
 				go = false;
-			}
 			parts.get(i).update();
 			i++;
 		}
-		if(go == true) //If it is not, looks for parts that are moving, or waiting to move
+		if(go == true)
 		{
-			System.out.println("What");
-			go=false;
+			go = false;
 			i=0;
 			while(i<parts.size() && go==false)
 			{
 				if(parts.get(i).getState()=="ready")
-				{
-					go = true;
-				}
+					go=true;
 				else if(parts.get(i).getState()=="wait")
 				{
 					parts.get(i).setState("ready");
-					go = true;
+					go=true;
 				}
-				i++;
+				i++;	
 			}
-			if(go==false && parts.size()<4) //If there are none waiting (and there are less than 4 boxes, creates a new box)
+			if(go==false && parts.size()<4)
 			{
 				parts.add(new PartsBox((rand.nextInt(10)+1)*20));
 			}
 		}
-		
-		else if(gantry.getState() == "load") //if the gantry  is moving towards the load station
+		else if(gantry.getState().equals("load"))
 		{
+			System.out.println("I GOT IT");
 			int c=0;
 			while(c<parts.size())
 			{
-				if(parts.get(c).getState()=="load") //then look for ones to be loaded
+				if(parts.get(c).getState()=="load")
 				{
-					gantry.setX(parts.get(c).getXCurrent()+10);
-					gantry.setY(parts.get(c).getYCurrent()+15);
+					gantry.setxFinal(parts.get(c).getxCurrent()+10);
+					gantry.setyFinal(parts.get(c).getyCurrent()+15);
 					gantry.setBox(c);
 				}
 				c++;
 			}
-
 			if(gantry.done())
 			{
-				gantry.setState("loading");//once it has reached it, switch to a busy signal
-				System.out.println("Done");
+				gantry.setState("loading");
 			}
 		}
-		else if(gantry.getState()=="loading") //if busy
+		else if(gantry.getState()=="loading")
 		{
-			gantry.checkFeeder();
-			parts.get(gantry.getBox()).setX(gantry.getX()-10);
-			parts.get(gantry.getBox()).setY(gantry.getY()-15);
+			parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
+			parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
 			parts.get(gantry.getBox()).setState("moving");
-			parts.get(gantry.getBox()).setFeeder(gantry.getFeeder());
+			parts.get(gantry.getBox()).setFeeder(gantry.getFeed());
 			if(gantry.done())
 			{
-				parts.get(gantry.getBox()).setState("feeding"); //once at the feeder, drop the box, and go back to free
+				parts.get(gantry.getBox()).setState("feeding");
 				gantry.setBox(-1);
 				gantry.setState("free");
 			}
@@ -125,13 +103,14 @@ public class GantryManager implements Serializable,Runnable
 		{
 			if(gantry.done())
 			{
-				feeders.set(parts.get(gantry.getBox()).getFeeder(),0);
+				feeders.set(parts.get(gantry.getBox()).getFeeder(), 0);
 				gantry.setState("dumpf");
 				parts.get(gantry.getBox()).setState("dumpf");
-				gantry.setX(300);
-				gantry.setY(0);
-				parts.get(gantry.getBox()).setX(gantry.getX()-10);
-				parts.get(gantry.getBox()).setY(gantry.getY()-15);
+				gantry.setxFinal(300);
+				gantry.setyFinal(0);
+				parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
+				parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
+				
 			}
 		}
 		else if(gantry.getState()=="dumpf")
@@ -145,15 +124,23 @@ public class GantryManager implements Serializable,Runnable
 		}
 	}
 	
-	public Gantry getGantry()
+	public synchronized Gantry getGantry()
 	{
 		return gantry;
 	}
 	
-	public ArrayList<PartsBox> getPartsBoxes()
+	public synchronized ArrayList<PartsBox> getPartsBoxes()
 	{
 		return parts;
 	}
 	
+	public synchronized void setGantry(Gantry g)
+	{
+		gantry = g;
+	}
+	
+	public synchronized void setParts(ArrayList<PartsBox> p)
+	{
+		parts = p;
+	}
 }
-		

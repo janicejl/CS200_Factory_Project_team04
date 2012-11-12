@@ -2,11 +2,12 @@ package GantryManager;
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 public class GantryManagerClient implements Runnable
 {
-	GantryManagerApp app;
 	Socket s;
+	GUIGantryManager gui;
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	String command;
@@ -14,15 +15,15 @@ public class GantryManagerClient implements Runnable
 	String serverName;
 	Thread thread;
 	
-	public GantryManagerClient(GantryManagerApp a)
+	public GantryManagerClient(GUIGantryManager g)
 	{
-		app = a;
+		gui = g;
 		serverName = "localhost";
 		command = "";
 		commandSent = "";
-		thread = new Thread(this, "GantryManagerClient_Thread");
+		thread = new Thread(this,"GantryManagerClient_Thread");
 	}
-		
+	
 	public Integer connect()
 	{
 		try
@@ -32,17 +33,10 @@ public class GantryManagerClient implements Runnable
 			in = new ObjectInputStream(s.getInputStream());
 		}
 		catch(UnknownHostException e)
-		{
-			System.err.println("Can't find server " + serverName);
-			return -1;
-		}
+		{return -1;}
 		catch(IOException e)
-		{
-			System.err.println("Can't find server " + serverName);
-			return -1;
-		}
+		{return -1;}
 		System.out.println("Connected to " + serverName);
-		thread.start();
 		return 1;
 	}
 	
@@ -52,55 +46,56 @@ public class GantryManagerClient implements Runnable
 		{
 			commandSent = "Gantry Manager";
 			out.writeObject(commandSent);
-			out.reset();
-			command = (String)in.readObject();
-			if(command.equals("Confirmed"))
-			{
-				commandSent = "Confirmed";
-				out.writeObject(commandSent);
-				out.reset();
-			}
-			else if(command.equals("Denied"))
-			{
-				System.err.println("Server not accepting this Client");
-				System.exit(1);
-			}
-			else
-			{
-				System.out.println(command);
-				System.exit(1);
-			}
-			
-			commandSent = "Received";
-			while(true)
-			{
-				app.setGantryManager((GantryManager)in.readObject());
-				out.writeObject(commandSent);
-				while(!app.getGantryManager().getGantry().getState().equals("free"))
-				{	System.out.println("STATE");
-					System.out.println(app.getGantryManager().getGantry().getState());}
-				out.writeObject(app.getGantryManager());
-				out.reset();
-			}
-		}
-		catch(ClassNotFoundException e)
-		{
-			e.printStackTrace();
+			out.reset();		
 		}
 		catch(IOException e)
-		{
-			e.printStackTrace();
-			System.exit(1);
-		}
+		{}
+		catch(Exception i)
+		{}
 	}
 	
 	public synchronized Thread getThread()
 	{
 		return thread;
 	}
-		
-	public synchronized void setThread(Thread thread)
+	
+	public synchronized void send()
 	{
-		this.thread = thread;
+		try
+		{
+			out.writeObject(gui.manager);
+			out.reset();
+		}
+		catch(Exception e){}
+	}
+	
+	public synchronized void update()
+	{
+		try
+		{
+			Thread.sleep(20);
+			String t = "0";
+			commandSent = "Received";
+			t = (String)in.readObject();
+			int h = (Integer)in.readObject();
+			if(!t.equals("null") && !t.equals("0"))
+			{
+				System.out.println(t);
+				gui.manager.getGantry().setState(t);
+			}
+			System.out.println(h);
+			gui.manager.getGantry().setFeed(h);
+			gui.manager.update();
+			//GantryManager temp = (GantryManager)in.readObject();
+			//System.out.println(temp.getGantry().getState());
+			//gui.manager.getGantry().setState(temp.getGantry().getState());
+			//gui.manager.getGantry().setFeed(temp.getGantry().getFeed());
+		}
+		catch(Exception ignore){}
+	}
+	
+	public synchronized void setThread(Thread t)
+	{
+		thread = t;
 	}
 }

@@ -144,6 +144,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryController.msgGantryAdded(gantry1);
 		gantryController.msgGantryAdded(gantry2);**/
 		gantryManager = new GantryManager();
+		gantryManager.getGantry().setState("free");
+		gantryManager.getGantry().setBox(1);
 
 		feeders = new Vector<Feeder>();
 		for(int i = 0; i < 4; i++){
@@ -348,39 +350,39 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	}   
     	else if(process.equals("Load Parts Box 1")){
     		gantryManager.getGantry().setState("load");
-			gantryManager.getGantry().setFeeder(0);
+			gantryManager.getGantry().setFeed(0);
     	}
     	else if(process.equals("Load Parts Box 2")){
     		gantryManager.getGantry().setState("load");
-    		gantryManager.getGantry().setFeeder(1);
+    		gantryManager.getGantry().setFeed(1);
     	}
     	else if(process.equals("Load Parts Box 3")){
     		gantryManager.getGantry().setState("load");
-    		gantryManager.getGantry().setFeeder(2);
+    		gantryManager.getGantry().setFeed(2);
     	}
     	else if(process.equals("Load Parts Box 4")){
     		gantryManager.getGantry().setState("load");
-    		gantryManager.getGantry().setFeeder(3);
+    		gantryManager.getGantry().setFeed(3);
     	}
     	else if(process.equals("Dump Feeder 1"))
     	{
     		gantryManager.getGantry().setState("dumpi");
-    		gantryManager.getGantry().setFeeder(0);
+    		gantryManager.getGantry().setFeed(0);
     	}
     	else if(process.equals("Dump Feeder 2"))
     	{
     		gantryManager.getGantry().setState("dumpi");
-    		gantryManager.getGantry().setFeeder(1);
+    		gantryManager.getGantry().setFeed(1);
     	}
     	else if(process.equals("Dump Feeder 3"))
     	{
     		gantryManager.getGantry().setState("dumpi");
-    		gantryManager.getGantry().setFeeder(2);
+    		gantryManager.getGantry().setFeed(2);
     	}
     	else if(process.equals("Dump Feeder 4"))
     	{
     		gantryManager.getGantry().setState("dumpi");
-    		gantryManager.getGantry().setFeeder(3);
+    		gantryManager.getGantry().setFeed(3);
     	}
     	
     }
@@ -439,6 +441,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			kitTest.repaint();
 			partsTest.repaint();
 			laneTest.repaint();
+			gantryTest.repaint();
 		}
 		else if(phase.equals(2)){
 			partsTest.repaint();
@@ -454,11 +457,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		kitTest.revalidate();
 		partsTest.revalidate();
 		laneTest.revalidate();
+		gantryTest.revalidate();
 	}
 	
 	public static void main(String[] args) {
 		Server factory = new Server();
-		factory.setSize(900, 400);
+		factory.setSize(1100, 400);
 		factory.setVisible(true);
 		factory.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		factory.start();

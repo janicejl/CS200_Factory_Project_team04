@@ -45,7 +45,6 @@ public class Protocols implements Runnable{
 			}
 			else if (protocolName.equals("Gantry Manager")){
 				runGantryProtocol();
-				System.out.println("Gantry running");
 			}
 		}
 	}
@@ -53,34 +52,24 @@ public class Protocols implements Runnable{
 	public synchronized void runGantryProtocol(){
 		try
 		{
-			out.writeObject("Confirmed");
+			command = "Received";
+			String outs = app.getGantryManager().getGantry().getState();
+
+			out.writeObject(outs);
+
+			if(!outs.equals("null"))
+			{
+				System.out.println(outs);
+				app.getGantryManager().getGantry().setState("null");
+			}
+
 			out.reset();
-			command = (String)in.readObject();
-			if(command.equals("Confirmed"))
-			{
-				
-			}
-			commandSent = "Received";
-			while(true)
-			{
-				out.writeObject(app.getGantryManager());
-				out.reset();
-				command = (String)in.readObject();
-				GantryManager g = (GantryManager)in.readObject();
-				app.setGantryManager(g);
-				if(command.equals("Received")){
-					
-				}
-				else{
-					System.exit(1);
-				}
-			}
+			System.out.println(app.getGantryManager().getGantry().getFeed());
+			out.writeObject((Integer)app.getGantryManager().getGantry().getFeed());
+			//out.writeObject(app.getGantryManager());
+			out.reset();
 		}
-		catch(ClassNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		catch(IOException e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}

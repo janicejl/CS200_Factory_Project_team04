@@ -37,7 +37,7 @@ public class GantryManagerProtocol implements Runnable
 		try
 		{
 			command = (String)in.readObject();
-			if(!command.equals("GantryManager"))
+			if(!command.equals("Gantry Manager"))
 			{
 				commandSent = "Denied";
 				System.exit(1);

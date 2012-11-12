@@ -21,9 +21,8 @@ public class Protocols implements Runnable{
 			out = new ObjectOutputStream(s.getOutputStream());
 			out.flush();
 			in = new ObjectInputStream(s.getInputStream());
-			out.writeObject("Confirmed");
-			out.reset();
 			command = (String)in.readObject();
+			protocolName = command;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -32,7 +31,6 @@ public class Protocols implements Runnable{
 			e.printStackTrace();
 		}				
 		
-		protocolName = command;
 		thread = new Thread(this, "protocol thread");
 		thread.start();
 	}
@@ -45,11 +43,54 @@ public class Protocols implements Runnable{
 			else if (protocolName.equals("Lane Manager")) {
 				runLaneProtocol();				
 			}
+			else if (protocolName.equals("Gantry Manager")){
+				runGantryProtocol();
+			}
+		}
+	}
+	
+	public synchronized void runGantryProtocol(){
+		try
+		{
+			out.writeObject("Confirmed");
+			out.reset();
+			command = (String)in.readObject();
+			if(command.equals("Confirmed"))
+			{
+				
+			}
+			commandSent = "Received";
+			while(true)
+			{
+				out.writeObject(app.getGantryManager());
+				out.reset();
+				command = (String)in.readObject();
+				if(command.equals("Received")){
+					
+				}
+				else{
+					System.exit(1);
+				}
+			}
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
 		}
 	}
 	
 	public synchronized void runKitProtocol(){
 		try {
+			out.writeObject("Confirmed");
+			out.reset();
+			command = (String)in.readObject();
+			if(command.equals("Confirmed")){
+				
+			}
 			out.writeObject(app.getKitRobot());
 			out.reset();
 			if(app.getKitAssemblyManager().getMsg().equals(true)){

@@ -7,6 +7,7 @@ public class GantryManagerApp extends JFrame implements ActionListener
 {
 	GUIGantryManager gui;
 	GantryManager manager;
+	GantryManagerClient client;
 	int speed;
 	public Timer timer;
 	
@@ -18,6 +19,8 @@ public class GantryManagerApp extends JFrame implements ActionListener
 		gui = new GUIGantryManager();
 		gui.update(manager);
 		
+		client = new GantryManagerClient(this);
+		client.connect();
 		this.add(gui);
 	}
 	

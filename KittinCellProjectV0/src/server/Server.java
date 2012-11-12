@@ -143,7 +143,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryController.msgGantryAdded(gantry1);
 		gantryController.msgGantryAdded(gantry2);**/
 		gantryManager = new GantryManager();
-		
 
 		feeders = new Vector<Feeder>();
 		for(int i = 0; i < 4; i++){

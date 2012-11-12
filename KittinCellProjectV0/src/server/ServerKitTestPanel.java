@@ -13,6 +13,8 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
 	ImageIcon background; //background
 	
 	public ServerKitTestPanel(Server _server){
+		
+		setOpaque(false);
 		buttons = new ArrayList<JButton>();
 		subPanels = new ArrayList<JPanel>();
 		

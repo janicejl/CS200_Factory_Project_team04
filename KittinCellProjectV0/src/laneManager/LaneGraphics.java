@@ -62,7 +62,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
     	maxX = 600;
-    	maxY = 700;
+    	maxY = 600;
     	
     	
     	this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
@@ -122,11 +122,11 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		        }
 		}
 		
-		
+		//window needs to be 600
 		
         for(int i = -1; i < 40; i++){ // main conveyor images
-        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(0).intValue(),20,null); // empty conveyor   
-        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(1).intValue(),90,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(0).intValue(),40,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(1).intValue(),100,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(2).intValue(),160,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(3).intValue(),230,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(4).intValue(),300,null); // empty conveyor   

@@ -27,7 +27,7 @@ public class GantryManagerClient implements Runnable
 	{
 		try
 		{
-			s = new Socket(serverName, 69696);
+			s = new Socket(serverName, 61337);
 			out = new ObjectOutputStream(s.getOutputStream());
 			in = new ObjectInputStream(s.getInputStream());
 		}
@@ -49,7 +49,7 @@ public class GantryManagerClient implements Runnable
 	{
 		try
 		{
-			commandSent = "GantryManager";
+			commandSent = "Gantry Manager";
 			out.writeObject(commandSent);
 			out.reset();
 			command = (String)in.readObject();

@@ -101,6 +101,8 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		this.laneGraphics.setLanes(lanes);
 	}
 
+	
+	
 	public synchronized LaneGraphics getLaneGraphics() {
 		return laneGraphics;
 	}

@@ -46,7 +46,6 @@ public class PartsPanel extends JPanel implements ActionListener{
 			PartInfo tempPart = new PartInfo(managePanel.nameField.getText(), "images/kt" + managePanel.imagesSelectBox.getSelectedIndex() + ".png");
 			tempPart.setType(managePanel.imagesSelectBox.getSelectedIndex());
 			app.getPartsList().add(tempPart);
-			app.save("partsInfo.sav");
 			
 			//create button
 			partListPanel.addPart(managePanel.nameField.getText(), new ImageIcon(tempPart.getImagePath()));

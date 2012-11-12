@@ -64,7 +64,7 @@ public class GUIPartsRobot{
 
         try {
         	for(int i=0; i<9;i++){
-        		partImages.add(ImageIO.read(new File("images/" + i + ".png")));
+        		partImages.add(ImageIO.read(new File("images/kt" + i + ".png")));
         	}
             partsRobotImage = ImageIO.read(new File("images/partsrobot.png"));
             partsRobotRailImage = ImageIO.read(new File("images/rail.png"));

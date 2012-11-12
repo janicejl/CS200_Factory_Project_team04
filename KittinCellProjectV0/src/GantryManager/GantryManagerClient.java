@@ -76,6 +76,9 @@ public class GantryManagerClient implements Runnable
 			{
 				app.setGantryManager((GantryManager)in.readObject());
 				out.writeObject(commandSent);
+				while(app.getGantryManager().getGantry().getState()!="free")
+				{}
+				out.writeObject(app.getGantryManager());
 				out.reset();
 			}
 		}

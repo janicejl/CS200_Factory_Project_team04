@@ -2,6 +2,7 @@ package server;
 
 import java.io.*;
 import java.net.*;
+import GantryManager.GantryManager;
 
 public class Protocols implements Runnable{
 	Server app;
@@ -65,6 +66,8 @@ public class Protocols implements Runnable{
 				out.writeObject(app.getGantryManager());
 				out.reset();
 				command = (String)in.readObject();
+				GantryManager g = (GantryManager)in.readObject();
+				app.setGantryManager(g);
 				if(command.equals("Received")){
 					
 				}

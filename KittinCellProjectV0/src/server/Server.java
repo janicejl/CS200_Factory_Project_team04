@@ -33,7 +33,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	ServerKitTestPanel kitTest; //panel for kit assembly commands
 	ServerPartTestPanel partsTest; //panel for parts robot commands
 	ServerLaneTestPanel laneTest; //panel for lane commands
-	//ServerGantryTestPanel gantryTest;
+	ServerGantryTestPanel gantryTest;
 	Integer phase;
 	
 	String clientType; //type of client to connect to
@@ -110,6 +110,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		laneTest.setPreferredSize(new Dimension(300, 400));
 		laneTest.setMaximumSize(new Dimension(300, 400));
 		laneTest.setMinimumSize(new Dimension(300, 400));
+		gantryTest = new ServerGantryTestPanel(this);
 		
 		feeder1 = new FeederAgent("feeder1", 5, fLane1, fLane2, 1, this);
 		fLane1 = new FeederLaneAgent("left", 1, this);
@@ -334,6 +335,43 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Load Kit 2")){
     		getPartsRobot().addCommand("dump,1");
     	}   
+    	else if(process.equals("Load Parts Box 1")){
+    		gantryManager.getGantry().setState("load");
+			gantryManager.getGantry().setFeeder(0);
+    	}
+    	else if(process.equals("Load Parts Box 2")){
+    		gantryManager.getGantry().setState("load");
+    		gantryManager.getGantry().setFeeder(1);
+    	}
+    	else if(process.equals("Load Parts Box 3")){
+    		gantryManager.getGantry().setState("load");
+    		gantryManager.getGantry().setFeeder(2);
+    	}
+    	else if(process.equals("Load Parts Box 4")){
+    		gantryManager.getGantry().setState("load");
+    		gantryManager.getGantry().setFeeder(3);
+    	}
+    	else if(process.equals("Dump Feeder 1"))
+    	{
+    		gantryManager.getGantry().setState("dumpi");
+    		gantryManager.getGantry().setFeeder(0);
+    	}
+    	else if(process.equals("Dump Feeder 2"))
+    	{
+    		gantryManager.getGantry().setState("dumpi");
+    		gantryManager.getGantry().setFeeder(1);
+    	}
+    	else if(process.equals("Dump Feeder 3"))
+    	{
+    		gantryManager.getGantry().setState("dumpi");
+    		gantryManager.getGantry().setFeeder(2);
+    	}
+    	else if(process.equals("Dump Feeder 4"))
+    	{
+    		gantryManager.getGantry().setState("dumpi");
+    		gantryManager.getGantry().setFeeder(3);
+    	}
+    	
     }
 	 
     public void execute(String process, Integer num){
@@ -524,5 +562,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public synchronized GantryManager getGantryManager()
 	{
 		return gantryManager;
+	}
+	
+	public synchronized void setGantryManager(GantryManager g)
+	{
+		gantryManager = g;
 	}
 }

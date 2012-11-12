@@ -39,6 +39,7 @@ public class GantryManager implements Serializable
 	public void update()
 	{
 		gantry.update();
+		gantry.checkFeeder();
 		int i =0;
 		boolean go = true;
 		while(i<parts.size()) //Checks if a parts bin is waiting to be loaded or dumped
@@ -90,6 +91,7 @@ public class GantryManager implements Serializable
 			if(gantry.done())
 			{
 				gantry.setState("loading");//once it has reached it, switch to a busy signal
+				System.out.println("Done");
 			}
 		}
 		else if(gantry.getState()=="loading") //if busy

@@ -16,7 +16,9 @@ public class GUIGantryManager extends JPanel
 	protected BufferedImage lane = null;
 	protected BufferedImage feeder = null;
 	Gantry gantry;
+	GUIGantry guigantry;
 	ArrayList<PartsBox> boxes;
+	ArrayList<GUIPartsBox> gboxes;
 	
 	public GUIGantryManager()
 	{
@@ -47,15 +49,19 @@ public class GUIGantryManager extends JPanel
 		g2.drawImage(lane, -150, 325,null);
 		g2.drawImage(lane, 0, 450,null);
 		
+		
 		int i=0;
 		while(i<boxes.size())
 		{
-			boxes.get(i).paint(g);
+			gboxes.get(i).update(boxes.get(i).getXCurrent(),boxes.get(i).getYCurrent());
+			gboxes.get(i).paint(g);
 			i++;
 		}
 		
 		g2.drawImage(rail,gantry.getXCurrent()+10,0, null);
-		gantry.paint(g);
+		guigantry.update(gantry.getXCurrent(), gantry.getYCurrent());
+		System.out.println(gantry.getState());
+		guigantry.paint(g);
 		//I will implement proper image centering instead of the +10, -5 hack, but for now there are more important aspects
 	}
 
@@ -64,15 +70,25 @@ public class GUIGantryManager extends JPanel
 		gantry = g;
 	}
 	
-	public synchronized void setPartsBoxes(ArrayList<PartsBox> pb) //links parts box with GUIGantryManager
+	public synchronized void setPartsBoxes(ArrayList<PartsBox> pb,ArrayList<GUIPartsBox> gpb) //links parts box with GUIGantryManager
 	{
 		boxes = pb;
+		gboxes = gpb;
 	}
 	
-	public void update(GantryManager gm)
+	public synchronized void update(GantryManager gm)
 	{
 		gantry = gm.getGantry();
+		guigantry = new GUIGantry(gantry);
 		boxes = gm.getPartsBoxes();
+
+		gboxes = new ArrayList<GUIPartsBox>();
+		int i =0;
+		while(i<boxes.size())
+		{
+			gboxes.add(new GUIPartsBox(boxes.get(i)));
+			i++;
+		}
 	}
 }
 

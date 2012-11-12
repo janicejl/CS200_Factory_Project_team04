@@ -41,19 +41,24 @@ public class GantryManagerApp extends JFrame implements ActionListener
 		gui.repaint();
 	}
 	
-	public void startTimer()
+	public synchronized void startTimer()
 	{
 		timer.start();
 	}
 	
-	public void setTimerDelay(int d)
+	public synchronized void setTimerDelay(int d)
 	{
 		timer.setDelay(d);
 	}
 	
-	public void setGantryManager(GantryManager gm)
+	public synchronized void setGantryManager(GantryManager gm)
 	{
 		manager = gm;
+	}
+	
+	public synchronized GantryManager getGantryManager()
+	{
+		return manager;
 	}
 	
 }

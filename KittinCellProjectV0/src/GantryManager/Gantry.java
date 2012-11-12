@@ -5,7 +5,7 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.image.*;
 
-public class Gantry
+public class Gantry implements Serializable
 {
 	int xFinal;
 	int yFinal;

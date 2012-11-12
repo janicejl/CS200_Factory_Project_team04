@@ -90,6 +90,7 @@ public class KitAssemblyClient implements Runnable {
 			app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
 		} catch (Exception ignore){
 			ignore.printStackTrace();
+			System.exit(1);
 		}
 	}
 

@@ -21,6 +21,7 @@ public class GantryManagerApp extends JFrame implements ActionListener
 		
 		client = new GantryManagerClient(this);
 		client.connect();
+		
 		this.add(gui);
 	}
 	

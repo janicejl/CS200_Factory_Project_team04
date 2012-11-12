@@ -44,6 +44,7 @@ public class Protocols implements Runnable{
 			}
 			else if (protocolName.equals("Gantry Manager")){
 				runGantryProtocol();
+				System.out.println("Gantry running");
 			}
 		}
 	}

@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class GantryManager
+public class GantryManager implements Serializable
 {
 	Gantry gantry; //Gantry robot
 	ArrayList<PartsBox> parts; //Parts boxes

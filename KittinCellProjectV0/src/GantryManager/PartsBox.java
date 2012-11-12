@@ -5,7 +5,7 @@ import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
 
-public class PartsBox 
+public class PartsBox implements Serializable
 {
 	protected BufferedImage part = null;
 	protected BufferedImage box = null;

@@ -42,6 +42,7 @@ public class GantryManagerClient implements Runnable
 			return -1;
 		}
 		System.out.println("Connected to " + serverName);
+		thread.start();
 		return 1;
 	}
 	

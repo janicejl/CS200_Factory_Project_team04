@@ -125,14 +125,14 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		//window needs to be 600
 		
         for(int i = -1; i < 40; i++){ // main conveyor images
-        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(0).intValue(),40,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(0).intValue(),30,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(1).intValue(),100,null); // empty conveyor   
-        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(2).intValue(),160,null); // empty conveyor   
-        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(3).intValue(),230,null); // empty conveyor   
-        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(4).intValue(),300,null); // empty conveyor   
-        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(5).intValue(),370,null); // empty conveyor   
-        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(6).intValue(),440,null); // empty conveyor   
-        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(7).intValue(),510,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(2).intValue(),170,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(3).intValue(),240,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(4).intValue(),310,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(5).intValue(),380,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(6).intValue(),450,null); // empty conveyor   
+        	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(7).intValue(),520,null); // empty conveyor   
         }  
         
         g2.setColor(Color.BLUE);		

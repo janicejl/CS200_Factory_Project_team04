@@ -113,43 +113,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 
-		
-		/*for (int i = 0; i < 8; i++){
-			if(e.getSource() == feedButtons.get(i)) 
-				//laneGraphics.feedItem(i);		
-		}
-		for (int i = 0; i < 8; i++){
-			if(e.getSource() == releaseButtons.get(i)) 
-				laneGraphics.releaseItem(i);		
-		}
-		for (int i = 0; i < 8; i++){
-			if(e.getSource() == removeButtons.get(i)) 
-				laneGraphics.removeItem(i);		
-		}
-		if(e.getSource() == connect){
-			int i = client.connect();
-			if(i == -1){
-				System.exit(1);
-			}
-			else if(i == 1){
-				client.getThread().start();
-			}
-		}
-//		for (int i = 0; i < 8; i++){
-//			if(e.getSource() == feedButtons.get(i)) 
-//				//laneGraphics.feedItem(i);		
-//		}
-//		for (int i = 0; i < 8; i++){
-//			if(e.getSource() == releaseButtons.get(i)) 
-//				laneGraphics.releaseItem(i);		
-//		}
-//		for (int i = 0; i < 8; i++){
-//			if(e.getSource() == removeButtons.get(i)) 
-//				laneGraphics.removeItem(i);		
-//		}
->>>>>>> dc501fcdf2117749a1a7bc1d0e1be1dc30d4cd2f
-		laneGraphics.repaint();
-		*/
+	
 	}
 	
 }

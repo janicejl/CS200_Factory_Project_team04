@@ -147,7 +147,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 		feeders = new Vector<Feeder>();
 		for(int i = 0; i < 4; i++){
-			feeders.add(new Feeder(525,20 + i*140));
+			feeders.add(new Feeder(525,30 + i*140));
 		}
 		nestList = new Vector<Nest>();
     	

@@ -27,6 +27,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 		//setup GUI
 		server = _server;
 		
+		setOpaque(false);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(150, 400));
 		setMaximumSize(new Dimension(150, 400));

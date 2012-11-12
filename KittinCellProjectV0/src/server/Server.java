@@ -84,7 +84,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	Thread thread; //thread for the server
 	
 	public Server(){
-		
+
 		//setup layout
 		setLayout(new GridBagLayout());
 		gui = new ServerPanel(this);
@@ -94,8 +94,17 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		c.gridy = 0;
 		add(gui, c);
 		kitTest = new ServerKitTestPanel(this);
+		kitTest.setPreferredSize(new Dimension(300, 400));
+		kitTest.setMaximumSize(new Dimension(300, 400));
+		kitTest.setMinimumSize(new Dimension(300, 400));
 		partsTest = new ServerPartTestPanel(this);
+		partsTest.setPreferredSize(new Dimension(300, 400));
+		partsTest.setMaximumSize(new Dimension(300, 400));
+		partsTest.setMinimumSize(new Dimension(300, 400));
 		laneTest = new ServerLaneTestPanel(this);
+		laneTest.setPreferredSize(new Dimension(300, 400));
+		laneTest.setMaximumSize(new Dimension(300, 400));
+		laneTest.setMinimumSize(new Dimension(300, 400));
 		
 		feeder1 = new FeederAgent("feeder1", 5, fLane1, fLane2, 1, this);
 		fLane1 = new FeederLaneAgent("left", 1, this);
@@ -373,6 +382,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		else if(phase.equals(1)){
 			kitTest.repaint();
+			partsTest.repaint();
+			laneTest.repaint();
 		}
 		else if(phase.equals(2)){
 			partsTest.repaint();
@@ -392,7 +403,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	public static void main(String[] args) {
 		Server factory = new Server();
-		factory.setSize(533, 400);
+		factory.setSize(900, 400);
 		factory.setVisible(true);
 		factory.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		factory.start();

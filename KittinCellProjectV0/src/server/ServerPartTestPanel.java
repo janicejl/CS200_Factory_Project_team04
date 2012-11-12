@@ -97,7 +97,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 			Part.PartType part7 = Part.PartType.part7;
 			recipe.add(part7);
 			Part.PartType part8 = Part.PartType.part8;
-			recipe.add(part3);
+			recipe.add(part8);
 			server.getPartsRobotAgent().msgMakeThisKit(recipe, 4);
 		}
 		else if("Get Part".equals(ae.getActionCommand())) {

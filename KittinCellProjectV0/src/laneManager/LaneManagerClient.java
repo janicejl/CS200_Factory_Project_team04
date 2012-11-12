@@ -128,7 +128,6 @@ public class LaneManagerClient implements Runnable {
 			app.setNests((Vector<Nest>)in.readObject());
 			out.writeObject(commandSent);
 			out.reset();
-			System.out.println("got it");
 		} catch (Exception ignore){}
 	}
 

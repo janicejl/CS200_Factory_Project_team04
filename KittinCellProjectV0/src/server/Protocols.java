@@ -21,9 +21,9 @@ public class Protocols implements Runnable{
 			out = new ObjectOutputStream(s.getOutputStream());
 			out.flush();
 			in = new ObjectInputStream(s.getInputStream());
-			out.writeObject("Confirmed");
-			out.reset();
 			command = (String)in.readObject();
+			out.writeObject("Confirmed");
+			out.reset();			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,10 +64,12 @@ public class Protocols implements Runnable{
 			}
 			out.writeObject(app.getKitAssemblyManager());
 			out.reset();
-			command = (String)in.readObject();
-			if(command.equals("Received")){
-				
-			}
+			if(app.getPartsRobot().getAnimationDone()){
+				for(int i = 0; i<4; i++){
+					app.getVisions().get(i).msgAnimationDone();
+				}
+				app.getPartsRobot().setAnimationDone(false);
+			}		
 		}
 		catch(Exception ignore){}
 	}

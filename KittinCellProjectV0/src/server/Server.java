@@ -220,7 +220,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
         
 		partsRobotAgent.startThread();
-        partsRobot = new PartsRobot();
+        partsRobot = new PartsRobot(kitAssemblyManager);
         new Thread(partsRobot).start();
 		
 		//start threads and timer

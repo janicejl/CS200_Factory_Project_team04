@@ -48,9 +48,9 @@ public class KitAssemblyClient implements Runnable {
 			out.reset();
 			command = (String)in.readObject();
 			if(command.equals("Confirmed")){
-				commandSent = "Confirmed";
-				out.writeObject(commandSent);
-				out.reset();
+				//commandSent = "Confirmed";
+				//out.writeObject(commandSent);
+				//out.reset();
 				//start
 			}
 			else if(command.equals("Denied")){
@@ -92,7 +92,12 @@ public class KitAssemblyClient implements Runnable {
 			app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
 			out.writeObject(commandSent);
 			out.reset();
-		} catch (Exception ignore){}
+			if(commandSent.equals("Update")){
+				commandSent = "Received";
+			}
+		} catch (Exception ignore){
+			ignore.printStackTrace();
+		}
 	}
 
 	public synchronized void setThread(Thread thread) {

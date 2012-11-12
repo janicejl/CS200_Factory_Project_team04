@@ -69,7 +69,7 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
     	
     	kam = new KitAssemblyManager();
     	kitRobot = new KitRobot(kam);
-    	partsRobot = new PartsRobot();    	
+    	partsRobot = new PartsRobot(kam);    	
     	
         setPreferredSize(new Dimension (450,600));
         gKitRobot = new GUIKitRobot(this);

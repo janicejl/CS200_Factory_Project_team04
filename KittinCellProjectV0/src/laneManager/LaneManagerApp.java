@@ -2,31 +2,14 @@ package laneManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
-import java.util.Vector;
-
 import javax.swing.*;
 
-import server.Lane;
-
-import Feeder.Feeder;
-import Feeder.GUIFeeder;
 
 public class LaneManagerApp extends JFrame implements ActionListener {
 	private LaneGraphics laneGraphics; //30,100,170... 
-	private Vector<JButton> releaseButtons;
-	private JLabel releaseLabel;
-	private JPanel releaseSection;
-	private Vector<JButton> feedButtons;
-	private JLabel feedLabel;
-	private JPanel feedSection;
-	private Vector<JButton> removeButtons;
-	private JLabel removeLabel;
-	private JPanel removeSection;
+	
 	private JPanel window;
-	
-	//private JButton connect;
-	
-	
+
 	public LaneManagerApp() {
 		this.setLayout(new GridBagLayout());
 		

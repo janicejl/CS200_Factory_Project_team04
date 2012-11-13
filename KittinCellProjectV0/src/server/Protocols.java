@@ -55,21 +55,7 @@ public class Protocols implements Runnable{
 	public synchronized void runGantryProtocol(){
 		try
 		{
-			command = "Received";
-			String outs = app.getGantryManager().getGantry().getState();
-
-			out.writeObject(outs);
-
-			if(!outs.equals("null"))
-			{
-				System.out.println(outs);
-				app.getGantryManager().getGantry().setState("null");
-			}
-
-			out.reset();
-			System.out.println(app.getGantryManager().getGantry().getFeed());
-			out.writeObject((Integer)app.getGantryManager().getGantry().getFeed());
-			//out.writeObject(app.getGantryManager());
+			out.writeObject(app.getGantryManager());
 			out.reset();
 		}
 		catch(Exception e)

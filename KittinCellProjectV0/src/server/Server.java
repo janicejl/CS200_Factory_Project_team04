@@ -421,6 +421,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		for(int i = 0; i < lanes.size(); i++){
 			lanes.get(i).actionPerformed(e);
 		}
+		gantryManager.actionPerformed(e);
 		repaint();
 	}
 	

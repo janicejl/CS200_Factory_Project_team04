@@ -3,8 +3,9 @@ package GantryManager;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.awt.event.*;
 
-public class GantryManager implements Serializable
+public class GantryManager implements Serializable,ActionListener
 {
 	Gantry gantry;
 	ArrayList<PartsBox> parts;
@@ -33,10 +34,6 @@ public class GantryManager implements Serializable
 	
 	public synchronized void update()
 	{
-		try
-		{
-			Thread.sleep(10);
-		}catch(Exception e){}
 		gantry.update();
 		int i=0;
 		boolean go = true;
@@ -69,7 +66,6 @@ public class GantryManager implements Serializable
 		}
 		else if(gantry.getState().equals("load"))
 		{
-			System.out.println("I GOT IT");
 			int c=0;
 			while(c<parts.size())
 			{
@@ -122,6 +118,11 @@ public class GantryManager implements Serializable
 				gantry.setBox(-1);
 			}
 		}
+	}
+	
+	public void actionPerformed(ActionEvent ae)
+	{
+		this.update();
 	}
 	
 	public synchronized Gantry getGantry()

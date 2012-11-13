@@ -73,22 +73,7 @@ public class GantryManagerClient implements Runnable
 	{
 		try
 		{
-			String t = "0";
-			commandSent = "Received";
-			t = (String)in.readObject();
-			int h = (Integer)in.readObject();
-			if(!t.equals("null") && !t.equals("0"))
-			{
-				System.out.println(t);
-				gui.manager.getGantry().setState(t);
-			}
-			System.out.println(h);
-			gui.manager.getGantry().setFeed(h);
-			gui.manager.update();
-			//GantryManager temp = (GantryManager)in.readObject();
-			//System.out.println(temp.getGantry().getState());
-			//gui.manager.getGantry().setState(temp.getGantry().getState());
-			//gui.manager.getGantry().setFeed(temp.getGantry().getFeed());
+			gui.setGantryManager((GantryManager)in.readObject());
 		}
 		catch(Exception ignore){}
 	}

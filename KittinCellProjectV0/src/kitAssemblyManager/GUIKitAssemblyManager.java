@@ -44,6 +44,7 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
     Vector<Kit> baseStationKits;
 
     Vector<GUINest> gNests;
+    Vector<Nest> nests;
     
     int[] stationPositions = {160, 140, 160, 360, 80, 490, 10, 490, 160, 250}; // stations 1 - 2 - 3 - 4 - 5 (image corner coords)
     boolean emptyConveyorOn;
@@ -67,7 +68,10 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         kitClient = new KitAssemblyClient(this);
     	partsClient = new PartsManagerClient(this);
     	
-    	kam = new KitAssemblyManager();
+    	gNests = new Vector<GUINest>();
+    	nests = new Vector<Nest>();
+    	
+    	kam = new KitAssemblyManager(nests);
     	kitRobot = new KitRobot(kam);
     	partsRobot = new PartsRobot(kam);    	
     	
@@ -81,7 +85,7 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         baseFinishedKits = new Vector<Kit>();
         baseStationKits = new Vector<Kit>();
 
-        gNests = new Vector<GUINest>();
+        
         
         /*
 		
@@ -166,7 +170,7 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         g2.setColor(Color.BLACK);
         
         for (GUINest gN : gNests) {
-        	gN.paintNest(g2);
+        	gN.paintNest(g2, 0);
         }
 
         for(int i = -1; i < 5; i++){ // main conveyor images

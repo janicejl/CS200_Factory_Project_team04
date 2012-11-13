@@ -29,8 +29,15 @@ public class GUINest {
 		}
 	}
 	
-	public void paintNest(Graphics2D g) {
+	public void paintNest(Graphics2D g, int managerNum) {
 		double x = nest.getX();
+		
+		if (managerNum == 0) { 				//For the Kit Assembly Manager
+			//Move it
+			x = x + 350;
+		} else if (managerNum == 1) { 		//For the Lane Manager  
+			// No need to change x, already set to zero. 
+		}
 		double y = nest.getY();
 		
 		g.drawImage(image, (int)x, (int)y, null);

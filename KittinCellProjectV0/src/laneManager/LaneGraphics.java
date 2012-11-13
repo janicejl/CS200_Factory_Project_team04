@@ -152,7 +152,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		
 		updateGUINests();
 		for (int i = 0; i < gNests.size(); i++) {
-			gNests.get(i).paintNest(g2);
+			gNests.get(i).paintNest(g2, 1);
 		}
     }
     

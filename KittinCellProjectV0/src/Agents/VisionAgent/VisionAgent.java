@@ -1,24 +1,21 @@
 package Agents.VisionAgent;
 
 import java.util.*;
+
 import server.Server;
 import java.util.concurrent.*;
 
 import Agent.*;
-import Agents.KitRobotAgents.*;
 import Agents.PartsRobotAgent.*;
-import Interface.PartsRobotAgent.Vision;
-import data.Part;
-import data.Part.PartType;
+import Interface.VisionAgent.*;
+import Interface.KitRobotAgent.*;
+import Interface.PartsRobotAgent.*;
 import data.*;
 
-public class VisionAgent extends Agent {
+public class VisionAgent extends Agent implements Vision {
 	
 	/** NOTES **/
-	// synchronize lists
-	// upon integration, make sure the messages are all cool (msgHereIsSchematic, msgPartsApproved, msgBadParts, etc.)
-	// uncomment DoTakePicture() method
-	// have a list of the kits that need to be checked - NO< BECAUSE WE WILL ONLY HAVE 2 MAx
+	// upon integration, make sure the messages are all cool (msgHereIsSchematic, msgPartsApproved, msgBadParts, etc.
 
 	/////////////////////////////////////////////////////////////
 	/** DATA **/
@@ -28,7 +25,7 @@ public class VisionAgent extends Agent {
 	List<Part> neededPartsList = Collections.synchronizedList( new ArrayList<Part>() ); // list of all the parts that should be in each kit
 	
 	Map<Integer, NestAgent> fullNestsMap = Collections.synchronizedMap( new TreeMap<Integer, NestAgent>() ); // list of all the nests that are full and ready to have their picture taken
-	List<PartType> fullNestsPartsList = Collections.synchronizedList( new ArrayList<PartType>() ); // parallel array that holds all parts that each nest is supposed to hold
+	List<Part.PartType> fullNestsPartsList = Collections.synchronizedList( new ArrayList<Part.PartType>() ); // parallel array that holds all parts that each nest is supposed to hold
 	
 	enum State {IDLE, SCHEMATIC_RECEIVED, READY_TO_TAKE_PICTURE, PICTURE_TAKEN};
 	enum Type {NESTS_INSPECTOR, KIT_INSPECTOR};
@@ -43,10 +40,11 @@ public class VisionAgent extends Agent {
 	Kit currentKit;
 
 	Part part;
-	KitRobotAgent kitRobotAgent;
-	PartsRobotAgent partsRobotAgent;
-	NestAgent nest1;
-	NestAgent nest2;
+	//KitRobotAgent kitRobotAgent;
+	KitRobot kitRobot;
+	PartsRobot partsRobot; // no interface for this yet
+	Nest nest1; // no interface for this yet
+	Nest nest2;
 	Server server;
 	
 	boolean approved;
@@ -54,11 +52,11 @@ public class VisionAgent extends Agent {
 	/////////////////////////////////////////////////////////////
 	/** CONSTRUCTOR **/
 	
-	public VisionAgent (String type, KitRobotAgent kra, PartsRobotAgent pra, Server server) {
+	public VisionAgent (String type, KitRobot kr, PartsRobot pr, Server server) {
 		approved=false;
 		
-		kitRobotAgent = kra;
-		partsRobotAgent = pra;
+		kitRobot = kr;
+		partsRobot = pr;
 		this.server = server;
 		
 		initializeVisionAgent(type);
@@ -68,8 +66,7 @@ public class VisionAgent extends Agent {
 	/////////////////////////////////////////////////////////////
 	/** MESSAGES **/
 	
-	// sent by PartsRobotAgent
-	public void msgHereIsSchematic(List<Part> partsList, List<NestAgent> nestsList) {
+	public void msgHereIsSchematic(List<Part> partsList, List<NestAgent> nestsList)  {
 		// receive a list of all the parts that a kit needs, and a list of all the nests
 		this.nestsList = nestsList;
 		this.neededPartsList = partsList;
@@ -126,9 +123,9 @@ public class VisionAgent extends Agent {
 		}catch (InterruptedException e){
 			print("error with flashpermit");
 		}
-		server.execute("Take Picture", nest2.index);
+		server.execute("Take Picture", nest2.getIndex());
 
-		print ("taking a picture at " + nest2.index);
+		print ("taking a picture at " + nest2.getIndex());
 		
 		state = State.PICTURE_TAKEN;
 
@@ -205,8 +202,8 @@ public class VisionAgent extends Agent {
 	private void approveOrDenyParts() {
 		if (type==Type.NESTS_INSPECTOR) {
 			if (approved) {
-				partsRobotAgent.msgPartsApproved(nest1.getNumber());
-				partsRobotAgent.msgPartsApproved(nest2.getNumber());
+				partsRobot.msgPartsApproved(nest1.getNumber());
+				partsRobot.msgPartsApproved(nest2.getNumber());
 			}
 /*			else {
 				// nestAgent.msgBadParts();
@@ -214,7 +211,7 @@ public class VisionAgent extends Agent {
 */
 		}
 		else if (type==Type.KIT_INSPECTOR) {
-			kitRobotAgent.msgKitInspected(approved);
+			kitRobot.msgKitInspected(approved);
 		}
 		
 		state=State.SCHEMATIC_RECEIVED;
@@ -262,12 +259,18 @@ public class VisionAgent extends Agent {
 		
 		return false;
 	}
-	public void setFlashPermit(Semaphore flashpermit){
-		this.flashpermit = flashpermit;
-	}
+
+
+
+
+
+
 	
 	/////////////////////////////////////////////////////////////
 	/** OTHER **/
+	public void setFlashPermit(Semaphore flashpermit){
+		this.flashpermit = flashpermit;
+	}
 
 	
 }

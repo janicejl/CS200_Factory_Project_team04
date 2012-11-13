@@ -7,7 +7,7 @@ import data.*;
 import data.Part.PartType;
 import Interface.PartsRobotAgent.*;
 
-public class NestAgent extends Agent{
+public class NestAgent extends Agent implements Nest{
 
 	//Data
 	Part.PartType parttype;
@@ -243,6 +243,8 @@ public class NestAgent extends Agent{
 		this.camera = camera;
 	}
 	
-
+	public Integer getIndex() {
+		return index;
+	}
 	
 }

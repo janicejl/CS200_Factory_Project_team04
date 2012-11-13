@@ -9,5 +9,7 @@ public interface KitRobot {
 	void msgMoveKitToInspection(int position);
 
 	void msgPlaceKitAtPosition(int i);
+	
+	public void msgKitInspected(boolean bis_good);
 
 }

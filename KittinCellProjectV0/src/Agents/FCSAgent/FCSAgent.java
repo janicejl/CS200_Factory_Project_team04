@@ -9,14 +9,15 @@ import Agent.Agent;
 import Agents.PartsRobotAgent.*;
 import Agents.GantryFeederAgents.*;
 import Agents.KitRobotAgents.*;
+import Interface.FCSAgent.FCS;
 import MoveableObjects.*;
 
 
-public class FCSAgent extends Agent {
+public class FCSAgent extends Agent implements FCS {
 	/////////////////////////////////////////////////////////////
 	/** DATA **/
 	int numKits;
-	
+
 	PartsRobotAgent partsRobotAgent;
 	KitRobotAgent kitRobotAgent;
 	GantryControllerAgent gantryControllerAgent;
@@ -60,18 +61,18 @@ public class FCSAgent extends Agent {
 	/** ACTIONS **/
 	
 	// send a message to the PartsRobotAgent telling it what kits to make
-	public void makeAKit(List<Part.PartType> kitRecipe) {
+	private void makeAKit(List<Part.PartType> kitRecipe) {
 		this.kitRecipe = kitRecipe;
 		partsRobotAgent.msgMakeThisKit(kitRecipe, numKits);
 	}
 		
 	// send a message to the GantryControllerAgent to give it the configurations
-	public void giveConfigurationToGantryController() {
+	private void giveConfigurationToGantryController() {
 		gantryControllerAgent.msgBinConfiguration(binsList);
 	}
 	
 	// send a message to the KitRobotAgent requesting kits
-	public void getKitsFromKitRobotAgent() {
+	private void getKitsFromKitRobotAgent() {
 		kitRobotAgent.msgGetKits(numKits);
 	}
 	

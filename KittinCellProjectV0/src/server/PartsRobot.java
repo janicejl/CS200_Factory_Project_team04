@@ -121,7 +121,8 @@ public class PartsRobot implements Runnable, Serializable{
             }
 
             subCommands.add(2,"e," + grp + ",40");
-            subCommands.add(3,"p," + grp);
+            //subCommands.add(3,"p," + grp);
+            subCommands.add(3,"p," + grp + "," + src);
             subCommands.add(4,"e," + grp + ",0");
         }
         else if(ss[0].equals("dump")) {
@@ -163,9 +164,9 @@ public class PartsRobot implements Runnable, Serializable{
     }
 
     private void processSubCommand(String s){
-        try {
+    	try {
             String[] ss = s.split("\\,");
-            if(ss[0].equals("m")){
+            if(ss[0].equals("m")){								//Move
                 newY = Double.parseDouble(ss[1]);
                 processing = true;
                 if(subCommands.size() > 1){
@@ -177,7 +178,7 @@ public class PartsRobot implements Runnable, Serializable{
                     }
                 }
             }
-            else if (ss[0].equals("r")){
+            else if (ss[0].equals("r")){					//Rotate
                 newAngle = Double.parseDouble(ss[1]);
                 processing = true;
                 if(subCommands.size() > 1){
@@ -190,15 +191,16 @@ public class PartsRobot implements Runnable, Serializable{
                     }
                 }
             }
-            else if(ss[0].equals("e")){
+            else if(ss[0].equals("e")){							//extend
                 newGripperExtensions.set(Integer.parseInt(ss[1]), Double.parseDouble(ss[2]));
                 processing = true;
             }
-            else if(ss[0].equals("p")){
+            else if(ss[0].equals("p")){							//Pick
                 gripperHolding.set(Integer.parseInt(ss[1]),true);
+                app.nests.get(Integer.parseInt(ss[2])).getParts().remove(0);
                 processing = true;
             }
-            else if(ss[0].equals("d")){
+            else if(ss[0].equals("d")){							//Drop
                 gripperHolding.set(Integer.parseInt(ss[1]),false);
                 processing = true;
             }

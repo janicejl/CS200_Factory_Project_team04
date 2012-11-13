@@ -22,6 +22,10 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	JPanel card;
 	javax.swing.Timer timer;
 	
+	JMenuBar menuBar;
+	JMenu menu;
+	JMenuItem next;
+	
 	Vector<KitInfo> kitsList;
 	Vector<Job> jobs;
 	
@@ -55,6 +59,15 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		card.add(graphics);
 		
 		add(card);
+		
+		menuBar = new JMenuBar();
+		menu = new JMenu("Screen");
+		next = new JMenuItem("Switch Screen");
+		next.addActionListener(this);
+		menu.add(next);
+		menuBar.add(menu);
+		
+		setJMenuBar(menuBar);
 		
 		timer = new javax.swing.Timer(10, this);
 	}
@@ -101,12 +114,14 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	}
 	
 	public void next(){
-		
+		CardLayout tempLayout = (CardLayout)card.getLayout();
+		tempLayout.next(card);
 	}
 	
 	public void paint(Graphics g){
 		try{
 			panel.repaint();
+			graphics.repaint();
 		} catch(Exception e){
 			
 		}
@@ -116,12 +131,16 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	public void revalidate(){
 		try{
 			panel.revalidate();
+			graphics.revalidate();
 		} catch(Exception e){
 			
 		}
 	}
 	
 	public void actionPerformed(ActionEvent e){
+		if(e.getSource() == next){
+			next();
+		}
 		repaint();
 	}
 

@@ -73,7 +73,6 @@ public class GantryManagerClient implements Runnable
 	{
 		try
 		{
-			Thread.sleep(20);
 			String t = "0";
 			commandSent = "Received";
 			t = (String)in.readObject();

@@ -18,6 +18,8 @@ import data.PartInfo;
 public class ProductionManagerApp extends JFrame implements ActionListener, WindowListener {
 
 	ProductionManagerPanel panel;
+	GUIProductionManager graphics;
+	JPanel card;
 	javax.swing.Timer timer;
 	
 	Vector<KitInfo> kitsList;
@@ -39,51 +41,68 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		panel.setMinimumSize(new Dimension(1000, 600));
 		panel.update();
 		
-		add(panel);
+		graphics = new GUIProductionManager(this);
+		graphics.setPreferredSize(new Dimension(1000, 600));
+		graphics.setMaximumSize(new Dimension(1000, 600));
+		graphics.setMinimumSize(new Dimension(1000, 600));
+		
+		card = new JPanel();
+		card.setLayout(new CardLayout());
+		card.setPreferredSize(new Dimension(1000, 600));
+		card.setMaximumSize(new Dimension(1000, 600));
+		card.setMinimumSize(new Dimension(1000, 600));
+		card.add(panel);
+		card.add(graphics);
+		
+		add(card);
 		
 		timer = new javax.swing.Timer(10, this);
 	}
 	
 	//save
-		public void save(String path){
-			try{
-				FileOutputStream fileOut = new FileOutputStream(path); //write to settings.sav file (will overwrite)
-		        ObjectOutputStream streamOut = new ObjectOutputStream(fileOut); //outputstream
-		        streamOut.writeObject(getJobs()); //save
-		        streamOut.close();
-		        fileOut.close();
-			}
-			catch(IOException e){ //if unable to write to file or something is unserializable
-				JOptionPane.showMessageDialog(null, "Failed to save.", "Exception", JOptionPane.OK_OPTION);
-				e.printStackTrace(); //print trace
-				return;
-			}
+	public void save(String path){
+		try{
+			FileOutputStream fileOut = new FileOutputStream(path); //write to settings.sav file (will overwrite)
+	        ObjectOutputStream streamOut = new ObjectOutputStream(fileOut); //outputstream
+	        streamOut.writeObject(getJobs()); //save
+	        streamOut.close();
+	        fileOut.close();
 		}
+		catch(IOException e){ //if unable to write to file or something is unserializable
+			JOptionPane.showMessageDialog(null, "Failed to save.", "Exception", JOptionPane.OK_OPTION);
+			e.printStackTrace(); //print trace
+			return;
+		}
+	}
+	
+	//load profiles
+	public void load(String path){
+		try{
+			FileInputStream fileIn = new FileInputStream(path); //access  file
+			ObjectInputStream streamIn = new ObjectInputStream(fileIn); //inputstream
+			if(path.equals("kitsList.sav")){
+				kitsList = ((Vector<KitInfo>) streamIn.readObject());
+			}
+			else if(path.equals("jobsList.sav")){
+				jobs = ((Vector<Job>) streamIn.readObject());
+			}
+			streamIn.close();
+			fileIn.close();
+		}
+        catch(IOException i){ //if file not found
+        	System.out.println("Could not find " + path +  " file.");
+        	return;
+        }
+		catch(ClassNotFoundException e){ //if casting error
+			System.out.println("Class not found");
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	public void next(){
 		
-		//load profiles
-		public void load(String path){
-			try{
-				FileInputStream fileIn = new FileInputStream(path); //access  file
-				ObjectInputStream streamIn = new ObjectInputStream(fileIn); //inputstream
-				if(path.equals("kitsList.sav")){
-					kitsList = ((Vector<KitInfo>) streamIn.readObject());
-				}
-				else if(path.equals("jobsList.sav")){
-					jobs = ((Vector<Job>) streamIn.readObject());
-				}
-				streamIn.close();
-				fileIn.close();
-			}
-	        catch(IOException i){ //if file not found
-	        	System.out.println("Could not find " + path +  " file.");
-	        	return;
-	        }
-			catch(ClassNotFoundException e){ //if casting error
-				System.out.println("Class not found");
-				e.printStackTrace();
-				return;
-			}
-		}
+	}
 	
 	public void paint(Graphics g){
 		try{
@@ -95,7 +114,11 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	}
 	
 	public void revalidate(){
-		panel.revalidate();
+		try{
+			panel.revalidate();
+		} catch(Exception e){
+			
+		}
 	}
 	
 	public void actionPerformed(ActionEvent e){

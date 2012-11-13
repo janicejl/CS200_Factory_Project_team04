@@ -196,7 +196,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		kitRobotAgent = new KitRobotAgent(this);
 		kitStandAgent = new KitStandAgent(this); 
 		kitConveyorAgent = new KitConveyorAgent(this);
-		kitAssemblyManager = new KitAssemblyManager();
+		kitAssemblyManager = new KitAssemblyManager(nestList);
 		kitRobot = new KitRobot(kitAssemblyManager);
 		kitStandAgent.SetRobotAgent(kitRobotAgent);
 		kitRobotAgent.SetConveyorAgent(kitConveyorAgent);

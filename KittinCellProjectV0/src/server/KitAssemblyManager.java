@@ -29,7 +29,8 @@ public class KitAssemblyManager implements Runnable, Serializable{
     double conveyorSpeed = 1;
    
 
-    public KitAssemblyManager(){
+    public KitAssemblyManager(Vector<Nest> n){
+    	nests = n;
         stationOccupied = new Vector<Boolean>();
         stationKits = new Vector<Kit>();
         idCounter = 0;
@@ -47,11 +48,11 @@ public class KitAssemblyManager implements Runnable, Serializable{
 
         emptyKits = new Vector<Kit>();
         finishedKits = new Vector<Kit>();
-        nests = new Vector<Nest>();
+        /*nests = new Vector<Nest>();
         for (int i = 0; i < 8; i++) {
         	//for v0
         	nests.add(new Nest(320, 30+(i*70), i)); //Setting the position of the nest properly. 
-        }
+        }*/
         msg = new Boolean(false);
     }
 

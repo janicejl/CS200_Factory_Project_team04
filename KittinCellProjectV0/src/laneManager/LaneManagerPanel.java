@@ -17,6 +17,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener{
 	JSlider laneSpeedSlider;
 	JPanel lanePanel, nestPanel;
 	String[] nests;
+	Timer timer;
 	
 	public LaneManagerPanel(){
 		nests = new String[]{"Nest 1", "Nest 2", "Nest 3", "Nest 4", "Nest 5", "Nest 6", "Nest 7", "Nest 8"};
@@ -29,6 +30,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener{
 		nestSelectBox.setMinimumSize(new Dimension(500, 50));
 		
 		purgeButton = new JButton("Purge Selected");
+		purgeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		purgeButton.setPreferredSize(new Dimension(500, 50));
 		purgeButton.setMaximumSize(new Dimension(500, 50));
 		purgeButton.setMinimumSize(new Dimension(500, 50));
@@ -42,7 +44,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener{
 		laneLabel.setPreferredSize(new Dimension(70, 27));
 		laneLabel.setMaximumSize(new Dimension(70, 27));
 		laneLabel.setMinimumSize(new Dimension(70, 27));
-		laneLabel.setHorizontalAlignment(JLabel.LEFT);
+		laneLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		for(int i=0;i<8;i++){
 			nestLabels.add(new JLabel("Nest "+(i+1)));
@@ -77,7 +79,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener{
 		}
 		
 		horizPanels.add(new JPanel());
-		horizPanels.get(4).setLayout(new GridLayout(2,1));
+		horizPanels.get(4).setLayout(new BoxLayout(horizPanels.get(4), BoxLayout.Y_AXIS));
 		horizPanels.get(4).add(nestSelectBox);
 		horizPanels.get(4).add(purgeButton);
 		
@@ -90,14 +92,20 @@ public class LaneManagerPanel extends JPanel implements ActionListener{
 		add(nestPanel, BorderLayout.CENTER);
 	
 		purgeButton.addActionListener(this);
+		
+		timer = new Timer(40, this);
+		timer.start();
 	}
 	
 	public void actionPerformed(ActionEvent ae){
+		//code for updating the state of lanes
+		
 		if(ae.getSource()==purgeButton){
 			
 		}
 	}
 	
+	//this main is for testing the panel
 	public static void main(String[] args){
 		JFrame test = new JFrame();
 		LaneManagerPanel p1 = new LaneManagerPanel();

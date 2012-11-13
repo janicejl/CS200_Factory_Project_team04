@@ -1,6 +1,7 @@
 package UnitTest.PartsRobotAgents;
 
 import static org.junit.Assert.*;
+import Agents.VisionAgent.*;
 import server.Server;
 
 import org.junit.Test;
@@ -34,31 +35,35 @@ public class PartsRobotTest {
 		MockLaneAgentV0 lane6;
 		MockLaneAgentV0 lane7;
 		MockLaneAgentV0 lane8;
-		MockVisionAgentV0 camera = new MockVisionAgentV0();
 		kitstand = new MockKitStandV0();
+		VisionAgent camera1 = new VisionAgent("nests",new KitRobotAgent(new Server()), partsrobotagent,new Server());
+		VisionAgent camera2 = new VisionAgent("nests",new KitRobotAgent(new Server()), partsrobotagent,new Server());
+		VisionAgent camera3 = new VisionAgent("nests",new KitRobotAgent(new Server()), partsrobotagent,new Server());
+		VisionAgent camera4 = new VisionAgent("nests",new KitRobotAgent(new Server()), partsrobotagent,new Server());
+
 		lane1 = new MockLaneAgentV0(1);
-		nest1 = new NestAgent(lane1,camera,1);
+		nest1 = new NestAgent(lane1,camera1,1);
 		lane1.setNest(nest1);
 		lane2 = new MockLaneAgentV0(2);
-		nest2 = new NestAgent(lane2,camera,2);
+		nest2 = new NestAgent(lane2,camera1,2);
 		lane2.setNest(nest2);
 		lane3 = new MockLaneAgentV0(3);
-		nest3 = new NestAgent(lane3,camera,3);
+		nest3 = new NestAgent(lane3,camera2,3);
 		lane3.setNest(nest3);
 		lane4 = new MockLaneAgentV0(4);
-		nest4 = new NestAgent(lane4,camera,4);
+		nest4 = new NestAgent(lane4,camera2,4);
 		lane4.setNest(nest4);
 		lane5 = new MockLaneAgentV0(5);
-		nest5 = new NestAgent(lane5,camera,5);
+		nest5 = new NestAgent(lane5,camera3,5);
 		lane5.setNest(nest5);
 		lane6 = new MockLaneAgentV0(6);
-		nest6 = new NestAgent(lane6,camera,6);
+		nest6 = new NestAgent(lane6,camera3,6);
 		lane6.setNest(nest6);
 		lane7 = new MockLaneAgentV0(7);
-		nest7 = new NestAgent(lane7,camera,7);
+		nest7 = new NestAgent(lane7,camera4,7);
 		lane7.setNest(nest7);
 		lane8 = new MockLaneAgentV0(8);
-		nest8 = new NestAgent(lane8,camera,8);
+		nest8 = new NestAgent(lane8,camera4,8);
 		lane8.setNest(nest8);
 		List<NestAgent> nests = new ArrayList<NestAgent>();
 		nests.add(nest1);
@@ -82,10 +87,13 @@ public class PartsRobotTest {
 		nest7.setPartsRobotAgent(partsrobotagent);
 		nest8.setPartsRobotAgent(partsrobotagent);
 		kitstand.setPartsRobot(partsrobotagent);
-		camera.setPartsRobot(partsrobotagent);
 		partsrobotagent.startThread();
 		kitstand.startThread();
-		camera.startThread();
+		camera1.startThread();
+		camera2.startThread();
+		camera3.startThread();
+		camera4.startThread();
+
 		lane1.startThread();
 		lane2.startThread();
 		lane3.startThread();

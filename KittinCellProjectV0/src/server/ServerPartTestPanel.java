@@ -2,12 +2,13 @@
 package server;
 
 import java.awt.*;
+
 import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
 
-import data.Part;
+import data.*;
 
 public class ServerPartTestPanel extends JPanel implements ActionListener{
 	Server server; //reference to server
@@ -82,24 +83,17 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 	
 	public void actionPerformed(ActionEvent ae){
 		if("Send Recipe".equals(ae.getActionCommand())){
-			ArrayList <Part.PartType> recipe = new ArrayList<Part.PartType>();
-			Part.PartType part1 = Part.PartType.part1;
-			recipe.add(part1);
-			Part.PartType part2 = Part.PartType.part2;
-			recipe.add(part2);
-			Part.PartType part3 = Part.PartType.part3;
-			recipe.add(part3);
-			Part.PartType part4 = Part.PartType.part4;
-			recipe.add(part4);
-			Part.PartType part5 = Part.PartType.part5;
-			recipe.add(part5);
-			Part.PartType part6 = Part.PartType.part6;
-			recipe.add(part6);
-			Part.PartType part7 = Part.PartType.part7;
-			recipe.add(part7);
-			Part.PartType part8 = Part.PartType.part8;
-			recipe.add(part8);
-			server.getPartsRobotAgent().msgMakeThisKit(recipe, 4);
+			KitInfo kit = new KitInfo("TestKit");
+			for(int i = 0; i<8; i++){
+				PartInfo p = new PartInfo("p" + i+1,""+i+1);
+				p.setType(i);
+				kit.add(p);
+				
+			}
+			
+			
+			server.getPartsRobotAgent().msgMakeThisKit(kit, 4);
+			server.getKitRobotAgent().msgGetKits(4);
 		}
 		else if("Get Part".equals(ae.getActionCommand())) {
 			/*server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex());

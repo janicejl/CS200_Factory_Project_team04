@@ -1,5 +1,6 @@
 package Agents.PartsRobotAgent;
 import Agent.*;
+import data.*;
 import Interface.PartsRobotAgent.*;
 import Interface.KitRobotAgent.*;
 import data.*;
@@ -138,17 +139,19 @@ public class PartsRobotAgent extends Agent{
 	
 	//Messages:
 
-	public void msgMakeThisKit(List<Part.PartType> kitrecipe, int ct){ //will pass in KitInfo instead of List of parts
+	public void msgMakeThisKit(KitInfo kit, int ct){ //will pass in KitInfo instead of List of parts
 		count = ct;
-		recipe = kitrecipe;
+		for(PartInfo p:kit.getParts()){
+			recipe.add(p.getType());
+		}
 		camerahasrecipe = false;
 		kit1.partsneeded.clear();
 		kit2.partsneeded.clear();
-		for(Part.PartType type : kitrecipe){
+		for(Part.PartType type : recipe){
 			kit1.partsneeded.add(type);
 			kit2.partsneeded.add(type);
 		}
-		for(Part.PartType type: kitrecipe){
+		for(Part.PartType type: recipe){
 			camerarecipe.add(new Part(type)); //new Part(kitrecipe.get(i).getName(), kitrecipe.get(i).getImagePath())
 		}
 		kit1.state = KitStatus.notAvailable;
@@ -163,7 +166,7 @@ public class PartsRobotAgent extends Agent{
 	}
 
 	public void msgEmptyKit(int position){
-		if(position == 1)
+		if(position == 0)
 		{
 			kit1.state = KitStatus.available;
 		}
@@ -229,7 +232,7 @@ public class PartsRobotAgent extends Agent{
 		requestEmptyKit();
 		return true;
 	}
-	if((kit1.partsneeded.isEmpty() || kit2.partsneeded.isEmpty()) && grippersEmpty() && !recipe.isEmpty())
+	if((kit1.partsneeded.isEmpty() || kit2.partsneeded.isEmpty()) && grippersEmpty() && !recipe.isEmpty()&& animationstate != AnimationStatus.atStand && animationstate != AnimationStatus.movingToStand)
 	{
 		count--;
 		print("A kit is finished (" + count + " to go)");
@@ -483,7 +486,7 @@ public class PartsRobotAgent extends Agent{
 
 		if(kit1.partsneeded.isEmpty()){
 			print("Kit 1 finished");
-			kitstand.msgKitIsDone(1);
+			kitstand.msgKitIsDone(0);
 			for(Part.PartType type : recipe){
 				kit1.partsneeded.add(type);
 			}
@@ -492,7 +495,7 @@ public class PartsRobotAgent extends Agent{
 		}
 		if(kit2.partsneeded.isEmpty()){
 			print("Kit 2 finished");
-			kitstand.msgKitIsDone(2);
+			kitstand.msgKitIsDone(1);
 			for(Part.PartType type : recipe){
 				kit2.partsneeded.add(type);
 			}

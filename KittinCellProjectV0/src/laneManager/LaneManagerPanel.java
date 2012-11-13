@@ -11,15 +11,16 @@ public class LaneManagerPanel extends JPanel implements ActionListener{
 	ArrayList<JLabel> nestLabels;
 	ArrayList<JLabel> stateLabels;
 	ArrayList<JPanel> horizPanels;
-	JComboBox nestSelectBox;
+	JComboBox nestSelectBox, laneSelectBox;
 	JButton purgeButton;
 	JLabel laneLabel;
 	JSlider laneSpeedSlider;
 	JPanel lanePanel, nestPanel;
-	String[] nests;
+	String[] nests, lanes;
 	Timer timer;
 	
 	public LaneManagerPanel(){
+		lanes = new String[]{"Lane 1", "Lane 2", "Lane 3", "Lane 4", "Lane 5", "Lane 6", "Lane 7", "Lane 8"};
 		nests = new String[]{"Nest 1", "Nest 2", "Nest 3", "Nest 4", "Nest 5", "Nest 6", "Nest 7", "Nest 8"};
 		nestLabels = new ArrayList<JLabel>();
 		stateLabels = new ArrayList<JLabel>();
@@ -31,13 +32,14 @@ public class LaneManagerPanel extends JPanel implements ActionListener{
 		
 		purgeButton = new JButton("Purge Selected");
 		purgeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		purgeButton.setPreferredSize(new Dimension(500, 50));
-		purgeButton.setMaximumSize(new Dimension(500, 50));
-		purgeButton.setMinimumSize(new Dimension(500, 50));
+		purgeButton.setPreferredSize(new Dimension(300, 50));
+		purgeButton.setMaximumSize(new Dimension(300, 50));
+		purgeButton.setMinimumSize(new Dimension(300, 50));
 		
 		lanePanel = new JPanel();
 		nestPanel = new JPanel();
 		
+		laneSelectBox = new JComboBox(lanes);
 		laneSpeedSlider = new JSlider(0, 100);
 		
 		laneLabel = new JLabel("Vibration:");
@@ -63,7 +65,9 @@ public class LaneManagerPanel extends JPanel implements ActionListener{
 		border = new TitledBorder("Nests");
 		nestPanel.setBorder(border);
 		
+		lanePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		lanePanel.setLayout(new BoxLayout(lanePanel, BoxLayout.Y_AXIS));
+		lanePanel.add(laneSelectBox);
 		lanePanel.add(laneLabel);
 		lanePanel.add(laneSpeedSlider);
 		

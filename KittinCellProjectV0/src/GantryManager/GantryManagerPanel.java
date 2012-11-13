@@ -67,9 +67,9 @@ public class GantryManagerPanel extends JPanel implements ActionListener{
 			feederLabels.get(i).setMaximumSize(new Dimension(70, 27));
 			stateLabels.add(new JLabel("Idle"));
 			stateLabels.get(i).setAlignmentX(Component.CENTER_ALIGNMENT);
-			stateLabels.get(i).setPreferredSize(new Dimension(70, 27));
-			stateLabels.get(i).setMinimumSize(new Dimension(70, 27));
-			stateLabels.get(i).setMaximumSize(new Dimension(70, 27));
+			stateLabels.get(i).setPreferredSize(new Dimension(30, 27));
+			stateLabels.get(i).setMinimumSize(new Dimension(30, 27));
+			stateLabels.get(i).setMaximumSize(new Dimension(30, 27));
 		}
 		
 		gantryLabels.add(new JLabel("X Coordinates"));
@@ -84,7 +84,6 @@ public class GantryManagerPanel extends JPanel implements ActionListener{
 			horizPanels.add(new JPanel());
 			horizPanels.get(horizPanels.size()-1).setAlignmentY(Component.TOP_ALIGNMENT);
 			horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
-			horizPanels.get(horizPanels.size()-1).setSize(new Dimension(250, 27));
 			horizPanels.get(horizPanels.size()-1).add(gantryLabels.get(i));
 			horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(100, 27)));
 			horizPanels.get(horizPanels.size()-1).add(coLabels.get(i));
@@ -94,7 +93,6 @@ public class GantryManagerPanel extends JPanel implements ActionListener{
 			horizPanels.add(new JPanel());
 			horizPanels.get(horizPanels.size()-1).setAlignmentY(Component.TOP_ALIGNMENT);
 			horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
-			horizPanels.get(horizPanels.size()-1).setSize(new Dimension(250, 27));
 			horizPanels.get(horizPanels.size()-1).add(gantryLabels.get(i));
 			horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(120, 27)));
 			horizPanels.get(horizPanels.size()-1).add(coField.get(i-2));
@@ -108,15 +106,16 @@ public class GantryManagerPanel extends JPanel implements ActionListener{
 		for(int i=5;i<9;i++){
 			horizPanels.add(new JPanel());
 			horizPanels.get(horizPanels.size()-1).setAlignmentY(Component.TOP_ALIGNMENT);
+			horizPanels.get(horizPanels.size()-1).setAlignmentX(Component.CENTER_ALIGNMENT);
 			horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
 			horizPanels.get(horizPanels.size()-1).add(feederLabels.get(i-5));
-			horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(140, 27)));
+			horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(60, 27)));
 			horizPanels.get(horizPanels.size()-1).add(stateLabels.get(i-5));
 		}
 		
 		horizPanels.add(new JPanel());
 		horizPanels.get(horizPanels.size()-1).setAlignmentY(Component.TOP_ALIGNMENT);
-		horizPanels.get(horizPanels.size()-1).setSize(250, 50);
+		horizPanels.get(horizPanels.size()-1).setAlignmentX(Component.CENTER_ALIGNMENT);
 		horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.Y_AXIS));
 		horizPanels.get(horizPanels.size()-1).add(feederSelectBox);
 		horizPanels.get(horizPanels.size()-1).add(purgeButton);

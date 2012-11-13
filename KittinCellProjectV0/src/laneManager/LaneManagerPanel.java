@@ -31,9 +31,9 @@ public class LaneManagerPanel extends JPanel implements ActionListener{
 		
 		purgeButton = new JButton("Purge Selected");
 		purgeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		purgeButton.setPreferredSize(new Dimension(500, 50));
-		purgeButton.setMaximumSize(new Dimension(500, 50));
-		purgeButton.setMinimumSize(new Dimension(500, 50));
+		purgeButton.setPreferredSize(new Dimension(300, 50));
+		purgeButton.setMaximumSize(new Dimension(300, 50));
+		purgeButton.setMinimumSize(new Dimension(300, 50));
 		
 		lanePanel = new JPanel();
 		nestPanel = new JPanel();

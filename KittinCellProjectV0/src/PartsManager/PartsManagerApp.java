@@ -12,6 +12,7 @@ import data.PartInfo;
 public class PartsManagerApp extends JFrame implements ActionListener, Serializable, WindowListener{
 	PartsPanel partPanel;
 	Vector<PartInfo> partsList;
+	PartsManagerClient partsManagerClient;
 	
 	public PartsManagerApp(){
 		addWindowListener(this);

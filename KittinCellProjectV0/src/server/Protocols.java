@@ -46,6 +46,9 @@ public class Protocols implements Runnable{
 			else if (protocolName.equals("Gantry Manager")){
 				runGantryProtocol();
 			}
+			else if (protocolName.equals("Part Manager")){
+				runPartsManagerProtocol();
+			}
 		}
 	}
 	
@@ -109,5 +112,9 @@ public class Protocols implements Runnable{
 			out.writeObject(app.getNests());
 			out.reset();
 		} catch (Exception ignore){}
+	}
+	
+	public synchronized void runPartsManagerProtocol(){
+		
 	}
 }

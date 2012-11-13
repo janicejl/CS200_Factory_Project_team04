@@ -54,9 +54,10 @@ public class GantryManagerPanel extends JPanel implements ActionListener{
 		for(int i=0;i<2;i++){
 			coField.add(new JTextField());
 			coField.get(i).setAlignmentX(Component.LEFT_ALIGNMENT);
-			coField.get(i).setPreferredSize(new Dimension(70, 27));
-			coField.get(i).setMinimumSize(new Dimension(70, 27));
-			coField.get(i).setMaximumSize(new Dimension(70, 27));
+			coField.get(i).setPreferredSize(new Dimension(100, 27));
+			coField.get(i).setMinimumSize(new Dimension(100, 27));
+			coField.get(i).setMaximumSize(new Dimension(100, 27));
+			coField.get(i).setHorizontalAlignment(JTextField.CENTER);
 		}
 		
 		for(int i=0;i<4;i++){
@@ -94,7 +95,7 @@ public class GantryManagerPanel extends JPanel implements ActionListener{
 			horizPanels.get(horizPanels.size()-1).setAlignmentY(Component.TOP_ALIGNMENT);
 			horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
 			horizPanels.get(horizPanels.size()-1).add(gantryLabels.get(i));
-			horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(120, 27)));
+			horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(100, 27)));
 			horizPanels.get(horizPanels.size()-1).add(coField.get(i-2));
 		}
 		
@@ -127,13 +128,15 @@ public class GantryManagerPanel extends JPanel implements ActionListener{
 		feederPanel.setLayout(new BoxLayout(feederPanel, BoxLayout.Y_AXIS));
 		feederPanel.setBorder(new TitledBorder("Feeder Options"));
 		
+		gantryPanel.add(Box.createRigidArea(new Dimension(250, 20)));
 		for(int i=0;i<5;i++){
 			gantryPanel.add(horizPanels.get(i));
-			gantryPanel.add(Box.createRigidArea(new Dimension(250,40)));
+			gantryPanel.add(Box.createRigidArea(new Dimension(250,20)));
 		}
+		feederPanel.add(Box.createRigidArea(new Dimension(250, 20)));
 		for(int i=5;i<10;i++){
 			feederPanel.add(horizPanels.get(i));
-			feederPanel.add(Box.createRigidArea(new Dimension(250,30)));
+			feederPanel.add(Box.createRigidArea(new Dimension(250,20)));
 		}
 		
 		setLayout(new GridLayout(1, 2));

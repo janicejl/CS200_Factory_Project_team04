@@ -37,7 +37,7 @@ public class KitCreationApp extends JFrame implements Serializable, WindowListen
 	}
 	public static void main(String[] args) {
 		KitCreationApp app=new KitCreationApp();
-		app.setSize(300,400);
+		app.setSize(300,440);
 		app.setResizable(false);
 		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		app.setVisible(true);

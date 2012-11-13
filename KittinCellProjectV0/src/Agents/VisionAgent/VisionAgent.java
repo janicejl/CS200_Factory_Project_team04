@@ -6,12 +6,10 @@ import server.Server;
 import java.util.concurrent.*;
 
 import Agent.*;
-import Agents.KitRobotAgents.*;
 import Agents.PartsRobotAgent.*;
-import Interface.VisionAgent.Vision;
-// import data.Part.PartType;
-import data.Part;
-import data.Kit;
+import Interface.VisionAgent.*;
+import Interface.KitRobotAgent.*;
+import Interface.PartsRobotAgent.*;
 import data.*;
 
 public class VisionAgent extends Agent implements Vision {
@@ -42,9 +40,10 @@ public class VisionAgent extends Agent implements Vision {
 	Kit currentKit;
 
 	Part part;
-	KitRobotAgent kitRobotAgent;
-	PartsRobotAgent partsRobotAgent;
-	NestAgent nest1;
+	//KitRobotAgent kitRobotAgent;
+	KitRobot kitRobot;
+	PartsRobot partsRobot; // no interface for this yet
+	NestAgent nest1; // no interface for this yet
 	NestAgent nest2;
 	Server server;
 	
@@ -53,11 +52,11 @@ public class VisionAgent extends Agent implements Vision {
 	/////////////////////////////////////////////////////////////
 	/** CONSTRUCTOR **/
 	
-	public VisionAgent (String type, KitRobotAgent kra, PartsRobotAgent pra, Server server) {
+	public VisionAgent (String type, KitRobot kr, PartsRobot pr, Server server) {
 		approved=false;
 		
-		kitRobotAgent = kra;
-		partsRobotAgent = pra;
+		kitRobot = kr;
+		partsRobot = pr;
 		this.server = server;
 		
 		initializeVisionAgent(type);
@@ -203,8 +202,8 @@ public class VisionAgent extends Agent implements Vision {
 	private void approveOrDenyParts() {
 		if (type==Type.NESTS_INSPECTOR) {
 			if (approved) {
-				partsRobotAgent.msgPartsApproved(nest1.getNumber());
-				partsRobotAgent.msgPartsApproved(nest2.getNumber());
+				partsRobot.msgPartsApproved(nest1.getNumber());
+				partsRobot.msgPartsApproved(nest2.getNumber());
 			}
 /*			else {
 				// nestAgent.msgBadParts();
@@ -212,7 +211,7 @@ public class VisionAgent extends Agent implements Vision {
 */
 		}
 		else if (type==Type.KIT_INSPECTOR) {
-			kitRobotAgent.msgKitInspected(approved);
+			kitRobot.msgKitInspected(approved);
 		}
 		
 		state=State.SCHEMATIC_RECEIVED;

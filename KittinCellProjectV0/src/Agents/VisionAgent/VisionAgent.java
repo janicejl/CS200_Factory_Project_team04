@@ -43,8 +43,8 @@ public class VisionAgent extends Agent implements Vision {
 	//KitRobotAgent kitRobotAgent;
 	KitRobot kitRobot;
 	PartsRobot partsRobot; // no interface for this yet
-	NestAgent nest1; // no interface for this yet
-	NestAgent nest2;
+	Nest nest1; // no interface for this yet
+	Nest nest2;
 	Server server;
 	
 	boolean approved;
@@ -123,9 +123,9 @@ public class VisionAgent extends Agent implements Vision {
 		}catch (InterruptedException e){
 			print("error with flashpermit");
 		}
-		server.execute("Take Picture", nest2.index);
+		server.execute("Take Picture", nest2.getIndex());
 
-		print ("taking a picture at " + nest2.index);
+		print ("taking a picture at " + nest2.getIndex());
 		
 		state = State.PICTURE_TAKEN;
 

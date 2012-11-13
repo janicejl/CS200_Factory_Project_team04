@@ -243,6 +243,8 @@ public class NestAgent extends Agent implements Nest{
 		this.camera = camera;
 	}
 	
-
+	public Integer getIndex() {
+		return index;
+	}
 	
 }

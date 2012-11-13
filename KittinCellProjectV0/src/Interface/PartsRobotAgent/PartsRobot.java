@@ -20,4 +20,5 @@ public interface PartsRobot {
 	public String getName();
 	public void setTestGUI(TestGUI test);
 	public void setVisionAgents(List <VisionAgent> cams);
+	
 }

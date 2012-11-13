@@ -20,5 +20,6 @@ public interface Nest {
 	public Integer getNumber();
 	public PartType getPartType();
 	public void setVisionAgent(VisionAgent camera);
+	public Integer getIndex();
 	
 }

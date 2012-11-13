@@ -1,24 +1,23 @@
 package Agents.VisionAgent;
 
 import java.util.*;
+
 import server.Server;
 import java.util.concurrent.*;
 
 import Agent.*;
 import Agents.KitRobotAgents.*;
 import Agents.PartsRobotAgent.*;
-import Interface.PartsRobotAgent.Vision;
+import Interface.VisionAgent.Vision;
+// import data.Part.PartType;
 import data.Part;
-import data.Part.PartType;
+import data.Kit;
 import data.*;
 
-public class VisionAgent extends Agent {
+public class VisionAgent extends Agent implements Vision {
 	
 	/** NOTES **/
-	// synchronize lists
-	// upon integration, make sure the messages are all cool (msgHereIsSchematic, msgPartsApproved, msgBadParts, etc.)
-	// uncomment DoTakePicture() method
-	// have a list of the kits that need to be checked - NO< BECAUSE WE WILL ONLY HAVE 2 MAx
+	// upon integration, make sure the messages are all cool (msgHereIsSchematic, msgPartsApproved, msgBadParts, etc.
 
 	/////////////////////////////////////////////////////////////
 	/** DATA **/
@@ -28,7 +27,7 @@ public class VisionAgent extends Agent {
 	List<Part> neededPartsList = Collections.synchronizedList( new ArrayList<Part>() ); // list of all the parts that should be in each kit
 	
 	Map<Integer, NestAgent> fullNestsMap = Collections.synchronizedMap( new TreeMap<Integer, NestAgent>() ); // list of all the nests that are full and ready to have their picture taken
-	List<PartType> fullNestsPartsList = Collections.synchronizedList( new ArrayList<PartType>() ); // parallel array that holds all parts that each nest is supposed to hold
+	List<Part.PartType> fullNestsPartsList = Collections.synchronizedList( new ArrayList<Part.PartType>() ); // parallel array that holds all parts that each nest is supposed to hold
 	
 	enum State {IDLE, SCHEMATIC_RECEIVED, READY_TO_TAKE_PICTURE, PICTURE_TAKEN};
 	enum Type {NESTS_INSPECTOR, KIT_INSPECTOR};
@@ -68,8 +67,7 @@ public class VisionAgent extends Agent {
 	/////////////////////////////////////////////////////////////
 	/** MESSAGES **/
 	
-	// sent by PartsRobotAgent
-	public void msgHereIsSchematic(List<Part> partsList, List<NestAgent> nestsList) {
+	public void msgHereIsSchematic(List<Part> partsList, List<NestAgent> nestsList)  {
 		// receive a list of all the parts that a kit needs, and a list of all the nests
 		this.nestsList = nestsList;
 		this.neededPartsList = partsList;
@@ -262,12 +260,18 @@ public class VisionAgent extends Agent {
 		
 		return false;
 	}
-	public void setFlashPermit(Semaphore flashpermit){
-		this.flashpermit = flashpermit;
-	}
+
+
+
+
+
+
 	
 	/////////////////////////////////////////////////////////////
 	/** OTHER **/
+	public void setFlashPermit(Semaphore flashpermit){
+		this.flashpermit = flashpermit;
+	}
 
 	
 }

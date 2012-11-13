@@ -42,7 +42,7 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		catch(IOException e) {}
 		
 		manager = new GantryManager();
-		timer = new javax.swing.Timer(20,this);
+		timer = new javax.swing.Timer(10,this);
 		timer.start();
 	}
 		
@@ -76,17 +76,12 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		g2.drawImage(gantryImage,manager.getGantry().getxCurrent(), manager.getGantry().getyCurrent(),null);
 	}
 	
-	public synchronized void update()
-	{
-		client.update();
-		manager.update();
-	}
-	
 	public void actionPerformed(ActionEvent ae)
 	{
 		if(ae.getSource()==timer)
 		{
-			this.update();
+			client.update();
+			manager.actionPerformed(ae);
 			this.repaint();
 		}
 	}

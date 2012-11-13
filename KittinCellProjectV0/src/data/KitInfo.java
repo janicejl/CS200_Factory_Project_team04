@@ -6,12 +6,12 @@ import java.util.*;
 public class KitInfo implements Serializable{
 	
 	String name;
-	ArrayList<PartInfo> parts;
+	Vector<PartInfo> parts;
 	Integer size;
 	
 	public KitInfo(String n){
 		name = n;
-		parts = new ArrayList<PartInfo>();
+		parts = new Vector<PartInfo>();
 		size = new Integer(0);
 	}
 	
@@ -39,11 +39,11 @@ public class KitInfo implements Serializable{
 		this.name = name;
 	}
 
-	public synchronized ArrayList<PartInfo> getParts() {
+	public synchronized Vector<PartInfo> getParts() {
 		return parts;
 	}
 
-	public synchronized void setParts(ArrayList<PartInfo> parts) {
+	public synchronized void setParts(Vector<PartInfo> parts) {
 		this.parts = parts;
 	}
 

@@ -8,7 +8,7 @@ import server.PartsRobot;
 
 public class PartsManagerClient implements Runnable {
 	Socket s;
-	KitAssemblyApp app;
+	GUIKitAssemblyManager app;
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	String command;
@@ -16,8 +16,8 @@ public class PartsManagerClient implements Runnable {
 	String serverName; //keep track of what server to connect to...default localhost
 	Thread thread;
 	
-	public PartsManagerClient(KitAssemblyApp _app){
-		app= _app;
+	public PartsManagerClient(GUIKitAssemblyManager _app){
+		app = _app;
 		serverName = "localhost";
 		command = "";
 		commandSent = "";
@@ -60,6 +60,7 @@ public class PartsManagerClient implements Runnable {
 			
 //**************START CODE***************************
 			commandSent = "Received";
+			/*
 			while(true){
 				app.setPartsRobot((PartsRobot)in.readObject());
 				app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
@@ -68,8 +69,12 @@ public class PartsManagerClient implements Runnable {
 				if(commandSent.equals("Update")){
 					commandSent = "Received";
 				}
+				try {
+					Thread.sleep(10);
+				} catch(Exception ignore){}
 				
 			}
+			*/
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -80,6 +85,19 @@ public class PartsManagerClient implements Runnable {
 
 	public synchronized Thread getThread() {
 		return thread;
+	}
+	
+	public synchronized void updateThread() {
+		try {			
+			app.setPartsRobot((PartsRobot)in.readObject());
+			app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
+			out.writeObject(commandSent);
+			out.reset();
+			if(commandSent.equals("Update")){
+				commandSent = "Received";
+			}
+		} catch(Exception ignore){}
+		
 	}
 
 	public synchronized void setThread(Thread thread) {

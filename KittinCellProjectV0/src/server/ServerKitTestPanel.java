@@ -13,6 +13,8 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
 	ImageIcon background; //background
 	
 	public ServerKitTestPanel(Server _server){
+		
+		setOpaque(false);
 		buttons = new ArrayList<JButton>();
 		subPanels = new ArrayList<JPanel>();
 		
@@ -20,11 +22,10 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
 		server = _server;
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setPreferredSize(new Dimension(533, 400));
-		setMaximumSize(new Dimension(533, 400));
-		setMinimumSize(new Dimension(533, 400));
+		setPreferredSize(new Dimension(100, 400));
+		setMaximumSize(new Dimension(100, 400));
+		setMinimumSize(new Dimension(100, 400));
 		
-		createButton("Load Config");
         createButton("Spawn Kit");
         /*createButton("Load Stand 1");
         createButton("Load Stand 2");
@@ -35,7 +36,7 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
         createButton("Remove Finished");
         createButton("Exit");
 		
-		background = new ImageIcon("images/server.jpeg");
+		background = new ImageIcon("images/server1.jpeg");
 		
 		add(Box.createRigidArea(new Dimension(0, 130)),"");
 		for(int i = 0; i < buttons.size(); i++){
@@ -46,9 +47,9 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
 	
 	public void createButton(String s){
         JButton temp = new JButton(s);
-        temp.setPreferredSize(new Dimension(150, 30));
-        temp.setMaximumSize(new Dimension(150, 30));
-        temp.setMinimumSize(new Dimension(150, 30));
+        temp.setPreferredSize(new Dimension(150, 27));
+        temp.setMaximumSize(new Dimension(150, 27));
+        temp.setMinimumSize(new Dimension(150, 27));
         temp.setAlignmentX(CENTER_ALIGNMENT);
         temp.addActionListener(this);
         temp.setActionCommand(s);
@@ -61,10 +62,7 @@ public class ServerKitTestPanel extends JPanel implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent ae){
-		if("Load Config".equals(ae.getActionCommand())) {
-          
-        }
-        else if("Spawn Kit".equals(ae.getActionCommand())) {
+        if("Spawn Kit".equals(ae.getActionCommand())) {
             //server.execute("Spawn Kit", 1);
         	server.getKitRobotAgent().msgGetKits(1);
         }

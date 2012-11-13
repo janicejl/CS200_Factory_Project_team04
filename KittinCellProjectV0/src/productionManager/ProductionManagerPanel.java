@@ -55,6 +55,9 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 		add(kitPanel, c);
 	}
 	
+	public void update(){
+		createPanel.update();
+	}
 	public void paintComponent(Graphics g){
 		listPanel.repaint();
 		revalidate();
@@ -93,6 +96,14 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 
 	public synchronized void setCreatePanel(CreateJobPanel createPanel) {
 		this.createPanel = createPanel;
+	}
+
+	public synchronized ProductionManagerApp getApp() {
+		return app;
+	}
+
+	public synchronized void setApp(ProductionManagerApp app) {
+		this.app = app;
 	}
 
 }

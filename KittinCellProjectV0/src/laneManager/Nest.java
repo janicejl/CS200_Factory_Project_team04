@@ -3,7 +3,7 @@ package laneManager;
 import data.Part;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Vector;
 
 public class Nest implements Serializable{
 	
@@ -12,22 +12,22 @@ public class Nest implements Serializable{
 	
 	private boolean full;
 	
-	ArrayList<Part> parts;
+	Vector<Part> parts;
 	
 	public Nest(double nX, double nY) {
 		x = nX;
 		y = nY;
-		parts = new ArrayList<Part>();
+		parts = new Vector<Part>();
 	}
 
 	public Nest(double nX, double nY, int n) {
 		x = nX;
 		y = nY;
-		parts = new ArrayList<Part>();
+		parts = new Vector<Part>();
 		
 		//for v0
 		while (full != true) {
-			Part p = new Part(""+n);
+			Part p = new Part(""+n, "images/kt" + n + ".png");
 			addPart(p);
 		}
 	}
@@ -62,5 +62,9 @@ public class Nest implements Serializable{
 		if (parts.size() >= 8) {
 			full = true;
 		}
+	}
+	
+	public synchronized Vector<Part> getParts() {
+		return parts;
 	}
 }

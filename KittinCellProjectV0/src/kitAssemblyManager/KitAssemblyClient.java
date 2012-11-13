@@ -5,9 +5,10 @@ import java.net.*;
 
 import server.KitAssemblyManager;
 import server.KitRobot;
+import server.PartsRobot;
 
 public class KitAssemblyClient implements Runnable {
-	KitAssemblyApp app;
+	GUIKitAssemblyManager app;
 	Socket s;
 	ObjectOutputStream out;
 	ObjectInputStream in;
@@ -16,7 +17,7 @@ public class KitAssemblyClient implements Runnable {
 	String serverName; //keep track of what server to connect to...default localhost
 	Thread thread;
 	
-	public KitAssemblyClient(KitAssemblyApp _app){
+	public KitAssemblyClient(GUIKitAssemblyManager _app){
 		app = _app;
 		serverName = "localhost";
 		command = "";
@@ -42,14 +43,14 @@ public class KitAssemblyClient implements Runnable {
 	
 	public void run(){
 		try {
-			commandSent = "KitAssembly";
+			commandSent = "Kit Assembly";
 			out.writeObject(commandSent); //send to server identifying what client this is
 			out.reset();
-			command = (String)in.readObject();
+		/*	//command = (String)in.readObject();
 			if(command.equals("Confirmed")){
-				commandSent = "Confirmed";
-				out.writeObject(commandSent);
-				out.reset();
+				//commandSent = "Confirmed";
+				//out.writeObject(commandSent);
+				//out.reset();
 				//start
 			}
 			else if(command.equals("Denied")){
@@ -63,15 +64,15 @@ public class KitAssemblyClient implements Runnable {
 			}
 			
 //**************START CODE***************************
-			commandSent = "Received";
+			commandSent = "Received";*/
+			/*
 			while(true){
 				app.setKitRobot((KitRobot)in.readObject());
 				app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
 				out.writeObject(commandSent);
 				out.reset();
 			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			*/
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -80,6 +81,17 @@ public class KitAssemblyClient implements Runnable {
 	
 	public synchronized Thread getThread() {
 		return thread;
+	}
+	
+	public synchronized void updateThread() {
+		try {
+			app.setKitRobot((KitRobot)in.readObject());
+			app.setPartsRobot((PartsRobot)in.readObject());
+			app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
+		} catch (Exception ignore){
+			ignore.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	public synchronized void setThread(Thread thread) {

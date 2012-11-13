@@ -2,12 +2,17 @@ package productionManager;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
+
 import javax.swing.*;
 import javax.swing.border.*;
+
+import data.Job;
 
 public class CreateJobPanel extends JPanel implements ActionListener {
 
 	ProductionManagerPanel app;
+	Vector<String> kitNames;
 	ImageIcon background;
 	JPanel content;
 	TitledBorder title;
@@ -44,7 +49,12 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 		kitLabel.setMaximumSize(new Dimension(40, 30));
 		kitLabel.setMinimumSize(new Dimension(40, 30));
 		
-		kitBox = new JComboBox();
+		kitNames = new Vector<String>();
+		for(int i = 0; i < app.getApp().getKitsList().size(); i++){
+			kitNames.add(app.getApp().getKitsList().get(i).getName());
+		}
+		
+		kitBox = new JComboBox(kitNames);
 		kitBox.setPreferredSize(new Dimension(100, 30));
 		kitBox.setMaximumSize(new Dimension(100, 30));
 		kitBox.setMinimumSize(new Dimension(100, 30));
@@ -97,7 +107,15 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Invalid Amount", "Exception", JOptionPane.OK_OPTION);
 				return;
 			}
-			app.getListPanel().getJobs().create("Hello", amt);
+			Job temp = new Job(app.getApp().getKitsList().get(kitBox.getSelectedIndex()), amt);
+			app.getApp().getJobs().add(temp);
+			app.getListPanel().getJobs().create(temp.getKit().getName(), amt);
+		}
+	}
+	
+	public void update(){
+		for(int i = 0; i < app.getApp().getJobs().size(); i++){
+			app.getListPanel().getJobs().create(app.getApp().getJobs().get(i).getKit().getName(), app.getApp().getJobs().get(i).getAmount());
 		}
 	}
 

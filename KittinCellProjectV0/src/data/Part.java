@@ -10,6 +10,8 @@ public class Part implements Serializable{
 	public PartType type;
 	
 	private String id;
+	private String imagePath;
+	
 	private double x;
 	private double y;
 	private boolean destination; // if part is at destination
@@ -27,8 +29,9 @@ public class Part implements Serializable{
 		this.type = type;
 	}
 	
-	public Part(String name) {
+	public Part(String name, String _imagePath) {
 		id = name;
+		imagePath = _imagePath;
 		x = 0;
 		y = 0;
 		destination = false;
@@ -72,5 +75,29 @@ public class Part implements Serializable{
 
 	public synchronized void setDestination(boolean destination) {
 		this.destination = destination;
+	}
+
+
+
+	public synchronized PartType getType() {
+		return type;
+	}
+
+
+
+	public synchronized void setType(PartType type) {
+		this.type = type;
+	}
+
+
+
+	public synchronized String getImagePath() {
+		return imagePath;
+	}
+
+
+
+	public synchronized void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 }

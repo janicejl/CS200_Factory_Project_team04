@@ -25,6 +25,7 @@ import Agents.VisionAgent.VisionAgent;
 import Feeder.Feeder;
 import data.Part;
 import laneManager.Nest;
+import GantryManager.GantryManager;
 
 public class Server extends JFrame implements Runnable, ActionListener{
 	
@@ -32,6 +33,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	ServerKitTestPanel kitTest; //panel for kit assembly commands
 	ServerPartTestPanel partsTest; //panel for parts robot commands
 	ServerLaneTestPanel laneTest; //panel for lane commands
+	ServerGantryTestPanel gantryTest;
 	Integer phase;
 	
 	String clientType; //type of client to connect to
@@ -42,6 +44,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	KitAssemblyProtocol kitPro;
 	LaneManagerProtocol lanePro;
 	PartsRobotProtocol partsPro;
+	GantryManagerProtocol gantryPro;
 	
 	
 	PartsRobot partsRobot;
@@ -53,6 +56,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	VisionAgent nestvisionagent4;
 	Vector<VisionAgent> visions = new Vector<VisionAgent>();
 	Semaphore flashpermit;
+	
+	GantryManager gantryManager;
 	
 	KitRobotAgent kitRobotAgent; 
 	KitStandAgent kitStandAgent;
@@ -84,7 +89,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	Thread thread; //thread for the server
 	
 	public Server(){
-		
+
 		//setup layout
 		setLayout(new GridBagLayout());
 		gui = new ServerPanel(this);
@@ -94,8 +99,18 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		c.gridy = 0;
 		add(gui, c);
 		kitTest = new ServerKitTestPanel(this);
+		kitTest.setPreferredSize(new Dimension(300, 400));
+		kitTest.setMaximumSize(new Dimension(300, 400));
+		kitTest.setMinimumSize(new Dimension(300, 400));
 		partsTest = new ServerPartTestPanel(this);
+		partsTest.setPreferredSize(new Dimension(300, 400));
+		partsTest.setMaximumSize(new Dimension(300, 400));
+		partsTest.setMinimumSize(new Dimension(300, 400));
 		laneTest = new ServerLaneTestPanel(this);
+		laneTest.setPreferredSize(new Dimension(300, 400));
+		laneTest.setMaximumSize(new Dimension(300, 400));
+		laneTest.setMinimumSize(new Dimension(300, 400));
+		gantryTest = new ServerGantryTestPanel(this);
 		
 		feeder1 = new FeederAgent("feeder1", 5, fLane1, fLane2, 1, this);
 		fLane1 = new FeederLaneAgent("left", 1, this);
@@ -128,28 +143,39 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantry2.setGantryController(gantryController);
 		gantryController.msgGantryAdded(gantry1);
 		gantryController.msgGantryAdded(gantry2);**/
+		gantryManager = new GantryManager();
+		gantryManager.getGantry().setState("free");
+		gantryManager.getGantry().setBox(1);
 
 		feeders = new Vector<Feeder>();
 		for(int i = 0; i < 4; i++){
-			feeders.add(new Feeder(525,20 + i*140));
+			feeders.add(new Feeder(525,30 + i*140));
 		}
+		nestList = new Vector<Nest>();
+    	
+    	
+    	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 100));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 170));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 240));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 310));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 380));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 450));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 520));	//x coordinate is zero for laneManagerApp
+    	
+    	
 		lanes = new Vector<Lane>();
-		lanes.add(new Lane(600,-10)); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
-    	lanes.add(new Lane(600,60)); 
-    	lanes.add(new Lane(600,130)); 
-    	lanes.add(new Lane(600,200));
-    	lanes.add(new Lane(600,270)); 
-    	lanes.add(new Lane(600,340));
-    	lanes.add(new Lane(600,410)); 
-    	lanes.add(new Lane(600,480));
+		lanes.add(new Lane(600,30, nestList.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
+    	lanes.add(new Lane(600,100, nestList.get(1))); 
+    	lanes.add(new Lane(600,170, nestList.get(2))); 
+    	lanes.add(new Lane(600,240, nestList.get(3)));
+    	lanes.add(new Lane(600,310, nestList.get(4))); 
+    	lanes.add(new Lane(600,380, nestList.get(5)));
+    	lanes.add(new Lane(600,450, nestList.get(6))); 
+    	lanes.add(new Lane(600,520, nestList.get(7)));
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
     	
-    	nestList = new Vector<Nest>();
-    	for (int i = 0; i < 8; i++) {
-    		nestList.add(new Nest(0, 30+(i*70)));	//x coordinate is zero for laneManagerApp
-    	}
-
     	NestAgent nest1 = new NestAgent(1,this);
     	NestAgent nest2 = new NestAgent(2,this);
     	NestAgent nest3 = new NestAgent(3,this);
@@ -170,7 +196,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		kitRobotAgent = new KitRobotAgent(this);
 		kitStandAgent = new KitStandAgent(this); 
 		kitConveyorAgent = new KitConveyorAgent(this);
-		kitAssemblyManager = new KitAssemblyManager();
+		kitAssemblyManager = new KitAssemblyManager(nestList);
 		kitRobot = new KitRobot(kitAssemblyManager);
 		kitStandAgent.SetRobotAgent(kitRobotAgent);
 		kitRobotAgent.SetConveyorAgent(kitConveyorAgent);
@@ -221,7 +247,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
         
 		partsRobotAgent.startThread();
-        	partsRobot = new PartsRobot();
+        partsRobot = new PartsRobot(kitAssemblyManager);
         new Thread(partsRobot).start();
 		
 		//start threads and timer
@@ -231,6 +257,18 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	}
 	
 	public Integer start(){
+		removeCenter();
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;	
+		c.gridy = 0;
+		add(kitTest, c);
+		c.gridx = 1;
+		add(partsTest, c);
+		c.gridx = 2;
+		add(laneTest, c);
+		c.gridx = 3;
+		add(gantryTest,c);
+		phase = 1;
 		try{
 			ss = new ServerSocket(61337); //attempt to start at indicated port #
 		} catch (IOException e) {
@@ -247,41 +285,44 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	}
 	
 	public void run(){
-		try {
-			s = ss.accept();
-			if(getClientType().equals("Kit Assembly")){
-				kitPro = new KitAssemblyProtocol(s, this); //create proper protocol
-				removeCenter();
-				GridBagConstraints c = new GridBagConstraints();
-				c.gridx = 0;	
-				c.gridy = 0;
-				add(kitTest, c);
-				phase = 1;
-			}
-			else if(getClientType().equals("Parts Robot")){
-				partsPro = new PartsRobotProtocol(s, this);
-				removeCenter();
-				GridBagConstraints c = new GridBagConstraints();
-				c.gridx = 0;	
-				c.gridy = 0;
-				add(partsTest, c);
-				phase = 2;
-			}
-			else if(getClientType().equals("Lane Manager")){
-				lanePro = new LaneManagerProtocol(s, this);
-				removeCenter();
-				GridBagConstraints c = new GridBagConstraints();
-				c.gridx = 0;	
-				c.gridy = 0;
-				add(laneTest, c);
-				phase = 3;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
-		
-		
+		while(true){
+			try {
+				s = ss.accept();
+				new Protocols(s, this);
+				
+				/*determine = new DetermineProtocol(s, this);
+				if(getClientType().equals("Kit Assembly")){
+					//kitPro = new KitAssemblyProtocol(s, this); //create proper protocol
+					removeCenter();
+					GridBagConstraints c = new GridBagConstraints();
+					c.gridx = 0;	
+					c.gridy = 0;
+					add(kitTest, c);
+					phase = 1;
+				}
+				else if(getClientType().equals("Parts Robot")){
+					partsPro = new PartsRobotProtocol(s, this);
+					removeCenter();
+					GridBagConstraints c = new GridBagConstraints();
+					c.gridx = 0;	
+					c.gridy = 0;
+					add(partsTest, c);
+					phase = 2;
+				}
+				else if(getClientType().equals("Lane Manager")){
+					lanePro = new LaneManagerProtocol(s, this);
+					removeCenter();
+					GridBagConstraints c = new GridBagConstraints();
+					c.gridx = 0;	
+					c.gridy = 0;
+					add(laneTest, c);
+					phase = 3;
+				}
+	*/		} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}		
 	}
 	
 	public void execute(String process){
@@ -307,6 +348,43 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Load Kit 2")){
     		getPartsRobot().addCommand("dump,1");
     	}   
+    	else if(process.equals("Load Parts Box 1")){
+    		gantryManager.getGantry().setState("load");
+			gantryManager.getGantry().setFeed(0);
+    	}
+    	else if(process.equals("Load Parts Box 2")){
+    		gantryManager.getGantry().setState("load");
+    		gantryManager.getGantry().setFeed(1);
+    	}
+    	else if(process.equals("Load Parts Box 3")){
+    		gantryManager.getGantry().setState("load");
+    		gantryManager.getGantry().setFeed(2);
+    	}
+    	else if(process.equals("Load Parts Box 4")){
+    		gantryManager.getGantry().setState("load");
+    		gantryManager.getGantry().setFeed(3);
+    	}
+    	else if(process.equals("Dump Feeder 1"))
+    	{
+    		gantryManager.getGantry().setState("dumpi");
+    		gantryManager.getGantry().setFeed(0);
+    	}
+    	else if(process.equals("Dump Feeder 2"))
+    	{
+    		gantryManager.getGantry().setState("dumpi");
+    		gantryManager.getGantry().setFeed(1);
+    	}
+    	else if(process.equals("Dump Feeder 3"))
+    	{
+    		gantryManager.getGantry().setState("dumpi");
+    		gantryManager.getGantry().setFeed(2);
+    	}
+    	else if(process.equals("Dump Feeder 4"))
+    	{
+    		gantryManager.getGantry().setState("dumpi");
+    		gantryManager.getGantry().setFeed(3);
+    	}
+    	
     }
 	 
     public void execute(String process, Integer num){
@@ -319,7 +397,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		partsRobot.takePicture(320, 40 + 140*((num-1)/2));
     	}
     	else if(process.equals("Feed Feeder")){
-    		Part temp = new Part("" + num);
+    		Part temp = new Part("" + num, "images/kt" + num + ".png");
+    		temp.setImagePath("images/kt" + temp.getId() + ".png");
     		lanes.get(num).addPart(temp);
     		feeders.get(num/2).addParts(temp);
     	}
@@ -360,6 +439,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		else if(phase.equals(1)){
 			kitTest.repaint();
+			partsTest.repaint();
+			laneTest.repaint();
+			gantryTest.repaint();
 		}
 		else if(phase.equals(2)){
 			partsTest.repaint();
@@ -375,13 +457,15 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		kitTest.revalidate();
 		partsTest.revalidate();
 		laneTest.revalidate();
+		gantryTest.revalidate();
 	}
 	
 	public static void main(String[] args) {
 		Server factory = new Server();
-		factory.setSize(533, 400);
+		factory.setSize(1100, 400);
 		factory.setVisible(true);
 		factory.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		factory.start();
 	}
 
 	public synchronized KitAssemblyManager getKitAssemblyManager() {
@@ -488,5 +572,15 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	public synchronized void setNests(Vector<Nest> nests) {
 		this.nestList = nests;
+	}
+	
+	public synchronized GantryManager getGantryManager()
+	{
+		return gantryManager;
+	}
+	
+	public synchronized void setGantryManager(GantryManager g)
+	{
+		gantryManager = g;
 	}
 }

@@ -16,15 +16,24 @@ public class KitAssemblyProtocol implements Runnable{
 	public KitAssemblyProtocol(Socket _s, Server _app){
 		app = _app;
 		s = _s;
-		command = "";
-		commandSent = "Confirmed";
 		try {
 			out = new ObjectOutputStream(s.getOutputStream());
 			out.flush();
 			in = new ObjectInputStream(s.getInputStream());
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		command = "";
+		commandSent = "Confirmed";
+		/*try {
+			out = new ObjectOutputStream(s.getOutputStream());
+			out.flush();
+			in = new ObjectInputStream(s.getInputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
 		
 		thread = new Thread(this, "Kit_Thread");
 		thread.start();
@@ -32,11 +41,11 @@ public class KitAssemblyProtocol implements Runnable{
 	
 	public synchronized void run(){
 		try {
-			command = (String)in.readObject();
+			/*command = (String)in.readObject();
 			if(!command.equals("KitAssembly")){
 				commandSent = "Denied";
 				System.exit(1);
-			}
+			}*/
 			//confirm phase
 			out.writeObject(commandSent);
 			out.reset();
@@ -52,6 +61,12 @@ public class KitAssemblyProtocol implements Runnable{
 				if(app.getKitAssemblyManager().getMsg().equals(true)){
 					app.getKitAssemblyManager().setMsg(false);
 					app.getKitConveyorAgent().msgKitHasArrived();
+				}
+				out.writeObject(app.getPartsRobot());
+				out.reset();
+				if(app.getPartsRobot().getMsg().equals(true)){
+					app.getPartsRobotAgent().msgAnimationDone();
+					app.getPartsRobot().setMsg(false);
 				}
 				out.writeObject(app.getKitAssemblyManager());
 				out.reset();

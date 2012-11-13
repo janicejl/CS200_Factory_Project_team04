@@ -4,14 +4,13 @@ import data.*;
 import Interface.PartsRobotAgent.*;
 import Interface.KitRobotAgent.*;
 import data.*;
-import Agents.KitRobotAgents.*;
 import Agents.VisionAgent.VisionAgent;
 
 import java.util.*;
 
 import server.Server;
 
-public class PartsRobotAgent extends Agent{
+public class PartsRobotAgent extends Agent implements PartsRobot {
 
 	String name = "PartsRobotAgent";
 	

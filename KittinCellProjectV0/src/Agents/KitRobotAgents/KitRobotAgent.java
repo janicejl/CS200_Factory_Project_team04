@@ -239,7 +239,6 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	{
 		if(kit.position_on_stand  == 0)
 		{
-			System.out.println("wooooh");
 			server.execute("Load Stand 1");
 		}
 		else

@@ -135,6 +135,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		try{
 			panel.revalidate();
 			graphics.revalidate();
+			menuBar.revalidate();
 		} catch(Exception e){
 			
 		}

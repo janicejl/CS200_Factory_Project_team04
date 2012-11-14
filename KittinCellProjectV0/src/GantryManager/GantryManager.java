@@ -34,6 +34,37 @@ public class GantryManager implements Serializable,ActionListener
 	
 	public synchronized void update()
 	{
+		String state = gantry.getState();
+		if(gantry.done()==true)
+		{
+			if(state.equals("load"))
+			{
+				gantry.setState("loading");
+			}
+			else if(state.equals("loading"))
+			{
+				gantry.setState("free");
+				parts.get(gantry.getBox()).setState("feeding");
+			}
+			else if(state.equals("dumpi"))
+			{
+				gantry.setState("dumpf");
+				feeders.set(gantry.getFeed(), 0);
+				gantry.setFeed(-1);
+				parts.get(gantry.getBox()).setState("dumpf");
+				gantry.setxFinal(300);
+				gantry.setyFinal(0);
+				parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
+				parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
+			}
+			else if(state.equals("dumpf"))
+			{
+				parts.remove(gantry.getBox());
+				gantry.setState("free");
+				gantry.setBox(-1);
+			}
+		}
+		
 		gantry.update();
 		int i=0;
 		boolean go = true;
@@ -44,6 +75,7 @@ public class GantryManager implements Serializable,ActionListener
 			parts.get(i).update();
 			i++;
 		}
+		
 		if(go == true)
 		{
 			go = false;
@@ -64,7 +96,8 @@ public class GantryManager implements Serializable,ActionListener
 				parts.add(new PartsBox((rand.nextInt(10)+1)*20));
 			}
 		}
-		else if(gantry.getState().equals("load"))
+		
+		if(gantry.getState().equals("load"))
 		{
 			int c=0;
 			while(c<parts.size())
@@ -77,46 +110,13 @@ public class GantryManager implements Serializable,ActionListener
 				}
 				c++;
 			}
-			if(gantry.done())
-			{
-				gantry.setState("loading");
-			}
 		}
-		else if(gantry.getState()=="loading")
+		else if(gantry.getState().equals("loading"))
 		{
 			parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
 			parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
 			parts.get(gantry.getBox()).setState("moving");
-			parts.get(gantry.getBox()).setFeeder(gantry.getFeed());
-			if(gantry.done())
-			{
-				parts.get(gantry.getBox()).setState("feeding");
-				gantry.setBox(-1);
-				gantry.setState("free");
-			}
-		}
-		else if(gantry.getState()=="dumpi")
-		{
-			if(gantry.done())
-			{
-				feeders.set(parts.get(gantry.getBox()).getFeeder(), 0);
-				gantry.setState("dumpf");
-				parts.get(gantry.getBox()).setState("dumpf");
-				gantry.setxFinal(300);
-				gantry.setyFinal(0);
-				parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
-				parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
-				
-			}
-		}
-		else if(gantry.getState()=="dumpf")
-		{
-			if(gantry.done())
-			{
-				gantry.setState("free");
-				parts.remove(gantry.getBox());
-				gantry.setBox(-1);
-			}
+			parts.get(gantry.getBox()).setFeeder(gantry.getFeed());	
 		}
 	}
 	

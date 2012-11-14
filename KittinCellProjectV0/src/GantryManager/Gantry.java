@@ -20,7 +20,6 @@ public class Gantry implements Serializable
 		yCurrent = 100;
 		state = "free";
 		box = -1;
-		feed = 0;
 	}
 	
 	public synchronized void update()

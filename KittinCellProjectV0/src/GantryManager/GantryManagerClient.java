@@ -76,10 +76,14 @@ public class GantryManagerClient implements Runnable
 			GantryManager temp = (GantryManager)in.readObject();
 			if(gui.getGantryManager().getGantry().getState().equals("free"))
 			{
+				if(temp.getGantry().getState().equals("load") || temp.getGantry().getState().equals("dumpi"))
+				{
+					gui.getGantryManager().getGantry().setBox(temp.getGantry().getBox());
+					System.out.println(temp.getGantry().getBox());
+				}
 				gui.getGantryManager().getGantry().setState(temp.getGantry().getState());
 				gui.getGantryManager().getGantry().setFeed(temp.getGantry().getFeed());
 			}
-			//gui.setGantryManager((GantryManager)in.readObject());
 		}
 		catch(Exception ignore){}
 	}

@@ -23,7 +23,8 @@ import server.PartsRobot;
 import data.Kit;
 
 public class GUIProdKAM implements ActionListener {
-
+	ProdKitClient kitClient;
+	
 	GUIProductionManager app;
     KitAssemblyManager kam;
     GUIProdKit gKitRobot;
@@ -71,7 +72,7 @@ public class GUIProdKAM implements ActionListener {
 
     public GUIProdKAM(GUIProductionManager _app){
 		app = _app;
-		
+		kitClient = new ProdKitClient(this);
 		gNests = new Vector<GUINest>();
     	nests = new Vector<Nest>();
     	
@@ -88,13 +89,13 @@ public class GUIProdKAM implements ActionListener {
         baseEmptyKits = new Vector<Kit>();
         baseFinishedKits = new Vector<Kit>();
         baseStationKits = new Vector<Kit>();
-//		int i = kitClient.connect();
-//			if(i == -1){
-//				System.exit(1);
-//			}
-//			else if(i == 1){
-//				kitClient.getThread().start();
-//			}
+		int i = kitClient.connect();
+			if(i == -1){
+				System.exit(1);
+			}
+			else if(i == 1){
+				kitClient.getThread().start();
+			}
 	        
         timer = new javax.swing.Timer(10, this);
         timer.start();
@@ -109,7 +110,7 @@ public class GUIProdKAM implements ActionListener {
 	
 
     public void update(){
-//    	kitClient.updateThread();
+    	kitClient.updateThread();
         emptyConveyorOn = kam.getEmptyConveyorOn();
         finishedConveyorOn = kam.getFinishedConveyorOn();
         baseEmptyKits = kam.getEmptyKits();

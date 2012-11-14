@@ -49,6 +49,9 @@ public class Protocols implements Runnable{
 			else if (protocolName.equals("Part Manager")){
 				runPartsManagerProtocol();
 			}
+			else if (protocolName.equals("Production Kit Client")){
+				runProdKitProtocol();
+			}
 		}
 	}
 	
@@ -103,4 +106,16 @@ public class Protocols implements Runnable{
 	public synchronized void runPartsManagerProtocol(){
 		
 	}
+	public synchronized void runProdKitProtocol(){
+		try {
+			out.writeObject(app.getKitRobot());
+			out.reset();
+			out.writeObject(app.getPartsRobot());
+			out.reset();
+			out.writeObject(app.getKitAssemblyManager());
+			out.reset();	
+		}
+		catch(Exception ignore){}
+	}
+		
 }

@@ -8,6 +8,7 @@ public class GUIProductionManager extends JPanel{
 	
 	ProductionManagerApp app;
 	GUIProdKAM kitGraphics;
+	
 	Timer timer;
 	
 	public GUIProductionManager(ProductionManagerApp _app){

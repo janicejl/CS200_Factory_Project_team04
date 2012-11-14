@@ -9,19 +9,26 @@ import server.PartsRobot;
 
 public class KitAssemblyClient implements Runnable {
 	GUIKitAssemblyManager app;
-	Socket s;
-	ObjectOutputStream out;
-	ObjectInputStream in;
-	String command;
-	String commandSent;
-	String serverName; //keep track of what server to connect to...default localhost
-	Thread thread;
+	protected Socket s;
+	protected ObjectOutputStream out;
+	protected ObjectInputStream in;
+	protected String command;
+	protected String commandSent;
+	protected String serverName; //keep track of what server to connect to...default localhost
+	protected Thread thread;
+	
+	public KitAssemblyClient(){
+		serverName = "localhost";
+		command = "";
+		commandSent = "";
+		thread = new Thread(this, "KitAssemblyClient_Thread");
+	}
 	
 	public KitAssemblyClient(GUIKitAssemblyManager _app){
 		app = _app;
 		serverName = "localhost";
 		command = "";
-		commandSent = "";
+		commandSent = "Kit Assembly";
 		thread = new Thread(this, "KitAssemblyClient_Thread");
 	}
 
@@ -43,7 +50,6 @@ public class KitAssemblyClient implements Runnable {
 	
 	public void run(){
 		try {
-			commandSent = "Kit Assembly";
 			out.writeObject(commandSent); //send to server identifying what client this is
 			out.reset();
 		/*	//command = (String)in.readObject();

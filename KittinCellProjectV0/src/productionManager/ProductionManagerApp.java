@@ -21,6 +21,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	GUIProductionManager graphics;
 	JPanel card;
 	javax.swing.Timer timer;
+//	Boolean phase;
 	
 	JMenuBar menuBar;
 	JMenu menu;
@@ -30,7 +31,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	Vector<Job> jobs;
 	
 	public ProductionManagerApp(){
-		setSize(1000, 600);
+		setSize(1000, 660);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		
@@ -38,11 +39,12 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		load("kitsList.sav");
 		jobs = new Vector<Job>();
 		load("jobsList.sav");
+//		phase = new Boolean(false);
 		
 		panel = new ProductionManagerPanel(this);
-		panel.setPreferredSize(new Dimension(1000, 600));
-		panel.setMaximumSize(new Dimension(1000, 600));
-		panel.setMinimumSize(new Dimension(1000, 600));
+		panel.setPreferredSize(new Dimension(1000, 660));
+		panel.setMaximumSize(new Dimension(1000, 660));
+		panel.setMinimumSize(new Dimension(1000, 660));
 		panel.update();
 		
 		graphics = new GUIProductionManager(this);
@@ -116,6 +118,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	public void next(){
 		CardLayout tempLayout = (CardLayout)card.getLayout();
 		tempLayout.next(card);
+//		phase = !phase;
 	}
 	
 	public void paint(Graphics g){

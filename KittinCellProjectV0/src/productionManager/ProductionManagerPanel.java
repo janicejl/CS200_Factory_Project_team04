@@ -22,9 +22,9 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 		listPanel.setMinimumSize(new Dimension(500, 500));
 		
 		title = new TitlePanel();
-		title.setPreferredSize(new Dimension(1000, 60));
-		title.setMaximumSize(new Dimension(1000, 60));
-		title.setMinimumSize(new Dimension(1000, 60));
+		title.setPreferredSize(new Dimension(1000, 120));
+		title.setMaximumSize(new Dimension(1000, 120));
+		title.setMinimumSize(new Dimension(1000, 120));
 		
 		createPanel = new CreateJobPanel(this);
 		createPanel.setPreferredSize(new Dimension(500, 250));

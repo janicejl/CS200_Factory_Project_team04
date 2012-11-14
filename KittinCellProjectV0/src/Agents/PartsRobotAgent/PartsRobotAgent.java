@@ -22,6 +22,8 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	Server server;
 	TestGUI gui;
 
+	boolean executed = false;
+	
 	int count = 0;
 	List <Part.PartType> recipe = new ArrayList<Part.PartType>();
 	List <Part> camerarecipe = new ArrayList<Part>();
@@ -294,6 +296,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		print("Requesting Parts from Nests");
 		for(int i = 0; i < recipe.size(); i++)
 		{	
+			print("" + recipe.size());
 			print("Assigning Part " + recipe.get(i) + " to nest " + nests.get(i).index);
 			nests.get(i).nest.msgNeedThisPart(recipe.get(i));
 			nests.get(i).state = NestStatus.assigned;
@@ -435,13 +438,17 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 				kit1 = true;
 			}
 		}
-		if(kit1)
-		{
-			server.execute("Load Kit 1");
-		}
-		else
-		{
-			server.execute("Load Kit 2");
+		if(!executed){
+			if(kit1)
+			{
+				server.execute("Load Kit 1");
+				executed = true;
+			}
+			else
+			{
+				server.execute("Load Kit 2");
+				executed = true;
+			}
 		}
 		print("Moving to Kit Stand");
 		
@@ -449,6 +456,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 
 	public void placeParts()
 	{
+		executed = false;
 		print("Giving parts to kitstand");	
 		//AnimationCall
 		List <Part> kit1parts = new ArrayList<Part>();

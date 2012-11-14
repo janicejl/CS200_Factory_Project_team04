@@ -28,6 +28,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
     int idCounter;
     double conveyorSpeed = 1;
    
+    boolean checked = false;
 
     public KitAssemblyManager(Vector<Nest> n){
     	nests = n;
@@ -70,6 +71,8 @@ public class KitAssemblyManager implements Runnable, Serializable{
         if(i == 0){
             Kit k = getEmptyKits().get(0);
             getEmptyKits().remove(0);
+            setMsg(false);
+            checked = false;
             return k;
         }
         else {
@@ -125,9 +128,10 @@ public class KitAssemblyManager implements Runnable, Serializable{
             }
         }
 
-        if(getEmptyKits().size() > 0 && getEmptyKits().get(0).getY() >= 10.0){ // check if empty kit is ready to pickup
+        if(getEmptyKits().size() > 0 && getEmptyKits().get(0).getY() >= 10.0 && checked == false){ // check if empty kit is ready to pickup
             getStationOccupied().set(0,true);
             setMsg(true);
+            checked = true;
         }
 
         if(getFinishedConveyorOn()){
@@ -243,5 +247,13 @@ public class KitAssemblyManager implements Runnable, Serializable{
 
 	public synchronized void setIncompleteConveyorOn(boolean incompleteConveyorOn) {
 		this.incompleteConveyorOn = incompleteConveyorOn;
+	}
+
+	public synchronized boolean isChecked() {
+		return checked;
+	}
+
+	public synchronized void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 }

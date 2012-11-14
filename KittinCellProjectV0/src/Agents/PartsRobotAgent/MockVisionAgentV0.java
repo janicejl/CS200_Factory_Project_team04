@@ -4,6 +4,7 @@ import java.util.List;
 
 import Agent.Agent;
 import Interface.PartsRobotAgent.Vision;
+import data.Kit;
 import data.Part.PartType;
 
 public class MockVisionAgentV0 extends Agent implements Vision{
@@ -49,5 +50,11 @@ public class MockVisionAgentV0 extends Agent implements Vision{
 	public String getName()
 	{
 		return name;
+	}
+
+	@Override
+	public void msgTakePicture(Kit kit) {
+		// TODO Auto-generated method stub
+		
 	}
 }

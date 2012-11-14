@@ -1,6 +1,7 @@
 package Agents.PartsRobotAgent;
 import Agent.*;
 import data.*;
+import data.Part.PartType;
 import Interface.PartsRobotAgent.*;
 import Interface.KitRobotAgent.*;
 import data.*;
@@ -167,10 +168,12 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	public void msgEmptyKit(int position){
 		if(position == 0)
 		{
+			print("Kit 1 Available");
 			kit1.state = KitStatus.available;
 		}
 		else
 		{
+			print("Kit 2 Available");
 			kit2.state = KitStatus.available;
 		}
 		stateChanged();
@@ -263,8 +266,8 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	}
 	if(animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome)
 	{
-		//if(kit1.state == KitStatus.available || kit2.state == KitStatus.available)
-		//{
+		if(kit1.state == KitStatus.available || kit2.state == KitStatus.available)
+		{
 			for(int i = 0; i<4; i++)
 			{
 				if(grippers[i].full)
@@ -273,7 +276,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 					return true;
 				}
 			}
-		//}
+		}
 	}
 	/*if(animationstate == AnimationStatus.atNest || animationstate == AnimationStatus.atStand)
 	{
@@ -441,7 +444,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 			server.execute("Load Kit 2");
 		}
 		print("Moving to Kit Stand");
-		placeParts();
+		
 	}
 
 	public void placeParts()
@@ -539,5 +542,11 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		for(VisionAgent cam : cams){
 			cameras.add(cam);
 		}
+	}
+
+	@Override
+	public void msgMakeThisKit(List<PartType> kitrecipe, int ct) {
+		// TODO Auto-generated method stub
+		
 	}
 }

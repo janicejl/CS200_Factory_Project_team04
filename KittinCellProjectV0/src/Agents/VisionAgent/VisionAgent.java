@@ -8,6 +8,7 @@ import java.util.concurrent.*;
 import Agent.*;
 import Agents.PartsRobotAgent.*;
 import Interface.VisionAgent.*;
+import Interface.VisionAgent.Vision;
 import Interface.KitRobotAgent.*;
 import Interface.PartsRobotAgent.*;
 import data.*;

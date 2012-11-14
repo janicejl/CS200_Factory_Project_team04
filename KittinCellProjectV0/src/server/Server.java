@@ -176,6 +176,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
     	
+    	for (int i = 0; i < 8; i ++) {
+    		lanes.get(i).setConveyerBeltSpeed(15);
+    	}
+    	
     	NestAgent nest1 = new NestAgent(1,this);
     	NestAgent nest2 = new NestAgent(2,this);
     	NestAgent nest3 = new NestAgent(3,this);

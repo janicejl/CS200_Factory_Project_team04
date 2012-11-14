@@ -9,6 +9,7 @@ import java.awt.event.*;
 import javax.imageio.*;
 
 import server.KitAssemblyManager;
+import data.GUIKit;
 import data.Kit;
 import laneManager.Nest;
 import laneManager.GUINest;
@@ -39,6 +40,7 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
     Vector<Boolean> stationOccupied;
     Vector<GUIKit> emptyKits;
     Vector<GUIKit> finishedKits;
+    Vector<GUIKit> stationKits;
     Vector<Kit> baseEmptyKits;
     Vector<Kit> baseFinishedKits;
     Vector<Kit> baseStationKits;
@@ -81,6 +83,7 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         stationOccupied = new Vector<Boolean>();
         emptyKits = new Vector<GUIKit>();
         finishedKits = new Vector<GUIKit>();
+        stationKits = new Vector<GUIKit>();
         baseEmptyKits = new Vector<Kit>();
         baseFinishedKits = new Vector<Kit>();
         baseStationKits = new Vector<Kit>();
@@ -130,9 +133,23 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         baseStationKits = kam.getStationKits();
         stationOccupied = kam.getStationOccupied();
         
+        //GUINests
         gNests.clear();
         for (Nest n: kam.getNests()) {
         	gNests.add(new GUINest(n));
+        }
+        //GUIKits
+        emptyKits.clear();
+        for(Kit k : baseEmptyKits){
+        	emptyKits.add(new GUIKit(k));
+        }
+        stationKits.clear();
+        for(Kit k : baseStationKits){
+        	stationKits.add(new GUIKit(k));
+        }
+        finishedKits.clear();
+        for(Kit k : baseFinishedKits){
+        	finishedKits.add(new GUIKit(k));
         }
         
         if(emptyConveyorOn){
@@ -199,31 +216,41 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         g2.drawImage(conveyorImage,5,480,65,480+(int)badConveyorMove,0,0,60,22,null); // bad conveyor end
         g2.drawLine(5,480+(int)badConveyorMove,64,480+(int)badConveyorMove);
 
-
-
-        for(Kit k : baseEmptyKits){ // draw empty kits
-            g2.drawImage(kitImage,80, (int)k.getY(),null);
+        for(GUIKit k : emptyKits){
+        	k.paintKit(g2);
         }
-        for(Kit k : baseFinishedKits){ // draw finished kits
-            g2.drawImage(kitImage,10, (int)k.getY(),null);
+        for(GUIKit k : stationKits){
+        	k.paintKit(g2);
         }
-
-        for (int i = 1; i < stationOccupied.size()-1; i++) { // draw station kits
-            if(stationOccupied.get(i)){
-                if(i == 3) {
-                    g2.drawImage(kitImage,stationPositions[i*2-2],(int)baseStationKits.get(i).getY(),null);
-
-                }
-                else if (i == 4) {
-                    g2.drawImage(kitImage,stationPositions[i*2-2],(int)baseStationKits.get(i).getY(),null);
-                    //System.out.println(baseStationKits.get(4).getY());
-                }
-                else {
-                    g2.drawImage(kitImage,stationPositions[i*2-2],stationPositions[i*2-1],null);
-                }
-
-            }
+        for(GUIKit k : finishedKits){
+        	k.paintKit(g2);
         }
+//        for(Kit k : baseEmptyKits){ // draw empty kits
+//        	
+//            g2.drawImage(kitImage,80, (int)k.getY(),null);
+//        }
+//        for(Kit k : baseFinishedKits){ // draw finished kits
+//        	
+//            g2.drawImage(kitImage,10, (int)k.getY(),null);
+//        }
+//
+//        for (int i = 1; i < stationOccupied.size()-1; i++) { // draw station kits
+//            if(stationOccupied.get(i)){
+//                if(i == 3) {
+//                    g2.drawImage(kitImage,stationPositions[i*2-2],(int)baseStationKits.get(i).getY(),null);
+//                    System.out.println("Rawr1: " + stationPositions[i*2-2] + ", " + baseStationKits.get(3).getY());
+//                }
+//                else if (i == 4) {
+//                    g2.drawImage(kitImage,stationPositions[i*2-2],(int)baseStationKits.get(i).getY(),null);
+//                    System.out.println("Rawr2: " + stationPositions[i*2-2] + ", " + baseStationKits.get(4).getY());
+//                }
+//                else {
+//                    g2.drawImage(kitImage,stationPositions[i*2-2],stationPositions[i*2-1],null);
+//                    System.out.println("Rawr3: " + stationPositions[i*2-2] + ", " + stationPositions[i*2-1]);
+//                }
+//
+//            }
+//        }
         gPartsRobot.paintPartsRobot(g2);
         gKitRobot.paintKitRobot(g2);
     }

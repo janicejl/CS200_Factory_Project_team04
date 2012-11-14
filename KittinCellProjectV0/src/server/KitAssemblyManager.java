@@ -82,8 +82,13 @@ public class KitAssemblyManager implements Runnable, Serializable{
 
     public synchronized void setStationKit(int i, Kit k){
     	getStationOccupied().set(i,true);
-        if(i == 6){
-            getFinishedKits().add(k);
+        if(i == 1){
+        	getStationKits().set(i,k);
+            getStationKits().get(1).setPosition(160,140);
+        }
+        else if(i == 2){
+        	getStationKits().set(i,k);
+        	getStationKits().get(2).setPosition(160, 360);
         }
         else if(i == 3){
             System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
@@ -97,8 +102,13 @@ public class KitAssemblyManager implements Runnable, Serializable{
             getStationKits().get(4).setPosition(10,490);
             System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
         }
-        else {
+        else if(i == 5){
         	getStationKits().set(i,k);
+        	getStationKits().get(5).setPosition(160, 250);
+        }
+        else if(i == 6){
+        	k.setPosition(10, 10);
+        	getFinishedKits().add(k);
         }
         System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
     }

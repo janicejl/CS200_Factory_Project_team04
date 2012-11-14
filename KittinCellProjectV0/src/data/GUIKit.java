@@ -17,7 +17,7 @@ public class GUIKit {
 		kit = k;
 		
 		try {
-			image = ImageIO.read(new File("images/kit.png"));
+			image = ImageIO.read(new File("images/crate.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,7 +43,12 @@ public class GUIKit {
 			BufferedImage p;
 			try {
 				p = ImageIO.read(new File("images/kt" + parts.get(i).getID() + ".png"));
-				g.drawImage(p, (int)parts.get(i).getX(), (int)parts.get(i).getY(), null);
+				if(kit.isGrabbed()){
+					g.drawImage(p, -300, -300, null);
+				}
+				else if(!kit.isGrabbed()){
+					g.drawImage(p, (int)parts.get(i).getX(), (int)parts.get(i).getY(), null);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

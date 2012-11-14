@@ -79,7 +79,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
     	}
     	
     	for (int i = 0; i < 4; i++) {
-    		feeders.add(new Feeder(525,20 + i*140));
+    		feeders.add(new Feeder(406,30 + i*140));
     		gFeeders.add(new GUIFeeder(feeders.get(i)));
     	}
     	

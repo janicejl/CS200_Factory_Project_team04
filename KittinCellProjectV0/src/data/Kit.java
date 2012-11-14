@@ -15,6 +15,8 @@ public class Kit implements Serializable {
 	private double destinationX;
 	private double destinationY;
 	
+	private boolean grabbed;
+	
 	//Vector<Part> parts;
 	private Vector<Part> partsList = new Vector<Part>();
 	public Kit(String name, double nX, double nY) {
@@ -23,9 +25,10 @@ public class Kit implements Serializable {
 		y = nY;
 		destinationX = nX;
 		destinationY = nY;
-		
+		grabbed = false;
 		
 	}
+	
 	//blank kit
 	public Kit()
 	{
@@ -75,6 +78,14 @@ public class Kit implements Serializable {
 	public void setDestinationY(double nY) {
 		destinationY = nY;
 	}
+	
+	public synchronized boolean isGrabbed() {
+		return grabbed;
+	}
+	public synchronized void setGrabbed(boolean grabbed) {
+		this.grabbed = grabbed;
+	}
+	
 	public void addPart(Part p) {
 		partsList.add(p);
 	}

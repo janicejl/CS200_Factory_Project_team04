@@ -100,12 +100,16 @@ public class KitRobot implements Runnable, Serializable{
             int i = Integer.parseInt(ss[1]);
             try {
                 kit = kitAssemblyManager.getStationKit(i);
+                kit.setGrabbed(true);
             }
-            catch (Exception ignore) {}
+            catch (Exception ignore) {
+            	ignore.printStackTrace();
+            }
             hasKit = true;
         }
         else if(ss[0].equals("d")){
             int i = Integer.parseInt(ss[1]);
+            kit.setGrabbed(false);
             kitAssemblyManager.setStationKit(i, kit);
             hasKit = false;
         }

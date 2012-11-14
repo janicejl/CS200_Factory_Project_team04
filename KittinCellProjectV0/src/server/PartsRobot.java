@@ -12,6 +12,8 @@ import java.util.concurrent.*;
 import java.io.*;
 import javax.imageio.*;
 
+import data.Part;
+
 public class PartsRobot implements Runnable, Serializable{
     boolean processing;
     boolean paused;
@@ -44,6 +46,7 @@ public class PartsRobot implements Runnable, Serializable{
     Vector<Integer> gripperPartIDs;
     int[] nl = {55,125,195,265,335,405,475,545};
     int[] kl = {190,410};
+    Vector<Part> partsHeld;
     float opacity;
     boolean animationDone;
 
@@ -60,6 +63,7 @@ public class PartsRobot implements Runnable, Serializable{
         nestLocations = new Vector<String>();
         kitLocations = new Vector<String>();
         gripperPartIDs = new Vector<Integer>();
+        partsHeld = new Vector<Part>();
         flashDown = false;
         flashUp = false;
         animationDone = false;
@@ -148,7 +152,8 @@ public class PartsRobot implements Runnable, Serializable{
                         subCommands.add(j*4+1,"r,0");
                     }
                     subCommands.add(j*4+2,"e," + i + ",40");
-                    subCommands.add(j*4+3,"d," + i);
+                    //subCommands.add(j*4+3,"d," + i);
+                    subCommands.add(j*4+3,"d," + i + "," + dst);
                     subCommands.add(j*4+4,"e," + i + ",0");
                     j++;
                 }
@@ -197,14 +202,20 @@ public class PartsRobot implements Runnable, Serializable{
             }
             else if(ss[0].equals("p")){							//Pick
                 gripperHolding.set(Integer.parseInt(ss[1]),true);
+                partsHeld.add(app.nests.get(Integer.parseInt(ss[2])).getParts().get(0));
                 app.nests.get(Integer.parseInt(ss[2])).getParts().remove(0);
                 processing = true;
             }
             else if(ss[0].equals("d")){							//Drop
                 gripperHolding.set(Integer.parseInt(ss[1]),false);
+                app.getStationKit(Integer.parseInt(ss[2])+1).addPart(partsHeld.get(0));
+                partsHeld.remove(0);
+                System.out.println("Size : " + app.getStationKit(Integer.parseInt(ss[2])+1).getPartsList().size());
                 processing = true;
             }
-        } catch (Exception ignore){}
+        } catch (Exception ignore){
+        	ignore.printStackTrace();
+        }
 
     }
 
@@ -275,6 +286,10 @@ public class PartsRobot implements Runnable, Serializable{
     	return gripperPartIDs;
     }
 
+    public synchronized Vector<Part> getPartsHeld(){
+    	return partsHeld;
+    }
+    
 	public synchronized void setMsg(Boolean msg) {
 		this.msg = msg;
 	}

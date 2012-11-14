@@ -16,7 +16,7 @@ public class Kit implements Serializable {
 	private double destinationY;
 	
 	//Vector<Part> parts;
-	List<Part> partsList = Collections.synchronizedList( new ArrayList<Part>() );
+	private Vector<Part> partsList = new Vector<Part>();
 	public Kit(String name, double nX, double nY) {
 		id = name;
 		x = nX;
@@ -110,5 +110,9 @@ public class Kit implements Serializable {
 		y = nY;
 		//destinationX = nX;
 		//destinationY = nY;
+	}
+	
+	public synchronized Vector<Part> getPartsList() {
+		return partsList;
 	}
 }

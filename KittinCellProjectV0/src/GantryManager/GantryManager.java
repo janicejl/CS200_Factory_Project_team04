@@ -1,15 +1,15 @@
 package GantryManager;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.Random;
 import java.awt.event.*;
 
 public class GantryManager implements Serializable,ActionListener
 {
 	Gantry gantry;
-	ArrayList<PartsBox> parts;
-	ArrayList<Integer> feeders;
+	Vector<PartsBox> parts;
+	Vector<Integer> feeders;
 	int speed;
 	Random rand;
 	
@@ -18,10 +18,10 @@ public class GantryManager implements Serializable,ActionListener
 		rand = new Random();
 		gantry = new Gantry();
 		
-		parts = new ArrayList<PartsBox>();
+		parts = new Vector<PartsBox>();
 		parts.add(new PartsBox(100));
 		
-		feeders = new ArrayList<Integer>();
+		feeders = new Vector<Integer>();
 		int i=0;
 		while(i<4)
 		{
@@ -130,7 +130,7 @@ public class GantryManager implements Serializable,ActionListener
 		return gantry;
 	}
 	
-	public synchronized ArrayList<PartsBox> getPartsBoxes()
+	public synchronized Vector<PartsBox> getPartsBoxes()
 	{
 		return parts;
 	}
@@ -140,7 +140,7 @@ public class GantryManager implements Serializable,ActionListener
 		gantry = g;
 	}
 	
-	public synchronized void setParts(ArrayList<PartsBox> p)
+	public synchronized void setParts(Vector<PartsBox> p)
 	{
 		parts = p;
 	}

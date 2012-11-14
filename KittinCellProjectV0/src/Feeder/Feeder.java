@@ -77,7 +77,7 @@ public class Feeder implements Serializable{
 	// True sets the diverter to top lane
 	// False sets the diverter to bottom lane
 	public void divertLane(boolean l){
-		if (l = true)
+		if (l == true)
 			topLane = true;
 		else
 			topLane = false;

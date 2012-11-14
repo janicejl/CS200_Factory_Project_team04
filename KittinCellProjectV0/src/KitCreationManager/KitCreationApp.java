@@ -96,6 +96,18 @@ public class KitCreationApp extends JFrame implements Serializable, WindowListen
 	public synchronized void setKitsList(Vector<KitInfo> kitsList) {
 		this.kitsList = kitsList;
 	}
+	public synchronized GUIKitModification getKm() {
+		return km;
+	}
+	public synchronized void setKm(GUIKitModification km) {
+		this.km = km;
+	}
+	public synchronized GUIKitCreation getKc() {
+		return kc;
+	}
+	public synchronized void setKc(GUIKitCreation kc) {
+		this.kc = kc;
+	}
 	@Override
 	public void windowActivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub

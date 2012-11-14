@@ -31,18 +31,18 @@ public class GUIKit {
 		
 		g.drawImage(image, (int)x, (int)y, null);
 		
-		List<Part> parts = kit.partsList;
+		List<Part> parts = kit.getPartsList();
 		//Setting the position of each individual part. 
 		for (int i = 0, j = 0; i < parts.size(); i++) {
-			parts.get(i).setX(x + ((i % 2) * 32));		//32 = size of testing image parts. 
-			parts.get(i).setY(y + (j * 32));
+			parts.get(i).setX(x + ((i % 2) * 25));		//25 = size of testing image parts. 
+			parts.get(i).setY(y + (j * 25));
 			
 			if (i % 2 == 1) {
 				j++;
 			}
 			BufferedImage p;
 			try {
-				p = ImageIO.read(new File("images/" + parts.get(i).getID() + ".png"));
+				p = ImageIO.read(new File("images/kt" + parts.get(i).getID() + ".png"));
 				g.drawImage(p, (int)parts.get(i).getX(), (int)parts.get(i).getY(), null);
 			} catch (IOException e) {
 				e.printStackTrace();

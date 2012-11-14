@@ -187,7 +187,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 			stateChanged();
 		}
 		else if(animationstate == AnimationStatus.movingToStand){
-			print("Arrived at Stand");
+			print("Done at Stand");
 			animationstate = AnimationStatus.atStand;
 			stateChanged();
 		}
@@ -250,11 +250,12 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		getPart();
 		return true;
 	}	
-	if(allGrippersFull() && (kit1.state == KitStatus.available || kit2.state == KitStatus.available)){
+	if(allGrippersFull() && (kit1.state == KitStatus.available || kit2.state == KitStatus.available)&& (animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome)){
 		goToStand();
 		return true;
 	}
 	if(count!= 0 && (animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome) && !allGrippersFull()){
+		print("Checking parts");
 		for(MyNest mn: nests)
 		{
 			if(mn.state == NestStatus.hasPart)
@@ -281,9 +282,10 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	/*if(animationstate == AnimationStatus.atNest || animationstate == AnimationStatus.atStand)
 	{
 		returnToStart();
-		return false;
+		return true;
 	}*/
 		//print("Nothing to do, sleeping");
+		print("current"+animationstate);
 		return false;
 	}
 

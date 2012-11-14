@@ -157,7 +157,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	@Override
 	protected boolean pickAndExecuteAnAction() {
 
-		System.out.println(robot_waiting_for_kit.size());
+		//System.out.println(robot_waiting_for_kit.size());
 		if(!stand_events.isEmpty())
 		{
 			for(KitStandEvent event:stand_events)

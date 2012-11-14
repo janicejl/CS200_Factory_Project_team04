@@ -202,13 +202,18 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		kitRobotAgent.SetConveyorAgent(kitConveyorAgent);
 		kitRobotAgent.SetStandAgent(kitStandAgent);
 		kitConveyorAgent.SetKitRobot(kitRobotAgent);
-		kitRobotAgent.startThread();
-		kitStandAgent.startThread();
-		kitConveyorAgent.startThread();
+		
+		
 		new Thread(kitAssemblyManager).start();
         new Thread(kitRobot).start();
         
         partsRobotAgent = new PartsRobotAgent(nests, kitStandAgent, this);
+        kitStandAgent.SetPartsRobotAgent(partsRobotAgent);
+        kitRobotAgent.startThread();
+		kitStandAgent.startThread();
+		kitConveyorAgent.startThread();
+		
+		
         for(NestAgent nest : nests){
         	nest.setPartsRobotAgent(partsRobotAgent);
         	nest.startThread();

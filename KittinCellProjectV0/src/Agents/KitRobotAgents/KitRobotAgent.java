@@ -131,9 +131,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 
-			System.out.println("kit size " + kit_list.size());
 			
-			System.out.println("Kits needed " + kits_needed);
 			if(kit_list.size() < 2 && kits_needed.size() > 0 && b_ask_for_kit)
 			{
 				CanIPlaceKit();

@@ -77,10 +77,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 			if(kit_h.state == KitState.NeedKit)
 			{
 				kit_h.kit = k;
-				System.out.println(kit_holder_list.size());
 				kit_h.state = KitState.Empty;
-				//kit_holder_list.add(kit_h);
-				System.out.println(kit_holder_list.size());
 				stateChanged();
 				return;
 			}
@@ -115,7 +112,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 				inpspection_list.add(kit_h);
 				kit_h.state = KitState.BeingInspected;
 				kit_holder_list.remove(kit_h);
-				System.out.println("removing kit" + kit_holder_list.size());
 				stateChanged();
 				return;
 	
@@ -161,7 +157,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	@Override
 	protected boolean pickAndExecuteAnAction() {
 
-		System.out.println(kit_holder_list.size());
 		if(!stand_events.isEmpty())
 		{
 			for(KitStandEvent event:stand_events)
@@ -286,14 +281,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	
 	//ACTIONS/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	private void CheckIfPartRobotIsWaiting()
-	{
-		//if(robot_waiting_for_kit.size() > 0)
-		{
-			CheckForEmptyKit();
-			return;
-		}
-	}
 
 	private void CheckForQueuedFinishedKits()
 	{

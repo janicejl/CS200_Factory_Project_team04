@@ -23,6 +23,7 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		partsList = new Vector<PartInfo>();
+		partsManagerClient = new PartsManagerClient(this);
 		
 		load("partsList.sav");
 		partPanel.updateLoad();

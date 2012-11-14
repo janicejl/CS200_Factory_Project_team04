@@ -15,16 +15,20 @@ import data.Part;
 public class GUIFeeder {
 	
 	Feeder feeder;
-	BufferedImage image;
-	Rectangle feederStatus;
+	BufferedImage image, diverter;
+	boolean previousPositiion;
+	boolean moving;
+	int diverterX, diverterY;
 	
 	public GUIFeeder(Feeder f){
 		feeder = f;
-		feederStatus = new Rectangle((int)feeder.getX() + 4, 
-					(int)feeder.getY() + 130,
-					75, 10);
+		diverterX = (int)feeder.getX() - 3;
+		diverterY = (int)feeder.getY();
+		moving = false;
+		previousPositiion = feeder.getLane();
 		try {
 			image = ImageIO.read(new File("images/feeder.png"));
+			diverter = ImageIO.read(new File("images/diverter.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -33,17 +37,40 @@ public class GUIFeeder {
 	public void paintNest(Graphics2D g2){
 		double x = feeder.getX();
 		double y = feeder.getY();
-		int statusWidth;
 		g2.drawImage(image, (int)x, (int)y, null);
-		g2.setColor(Color.ORANGE);
-		if (feeder.getPartAmount() > 0){
-			statusWidth = (int)feeder.getPartAmount()*3;
+		
+		if (previousPositiion == feeder.getLane()){
+			if (previousPositiion){
+				g2.drawImage(diverter, diverterX, diverterY, null);
+			}
+			else if (!previousPositiion){
+				g2.drawImage(diverter, diverterX, (int)feeder.getY() + 70, null);
+			}
 		}
-		else {
-			statusWidth = 0;
+		else{
+			if (previousPositiion){
+				if (diverterY != feeder.getY() + 70){
+					diverterY += 2;
+					g2.drawImage(diverter, diverterX, diverterY, null);
+				}
+				else{
+					g2.drawImage(diverter, diverterX, diverterY, null);
+					previousPositiion = feeder.getLane();
+				}	
+			}
+			else {
+				if (diverterY != feeder.getY()){
+					diverterY -= 2;
+					g2.drawImage(diverter, diverterX, diverterY, null);
+				}
+				else{
+					g2.drawImage(diverter, diverterX, diverterY, null);
+					previousPositiion = feeder.getLane();
+				}
+				
+			}
 		}
-		feederStatus.setSize(statusWidth, 10);
-		g2.fill(feederStatus);
+		
 		
 		Vector<GUIPart> parts = new Vector<GUIPart>();
 		for (int i = 0, j = 0; i < feeder.getPartAmount(); i++) {

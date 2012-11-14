@@ -73,7 +73,13 @@ public class GantryManagerClient implements Runnable
 	{
 		try
 		{
-			gui.setGantryManager((GantryManager)in.readObject());
+			GantryManager temp = (GantryManager)in.readObject();
+			if(gui.getGantryManager().getGantry().getState().equals("free"))
+			{
+				gui.getGantryManager().getGantry().setState(temp.getGantry().getState());
+				gui.getGantryManager().getGantry().setFeed(temp.getGantry().getFeed());
+			}
+			//gui.setGantryManager((GantryManager)in.readObject());
 		}
 		catch(Exception ignore){}
 	}

@@ -87,6 +87,10 @@ public class GUIKitModification implements ActionListener{
 		kitList=new JComboBox(kitNames);
 		kitList.addActionListener(this);
 		partsList=new JComboBox(partNames);
+		partsList.setPreferredSize(new Dimension(90, 25));
+		partsList.setMaximumSize(new Dimension(90, 25));
+		partsList.setMinimumSize(new Dimension(90, 25));
+
 		partsList.addActionListener(this);
 		
 		partDisplay.setOpaque(false);
@@ -107,26 +111,26 @@ public class GUIKitModification implements ActionListener{
 		kitList.setOpaque(false);
 		a.anchor=GridBagConstraints.LINE_START;
 		up.add(k,a);
-		a.gridx+=4;
+		a.gridx+=8;
 		a.anchor = GridBagConstraints.LINE_END;
 		up.add(kitList,a);
 		a.gridx=0;
-		a.gridy+=4;
+		a.gridy+=8;
 		a.anchor=GridBagConstraints.LINE_START;
 		up.add(p,a);
-		a.gridx+=4;
+		a.gridx+=8;
 		a.anchor = GridBagConstraints.LINE_END;
 		up.add(partsList,a);
 		a.gridx=0;
-		a.gridy+=4;
+		a.gridy+=8;
 		a.anchor = GridBagConstraints.LINE_START;
-		up.add(confirm,a);
-		a.gridx+=4;
-		a.anchor=GridBagConstraints.LINE_END;
 		up.add(remove,a);
-		a.gridy+=4;
-		a.gridx=0;
-		a.anchor=GridBagConstraints.LINE_START;
+		a.gridx+=8;
+		a.anchor=GridBagConstraints.LINE_END;
+		up.add(confirm,a);
+		a.gridy+=8;
+		
+		a.anchor=GridBagConstraints.LINE_END;
 		up.add(delete,a);
 		
 		partDisplay.setLayout(new GridBagLayout());

@@ -156,6 +156,8 @@ public class GUIKitCreation implements ActionListener{
 			tempKit.setParts(temp);
 			app.getKitsList().add(tempKit);
 			clear();
+			int num = app.getKm().getKitList().getSelectedIndex();
+			app.getKm().updateBox(num);
 		}
 		
 		for(int i=0;i<selectionMade.size();i++){

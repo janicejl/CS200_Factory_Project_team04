@@ -12,6 +12,7 @@ import java.util.Vector;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -30,6 +31,7 @@ public class GUIKitModification implements ActionListener{
 	//JScrollPane displayKit;
 	JLabel p,k;
 	JButton confirm;
+	JButton delete;
 	JComboBox kitList,partsList;
 	Vector<String> kitNames;
 	Vector<String> partNames;
@@ -37,6 +39,7 @@ public class GUIKitModification implements ActionListener{
 	TreeMap<Integer, Boolean> tempDeleted;
 	TreeMap<Integer, PartInfo> tempKit;
 	JCheckBox remove;
+	
 	public GUIKitModification(KitCreationApp _app){
 		app = _app;
 		base=new JPanel();
@@ -47,9 +50,21 @@ public class GUIKitModification implements ActionListener{
 		partDisplay=new JPanel();
 		remove=new JCheckBox("remove");
 		remove.setOpaque(false);
-		confirm=new JButton("confirm");
+		
+		confirm=new JButton("Confirm");
+		confirm.setPreferredSize(new Dimension(90, 25));
+		confirm.setMaximumSize(new Dimension(90, 25));
+		confirm.setMinimumSize(new Dimension(90, 25));
 		confirm.addActionListener(this);
+		
+		delete = new JButton("Delete Kit");
+		delete.setPreferredSize(new Dimension(120, 25));
+		delete.setMaximumSize(new Dimension(120, 25));
+		delete.setMinimumSize(new Dimension(120, 25));
+		delete.addActionListener(this);
+		
 		partList=new Vector<JButton>();
+		
 		tempDeleted = new TreeMap<Integer, Boolean>();
 		tempKit = new TreeMap<Integer, PartInfo>();
 		for(int i = 0; i < 8; i++){
@@ -57,9 +72,6 @@ public class GUIKitModification implements ActionListener{
 		}
 		
 		kitNames=new Vector<String>();
-		if(app.getKitsList().size() == 0){
-			kitNames.add("");
-		}
 		for(int i = 0; i < app.getKitsList().size(); i++){
 			kitNames.add(app.getKitsList().get(i).getName());
 		}
@@ -110,28 +122,30 @@ public class GUIKitModification implements ActionListener{
 		a.gridx+=4;
 		a.anchor=GridBagConstraints.LINE_END;
 		up.add(confirm,a);
+		a.gridy+=1;
+		a.anchor=GridBagConstraints.LINE_END;
+		up.add(delete,a);
 		
 		partDisplay.setLayout(new GridBagLayout());
 		partDisplay.setOpaque(false);
-		partDisplay.setPreferredSize(new Dimension(300,260));
+		partDisplay.setPreferredSize(new Dimension(300,260));		
 		
-		kitList.setSelectedIndex(0);
+		if(!(kitNames.size() == 0)){
+			kitList.setSelectedIndex(0);
+		}
 		
-		
-
 		base.add(up);
 		base.add(partDisplay);
 		
 	}
 
-	public void actionPerformed(ActionEvent ae) {
-
-		if(ae.getSource().equals(kitList)){
-		
+	public void updateLabels(){
+		partDisplay.removeAll();
+			partList.clear();
 			GridBagConstraints c=new GridBagConstraints();
 			c.gridx=0;
 			c.gridy=0;
-		
+////////////////////////////////////////////////////////////////////////////////////////out of bounds		
 			for(int i=0;i<8;i++){
 				JButton temp = new JButton(new ImageIcon(app.getKitsList().get(kitList.getSelectedIndex()).getParts().get(i).getImagePath()));
 				temp.setPreferredSize(new Dimension (170,30));
@@ -141,6 +155,30 @@ public class GUIKitModification implements ActionListener{
 				c.gridy+=2;
 				tempKit.put(i, app.getKitsList().get(kitList.getSelectedIndex()).getParts().get(i));
 			}
+	}
+	
+	public void updateBox(int num){
+		kitNames.clear();
+		if(app.getKitsList().size() == 0){
+			kitNames.add("");
+		}
+		for(int i = 0; i < app.getKitsList().size(); i++){
+			kitNames.add(app.getKitsList().get(i).getName());
+		}
+		
+		kitList.setModel(new DefaultComboBoxModel(kitNames));
+		if(num < kitNames.size()){
+			kitList.setSelectedIndex(num);
+		}
+		else{
+			kitList.setSelectedIndex(kitNames.size()-1);
+		}
+	}
+	
+	public void actionPerformed(ActionEvent ae) {
+
+		if(ae.getSource().equals(kitList)){
+			updateLabels();			
 		}
 		else if(ae.getSource().equals(confirm)){
 			for(int i = 0; i < tempDeleted.size(); i++){
@@ -153,6 +191,12 @@ public class GUIKitModification implements ActionListener{
 				}
 			}
 		}
+		else if(ae.getSource().equals(delete)){
+			int num = kitList.getSelectedIndex();
+			app.getKitsList().remove((int)num);
+			updateBox(num);
+		}
+		
 		for(int i=0;i<partList.size();i++){
 			if(ae.getSource().equals(partList.get(i))){
 				if(remove.isSelected()){
@@ -179,6 +223,14 @@ public class GUIKitModification implements ActionListener{
 		partDisplay.repaint();
 		base.revalidate();
 		base.repaint();
+	}
+
+	public synchronized JComboBox getKitList() {
+		return kitList;
+	}
+
+	public synchronized void setKitList(JComboBox kitList) {
+		this.kitList = kitList;
 	}
 
 }

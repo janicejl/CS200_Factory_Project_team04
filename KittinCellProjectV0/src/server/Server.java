@@ -257,7 +257,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");
-		timer = new Timer(25, this);
+		timer = new Timer(10, this);
 		timer.start();
 	}
 	

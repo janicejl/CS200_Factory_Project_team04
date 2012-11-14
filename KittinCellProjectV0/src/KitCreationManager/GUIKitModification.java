@@ -58,9 +58,9 @@ public class GUIKitModification implements ActionListener{
 		confirm.addActionListener(this);
 		
 		delete = new JButton("Delete Kit");
-		delete.setPreferredSize(new Dimension(120, 25));
-		delete.setMaximumSize(new Dimension(120, 25));
-		delete.setMinimumSize(new Dimension(120, 25));
+		delete.setPreferredSize(new Dimension(90, 25));
+		delete.setMaximumSize(new Dimension(90, 25));
+		delete.setMinimumSize(new Dimension(90, 25));
 		delete.addActionListener(this);
 		
 		partList=new Vector<JButton>();
@@ -96,6 +96,8 @@ public class GUIKitModification implements ActionListener{
 		
 		
 		up.setLayout(new GridBagLayout());
+		up.setPreferredSize(new Dimension(300,120));
+		up.setMinimumSize(new Dimension(300,120));
 		up.setOpaque(false);
 		GridBagConstraints a=new GridBagConstraints();
 		a.gridx=0;
@@ -118,12 +120,13 @@ public class GUIKitModification implements ActionListener{
 		a.gridx=0;
 		a.gridy+=4;
 		a.anchor = GridBagConstraints.LINE_START;
-		up.add(remove,a);
+		up.add(confirm,a);
 		a.gridx+=4;
 		a.anchor=GridBagConstraints.LINE_END;
-		up.add(confirm,a);
-		a.gridy+=1;
-		a.anchor=GridBagConstraints.LINE_END;
+		up.add(remove,a);
+		a.gridy+=4;
+		a.gridx=0;
+		a.anchor=GridBagConstraints.LINE_START;
 		up.add(delete,a);
 		
 		partDisplay.setLayout(new GridBagLayout());

@@ -42,7 +42,7 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		catch(IOException e) {}
 		
 		manager = new GantryManager();
-		timer = new javax.swing.Timer(10,this);
+		timer = new javax.swing.Timer(9,this);
 		timer.start();
 	}
 		

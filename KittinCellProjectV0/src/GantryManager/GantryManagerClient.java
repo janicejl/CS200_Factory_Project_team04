@@ -74,14 +74,14 @@ public class GantryManagerClient implements Runnable
 		try
 		{
 			GantryManager temp = (GantryManager)in.readObject();
-			if(gui.getGantryManager().getGantry().getState().equals("free"))
+			if(gui.getGantryManager().getGantry().getState().equals("free") && !temp.getGantry().getState().equals("dumpf"))
 			{
 				if(temp.getGantry().getState().equals("load") || temp.getGantry().getState().equals("dumpi"))
 				{
 					gui.getGantryManager().getGantry().setBox(temp.getGantry().getBox());
-					System.out.println(temp.getGantry().getBox());
 				}
 				gui.getGantryManager().getGantry().setState(temp.getGantry().getState());
+				System.out.println(temp.getGantry().getState());
 				gui.getGantryManager().getGantry().setFeed(temp.getGantry().getFeed());
 			}
 		}

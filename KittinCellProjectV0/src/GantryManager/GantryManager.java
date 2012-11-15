@@ -28,27 +28,29 @@ public class GantryManager implements Serializable,ActionListener
 			feeders.add(0);
 			i++;
 		}
-		
-		
 	}
 	
 	public synchronized void update()
 	{
 		String state = gantry.getState();
-		if(gantry.done()==true)
+
+		if(gantry.done())
 		{
 			if(state.equals("load"))
 			{
 				gantry.setState("loading");
+				state = "loading";
 			}
 			else if(state.equals("loading"))
 			{
 				gantry.setState("free");
+				state = "free";
 				parts.get(gantry.getBox()).setState("feeding");
 			}
 			else if(state.equals("dumpi"))
 			{
 				gantry.setState("dumpf");
+				state = "dumpf";
 				feeders.set(gantry.getFeed(), 0);
 				gantry.setFeed(-1);
 				parts.get(gantry.getBox()).setState("dumpf");
@@ -62,6 +64,12 @@ public class GantryManager implements Serializable,ActionListener
 				parts.remove(gantry.getBox());
 				gantry.setState("free");
 				gantry.setBox(-1);
+				System.out.println("REMOVED");
+				gantry.setState("free");
+				System.out.println(gantry.getState());
+				state = "free";
+				gantry.setBox(-1);
+				System.out.println("CHANGED");
 			}
 		}
 		

@@ -357,76 +357,104 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Load Kit 2")){
     		getPartsRobot().addCommand("dump,1");
     	}   
-    	else if(process.equals("Load Parts Box 1")){
-    		gantryManager.getGantry().setState("load");
-			gantryManager.getGantry().setFeed(0);
+    	else if(process.equals("Load Parts Box 1"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("load");
+    			gantryManager.getGantry().setFeed(0);
+    		}
     	}
-    	else if(process.equals("Load Parts Box 2")){
-    		gantryManager.getGantry().setState("load");
-    		gantryManager.getGantry().setFeed(1);
+    	else if(process.equals("Load Parts Box 2"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("load");
+    			gantryManager.getGantry().setFeed(1);
+    		}
     	}
-    	else if(process.equals("Load Parts Box 3")){
-    		gantryManager.getGantry().setState("load");
-    		gantryManager.getGantry().setFeed(2);
+    	else if(process.equals("Load Parts Box 3"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("load");
+    			gantryManager.getGantry().setFeed(2);
+    		}
     	}
-    	else if(process.equals("Load Parts Box 4")){
-    		gantryManager.getGantry().setState("load");
-    		gantryManager.getGantry().setFeed(3);
+    	else if(process.equals("Load Parts Box 4"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("load");
+    			gantryManager.getGantry().setFeed(3);
+    		}
     	}
     	else if(process.equals("Dump Feeder 1"))
     	{
-    		gantryManager.getGantry().setState("dumpi");
-    		gantryManager.getGantry().setFeed(0);
-    		int i =0;
-    		while(i<gantryManager.getPartsBoxes().size())
+    		if(gantryManager.getGantry().getState().equals("free"))
     		{
-    			if(gantryManager.getPartsBoxes().get(i).getFeeder()==0)
+    			gantryManager.getGantry().setState("dumpi");
+    			gantryManager.getGantry().setFeed(0);
+    			int i =0;
+    			while(i<gantryManager.getPartsBoxes().size())
     			{
-    				gantryManager.getGantry().setBox(i);
+    				if(gantryManager.getPartsBoxes().get(i).getFeeder()==0)
+    				{
+    					gantryManager.getGantry().setBox(i);
+    				}
+    				i++;
     			}
-    			i++;
     		}
     	}
     	else if(process.equals("Dump Feeder 2"))
     	{
-    		gantryManager.getGantry().setState("dumpi");
-    		gantryManager.getGantry().setFeed(1);
-    		int i =0;
-    		while(i<gantryManager.getPartsBoxes().size())
+    		if(gantryManager.getGantry().getState().equals("free"))
     		{
-    			if(gantryManager.getPartsBoxes().get(i).getFeeder()==1)
+    			gantryManager.getGantry().setState("dumpi");
+    			gantryManager.getGantry().setFeed(1);
+    			int i =0;
+    			while(i<gantryManager.getPartsBoxes().size())
     			{
-    				gantryManager.getGantry().setBox(i);
+    				if(gantryManager.getPartsBoxes().get(i).getFeeder()==1)
+    				{
+    					gantryManager.getGantry().setBox(i);
+    				}	
+    				i++;
     			}
-    			i++;
     		}
     	}
     	else if(process.equals("Dump Feeder 3"))
     	{
-    		gantryManager.getGantry().setState("dumpi");
-    		gantryManager.getGantry().setFeed(2);
-    		int i =0;
-    		while(i<gantryManager.getPartsBoxes().size())
+    		if(gantryManager.getGantry().getState().equals("free"))
     		{
-    			if(gantryManager.getPartsBoxes().get(i).getFeeder()==2)
+    			gantryManager.getGantry().setState("dumpi");
+    			gantryManager.getGantry().setFeed(2);
+    			int i =0;
+    			while(i<gantryManager.getPartsBoxes().size())
     			{
-    				gantryManager.getGantry().setBox(i);
+    				if(gantryManager.getPartsBoxes().get(i).getFeeder()==2)
+    				{
+    					gantryManager.getGantry().setBox(i);
+    				}	
+    				i++;
     			}
-    			i++;
     		}
     	}
     	else if(process.equals("Dump Feeder 4"))
     	{
-    		gantryManager.getGantry().setState("dumpi");
-    		gantryManager.getGantry().setFeed(3);
-    		int i =0;
-    		while(i<gantryManager.getPartsBoxes().size())
+    		if(gantryManager.getGantry().getState().equals("free"))
     		{
-    			if(gantryManager.getPartsBoxes().get(i).getFeeder()==3)
+    			gantryManager.getGantry().setState("dumpi");
+    			gantryManager.getGantry().setFeed(3);
+    			int i =0;
+    			while(i<gantryManager.getPartsBoxes().size())
     			{
-    				gantryManager.getGantry().setBox(i);
+    				if(gantryManager.getPartsBoxes().get(i).getFeeder()==3)
+    				{
+    					gantryManager.getGantry().setBox(i);
+    				}
+    				i++;
     			}
-    			i++;
     		}
     	}
     	

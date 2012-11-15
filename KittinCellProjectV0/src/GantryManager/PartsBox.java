@@ -20,14 +20,24 @@ public class PartsBox implements Serializable
 	
 	public PartsBox(int c)
 	{
-		count = c;
-		xCurrent = xmax+5;
-		xFinal = xCurrent;
-		yCurrent = (ymax/2) - (ydim/2)+45;
-		yFinal = yCurrent;
-		state = "wait";
-		cycles = 0;
-		feeder = -1;
+		if(c==0)
+		{
+			xCurrent = 275;
+			yCurrent = 157;
+			yFinal = 157;
+			xFinal = 350;
+		}
+		else
+		{
+			count = c;
+			xCurrent = xmax+5;
+			xFinal = xCurrent;
+			yCurrent = (ymax/2) - (ydim/2)+45;
+			yFinal = yCurrent;
+			state = "wait";
+			cycles = 0;
+			feeder = -1;
+		}
 	}
 	
 	public void update()
@@ -128,5 +138,13 @@ public class PartsBox implements Serializable
 	public void setState(String state) 
 	{
 		this.state = state;
+	}
+	
+	public boolean done()
+	{
+		if(xCurrent==xFinal && yFinal==yCurrent)
+			return true;
+		else 
+			return false;
 	}
 }

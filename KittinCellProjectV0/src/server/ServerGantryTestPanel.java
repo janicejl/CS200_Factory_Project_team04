@@ -24,10 +24,10 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 		setMinimumSize(new Dimension(200,400));
 		
 		createButton("Load Config");
-		createButton("Load Parts Box 1");
-		createButton("Load Parts Box 2");
-		createButton("Load Parts Box 3");
-		createButton("Load Parts Box 4");
+		createButton("Load Feeder 1");
+		createButton("Load Feeder 2");
+		createButton("Load Feeder 3");
+		createButton("Load Feeder 4");
 		createButton("Dump Feeder 1");
 		createButton("Dump Feeder 2");
 		createButton("Dump Feeder 3");
@@ -62,21 +62,21 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 	
 	public void actionPerformed(ActionEvent ae)
 	{
-		if("Load Parts Box 1".equals(ae.getActionCommand()))
+		if("Load Feeder 1".equals(ae.getActionCommand()))
 		{
-			server.execute("Load Parts Box 1");
+			server.execute("Load Feeder 1");
 		}
-		else if("Load Parts Box 2".equals(ae.getActionCommand()))
+		else if("Load Feeder 2".equals(ae.getActionCommand()))
 		{
-			server.execute("Load Parts Box 2");
+			server.execute("Load Feeder 2");
 		}
-		else if("Load Parts Box 3".equals(ae.getActionCommand()))
+		else if("Load Feeder 3".equals(ae.getActionCommand()))
 		{
-			server.execute("Load Parts Box 3");
+			server.execute("Load Feeder 3");
 		}
-		else if("Load Parts Box 4".equals(ae.getActionCommand()))
+		else if("Load Feeder 4".equals(ae.getActionCommand()))
 		{
-			server.execute("Load Parts Box 4");
+			server.execute("Load Feeder 4");
 		}
 		else if("Dump Feeder 1".equals(ae.getActionCommand()))
 		{

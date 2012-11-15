@@ -71,6 +71,13 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			g2.drawImage(part, manager.getPartsBoxes().get(i).getxCurrent()+13, manager.getPartsBoxes().get(i).getyCurrent()+35,null);
 			i++;
 		}
+		i=0;
+		while(i<manager.getExiting().size())
+		{
+			g2.drawImage(crate,manager.getExiting().get(i).getxCurrent(),manager.getExiting().get(i).getyCurrent(),null);
+			g2.drawImage(part,manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
+			i++;
+		}
 		g2.drawImage(rail, manager.getGantry().getxCurrent()+10,0,null);
 		g2.drawImage(gantryImage,manager.getGantry().getxCurrent(), manager.getGantry().getyCurrent(),null);
 	}
@@ -80,7 +87,6 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		if(ae.getSource()==timer)
 		{
 			client.update();
-		//	manager.actionPerformed(ae);
 			this.repaint();
 		}
 	}

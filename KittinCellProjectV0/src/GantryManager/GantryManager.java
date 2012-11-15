@@ -10,6 +10,7 @@ public class GantryManager implements Serializable,ActionListener
 	Gantry gantry;
 	Vector<PartsBox> parts;
 	Vector<Integer> feeders;
+	Vector<PartsBox> exiting;
 	int speed;
 	Random rand;
 	
@@ -28,16 +29,29 @@ public class GantryManager implements Serializable,ActionListener
 			feeders.add(0);
 			i++;
 		}
+	
+		exiting = new Vector<PartsBox>();
 	}
 	
 	public synchronized void update()
 	{
 		String state = gantry.getState();
-		System.out.println(state);
 		
 		gantry.update();
-		
 		int i=0;
+		while(i<exiting.size())
+		{
+			exiting.get(i).update();
+			if(exiting.get(i).done())
+			{
+				exiting.remove(i);
+			}
+			else
+				i++;
+		}
+		
+		
+		i=0;
 		boolean go = true;
 		while(i<parts.size())
 		{
@@ -70,11 +84,9 @@ public class GantryManager implements Serializable,ActionListener
 		
 		if(gantry.getState().equals("load"))
 		{
-			System.out.println(gantry.getBox());
 			int c=0;
 			while(c<parts.size())
 			{
-				System.out.println(parts.get(c).getState());
 				if(parts.get(c).getState()=="load")
 				{
 					gantry.setxFinal(parts.get(c).getxCurrent()+10);
@@ -90,7 +102,6 @@ public class GantryManager implements Serializable,ActionListener
 		}
 		else if(gantry.getState().equals("loading"))
 		{
-			System.out.println(gantry.getBox());
 			parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
 			parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
 			parts.get(gantry.getBox()).setState("moving");
@@ -112,6 +123,7 @@ public class GantryManager implements Serializable,ActionListener
 				gantry.setState("free");
 			}
 		}
+		
 		if(gantry.done())
 		{
 			if(state.equals("load"))
@@ -132,8 +144,8 @@ public class GantryManager implements Serializable,ActionListener
 				feeders.set(gantry.getFeed(), 0);
 				gantry.setFeed(-1);
 				parts.get(gantry.getBox()).setState("dumpf");
-				gantry.setxFinal(300);
-				gantry.setyFinal(0);
+				gantry.setxFinal(285);
+				gantry.setyFinal(172);
 				parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
 				parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
 			}
@@ -142,6 +154,7 @@ public class GantryManager implements Serializable,ActionListener
 				parts.remove(gantry.getBox());
 				gantry.setState("free");
 				state = "free";
+				exiting.add(new PartsBox(0));
 			}
 		}
 	
@@ -170,5 +183,10 @@ public class GantryManager implements Serializable,ActionListener
 	public synchronized void setParts(Vector<PartsBox> p)
 	{
 		parts = p;
+	}
+	
+	public synchronized Vector<PartsBox> getExiting()
+	{
+		return exiting;
 	}
 }

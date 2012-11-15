@@ -363,7 +363,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Load Kit 2")){
     		getPartsRobot().addCommand("dump,1");
     	}   
-    	else if(process.equals("Load Parts Box 1"))
+    	else if(process.equals("Load Feeder 1"))
     	{
     		if(gantryManager.getGantry().getState().equals("free"))
     		{
@@ -371,7 +371,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setFeed(0);
     		}
     	}
-    	else if(process.equals("Load Parts Box 2"))
+    	else if(process.equals("Load Feeder 2"))
     	{
     		if(gantryManager.getGantry().getState().equals("free"))
     		{
@@ -379,7 +379,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setFeed(1);
     		}
     	}
-    	else if(process.equals("Load Parts Box 3"))
+    	else if(process.equals("Load Feeder 3"))
     	{
     		if(gantryManager.getGantry().getState().equals("free"))
     		{
@@ -387,7 +387,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setFeed(2);
     		}
     	}
-    	else if(process.equals("Load Parts Box 4")){
+    	else if(process.equals("Load Feeder 4")){
     		if(gantryManager.getGantry().getState().equals("free"))
     		{
     			gantryManager.getGantry().setState("load");

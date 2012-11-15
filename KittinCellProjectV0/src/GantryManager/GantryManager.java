@@ -63,10 +63,7 @@ public class GantryManager implements Serializable,ActionListener
 			{
 				parts.remove(gantry.getBox());
 				gantry.setState("free");
-				System.out.println("REMOVED");
-				System.out.println(gantry.getState());
 				state = "free";
-				System.out.println("CHANGED");
 			}
 		}
 		
@@ -112,10 +109,14 @@ public class GantryManager implements Serializable,ActionListener
 					gantry.setxFinal(parts.get(c).getxCurrent()+10);
 					gantry.setyFinal(parts.get(c).getyCurrent()+15);
 					gantry.setBox(c);
-					System.out.println(c);
 				}
 				c++;
 			}
+			if(gantry.getBox()>parts.size())
+			{
+				gantry.setState("free");
+			}
+				
 		}
 		else if(gantry.getState().equals("loading"))
 		{

@@ -63,12 +63,10 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		g2.drawImage(feeder, -100, 284,null);
 		g2.drawImage(feeder,  -28, 422, null);
 		
-		//System.out.println(manager.getGantry().getState());
 		
 		int i=0;
 		while(i<manager.getPartsBoxes().size())
 		{
-			//manager.getPartsBoxes().get(i).update();
 			g2.drawImage(crate, manager.getPartsBoxes().get(i).getxCurrent(), manager.getPartsBoxes().get(i).getyCurrent(), null);
 			g2.drawImage(part, manager.getPartsBoxes().get(i).getxCurrent()+13, manager.getPartsBoxes().get(i).getyCurrent()+35,null);
 			i++;

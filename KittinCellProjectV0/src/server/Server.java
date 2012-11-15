@@ -442,6 +442,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		Part temp = new Part("" + num, "images/kt" + num + ".png");
     		temp.setImagePath("images/kt" + temp.getId() + ".png");
     		lanes.get(num).addPart(temp);
+    		if (num % 2 == 0) {
+    			feeders.get(num/2).setTopLane(true);
+    		} else {
+    			feeders.get(num/2).setTopLane(false);
+    		}
+    		System.out.println("TOPLANE: " + feeders.get(num/2).getTopLane());
     		feeders.get(num/2).addParts(temp);
     	}
     	else if(process.equals("Feed Lane")){

@@ -53,6 +53,9 @@ public class Protocols implements Runnable{
 			else if (protocolName.equals("Part Manager")){
 				runPartsManagerProtocol();
 			}
+			else if (protocolName.equals("Kit Manager")){
+				runKitsManagerProtocol();
+			}
 			else if (protocolName.equals("Production Kit Client")){
 				runProdKitProtocol();
 			}

@@ -19,10 +19,42 @@ public class Lane implements ActionListener, Serializable{
     private int verticalSpacing;
     private int queueBorder = 120;
     private boolean queueFull; 
+    private boolean openGate;
     private Feeder feeder;
     private Nest n;
+    private int gateCounter;
+    public class Gate implements Serializable{
+    	public double topNodeX, topNodeY, bottomNodeX, bottomNodeY;
+    	public void setNodes(double bottomNodeX, double bottomNodeY, double topNodeX, double topNodeY) {
+    		this.topNodeX = topNodeX;
+    		this.topNodeY = topNodeY;
+    		this.bottomNodeX = bottomNodeX;
+    		this.bottomNodeY = bottomNodeY;
+    	}
+    	public void setNodes(double bottomNodeX, double bottomNodeY) {
+    		this.bottomNodeX = bottomNodeX;
+    		this.bottomNodeY = bottomNodeY;
+    	}
+		public double getTopNodeX() {
+			return topNodeX;
+		}
+		public double getTopNodeY() {
+			return topNodeY;
+		}
+		public double getBottomNodeX() {
+			return bottomNodeX;
+		}
+		public double getBottomNodeY() {
+			return bottomNodeY;
+		}
+    	
+    	
+    }
+    
+    public Gate gate;
 
     private Lane() {
+    	this.gateCounter = 0;
     	this.maxX = 600;
 		this.maxY = 30;
     	this.verticalSpacing = 0;
@@ -32,6 +64,7 @@ public class Lane implements ActionListener, Serializable{
 	    this.queueList = new Vector<Part> ();
 		this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		this.queueFull = false;
+		this.openGate = false;
 	 }
     
     public Lane(int width, int verticalSpacing, Nest n) {
@@ -45,6 +78,8 @@ public class Lane implements ActionListener, Serializable{
 	    queueList = new Vector<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		//nestFull = false;
+		gate = new Gate();
+		gate.setNodes(80, verticalSpacing + 20, 100, verticalSpacing + 5);
 		queueFull = false;		
 		/*importList.add(new Part("1"));
 		importList.add(new Part("2"));
@@ -86,8 +121,31 @@ public class Lane implements ActionListener, Serializable{
 		    	}
 	    	}
 	    } 
+	    
+	    if(openGate == true && gateCounter < 50) {
+	    	gateCounter++;
+	    	if(gateCounter < 25) { //opengate
+	    		gate.setNodes(40 - gateCounter*0.25, verticalSpacing + 20 - gateCounter*0.25);
+	    		System.out.println("Opening (" +  (40 - gateCounter*0.25) + ", " + (verticalSpacing + 20 - gateCounter*0.25) + ")");
+	    	}	
+	    	else if(gateCounter < 50) {
+	    		gate.setNodes(40 + gateCounter*0.25, verticalSpacing + 20 + gateCounter*0.25);
+	    		System.out.println("Closing (" +  (40 + gateCounter*0.25) + ", " + (verticalSpacing + 20 + gateCounter*0.25) + ")");
+	    	}
+	    		
+	    	else if(gateCounter == 50) {
+	    		System.out.println("Gate done");
+	    		gateCounter = 0;
+	    		openGate = false;
+	    	}
+	    }
+	    
     }
 	    
+    public Gate getGate() {
+    	return this.gate;
+    }
+    
     public Vector<Part> getItemList() {
     	return this.itemList;
     }
@@ -120,10 +178,12 @@ public class Lane implements ActionListener, Serializable{
     public void releaseQueue(){
     	if(itemList.size() != 0){
     		if(itemList.get(0).getDestination() == true){
-    			n.addPart(itemList.remove(0));	
+    			n.addPart(itemList.remove(0));
+    			openGate = true;
+    			
     		}
     	}
-    	System.out.println("Rawr");
+    	System.out.println("Rawr!!!!");
     	return;
     }
     

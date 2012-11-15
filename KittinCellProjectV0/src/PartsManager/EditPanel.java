@@ -33,9 +33,9 @@ public class EditPanel extends JPanel implements ActionListener{
 		partsSelectBox = new JComboBox(partNames);
 //		partsSelectBox = new JComboBox(parts);
 		partsSelectBox.setAlignmentY(Component.CENTER_ALIGNMENT);
-		partsSelectBox.setPreferredSize(new Dimension(290, 27));
-		partsSelectBox.setMinimumSize(new Dimension(290, 27));
-		partsSelectBox.setMaximumSize(new Dimension(290, 27));
+		partsSelectBox.setPreferredSize(new Dimension(270, 27));
+		partsSelectBox.setMinimumSize(new Dimension(270, 27));
+		partsSelectBox.setMaximumSize(new Dimension(270, 27));
 		updateSelectionBox(0);
 		
 		promptLabels.add(new JLabel("Part:"));
@@ -100,10 +100,10 @@ public class EditPanel extends JPanel implements ActionListener{
 			horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,27)));
 			horizPanels.get(horizPanels.size()-1).add(promptLabels.get(i+1));
 			if(i==0){
-				horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(200,27)));
+				horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(180,27)));
 			}
 			else if(i==1){
-				horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(188,27)));
+				horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(168,27)));
 			}
 			horizPanels.get(horizPanels.size()-1).add(editFields.get(i));
 		}
@@ -115,7 +115,7 @@ public class EditPanel extends JPanel implements ActionListener{
 		horizPanels.get(horizPanels.size()-1).setMinimumSize(new Dimension(500, 180));
 		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,27)));
 		horizPanels.get(horizPanels.size()-1).add(promptLabels.get(3));
-		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(30,20)));
+		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,20)));
 		horizPanels.get(horizPanels.size()-1).add(descriptionArea);
 		
 		horizPanels.add(new JPanel());
@@ -132,6 +132,10 @@ public class EditPanel extends JPanel implements ActionListener{
 			add(horizPanels.get(i));
 			add(Box.createRigidArea(new Dimension(500, 20)));
 		}
+		
+		editButton.addActionListener(this);
+		submitButton.addActionListener(this);
+		resetButton.addActionListener(this);
 	}
 	
 	public void updateSelectionBox(int num){

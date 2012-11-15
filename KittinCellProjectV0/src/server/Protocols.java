@@ -23,9 +23,9 @@ public class Protocols implements Runnable{
 		app = _app;
 		s = _s;
 		try {
-			out = new ObjectOutputStream(s.getOutputStream());
+			out = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream()));
 			out.flush();
-			in = new ObjectInputStream(s.getInputStream());
+			in = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));
 			command = (String)in.readObject();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

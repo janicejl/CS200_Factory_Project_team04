@@ -58,6 +58,7 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 		kitBox.setPreferredSize(new Dimension(100, 30));
 		kitBox.setMaximumSize(new Dimension(100, 30));
 		kitBox.setMinimumSize(new Dimension(100, 30));
+		kitBox.addActionListener(this);
 		
 		amtLabel = new JLabel("Amount:");
 		amtLabel.setPreferredSize(new Dimension(70, 30));
@@ -110,6 +111,10 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 			Job temp = new Job(app.getApp().getKitsList().get(kitBox.getSelectedIndex()), amt);
 			app.getApp().getJobs().add(temp);
 			app.getListPanel().getJobs().create(temp.getKit().getName(), amt);
+		}
+		else if (ae.getSource() == kitBox){
+			int index = kitBox.getSelectedIndex();
+			app.updateKitPanel(index);
 		}
 	}
 	

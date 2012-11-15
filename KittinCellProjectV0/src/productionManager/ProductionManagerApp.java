@@ -58,8 +58,8 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		card.setPreferredSize(new Dimension(1000, 600));
 		card.setMaximumSize(new Dimension(1000, 600));
 		card.setMinimumSize(new Dimension(1000, 600));
-		card.add(panel);
-		card.add(graphics);
+		card.add(panel, "");
+		card.add(graphics, "");
 		
 		add(card);
 		

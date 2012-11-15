@@ -5,6 +5,8 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import data.KitInfo;
+
 public class ProductionManagerPanel extends JPanel implements ActionListener {
 
 	ProductionManagerApp app;
@@ -31,7 +33,7 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 		createPanel.setMaximumSize(new Dimension(500, 250));
 		createPanel.setMinimumSize(new Dimension(500, 250));
 		
-		kitPanel = new KitPanel(this);
+		kitPanel = new KitPanel(this, app.getKitsList().get(0));
 		kitPanel.setPreferredSize(new Dimension(500, 250));
 		kitPanel.setMaximumSize(new Dimension(500, 250));
 		kitPanel.setMinimumSize(new Dimension(500, 250));
@@ -60,6 +62,8 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 	}
 	public void paintComponent(Graphics g){
 		listPanel.repaint();
+		createPanel.repaint();
+		kitPanel.repaint();
 		revalidate();
 	}
 	
@@ -88,6 +92,9 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 
 	public synchronized void setKitPanel(KitPanel kitPanel) {
 		this.kitPanel = kitPanel;
+	}
+	public synchronized void updateKitPanel(int index){
+		kitPanel.updateKit(app.getKitsList().get(index));
 	}
 
 	public synchronized CreateJobPanel getCreatePanel() {

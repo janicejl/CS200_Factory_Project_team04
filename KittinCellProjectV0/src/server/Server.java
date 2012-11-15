@@ -386,11 +386,16 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		int i =0;
     		while(i<gantryManager.getPartsBoxes().size())
     		{
+<<<<<<< HEAD
     			if(gantryManager.getPartsBoxes().get(i).getFeeder()==0)
     			{
     				gantryManager.getGantry().setBox(i);
     			}
     			i++;
+=======
+    			gantryManager.getGantry().setState("dumpi");
+    			gantryManager.getGantry().setFeed(0);
+>>>>>>> e65c0237f7df886dad023f8efe20b6ac87d11665
     		}
     	}
     	else if(process.equals("Dump Feeder 2"))
@@ -400,11 +405,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		int i =0;
     		while(i<gantryManager.getPartsBoxes().size())
     		{
-    			if(gantryManager.getPartsBoxes().get(i).getFeeder()==1)
-    			{
-    				gantryManager.getGantry().setBox(i);
-    			}
-    			i++;
+    			gantryManager.getGantry().setState("dumpi");
+    			gantryManager.getGantry().setFeed(1);
     		}
     	}
     	else if(process.equals("Dump Feeder 3"))
@@ -414,11 +416,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		int i =0;
     		while(i<gantryManager.getPartsBoxes().size())
     		{
-    			if(gantryManager.getPartsBoxes().get(i).getFeeder()==2)
-    			{
-    				gantryManager.getGantry().setBox(i);
-    			}
-    			i++;
+    			gantryManager.getGantry().setState("dumpi");
+    			gantryManager.getGantry().setFeed(2);
     		}
     	}
     	else if(process.equals("Dump Feeder 4"))
@@ -428,11 +427,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		int i =0;
     		while(i<gantryManager.getPartsBoxes().size())
     		{
-    			if(gantryManager.getPartsBoxes().get(i).getFeeder()==3)
-    			{
-    				gantryManager.getGantry().setBox(i);
-    			}
-    			i++;
+    			gantryManager.getGantry().setState("dumpi");
+    			gantryManager.getGantry().setFeed(3);
     		}
     	}
     	

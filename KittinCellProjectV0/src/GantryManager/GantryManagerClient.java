@@ -54,12 +54,12 @@ public class GantryManagerClient implements Runnable
 		{}
 	}
 	
-	public synchronized Thread getThread()
+	public  Thread getThread()
 	{
 		return thread;
 	}
 	
-	public synchronized void send()
+	public  void send()
 	{
 		try
 		{
@@ -69,7 +69,7 @@ public class GantryManagerClient implements Runnable
 		catch(Exception e){}
 	}
 	
-	public synchronized void update()
+	public  void update()
 	{
 		try
 		{
@@ -88,7 +88,7 @@ public class GantryManagerClient implements Runnable
 		catch(Exception ignore){}
 	}
 	
-	public synchronized void setThread(Thread t)
+	public  void setThread(Thread t)
 	{
 		thread = t;
 	}

@@ -1,15 +1,15 @@
 package GantryManager;
 
 import java.io.*;
-import java.util.Vector;
+import java.util.*;
 import java.util.Random;
 import java.awt.event.*;
 
 public class GantryManager implements Serializable,ActionListener
 {
 	Gantry gantry;
-	Vector<PartsBox> parts;
-	Vector<Integer> feeders;
+	ArrayList<PartsBox> parts;
+	ArrayList<Integer> feeders;
 	int speed;
 	Random rand;
 	
@@ -18,10 +18,10 @@ public class GantryManager implements Serializable,ActionListener
 		rand = new Random();
 		gantry = new Gantry();
 		
-		parts = new Vector<PartsBox>();
+		parts = new ArrayList<PartsBox>();
 		parts.add(new PartsBox(100));
 		
-		feeders = new Vector<Integer>();
+		feeders = new ArrayList<Integer>();
 		int i=0;
 		while(i<4)
 		{
@@ -43,9 +43,9 @@ public class GantryManager implements Serializable,ActionListener
 			}
 			else if(state.equals("loading"))
 			{
+				parts.get(gantry.getBox()).setState("feeding");
 				gantry.setState("free");
 				state = "free";
-				parts.get(gantry.getBox()).setState("feeding");
 			}
 			else if(state.equals("dumpi"))
 			{
@@ -128,7 +128,7 @@ public class GantryManager implements Serializable,ActionListener
 		}
 	}
 	
-	public void actionPerformed(ActionEvent ae)
+	public synchronized void actionPerformed(ActionEvent ae)
 	{
 		this.update();
 	}
@@ -138,7 +138,7 @@ public class GantryManager implements Serializable,ActionListener
 		return gantry;
 	}
 	
-	public synchronized Vector<PartsBox> getPartsBoxes()
+	public synchronized ArrayList<PartsBox> getPartsBoxes()
 	{
 		return parts;
 	}
@@ -148,7 +148,7 @@ public class GantryManager implements Serializable,ActionListener
 		gantry = g;
 	}
 	
-	public synchronized void setParts(Vector<PartsBox> p)
+	public synchronized void setParts(ArrayList<PartsBox> p)
 	{
 		parts = p;
 	}

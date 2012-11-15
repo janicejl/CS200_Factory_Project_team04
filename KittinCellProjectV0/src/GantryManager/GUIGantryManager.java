@@ -13,7 +13,6 @@ public class GUIGantryManager extends JPanel implements ActionListener
 	protected BufferedImage background = null;
 	protected BufferedImage rail = null;
 	protected BufferedImage station = null;
-	protected BufferedImage lane = null;
 	protected BufferedImage feeder = null;
 	protected BufferedImage gantryImage = null;
 	protected BufferedImage crate = null;
@@ -34,7 +33,6 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			rail = ImageIO.read(new File("images/rail.png"));
 			station = ImageIO.read(new File("images/station.png"));
 			feeder = ImageIO.read(new File("images/Feeder.png"));
-			lane = ImageIO.read(new File("images/lanetemp.png"));
 			gantryImage = ImageIO.read(new File("images/gantryrobot.png"));
 			crate = ImageIO.read(new File("images/crate.png"));
 			part = ImageIO.read(new File("images/part.png"));
@@ -52,15 +50,18 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
 		g2.drawImage(background,0,0,null);
-		g2.drawImage(station, 275,275,null);
-		g2.drawImage(feeder, 200, 35, null);
-		g2.drawImage(feeder, 50, 160, null);
-		g2.drawImage(feeder, 50, 315,null);
-		g2.drawImage(feeder,  200, 435, null);
-		g2.drawImage(lane, 0,50,null);
-		g2.drawImage(lane, -150, 175, null);
-		g2.drawImage(lane, -150, 325,null);
-		g2.drawImage(lane, 0, 450,null);
+		g2.drawImage(station, 275,157, null);
+			g2.drawImage(station, 325, 157,null);
+		g2.drawImage(station, 275,207,null);
+			g2.drawImage(station, 325, 207,null);
+		g2.drawImage(station, 275,295,null);
+			g2.drawImage(station, 325, 295,null);
+		g2.drawImage(station, 275,345,null);
+			g2.drawImage(station, 325,345,null);
+		g2.drawImage(feeder, -28, 8, null);
+		g2.drawImage(feeder, -100, 146, null);
+		g2.drawImage(feeder, -100, 284,null);
+		g2.drawImage(feeder,  -28, 422, null);
 		
 		//System.out.println(manager.getGantry().getState());
 		
@@ -86,11 +87,11 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		}
 	}
 	
-	public synchronized GantryManager getGantryManager()
+	public  GantryManager getGantryManager()
 	{
 		return manager;
 	}
-	public synchronized void setGantryManager(GantryManager gm)
+	public  void setGantryManager(GantryManager gm)
 	{
 		manager = gm;
 	}

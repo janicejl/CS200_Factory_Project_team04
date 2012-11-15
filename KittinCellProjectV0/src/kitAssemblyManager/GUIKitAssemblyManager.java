@@ -264,7 +264,7 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
     	}
     }
     
-    public synchronized void connectKitRobot(){
+    public void connectKitRobot(){
 		int i = kitClient.connect();
 		if(i == -1){
 			System.exit(1);
@@ -274,7 +274,7 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 			timer.start();
 		}
 	}
-    public synchronized void connectPartsRobot(){
+    public void connectPartsRobot(){
 		int i = partsClient.connect();
 		if(i == -1){
 			System.exit(1);
@@ -285,43 +285,43 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 		}
 	}
 
-	public synchronized Vector<Kit> getBaseEmptyKits() {
+	public Vector<Kit> getBaseEmptyKits() {
 		return baseEmptyKits;
 	}
 
-	public synchronized void setBaseEmptyKits(Vector<Kit> baseEmptyKits) {
+	public void setBaseEmptyKits(Vector<Kit> baseEmptyKits) {
 		this.baseEmptyKits = baseEmptyKits;
 	}
 
-	public synchronized Vector<Kit> getBaseFinishedKits() {
+	public Vector<Kit> getBaseFinishedKits() {
 		return baseFinishedKits;
 	}
 
-	public synchronized void setBaseFinishedKits(Vector<Kit> baseFinishedKits) {
+	public void setBaseFinishedKits(Vector<Kit> baseFinishedKits) {
 		this.baseFinishedKits = baseFinishedKits;
 	}
 	
-	public synchronized PartsManagerClient getPartsClient() {
+	public PartsManagerClient getPartsClient() {
 		return partsClient;
 	}	
 
-	public synchronized KitRobot getKitRobot() {
+	public KitRobot getKitRobot() {
 		return kitRobot;
 	}
 	
-	public synchronized PartsRobot getPartsRobot() {
+	public PartsRobot getPartsRobot() {
 		return partsRobot;
 	}
 	
-    public synchronized void setKitAssemblyManager(KitAssemblyManager kitAssemblyManager) {
+    public void setKitAssemblyManager(KitAssemblyManager kitAssemblyManager) {
 		kam = kitAssemblyManager;
 	}
 
-	public synchronized void setKitRobot(KitRobot kitRobot) {
+	public void setKitRobot(KitRobot kitRobot) {
 		this.kitRobot = kitRobot;
 	}
 
-	public synchronized void setPartsRobot(PartsRobot partsRobot) {
+	public void setPartsRobot(PartsRobot partsRobot) {
 		this.partsRobot = partsRobot;
 	}
 }

@@ -137,11 +137,11 @@ public class GUIPartsRobot{
         }
     }
 
-	public synchronized boolean getTakePicture() {
+	public boolean getTakePicture() {
 		return takePicture;
 	}
 
-	public synchronized void setTakePicture(boolean takePicture) {
+	public void setTakePicture(boolean takePicture) {
 		this.takePicture = takePicture;
 	}
 }

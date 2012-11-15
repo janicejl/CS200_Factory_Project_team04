@@ -61,43 +61,43 @@ public class Part implements Serializable{
 		id = nID;
 	}
 
-	public synchronized String getId() {
+	public String getId() {
 		return id;
 	}
 
-	public synchronized void setId(String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public synchronized boolean getDestination() {
+	public boolean getDestination() {
 		return destination;
 	}
 
-	public synchronized void setDestination(boolean destination) {
+	public void setDestination(boolean destination) {
 		this.destination = destination;
 	}
 
 
 
-	public synchronized PartType getType() {
+	public PartType getType() {
 		return type;
 	}
 
 
 
-	public synchronized void setType(PartType type) {
+	public void setType(PartType type) {
 		this.type = type;
 	}
 
 
 
-	public synchronized String getImagePath() {
+	public String getImagePath() {
 		return imagePath;
 	}
 
 
 
-	public synchronized void setImagePath(String imagePath) {
+	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
 }

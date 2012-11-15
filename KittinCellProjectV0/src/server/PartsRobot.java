@@ -278,43 +278,43 @@ public class PartsRobot implements Runnable, Serializable{
     	return takePicture;
     }
 
-    public synchronized Boolean getMsg() {
+    public Boolean getMsg() {
 		return msg;
 	}
     
-    public synchronized Vector<Integer> getGripperPartIDs(){
+    public Vector<Integer> getGripperPartIDs(){
     	return gripperPartIDs;
     }
 
-    public synchronized Vector<Part> getPartsHeld(){
+    public Vector<Part> getPartsHeld(){
     	return partsHeld;
     }
     
-	public synchronized void setMsg(Boolean msg) {
+	public void setMsg(Boolean msg) {
 		this.msg = msg;
 	}
 
-	public synchronized double getCameraX() {
+	public double getCameraX() {
 		return cameraX;
 	}
 
-	public synchronized void setCameraX(double cameraX) {
+	public void setCameraX(double cameraX) {
 		this.cameraX = cameraX;
 	}
 
-	public synchronized double getCameraY() {
+	public double getCameraY() {
 		return cameraY;
 	}
 
-	public synchronized void setCameraY(double cameraY) {
+	public void setCameraY(double cameraY) {
 		this.cameraY = cameraY;
 	}
 
-	public synchronized void setTakePicture(boolean takePicture) {
+	public void setTakePicture(boolean takePicture) {
 		this.takePicture = takePicture;
 	}
 	
-	public synchronized float getOpacity(){
+	public float getOpacity(){
 		return opacity;
 		
 	}

@@ -40,11 +40,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	ServerSocket ss; //serversocket
 	Socket s; //socket reference to connect to each manager
-	DetermineProtocol determine;
-	KitAssemblyProtocol kitPro;
-	LaneManagerProtocol lanePro;
-	PartsRobotProtocol partsPro;
-	GantryManagerProtocol gantryPro;
+//	DetermineProtocol determine;
+//	KitAssemblyProtocol kitPro;
+//	LaneManagerProtocol lanePro;
+//	PartsRobotProtocol partsPro;
+//	GantryManagerProtocol gantryPro;
 	
 	
 	PartsRobot partsRobot;
@@ -478,118 +478,118 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		factory.start();
 	}
 
-	public synchronized KitAssemblyManager getKitAssemblyManager() {
+	public KitAssemblyManager getKitAssemblyManager() {
 		return kitAssemblyManager;
 	}
 
-	public synchronized void setKitAssemblyManager(
+	public void setKitAssemblyManager(
 			KitAssemblyManager kitAssemblyManager) {
 		this.kitAssemblyManager = kitAssemblyManager;
 	}
 
-	public synchronized KitRobot getKitRobot() {
+	public KitRobot getKitRobot() {
 		return kitRobot;
 	}
 
-	public synchronized void setKitRobot(KitRobot kitRobot) {
+	public void setKitRobot(KitRobot kitRobot) {
 		this.kitRobot = kitRobot;
 	}
 
-	public synchronized String getClientType() {
+	public String getClientType() {
 		return clientType;
 	}
 
-	public synchronized void setClientType(String clientType) {
+	public void setClientType(String clientType) {
 		this.clientType = clientType;
 	}
 
-	public synchronized KitRobotAgent getKitRobotAgent() {
+	public KitRobotAgent getKitRobotAgent() {
 		return kitRobotAgent;
 	}
 
-	public synchronized void setKitRobotAgent(KitRobotAgent kitRobotAgent) {
+	public void setKitRobotAgent(KitRobotAgent kitRobotAgent) {
 		this.kitRobotAgent = kitRobotAgent;
 	}
 
-	public synchronized KitStandAgent getKitStandAgent() {
+	public KitStandAgent getKitStandAgent() {
 		return kitStandAgent;
 	}
 
-	public synchronized void setKitStandAgent(KitStandAgent kitStandAgent) {
+	public void setKitStandAgent(KitStandAgent kitStandAgent) {
 		this.kitStandAgent = kitStandAgent;
 	}
 
-	public synchronized KitConveyorAgent getKitConveyorAgent() {
+	public KitConveyorAgent getKitConveyorAgent() {
 		return kitConveyorAgent;
 	}
 
-	public synchronized void setKitConveyorAgent(KitConveyorAgent kitConveyorAgent) {
+	public void setKitConveyorAgent(KitConveyorAgent kitConveyorAgent) {
 		this.kitConveyorAgent = kitConveyorAgent;
 	}
 
-	public synchronized PartsRobotProtocol getPartsPro() {
-		return partsPro;
-	}
+//	public PartsRobotProtocol getPartsPro() {
+//		return partsPro;
+//	}
+//
+//	public void setPartsPro(PartsRobotProtocol partsPro) {
+//		this.partsPro = partsPro;
+//	}
 
-	public synchronized void setPartsPro(PartsRobotProtocol partsPro) {
-		this.partsPro = partsPro;
-	}
-
-	public synchronized PartsRobot getPartsRobot() {
+	public PartsRobot getPartsRobot() {
 		return partsRobot;
 	}
 
-	public synchronized void setPartsRobot(PartsRobot partsRobot) {
+	public void setPartsRobot(PartsRobot partsRobot) {
 		this.partsRobot = partsRobot;
 	}
 
-	public synchronized PartsRobotAgent getPartsRobotAgent() {
+	public PartsRobotAgent getPartsRobotAgent() {
 		return partsRobotAgent;
 	}
 
-	public synchronized void setPartsRobotAgent(PartsRobotAgent partsRobotAgent) {
+	public void setPartsRobotAgent(PartsRobotAgent partsRobotAgent) {
 		this.partsRobotAgent = partsRobotAgent;
 	}
 
 
-	public synchronized NestAgent getNestAgent(int index)
+	public NestAgent getNestAgent(int index)
 	{
 		return nests.get(index);
 	}
 		
-	public synchronized Vector<Lane> getLanes() {
+	public Vector<Lane> getLanes() {
 		return lanes;
 	}
 
-	public synchronized void setLanes(Vector<Lane> lanes) {
+	public void setLanes(Vector<Lane> lanes) {
 		this.lanes = lanes;
 	}
-	public synchronized Vector<VisionAgent> getVisions(){
+	public Vector<VisionAgent> getVisions(){
 		return this.visions;
 	}
 
-	public synchronized Vector<Feeder> getFeeders() {
+	public Vector<Feeder> getFeeders() {
 		return feeders;
 	}
 
-	public synchronized void setFeeders(Vector<Feeder> feeders) {
+	public void setFeeders(Vector<Feeder> feeders) {
 		this.feeders = feeders;
 	}
 	
-	public synchronized Vector<Nest> getNests() {
+	public Vector<Nest> getNests() {
 		return nestList;
 	}
 	
-	public synchronized void setNests(Vector<Nest> nests) {
+	public void setNests(Vector<Nest> nests) {
 		this.nestList = nests;
 	}
 	
-	public synchronized GantryManager getGantryManager()
+	public GantryManager getGantryManager()
 	{
 		return gantryManager;
 	}
 	
-	public synchronized void setGantryManager(GantryManager g)
+	public void setGantryManager(GantryManager g)
 	{
 		gantryManager = g;
 	}

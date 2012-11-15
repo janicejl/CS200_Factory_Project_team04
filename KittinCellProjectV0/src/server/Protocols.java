@@ -35,7 +35,7 @@ public class Protocols implements Runnable{
 		thread.start();
 	}
 	
-	public synchronized void run(){
+	public void run(){
 		while(true){
 			if(protocolName.equals("Kit Assembly")){
 				runKitProtocol();
@@ -55,7 +55,7 @@ public class Protocols implements Runnable{
 		}
 	}
 	
-	public synchronized void runGantryProtocol(){
+	public void runGantryProtocol(){
 		try
 		{
 			out.writeObject(app.getGantryManager());
@@ -67,7 +67,7 @@ public class Protocols implements Runnable{
 		}
 	}
 	
-	public synchronized void runKitProtocol(){
+	public void runKitProtocol(){
 		try {
 			out.writeObject(app.getKitRobot());
 			out.reset();
@@ -92,7 +92,7 @@ public class Protocols implements Runnable{
 		}
 		catch(Exception ignore){}
 	}
-	public synchronized void runLaneProtocol(){
+	public void runLaneProtocol(){
 		try {
 			out.writeObject(app.getLanes());
 			out.reset();
@@ -103,10 +103,10 @@ public class Protocols implements Runnable{
 		} catch (Exception ignore){}
 	}
 	
-	public synchronized void runPartsManagerProtocol(){
+	public void runPartsManagerProtocol(){
 		
 	}
-	public synchronized void runProdKitProtocol(){
+	public void runProdKitProtocol(){
 		try {
 			out.writeObject(app.getKitRobot());
 			out.reset();

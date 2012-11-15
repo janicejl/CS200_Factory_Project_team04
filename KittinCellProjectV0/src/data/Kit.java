@@ -79,10 +79,10 @@ public class Kit implements Serializable {
 		destinationY = nY;
 	}
 	
-	public synchronized boolean isGrabbed() {
+	public boolean isGrabbed() {
 		return grabbed;
 	}
-	public synchronized void setGrabbed(boolean grabbed) {
+	public void setGrabbed(boolean grabbed) {
 		this.grabbed = grabbed;
 	}
 	
@@ -123,7 +123,7 @@ public class Kit implements Serializable {
 		//destinationY = nY;
 	}
 	
-	public synchronized Vector<Part> getPartsList() {
+	public Vector<Part> getPartsList() {
 		return partsList;
 	}
 }

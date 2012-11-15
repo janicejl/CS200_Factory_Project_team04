@@ -185,220 +185,220 @@ public class KitRobot implements Runnable, Serializable{
         }
     }
 
-    public synchronized double getX(){
+    public double getX(){
         return x;
     }
 
-    public synchronized double getY(){
+    public double getY(){
         return y;
     }
 
-    public synchronized boolean getProcessing() {
+    public boolean getProcessing() {
         return processing;
     }
 
-    public synchronized void setProcessing(boolean processing) {
+    public void setProcessing(boolean processing) {
         this.processing = processing;
     }
 
-    public synchronized boolean getPaused() {
+    public boolean getPaused() {
         return paused;
     }
 
-    public synchronized void setPaused(boolean paused) {
+    public void setPaused(boolean paused) {
         this.paused = paused;
     }
 
-    public synchronized boolean getEmptyAvailable() {
+    public boolean getEmptyAvailable() {
         return emptyAvailable;
     }
 
-    public synchronized void setEmptyAvailable(boolean emptyAvailable) {
+    public void setEmptyAvailable(boolean emptyAvailable) {
         this.emptyAvailable = emptyAvailable;
     }
 
-    public synchronized boolean getSpawnEmpty() {
+    public boolean getSpawnEmpty() {
         return spawnEmpty;
     }
 
-    public synchronized void setSpawnEmpty(boolean spawnEmpty) {
+    public void setSpawnEmpty(boolean spawnEmpty) {
         this.spawnEmpty = spawnEmpty;
     }
 
-    public synchronized boolean getEmptyConveyorOn() {
+    public boolean getEmptyConveyorOn() {
         return emptyConveyorOn;
     }
 
-    public synchronized void setEmptyConveyorOn(boolean emptyConveyorOn) {
+    public void setEmptyConveyorOn(boolean emptyConveyorOn) {
         this.emptyConveyorOn = emptyConveyorOn;
     }
 
-    public synchronized boolean getDoneConveyorOn() {
+    public boolean getDoneConveyorOn() {
         return doneConveyorOn;
     }
 
-    public synchronized void setDoneConveyorOn(boolean doneConveyorOn) {
+    public void setDoneConveyorOn(boolean doneConveyorOn) {
         this.doneConveyorOn = doneConveyorOn;
     }
 
-  /*  public synchronized double getNewExtension() {
+  /*  public double getNewExtension() {
         return newExtension;
     }
 
-    public synchronized void setNewExtension(double newExtension) {
+    public void setNewExtension(double newExtension) {
         this.newExtension = newExtension;
     }
 
-    public synchronized double getNewAngle() {
+    public double getNewAngle() {
         return newAngle;
     }
 
-    public synchronized void setNewAngle(double newAngle) {
+    public void setNewAngle(double newAngle) {
         this.newAngle = newAngle;
     }*/
 
-    public synchronized Kit getKit() {
+    public Kit getKit() {
         return kit;
     }
 
-    public synchronized void setKit(Kit kit) {
+    public void setKit(Kit kit) {
         this.kit = kit;
     }
 
-    public synchronized Vector<String> getStationRotations() {
+    public Vector<String> getStationRotations() {
         return stationRotations;
     }
 
-    public synchronized void setStationRotations(Vector<String> stationRotations) {
+    public void setStationRotations(Vector<String> stationRotations) {
         this.stationRotations = stationRotations;
     }
 
-    public synchronized Vector<String> getCommands() {
+    public Vector<String> getCommands() {
         return commands;
     }
 
-    public synchronized void setCommands(Vector<String> commands) {
+    public void setCommands(Vector<String> commands) {
         this.commands = commands;
     }
 
-    public synchronized Vector<String> getSubCommands() {
+    public Vector<String> getSubCommands() {
         return subCommands;
     }
 
-    public synchronized void setSubCommands(Vector<String> subCommands) {
+    public void setSubCommands(Vector<String> subCommands) {
         this.subCommands = subCommands;
     }
 
-    public synchronized Vector<String> getCommandsSkipped() {
+    public Vector<String> getCommandsSkipped() {
         return commandsSkipped;
     }
 
-    public synchronized void setCommandsSkipped(Vector<String> commandsSkipped) {
+    public void setCommandsSkipped(Vector<String> commandsSkipped) {
         this.commandsSkipped = commandsSkipped;
     }
 
-    public synchronized KitAssemblyManager getKitAssemblyManager() {
+    public KitAssemblyManager getKitAssemblyManager() {
         return kitAssemblyManager;
     }
 
-    public synchronized void setKitAssemblyManager(
+    public void setKitAssemblyManager(
             KitAssemblyManager kitAssemblyManager) {
         this.kitAssemblyManager = kitAssemblyManager;
     }
 
-    public synchronized Thread getThread() {
+    public Thread getThread() {
         return thread;
     }
 
-    public synchronized void setThread(Thread thread) {
+    public void setThread(Thread thread) {
         this.thread = thread;
     }
 
-    public synchronized void setHasKit(boolean hasKit) {
+    public void setHasKit(boolean hasKit) {
         this.hasKit = hasKit;
     }
 	
-    public synchronized boolean getHasKit() {
+    public boolean getHasKit() {
 	    return hasKit;
 	}
   /*  
-    public synchronized void setExtension(double extension) {
+    public void setExtension(double extension) {
         this.extension = extension;
     }
 
-    public synchronized void setAngle(double angle) {
+    public void setAngle(double angle) {
         this.angle = angle;
     }   
 
-    public synchronized double getExtension() {
+    public double getExtension() {
         return extension;
     }
 
-    public synchronized double getAngle() {
+    public double getAngle() {
         return angle;
     }*/
 
-	public synchronized double getNewX() {
+	public double getNewX() {
 		return newX;
 	}
 
-	public synchronized void setNewX(double newX) {
+	public void setNewX(double newX) {
 		this.newX = newX;
 	}
 
-	public synchronized double getNewY() {
+	public double getNewY() {
 		return newY;
 	}
 
-	public synchronized void setNewY(double newY) {
+	public void setNewY(double newY) {
 		this.newY = newY;
 	}
 
-	public synchronized int[] getStationX() {
+	public int[] getStationX() {
 		return stationX;
 	}
 
-	public synchronized void setStationX(int[] stationX) {
+	public void setStationX(int[] stationX) {
 		this.stationX = stationX;
 	}
 
-	public synchronized int[] getStationY() {
+	public int[] getStationY() {
 		return stationY;
 	}
 
-	public synchronized void setStationY(int[] stationY) {
+	public void setStationY(int[] stationY) {
 		this.stationY = stationY;
 	}
 
-	public synchronized int[] getWaypointX() {
+	public int[] getWaypointX() {
 		return waypointX;
 	}
 
-	public synchronized void setWaypointX(int[] waypointX) {
+	public void setWaypointX(int[] waypointX) {
 		this.waypointX = waypointX;
 	}
 
-	public synchronized int[] getWaypointY() {
+	public int[] getWaypointY() {
 		return waypointY;
 	}
 
-	public synchronized void setWaypointY(int[] waypointY) {
+	public void setWaypointY(int[] waypointY) {
 		this.waypointY = waypointY;
 	}
 
-	public synchronized double getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 
-	public synchronized void setSpeed(double speed) {
+	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
 
-	public synchronized void setX(double x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 
-	public synchronized void setY(double y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 }

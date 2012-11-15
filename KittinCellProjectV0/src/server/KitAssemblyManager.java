@@ -66,7 +66,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
         }
     }
 
-    public synchronized Kit getStationKit(int i){
+    public Kit getStationKit(int i){
         getStationOccupied().set(i,false);
         if(i == 0){
             Kit k = getEmptyKits().get(0);
@@ -80,7 +80,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
         }
     }
 
-    public synchronized void setStationKit(int i, Kit k){
+    public void setStationKit(int i, Kit k){
     	getStationOccupied().set(i,true);
         if(i == 1){
         	getStationKits().set(i,k);
@@ -167,103 +167,103 @@ public class KitAssemblyManager implements Runnable, Serializable{
         }
     }
     
-    public synchronized boolean getEmptyConveyorOn(){
+    public boolean getEmptyConveyorOn(){
         return emptyConveyorOn;
     }
 
-    public synchronized boolean getFinishedConveyorOn(){
+    public boolean getFinishedConveyorOn(){
         return finishedConveyorOn;
     }
 
-    public synchronized boolean getBadConveyorOn(){
+    public boolean getBadConveyorOn(){
         return badConveyorOn;
     }
 
-    public synchronized boolean getIncompleteConveyorOn(){
+    public boolean getIncompleteConveyorOn(){
         return incompleteConveyorOn;
     }
 
-    public synchronized Vector<Kit> getEmptyKits(){
+    public Vector<Kit> getEmptyKits(){
         return emptyKits;
     }
 
-    public synchronized Vector<Kit> getFinishedKits(){
+    public Vector<Kit> getFinishedKits(){
         return finishedKits;
     }
 
-    public synchronized Vector<Kit> getStationKits(){
+    public Vector<Kit> getStationKits(){
         return stationKits;
     }
 
-    public synchronized Vector<Boolean> getStationOccupied(){
+    public Vector<Boolean> getStationOccupied(){
         return stationOccupied;
     }
     
-    public synchronized Vector<Nest> getNests() {
+    public Vector<Nest> getNests() {
     	return nests;
     }
     
-	public synchronized Boolean getMsg() {
+	public Boolean getMsg() {
 		return msg;
 	}
 
-	public synchronized void setMsg(Boolean msg) {
+	public void setMsg(Boolean msg) {
 		this.msg = msg;
 	}
 
-	public synchronized int getIdCounter() {
+	public int getIdCounter() {
 		return idCounter;
 	}
 
-	public synchronized void setIdCounter(int idCounter) {
+	public void setIdCounter(int idCounter) {
 		this.idCounter = idCounter;
 	}
 
-	public synchronized double getConveyorSpeed() {
+	public double getConveyorSpeed() {
 		return conveyorSpeed;
 	}
 
-	public synchronized void setConveyorSpeed(double conveyorSpeed) {
+	public void setConveyorSpeed(double conveyorSpeed) {
 		this.conveyorSpeed = conveyorSpeed;
 	}
 
-	public synchronized void setStationOccupied(Vector<Boolean> stationOccupied) {
+	public void setStationOccupied(Vector<Boolean> stationOccupied) {
 		this.stationOccupied = stationOccupied;
 	}
 
-	public synchronized void setEmptyKits(Vector<Kit> emptyKits) {
+	public void setEmptyKits(Vector<Kit> emptyKits) {
 		this.emptyKits = emptyKits;
 	}
 
-	public synchronized void setFinishedKits(Vector<Kit> finishedKits) {
+	public void setFinishedKits(Vector<Kit> finishedKits) {
 		this.finishedKits = finishedKits;
 	}
 
-	public synchronized void setStationKits(Vector<Kit> stationKits) {
+	public void setStationKits(Vector<Kit> stationKits) {
 		this.stationKits = stationKits;
 	}
 
-	public synchronized void setFinishedConveyorOn(boolean finishedConveyorOn) {
+	public void setFinishedConveyorOn(boolean finishedConveyorOn) {
 		this.finishedConveyorOn = finishedConveyorOn;
 	}
 
-	public synchronized void setEmptyConveyorOn(boolean emptyConveyorOn) {
+	public void setEmptyConveyorOn(boolean emptyConveyorOn) {
 		this.emptyConveyorOn = emptyConveyorOn;
 	}
 
-	public synchronized void setBadConveyorOn(boolean badConveyorOn) {
+	public void setBadConveyorOn(boolean badConveyorOn) {
 		this.badConveyorOn = badConveyorOn;
 	}
 
-	public synchronized void setIncompleteConveyorOn(boolean incompleteConveyorOn) {
+	public void setIncompleteConveyorOn(boolean incompleteConveyorOn) {
 		this.incompleteConveyorOn = incompleteConveyorOn;
 	}
 
-	public synchronized boolean isChecked() {
+	public boolean isChecked() {
 		return checked;
 	}
 
-	public synchronized void setChecked(boolean checked) {
+	public void setChecked(boolean checked) {
 		this.checked = checked;
 	}
 }

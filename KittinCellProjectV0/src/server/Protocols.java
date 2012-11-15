@@ -2,6 +2,9 @@ package server;
 
 import java.io.*;
 import java.net.*;
+import java.util.Vector;
+
+import data.Job;
 import GantryManager.GantryManager;
 
 public class Protocols implements Runnable{
@@ -52,6 +55,9 @@ public class Protocols implements Runnable{
 			else if (protocolName.equals("Production Kit Client")){
 				runProdKitProtocol();
 			}
+			else if (protocolName.equals("Production Manager")){
+				runProductionProtocol();
+			}
 		}
 	}
 	
@@ -89,8 +95,10 @@ public class Protocols implements Runnable{
 				}
 				app.getPartsRobot().setAnimationDone(false);
 			}		
+		} catch (Exception e){
+			System.err.println(protocolName);
+			e.printStackTrace();
 		}
-		catch(Exception ignore){}
 	}
 	public void runLaneProtocol(){
 		try {
@@ -100,11 +108,38 @@ public class Protocols implements Runnable{
 			out.reset();
 			out.writeObject(app.getNests());
 			out.reset();
-		} catch (Exception ignore){}
+		} catch (Exception e){
+			System.err.println(protocolName);
+			e.printStackTrace();
+		}
 	}
 	
 	public void runPartsManagerProtocol(){
 		
+	}
+	public void runProductionProtocol(){
+		try{
+			command = (String)in.readObject();
+			if(command.equals("Update")){
+				app.setJobsList((Vector<Job>)in.readObject());
+			}
+			out.writeObject(commandSent);
+			out.reset();
+			if(commandSent.equals("Update")){
+				commandSent = "Idle";
+				out.writeObject(app.getJobsList());
+				out.reset();
+				out.writeObject(app.getKitsList());
+				out.reset();
+				command = (String)in.readObject();
+				if(command.equals("Received")){
+					
+				}
+			}
+		} catch (Exception e){
+			System.err.println(protocolName);
+			e.printStackTrace();
+		}
 	}
 	public void runProdKitProtocol(){
 		try {
@@ -114,8 +149,10 @@ public class Protocols implements Runnable{
 			out.reset();
 			out.writeObject(app.getKitAssemblyManager());
 			out.reset();	
+		} catch (Exception e){
+			System.err.println(protocolName);
+			e.printStackTrace();
 		}
-		catch(Exception ignore){}
 	}
 		
 }

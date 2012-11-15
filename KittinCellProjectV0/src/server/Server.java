@@ -623,4 +623,28 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	{
 		gantryManager = g;
 	}
+
+	public Vector<PartInfo> getPartsList() {
+		return partsList;
+	}
+
+	public void setPartsList(Vector<PartInfo> partsList) {
+		this.partsList = partsList;
+	}
+
+	public Vector<KitInfo> getKitsList() {
+		return kitsList;
+	}
+
+	public void setKitsList(Vector<KitInfo> kitsList) {
+		this.kitsList = kitsList;
+	}
+
+	public Vector<Job> getJobsList() {
+		return jobsList;
+	}
+
+	public void setJobsList(Vector<Job> jobsList) {
+		this.jobsList = jobsList;
+	}
 }

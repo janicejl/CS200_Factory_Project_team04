@@ -72,6 +72,9 @@ public class GUIKitModification implements ActionListener{
 		}
 		
 		kitNames=new Vector<String>();
+		if(app.getKitsList().size() == 0){
+			kitNames.add("");
+		}
 		for(int i = 0; i < app.getKitsList().size(); i++){
 			kitNames.add(app.getKitsList().get(i).getName());
 		}
@@ -80,8 +83,10 @@ public class GUIKitModification implements ActionListener{
 		if(app.getPartsList().size() == 0){
 			partNames.add("");
 		}
-		for (int i = 0; i < app.getPartsList().size(); i++){
-			partNames.add(app.getPartsList().get(i).getName());
+		else{
+			for (int i = 0; i < app.getPartsList().size(); i++){
+				partNames.add(app.getPartsList().get(i).getName());
+			}
 		}
 		
 		kitList=new JComboBox(kitNames);
@@ -151,8 +156,7 @@ public class GUIKitModification implements ActionListener{
 			partList.clear();
 			GridBagConstraints c=new GridBagConstraints();
 			c.gridx=0;
-			c.gridy=0;
-////////////////////////////////////////////////////////////////////////////////////////out of bounds		
+			c.gridy=0;		
 			for(int i=0;i<8;i++){
 				JButton temp = new JButton(new ImageIcon(app.getKitsList().get(kitList.getSelectedIndex()).getParts().get(i).getImagePath()));
 				temp.setPreferredSize(new Dimension (170,30));
@@ -197,6 +201,7 @@ public class GUIKitModification implements ActionListener{
 					app.getKitsList().get(kitList.getSelectedIndex()).getParts().set(i, tempKit.get(i));
 				}
 			}
+			app.getClient().setCommandSent("Update Kits");
 		}
 		else if(ae.getSource().equals(delete)){
 			int num = kitList.getSelectedIndex();

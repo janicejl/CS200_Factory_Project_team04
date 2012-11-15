@@ -52,6 +52,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	Vector<PartInfo> partsList;
 	Vector<KitInfo> kitsList;
 	Vector<Job> jobsList;
+	String kitCreateCommand = "Idle";
+	String productionCommand;
+	String partsCommand;
 	
 	PartsRobot partsRobot;
 	PartsRobotAgent partsRobotAgent;
@@ -655,5 +658,29 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public void setJobsList(Vector<Job> jobsList) {
 		this.jobsList = jobsList;
+	}
+
+	public String getKitCreateCommand() {
+		return kitCreateCommand;
+	}
+
+	public void setKitCreateCommand(String kitCreateCommand) {
+		this.kitCreateCommand = kitCreateCommand;
+	}
+
+	public String getProductionCommand() {
+		return productionCommand;
+	}
+
+	public void setProductionCommand(String productionCommand) {
+		this.productionCommand = productionCommand;
+	}
+
+	public String getPartsCommand() {
+		return partsCommand;
+	}
+
+	public void setPartsCommand(String partsCommand) {
+		this.partsCommand = partsCommand;
 	}
 }

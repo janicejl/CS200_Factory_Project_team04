@@ -1,5 +1,7 @@
 package KitCreationManager;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.*;
@@ -19,7 +21,8 @@ public class KitCreationApp extends JFrame implements Serializable, WindowListen
 	JTabbedPane kp;
 	Vector<PartInfo> partsList;
 	Vector<KitInfo> kitsList;
-	
+	KitCreationClient client;
+
 	public KitCreationApp(){
 		partsList = new Vector<PartInfo>();
 		load("partsList.sav");
@@ -34,6 +37,15 @@ public class KitCreationApp extends JFrame implements Serializable, WindowListen
 		this.add(kp);
 		addWindowListener(this);
 		
+		client = new KitCreationClient(this);
+		int j = client.connect();
+		if(j == -1){
+			System.exit(1);
+		}
+		else if(j == 1){
+			client.getThread().start();
+		}
+		
 	}
 	public static void main(String[] args) {
 		KitCreationApp app=new KitCreationApp();
@@ -41,9 +53,10 @@ public class KitCreationApp extends JFrame implements Serializable, WindowListen
 		app.setResizable(false);
 		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		app.setVisible(true);
+		app.getClient().setCommandSent("Update Kits");
 		
 	}
-
+	
 	//save
 	public void save(String path){
 		try{
@@ -142,5 +155,11 @@ public class KitCreationApp extends JFrame implements Serializable, WindowListen
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	public KitCreationClient getClient() {
+		return client;
+	}
+	public void setClient(KitCreationClient client) {
+		this.client = client;
 	}
 }

@@ -133,9 +133,13 @@ public class ProductionClient implements Runnable{
 			command = (String)in.readObject();
 			if(command.equals("Idle")){
 			}
-			else if(command.equals("Update")){
-				app.setJobs((Vector<Job>)in.readObject());
+			else if(command.equals("Update Kits")){
 				app.setkitsList((Vector<KitInfo>)in.readObject());
+				out.writeObject("Received");
+				out.reset();
+			}
+			else if(command.equals("Update Jobs")){
+				app.setJobs((Vector<Job>)in.readObject());
 				out.writeObject("Received");
 				out.reset();
 			}

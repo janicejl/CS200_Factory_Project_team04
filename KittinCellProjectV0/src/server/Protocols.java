@@ -102,6 +102,11 @@ public class Protocols implements Runnable{
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();
+			try{
+				s.close();
+			} catch(Exception ae){
+				System.out.println("Socket Fail to Close");
+			}
 		}
 	}
 	public void runLaneProtocol(){
@@ -115,6 +120,11 @@ public class Protocols implements Runnable{
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();
+			try{
+				s.close();
+			} catch(Exception ae){
+				System.out.println("Socket Fail to Close");
+			}
 		}
 	}
 	
@@ -124,14 +134,34 @@ public class Protocols implements Runnable{
 	
 	public void runKitsManagerProtocol(){
 		try{
+			commandSent = app.getKitCreateCommand();
 			command = (String)in.readObject();
-			if(command.equals("update")){
-				out.writeObject(app.getPartsList());
+			if(command.equals("Update Kits")){	
 				app.setKitsList((Vector<KitInfo>)in.readObject());
+				out.writeObject("Received");
+				out.reset();
+				app.setProductionCommand("Update Kits"); //make production manager update kits
 			}
+			out.writeObject(commandSent);
+			out.reset();
+			if(commandSent.equals("Update Parts")){
+				app.setKitCreateCommand("Idle");
+				out.writeObject(app.getPartsList());
+				out.reset();
+				command = (String)in.readObject();
+				if(command.equals("Received")){
+					
+				}
+			}
+			
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();
+			try{
+				s.close();
+			} catch(Exception ae){
+				System.out.println("Socket Fail to Close");
+			}
 		}
 	}
 	
@@ -141,13 +171,21 @@ public class Protocols implements Runnable{
 			if(command.equals("Update")){
 				app.setJobsList((Vector<Job>)in.readObject());
 			}
+			commandSent = app.getProductionCommand();
 			out.writeObject(commandSent);
 			out.reset();
-			if(commandSent.equals("Update")){
-				commandSent = "Idle";
-				out.writeObject(app.getJobsList());
-				out.reset();
+			if(commandSent.equals("Update Kits")){
+				app.setProductionCommand("Idle");
 				out.writeObject(app.getKitsList());
+				out.reset();
+				command = (String)in.readObject();
+				if(command.equals("Received")){
+					
+				}
+			}
+			else if(commandSent.equals("Update Jobs")){
+				app.setProductionCommand("Idle");
+				out.writeObject(app.getJobsList());
 				out.reset();
 				command = (String)in.readObject();
 				if(command.equals("Received")){
@@ -157,6 +195,11 @@ public class Protocols implements Runnable{
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();
+			try{
+				s.close();
+			} catch(Exception ae){
+				System.out.println("Socket Fail to Close");
+			}
 		}
 	}
 	
@@ -172,6 +215,11 @@ public class Protocols implements Runnable{
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();
+			try{
+				s.close();
+			} catch(Exception ae){
+				System.out.println("Socket Fail to Close");
+			}
 		}
 	}
 		

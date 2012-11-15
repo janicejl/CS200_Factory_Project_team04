@@ -31,7 +31,7 @@ public class KitCreationClient implements Runnable{
 		app = _app;
 		serverName = "localhost";
 		command = "";
-		commandSent = "";
+		commandSent = "Kit Manager";
 		thread = new Thread(this, "KitCreationClient_Thread");
 	}
 	
@@ -52,15 +52,15 @@ public class KitCreationClient implements Runnable{
 	}
 	
 	public void run(){
-		if(connect().equals(1)){
-			try{
-				commandSent = "Kit Manager";
-				out.writeObject(commandSent);
-				out.reset();
-				
-			}catch(Exception e){
-				e.getStackTrace();
+		try{
+			out.writeObject(commandSent);
+			out.reset();
+			commandSent = "Idle";
+			while(true){
+				updateThread();
 			}
+		}catch(Exception e){
+			e.getStackTrace();
 		}
 	}
 	
@@ -69,14 +69,29 @@ public class KitCreationClient implements Runnable{
 	}
 	
 	public synchronized void updateThread() {
-		commandSent="update";
 		try {
 			out.writeObject(commandSent);
 			out.reset();
-			command=(String)in.readObject();
-			if(command.equals("update")){
-				app.setPartsList((Vector<PartInfo>)in.readObject());
+			if(commandSent.equals("Update Kits")){
+				commandSent = "Idle";
 				out.writeObject(app.getKitsList());
+				out.reset();
+				command = (String) in.readObject();
+				if(command.equals("Received")){
+					
+				}
+			}
+			else if(commandSent.equals("Idle")){
+				
+			}
+			command=(String)in.readObject();
+			if(command.equals("Update Parts")){
+				app.setPartsList((Vector<PartInfo>)in.readObject());
+				out.writeObject("Received");
+				out.reset();
+			}
+			else if(command.equals("Idle")){
+				
 			}
 		} catch (Exception ignore){
 			ignore.printStackTrace();

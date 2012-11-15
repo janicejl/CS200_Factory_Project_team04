@@ -154,6 +154,19 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		for (int i = 0; i < gNests.size(); i++) {
 			gNests.get(i).paintNest(g2, 1);
 		}
+		
+		//Display gates
+		for(int i = 0; i < lanes.size(); i++) {		
+			double x1 = lanes.get(i).getGate().getBottomNodeX();
+			double y1 = lanes.get(i).getGate().getBottomNodeY();
+			double x2 = lanes.get(i).getGate().getTopNodeX();
+			double y2 = lanes.get(i).getGate().getTopNodeY();	
+			Shape l = new Line2D.Double(x1, y1, x2, y2);
+			g2.setColor(Color.WHITE);
+            g2.draw(l);
+
+		}
+		
     }
     
     public void setVibration() { //Unimplimented

@@ -96,4 +96,12 @@ public class Feeder implements Serializable{
 	public synchronized void setPartAmount(double partAmount) {
 		this.partAmount = partAmount;
 	}
+	
+	public void setTopLane(Boolean t) {
+		topLane = t;
+	}
+	
+	public Boolean getTopLane() {
+		return topLane;
+	}
 }

@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.Vector;
 
 import data.Job;
+import data.KitInfo;
 import GantryManager.GantryManager;
 
 public class Protocols implements Runnable{
@@ -51,6 +52,9 @@ public class Protocols implements Runnable{
 			}
 			else if (protocolName.equals("Part Manager")){
 				runPartsManagerProtocol();
+			}
+			else if (protocolName.equals("Kit Manager")){
+				runKitsManagerProtocol();
 			}
 			else if (protocolName.equals("Production Kit Client")){
 				runProdKitProtocol();
@@ -117,6 +121,20 @@ public class Protocols implements Runnable{
 	public void runPartsManagerProtocol(){
 		
 	}
+	
+	public void runKitsManagerProtocol(){
+		try{
+			command = (String)in.readObject();
+			if(command.equals("update")){
+				out.writeObject(app.getPartsList());
+				app.setKitsList((Vector<KitInfo>)in.readObject());
+			}
+		} catch (Exception e){
+			System.err.println(protocolName);
+			e.printStackTrace();
+		}
+	}
+	
 	public void runProductionProtocol(){
 		try{
 			command = (String)in.readObject();
@@ -141,6 +159,8 @@ public class Protocols implements Runnable{
 			e.printStackTrace();
 		}
 	}
+	
+	
 	public void runProdKitProtocol(){
 		try {
 			out.writeObject(app.getKitRobot());

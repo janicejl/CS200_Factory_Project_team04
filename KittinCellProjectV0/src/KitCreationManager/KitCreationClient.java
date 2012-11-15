@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Vector;
 
+import data.Job;
 import data.KitInfo;
 import data.PartInfo;
 
@@ -51,15 +52,15 @@ public class KitCreationClient implements Runnable{
 	}
 	
 	public void run(){
-		try {
-			commandSent = "Kit Creation";
-			out.writeObject(commandSent); //send to server identifying what client this is
-			out.reset();
-			////////////////////////////////////////////////////////////////////
-		
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
+		if(connect().equals(1)){
+			try{
+				commandSent = "Kit Manager";
+				out.writeObject(commandSent);
+				out.reset();
+				
+			}catch(Exception e){
+				e.getStackTrace();
+			}
 		}
 	}
 	
@@ -68,8 +69,15 @@ public class KitCreationClient implements Runnable{
 	}
 	
 	public synchronized void updateThread() {
+		commandSent="update";
 		try {
-			app.setPartsList((Vector<PartInfo>)in.readObject());
+			out.writeObject(commandSent);
+			out.reset();
+			command=(String)in.readObject();
+			if(command.equals("update")){
+				app.setPartsList((Vector<PartInfo>)in.readObject());
+				out.writeObject(app.getKitsList());
+			}
 		} catch (Exception ignore){
 			ignore.printStackTrace();
 			System.exit(1);
@@ -81,5 +89,20 @@ public class KitCreationClient implements Runnable{
 	}
 
 
+	public synchronized String getCommand() {
+		return command;
+	}
+
+	public synchronized void setCommand(String command) {
+		this.command = command;
+	}
+
+	public synchronized String getCommandSent() {
+		return commandSent;
+	}
+
+	public synchronized void setCommandSent(String commandSent) {
+		this.commandSent = commandSent;
+	}
 
 }

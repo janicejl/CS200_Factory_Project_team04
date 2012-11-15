@@ -29,7 +29,7 @@ public class GantryManagerApp extends JFrame implements ActionListener
 		
 	}
 	
-	public synchronized  void setManager(GantryManager gm)
+	public   void setManager(GantryManager gm)
 	{
 		gui.setGantryManager(gm);
 	}

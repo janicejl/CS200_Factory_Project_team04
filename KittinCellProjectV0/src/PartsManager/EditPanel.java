@@ -12,27 +12,31 @@ import data.PartInfo;
 
 public class EditPanel extends JPanel implements ActionListener{
 	
+	PartsManagerApp app;
 	JComboBox partsSelectBox;
 	ArrayList<JLabel> promptLabels;
 	ArrayList<JTextField> editFields;
-	Vector<PartInfo> partList;
 	JButton editButton, submitButton, resetButton;
 	ArrayList<JPanel> horizPanels;
 	JTextArea descriptionArea;
 	Timer timer;
-	String[] parts;
+//	String[] parts;
+	Vector<String> partNames;
 	
-	public EditPanel(Vector<PartInfo> _partList){
-		partList = _partList;
-		updateSelectionBox();
+	public EditPanel(PartsManagerApp _app){
+		app = _app;
 		promptLabels = new ArrayList<JLabel>();
 		editFields = new ArrayList<JTextField>();
 		horizPanels = new ArrayList<JPanel>();
-		partsSelectBox = new JComboBox(parts);
+		
+		partNames = new Vector<String>();
+		partsSelectBox = new JComboBox(partNames);
+//		partsSelectBox = new JComboBox(parts);
 		partsSelectBox.setAlignmentY(Component.CENTER_ALIGNMENT);
 		partsSelectBox.setPreferredSize(new Dimension(290, 27));
 		partsSelectBox.setMinimumSize(new Dimension(290, 27));
 		partsSelectBox.setMaximumSize(new Dimension(290, 27));
+		updateSelectionBox(0);
 		
 		promptLabels.add(new JLabel("Part:"));
 		promptLabels.get(promptLabels.size()-1).setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -130,29 +134,41 @@ public class EditPanel extends JPanel implements ActionListener{
 		}
 	}
 	
-	public void updateSelectionBox (){
-		parts = new String[partList.size()];
-		for(int i=0;i<partList.size();i++){
-			parts[i] = partList.get(i).getName();
+	public void updateSelectionBox(int num){
+//		parts = new String[partList.size()];
+		partNames.clear();
+		if(app.getPartsList().size() == 0){
+			partNames.add("");
+		}
+		for(int i=0; i< app.getPartsList().size(); i++){
+			partNames.add(app.getPartsList().get(i).getName());
+		}
+		
+		partsSelectBox.setModel(new DefaultComboBoxModel(partNames));
+		if(num < partNames.size()){
+			partsSelectBox.setSelectedIndex(num);
+		}
+		else{
+			partsSelectBox.setSelectedIndex(partNames.size()-1);
 		}
 	}
 	
 	public void actionPerformed(ActionEvent ae){
-		updateSelectionBox();
+		updateSelectionBox(partsSelectBox.getSelectedIndex());
 		if(ae.getSource()==editButton){
-			editFields.get(0).setText(partList.get(partsSelectBox.getSelectedIndex()).getName());
+			editFields.get(0).setText(app.getPartsList().get(partsSelectBox.getSelectedIndex()).getName());
 			editButton.setEnabled(false);
 			resetButton.setEnabled(true);
 			submitButton.setEnabled(true);
 		}
 		else if(ae.getSource()==resetButton){
-			editFields.get(0).setText(partList.get(partsSelectBox.getSelectedIndex()).getName());
+			editFields.get(0).setText(app.getPartsList().get(partsSelectBox.getSelectedIndex()).getName());
 			editButton.setEnabled(true);
 			resetButton.setEnabled(false);
 			submitButton.setEnabled(false);
 		}
 		else if(ae.getSource()==submitButton){
-			PartInfo temp = partList.get(partsSelectBox.getSelectedIndex());
+			PartInfo temp = app.getPartsList().get(partsSelectBox.getSelectedIndex());
 			temp.setName(editFields.get(0).getText());
 			editButton.setEnabled(true);
 			resetButton.setEnabled(false);
@@ -160,15 +176,13 @@ public class EditPanel extends JPanel implements ActionListener{
 		}
 	}
 	
-	public static void main(String[] args){
-		Vector<PartInfo> partlist = new Vector<PartInfo>();
-		JFrame frame = new JFrame();
-		EditPanel p1 = new EditPanel(partlist);
-		frame.add(p1);
-		frame.setSize(400, 500);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-		
-		
-	}
+//	public static void main(String[] args){
+//		Vector<PartInfo> partlist = new Vector<PartInfo>();
+//		JFrame frame = new JFrame();
+//		EditPanel p1 = new EditPanel(partlist);
+//		frame.add(p1);
+//		frame.setSize(400, 500);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setVisible(true);
+//	}
 }

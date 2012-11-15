@@ -18,10 +18,13 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 	JTabbedPane tabbedPane;
 	
 	public PartsManagerApp(){
+		partsList = new Vector<PartInfo>();
+		partsManagerClient = new PartsManagerClient(this);
+		
 		addWindowListener(this);
 		tabbedPane = new JTabbedPane();
 		partPanel = new PartsPanel(this);
-		editPanel = new EditPanel(partsList);
+		editPanel = new EditPanel(this);
 		tabbedPane.addTab("Create Parts", partPanel);
 		tabbedPane.addTab("Edit Parts", editPanel);
 		add(tabbedPane);
@@ -29,11 +32,9 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		setSize(400, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		partsList = new Vector<PartInfo>();
-		partsManagerClient = new PartsManagerClient(this);
-		
 		load("partsList.sav");
 		partPanel.updateLoad();
+		editPanel.updateSelectionBox(0);
 		
 		new Timer(10, this).start();
 	}
@@ -81,7 +82,17 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 	
 	public void paint(Graphics g){
 		partPanel.repaint();
+		editPanel.repaint();
+		tabbedPane.repaint();
+		revalidate();
 	}
+	
+	public void revalidate(){
+		partPanel.revalidate();
+		editPanel.revalidate();
+		tabbedPane.revalidate();
+	}
+	
 	public static void main(String[] args){
 		new PartsManagerApp();
 	}

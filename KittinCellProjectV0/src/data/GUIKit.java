@@ -23,6 +23,10 @@ public class GUIKit {
 		}
 	}
 	
+	public void setKit(Kit k){
+		kit = k;
+	}
+	
 	public void paintKit(Graphics2D g) {
 		kit.update();
 		

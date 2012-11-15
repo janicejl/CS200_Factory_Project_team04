@@ -8,8 +8,8 @@ import java.awt.event.*;
 public class GantryManager implements Serializable,ActionListener
 {
 	Gantry gantry;
-	ArrayList<PartsBox> parts;
-	ArrayList<Integer> feeders;
+	Vector<PartsBox> parts;
+	Vector<Integer> feeders;
 	int speed;
 	Random rand;
 	
@@ -18,10 +18,10 @@ public class GantryManager implements Serializable,ActionListener
 		rand = new Random();
 		gantry = new Gantry();
 		
-		parts = new ArrayList<PartsBox>();
+		parts = new Vector<PartsBox>();
 		parts.add(new PartsBox(100));
 		
-		feeders = new ArrayList<Integer>();
+		feeders = new Vector<Integer>();
 		int i=0;
 		while(i<4)
 		{
@@ -63,12 +63,9 @@ public class GantryManager implements Serializable,ActionListener
 			{
 				parts.remove(gantry.getBox());
 				gantry.setState("free");
-				gantry.setBox(-1);
 				System.out.println("REMOVED");
-				gantry.setState("free");
 				System.out.println(gantry.getState());
 				state = "free";
-				gantry.setBox(-1);
 				System.out.println("CHANGED");
 			}
 		}
@@ -115,6 +112,7 @@ public class GantryManager implements Serializable,ActionListener
 					gantry.setxFinal(parts.get(c).getxCurrent()+10);
 					gantry.setyFinal(parts.get(c).getyCurrent()+15);
 					gantry.setBox(c);
+					System.out.println(c);
 				}
 				c++;
 			}
@@ -125,6 +123,22 @@ public class GantryManager implements Serializable,ActionListener
 			parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
 			parts.get(gantry.getBox()).setState("moving");
 			parts.get(gantry.getBox()).setFeeder(gantry.getFeed());	
+		}
+		else if(gantry.getState().equals("dumpi"))
+		{
+			int c=0;
+			while(c<parts.size())
+			{
+				if(parts.get(c).getFeeder()==gantry.getFeed())
+				{
+					gantry.setBox(c);
+				}
+				c++;
+			}
+			if(parts.get(gantry.getBox()).getFeeder()!=gantry.getFeed())
+			{
+				gantry.setState("free");
+			}
 		}
 	}
 	
@@ -138,7 +152,7 @@ public class GantryManager implements Serializable,ActionListener
 		return gantry;
 	}
 	
-	public synchronized ArrayList<PartsBox> getPartsBoxes()
+	public synchronized Vector<PartsBox> getPartsBoxes()
 	{
 		return parts;
 	}
@@ -148,7 +162,7 @@ public class GantryManager implements Serializable,ActionListener
 		gantry = g;
 	}
 	
-	public synchronized void setParts(ArrayList<PartsBox> p)
+	public synchronized void setParts(Vector<PartsBox> p)
 	{
 		parts = p;
 	}

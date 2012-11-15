@@ -67,7 +67,6 @@ public class KitAssemblyManager implements Runnable, Serializable{
     }
 
     public Kit getStationKit(int i){
-        getStationOccupied().set(i,false);
         if(i == 0){
             Kit k = getEmptyKits().get(0);
             getEmptyKits().remove(0);
@@ -76,15 +75,19 @@ public class KitAssemblyManager implements Runnable, Serializable{
             return k;
         }
         else {
-            return getStationKits().get(i);
+            return stationKits.get(i);
         }
+    }
+    
+    public void setSingleStationOccupied(int i, boolean b){
+        stationOccupied.set(i,b);
     }
 
     public void setStationKit(int i, Kit k){
-    	getStationOccupied().set(i,true);
+    	stationOccupied.set(i,true);
         if(i == 1){
-        	getStationKits().set(i,k);
-            getStationKits().get(1).setPosition(160,140);
+        	stationKits.set(i,k);
+            stationKits.get(1).setPosition(160,140);
         }
         else if(i == 2){
         	getStationKits().set(i,k);

@@ -6,6 +6,9 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
+
+import data.GUIKit;
+import data.Kit;
 import server.KitRobot;
 
 public class GUIKitRobot {
@@ -21,6 +24,8 @@ public class GUIKitRobot {
     double phi;
     double gripX;
     double gripY;
+    GUIKit gKit;
+    Kit kit;
     BufferedImage crateImage = null;
     BufferedImage metal = null;
     BufferedImage grip = null;
@@ -42,7 +47,9 @@ public class GUIKitRobot {
         hypA = Math.sqrt(Math.pow(len+end,2)+Math.pow(wid,2));
         hypB = Math.sqrt(Math.pow(wid,2)+Math.pow(wid,2));
         phi = Math.atan(wid/(len+end));
-        System.out.println(phi);
+        //System.out.println(phi);
+        kit = new Kit();
+        gKit = new GUIKit(kit);
         try {
             crateImage = ImageIO.read(new File("images/crate.png"));
             metal = ImageIO.read(new File("images/metal.png"));
@@ -61,6 +68,8 @@ public class GUIKitRobot {
         kr = app.getKitRobot();
         gripX = kr.getX();
         gripY = kr.getY();
+        gKit.setKit(kr.getKit());
+        hasKit = kr.getHasKit();
         if(gripY > 300){
             angle = Math.PI/2.0 + Math.atan((gripY-300.0)/(gripX-25.0));
         }
@@ -82,6 +91,11 @@ public class GUIKitRobot {
     }
 
     public void paintKitRobot(Graphics2D g2){
+    	if(hasKit){
+        	gKit.paintKit(g2);
+            //g2.drawImage(crateImage,at, null); // base
+        }
+  
         AffineTransform at = new AffineTransform(); // transform object
         extension /= 2;
         at.translate(x-50,y-50); // point of base image
@@ -98,9 +112,10 @@ public class GUIKitRobot {
         at.translate(0,-2*(int)extension); // move to center of crate image
         at.rotate(-angle); // rotate crate back to orthogonal
         at.translate(-25,-50); // move to point of crate image
-        if(hasKit){
-            g2.drawImage(crateImage,at, null); // base
-        }
+        /*if(hasKit){
+        	gKit.paintKit(g22);
+            //g2.drawImage(crateImage,at, null); // base
+        }*/
         at.translate(-5,20); // move to point of grip image
         g2.drawImage(grip,at, null);
 

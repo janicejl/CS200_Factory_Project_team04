@@ -219,8 +219,10 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
         for(GUIKit k : emptyKits){
         	k.paintKit(g2);
         }
-        for(GUIKit k : stationKits){
-        	k.paintKit(g2);
+        for(int i = 1; i < 6; i++){
+        	if(stationOccupied.get(i)){
+        		stationKits.get(i).paintKit(g2);
+        	}
         }
         for(GUIKit k : finishedKits){
         	k.paintKit(g2);

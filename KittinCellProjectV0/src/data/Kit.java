@@ -35,6 +35,11 @@ public class Kit implements Serializable {
 		
 	}
 	
+	public Vector<Part> getParts(){
+		return partsList;
+	}
+
+	
 	public List<Part> peekParts() {
 		return partsList;
 	}

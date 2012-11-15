@@ -14,6 +14,7 @@ import javax.imageio.*;
 
 //import kitAssemblyManager.Kit;
 
+import data.GUIKit;
 import data.Kit;
 
 public class KitRobot implements Runnable, Serializable{
@@ -53,6 +54,7 @@ public class KitRobot implements Runnable, Serializable{
         y = 300;
         newX = x;
         newY = y;
+        kit = new Kit();
     }
 
     private void processCommand(String[] ss){
@@ -99,8 +101,10 @@ public class KitRobot implements Runnable, Serializable{
         else if(ss[0].equals("p")){
             int i = Integer.parseInt(ss[1]);
             try {
-                kit = kitAssemblyManager.getStationKit(i);
+            	kit = new Kit();
+            	kit = kitAssemblyManager.getStationKit(i);
                 kit.setGrabbed(true);
+                kitAssemblyManager.setSingleStationOccupied(i, false);
             }
             catch (Exception ignore) {
             	ignore.printStackTrace();
@@ -169,6 +173,7 @@ public class KitRobot implements Runnable, Serializable{
     public void update(){
         if(!paused){
             if(x != newX || y != newY){
+            	
                 double d = Math.sqrt(Math.pow((newX-x),2) + Math.pow((newY-y),2));
                 if (d >= speed){
                     x += ((newX-x)/d)*speed;
@@ -177,6 +182,10 @@ public class KitRobot implements Runnable, Serializable{
                 else {
                     x = newX;
                     y = newY;
+                }
+                if(hasKit){
+	                kit.setX(x-25);
+	            	kit.setY(y-50);
                 }
             }
             else {

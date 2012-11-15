@@ -24,9 +24,9 @@ public class PartsRobot implements Runnable, Serializable{
     double newY;
     double angle;
     double newAngle;
-    double moveSpeed = 15;
-    double rotationSpeed = 4;
-    double extensionSpeed = 4;
+    double moveSpeed = 10;
+    double rotationSpeed = 2;
+    double extensionSpeed = 2;
     boolean takePicture;
     double cameraX;
     double cameraY;

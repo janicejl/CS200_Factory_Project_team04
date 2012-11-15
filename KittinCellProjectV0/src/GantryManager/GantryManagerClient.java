@@ -24,7 +24,7 @@ public class GantryManagerClient implements Runnable
 		thread = new Thread(this,"GantryManagerClient_Thread");
 	}
 	
-	public Integer connect()
+	public synchronized Integer connect()
 	{
 		try
 		{
@@ -40,7 +40,7 @@ public class GantryManagerClient implements Runnable
 		return 1;
 	}
 	
-	public void run()
+	public synchronized void run()
 	{
 		try
 		{
@@ -54,12 +54,12 @@ public class GantryManagerClient implements Runnable
 		{}
 	}
 	
-	public  Thread getThread()
+	public synchronized Thread getThread()
 	{
 		return thread;
 	}
 	
-	public  void send()
+	public synchronized void send()
 	{
 		try
 		{
@@ -69,26 +69,16 @@ public class GantryManagerClient implements Runnable
 		catch(Exception e){}
 	}
 	
-	public  void update()
+	public synchronized void update()
 	{
 		try
 		{
-			GantryManager temp = (GantryManager)in.readObject();
-			if(gui.getGantryManager().getGantry().getState().equals("free") && !temp.getGantry().getState().equals("dumpf"))
-			{
-				if(temp.getGantry().getState().equals("load") || temp.getGantry().getState().equals("dumpi"))
-				{
-					gui.getGantryManager().getGantry().setBox(temp.getGantry().getBox());
-				}
-				gui.getGantryManager().getGantry().setState(temp.getGantry().getState());
-				System.out.println(temp.getGantry().getState());
-				gui.getGantryManager().getGantry().setFeed(temp.getGantry().getFeed());
-			}
+			gui.setGantryManager((GantryManager)in.readObject());
 		}
 		catch(Exception ignore){}
 	}
 	
-	public  void setThread(Thread t)
+	public synchronized void setThread(Thread t)
 	{
 		thread = t;
 	}

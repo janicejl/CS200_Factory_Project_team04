@@ -82,16 +82,16 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		if(ae.getSource()==timer)
 		{
 			client.update();
-			manager.actionPerformed(ae);
+		//	manager.actionPerformed(ae);
 			this.repaint();
 		}
 	}
 	
-	public  GantryManager getGantryManager()
+	public synchronized GantryManager getGantryManager()
 	{
 		return manager;
 	}
-	public  void setGantryManager(GantryManager gm)
+	public synchronized void setGantryManager(GantryManager gm)
 	{
 		manager = gm;
 	}

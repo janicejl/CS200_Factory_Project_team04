@@ -19,7 +19,7 @@ import java.io.*;
 
 public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 	KitAssemblyClient kitClient;
-	PartsManagerClient partsClient;
+//	PartsManagerClient partsClient;
 	
     KitAssemblyApp app;
     KitAssemblyManager kam;
@@ -68,7 +68,7 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 
     public GUIKitAssemblyManager(){
         kitClient = new KitAssemblyClient(this);
-    	partsClient = new PartsManagerClient(this);
+//    	partsClient = new PartsManagerClient(this);
     	
     	gNests = new Vector<GUINest>();
     	nests = new Vector<Nest>();
@@ -124,7 +124,7 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
     }
 
     public void update(){
-    	partsClient.updateThread();
+//    	partsClient.updateThread();
     	kitClient.updateThread();
         emptyConveyorOn = kam.getEmptyConveyorOn();
         finishedConveyorOn = kam.getFinishedConveyorOn();
@@ -274,16 +274,16 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 			timer.start();
 		}
 	}
-    public void connectPartsRobot(){
-		int i = partsClient.connect();
-		if(i == -1){
-			System.exit(1);
-		}
-		else if(i == 1){
-			partsClient.getThread().start();
-			timer.start();
-		}
-	}
+//    public void connectPartsRobot(){
+//		int i = partsClient.connect();
+//		if(i == -1){
+//			System.exit(1);
+//		}
+//		else if(i == 1){
+//			partsClient.getThread().start();
+//			timer.start();
+//		}
+//	}
 
 	public Vector<Kit> getBaseEmptyKits() {
 		return baseEmptyKits;
@@ -301,9 +301,9 @@ public class GUIKitAssemblyManager extends JPanel implements ActionListener {
 		this.baseFinishedKits = baseFinishedKits;
 	}
 	
-	public PartsManagerClient getPartsClient() {
-		return partsClient;
-	}	
+//	public PartsManagerClient getPartsClient() {
+//		return partsClient;
+//	}	
 
 	public KitRobot getKitRobot() {
 		return kitRobot;

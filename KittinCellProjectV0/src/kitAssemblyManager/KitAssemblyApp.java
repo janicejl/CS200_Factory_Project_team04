@@ -88,9 +88,9 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     	if ("Connect KitRobot".equals(ae.getActionCommand())){
     		kamPanel.connectKitRobot();
     	}
-    	else if ("Connect PartsRobot".equals(ae.getActionCommand())){
-    		kamPanel.connectPartsRobot();
-    	}
+//    	else if ("Connect PartsRobot".equals(ae.getActionCommand())){
+//    		kamPanel.connectPartsRobot();
+//    	}
     	else if(ae.getSource() == showGraphics){
     		cl.show(this.getContentPane(), "graphics");
     	}

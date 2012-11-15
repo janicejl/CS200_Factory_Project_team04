@@ -52,6 +52,7 @@ public class PartsPanel extends JPanel implements ActionListener{
 		}
 		else if(ae.getSource()==managePanel.manageButtons.get(1)){
 			//clear button
+			managePanel.imagesSelectBox.setSelectedIndex(0);
 			managePanel.nameField.setText("");
 		}
 		else if(ae.getSource()==managePanel.manageButtons.get(2)){

@@ -10,14 +10,21 @@ import javax.swing.*;
 import data.PartInfo;
 
 public class PartsManagerApp extends JFrame implements ActionListener, Serializable, WindowListener{
+	
 	PartsPanel partPanel;
+	EditPanel editPanel;
 	Vector<PartInfo> partsList;
 	PartsManagerClient partsManagerClient;
+	JTabbedPane tabbedPane;
 	
 	public PartsManagerApp(){
 		addWindowListener(this);
+		tabbedPane = new JTabbedPane();
 		partPanel = new PartsPanel(this);
-		add(partPanel);
+		editPanel = new EditPanel(partsList);
+		tabbedPane.addTab("Create Parts", partPanel);
+		tabbedPane.addTab("Edit Parts", editPanel);
+		add(tabbedPane);
 		setVisible(true);
 		setSize(400, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

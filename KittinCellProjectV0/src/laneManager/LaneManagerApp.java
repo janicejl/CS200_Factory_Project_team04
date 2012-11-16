@@ -58,9 +58,9 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		window.setMaximumSize(new Dimension(800, 50));
 		window.setMinimumSize(new Dimension(800, 50));
 		laneGraphics = new LaneGraphics();
-		laneGraphics.setPreferredSize(new Dimension(600, 600));
-		laneGraphics.setMaximumSize(new Dimension(600, 600));
-		laneGraphics.setMinimumSize(new Dimension(600,600));
+		laneGraphics.setPreferredSize(new Dimension(700, 600));
+		laneGraphics.setMaximumSize(new Dimension(700, 600));
+		laneGraphics.setMinimumSize(new Dimension(700,600));
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;

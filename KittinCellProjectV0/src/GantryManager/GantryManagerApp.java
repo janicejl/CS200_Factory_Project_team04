@@ -10,7 +10,7 @@ public class GantryManagerApp extends JFrame implements ActionListener
 	
 	public GantryManagerApp()
 	{
-		gui = new GUIGantryManager();
+		gui = new GUIGantryManager(1);
 		this.add(gui);
 		gui.setVisible(true);
 	}

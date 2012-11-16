@@ -80,7 +80,12 @@ public class LaneGraphics extends JPanel implements ActionListener {
     	}
     	
     	for (int i = 0; i < 4; i++) {
-    		feeders.add(new Feeder(406,30 + i*140));
+    		if(i == 0 || i == 3){
+    			feeders.add(new Feeder(475,30 + i*140));
+    		}
+    		else {
+    			feeders.add(new Feeder(400,30 + i*140));    			
+    		}
     		gFeeders.add(new GUIFeeder(feeders.get(i)));
     	}
     	
@@ -126,7 +131,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		
 		//window needs to be 600
 		
-        for(int i = 1; i < 30; i++){ // main conveyor images
+        for(int i = 1; i < 29; i++){ // main conveyor images
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(0).intValue(),30,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(1).intValue(),100,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(2).intValue(),170,null); // empty conveyor   

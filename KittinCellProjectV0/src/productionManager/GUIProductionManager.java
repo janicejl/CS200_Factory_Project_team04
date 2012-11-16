@@ -10,12 +10,14 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import kitAssemblyManager.*;
 import laneManager.*;
+import GantryManager.*;
 
 public class GUIProductionManager extends JPanel{
 	
 	ProductionManagerApp app;
 	GUIKitAssemblyManager kamGraphics;
 	LaneGraphics laneGraphics;
+	GUIGantryManager gantryGraphics;
 	BufferedImage background = null;
 	
 	Timer timer;
@@ -27,10 +29,13 @@ public class GUIProductionManager extends JPanel{
 		kamGraphics.setOpaque(false);
 		laneGraphics = new LaneGraphics();
 		laneGraphics.setOpaque(false);
+		gantryGraphics = new GUIGantryManager(2);
+		gantryGraphics.setOpaque(false);
 		add(kamGraphics);
 		add(laneGraphics);
+		add(gantryGraphics);
 		 try {
-            background = ImageIO.read(new File("images/background.png"));
+            background = ImageIO.read(new File("images/background1.png"));
 
         } catch (IOException e) {}
 		
@@ -48,6 +53,8 @@ public class GUIProductionManager extends JPanel{
 		laneGraphics.paintComponent(g);
 		g.translate(-320, 0);
 		kamGraphics.paintComponent(g);
+		g.translate(830, 0);
+		gantryGraphics.paintComponent(g);
 		g.dispose();
 		
 	}

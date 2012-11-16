@@ -38,26 +38,32 @@ public class Gantry implements Serializable
 			else
 				yCurrent+=1;
 		}
-		
+		/*if(Math.abs(xCurrent-xFinal) < 10){
+			xCurrent = xFinal;
+		}
+		if(Math.abs(yCurrent-yFinal) < 10){
+			yCurrent = yFinal;
+		}*/
 		if(feed == 0)
 		{
-			xFinal = 115;
-			yFinal = 34;
+			
+			xFinal = 110;
+			yFinal = 55;
 		}
 		else if(feed == 1)
 		{
-			xFinal = 43;
-			yFinal = 172;
+			xFinal = 35;
+			yFinal = 195;
 		}
 		else if(feed == 2)
 		{
-			xFinal = 43;
-			yFinal = 310;
+			xFinal = 35;
+			yFinal = 335;
 		}
 		else if(feed == 3)
 		{
-			xFinal = 115;
-			yFinal = 448;
+			xFinal = 110;
+			yFinal = 475;
 		}
 	}
 
@@ -117,26 +123,28 @@ public class Gantry implements Serializable
 
 	public synchronized void setFeed(int feed)
 	{
+		System.out.println("wtfffffff!!!!");
 		this.feed = feed;
 		if(feed == 0)
 		{
-			xFinal = 115;
-			yFinal = 34;
+			
+			xFinal = 110;
+			yFinal = 55;
 		}
 		else if(feed == 1)
 		{
-			xFinal = 40;
-			yFinal = 172;
+			xFinal = 35;
+			yFinal = 195;
 		}
 		else if(feed == 2)
 		{
-			xFinal = 40;
-			yFinal = 310;
+			xFinal = 35;
+			yFinal = 335;
 		}
 		else if(feed == 3)
 		{
-			xFinal = 115;
-			yFinal = 448;
+			xFinal = 110;
+			yFinal = 475;
 		}
 	}
 	

@@ -16,10 +16,12 @@ public class Feeder implements Serializable{
 	private boolean topLane;
 	private boolean empty;
 	private Vector<Part> parts;
+	private Random random;
 	public Feeder(double nX, double nY){
 		x = nX;
 		y = nY;
 		parts = new Vector<Part> ();
+		random = new Random();
 		
 		partAmount = 0;
 		empty = true;
@@ -71,6 +73,8 @@ public class Feeder implements Serializable{
 	
 	public void addParts(Part part){
 		partAmount++;
+		part.setX(this.x + 25 + (double)random.nextInt(70));
+		part.setY(this.y + 15 + (double)random.nextInt(75));
 		parts.add(part);
 	}
 	

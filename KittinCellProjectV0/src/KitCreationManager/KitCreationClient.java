@@ -21,7 +21,8 @@ public class KitCreationClient implements Runnable{
 	ObjectInputStream in;
 	String command;
 	String commandSent;
-	String serverName; //keep track of what server to connect to...default localhost
+	String serverName;
+	Integer updateCounter;
 	Thread thread;
 	
 	public KitCreationClient(KitCreationApp _app) {
@@ -29,6 +30,7 @@ public class KitCreationClient implements Runnable{
 		serverName = "localhost";
 		command = "";
 		commandSent = "Kit Manager";
+		updateCounter = new Integer(0);
 		thread = new Thread(this, "KitCreationClient_Thread");
 	}
 	
@@ -70,6 +72,8 @@ public class KitCreationClient implements Runnable{
 			out.writeObject(commandSent);
 			out.reset();
 			if(commandSent.equals("Update Kits")){
+//				updateCounter = 0;
+				System.out.println("hi");
 				commandSent = "Idle";
 				out.writeObject(app.getKitsList());
 				out.reset();
@@ -79,8 +83,13 @@ public class KitCreationClient implements Runnable{
 				}
 			}
 			else if(commandSent.equals("Idle")){
+//				updateCounter++;
+//				if(updateCounter > 5000){
+//					commandSent = "Update Kits";
+//				}
 				
 			}
+			
 			command=(String)in.readObject();
 			if(command.equals("Update Parts")){
 				app.setPartsList((Vector<PartInfo>)in.readObject());

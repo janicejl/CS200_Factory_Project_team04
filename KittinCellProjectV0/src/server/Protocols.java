@@ -23,6 +23,9 @@ public class Protocols implements Runnable{
 		app = _app;
 		s = _s;
 		try {
+//			out = new ObjectOutputStream(s.getOutputStream());
+//			out.flush();
+//			in = new ObjectInputStream(s.getInputStream());
 			out = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream()));
 			out.flush();
 			in = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));
@@ -70,6 +73,7 @@ public class Protocols implements Runnable{
 		{
 			out.writeObject(app.getGantryManager());
 			out.reset();
+			out.flush();
 		}
 		catch(Exception e)
 		{
@@ -81,13 +85,13 @@ public class Protocols implements Runnable{
 		try {
 			out.writeObject(app.getKitRobot());
 			out.reset();
-			
+			out.flush();
 			out.writeObject(app.getPartsRobot());
 			out.reset();
-			
+			out.flush();
 			out.writeObject(app.getKitAssemblyManager());
 			out.reset();
-				
+			out.flush();
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();
@@ -102,10 +106,13 @@ public class Protocols implements Runnable{
 		try {
 			out.writeObject(app.getLanes());
 			out.reset();
+			out.flush();
 			out.writeObject(app.getFeeders());
 			out.reset();
+			out.flush();
 			out.writeObject(app.getNests());
 			out.reset();
+			out.flush();
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();
@@ -129,14 +136,17 @@ public class Protocols implements Runnable{
 				app.setKitsList((Vector<KitInfo>)in.readObject());
 				out.writeObject("Received");
 				out.reset();
+				out.flush();
 				app.setProductionCommand("Update Kits"); //make production manager update kits
 			}
 			out.writeObject(commandSent);
 			out.reset();
+			out.flush();
 			if(commandSent.equals("Update Parts")){
 				app.setKitCreateCommand("Idle");
 				out.writeObject(app.getPartsList());
 				out.reset();
+				out.flush();
 				command = (String)in.readObject();
 				if(command.equals("Received")){
 					
@@ -163,10 +173,12 @@ public class Protocols implements Runnable{
 			commandSent = app.getProductionCommand();
 			out.writeObject(commandSent);
 			out.reset();
+			out.flush();
 			if(commandSent.equals("Update Kits")){
 				app.setProductionCommand("Idle");
 				out.writeObject(app.getKitsList());
 				out.reset();
+				out.flush();
 				command = (String)in.readObject();
 				if(command.equals("Received")){
 					
@@ -176,6 +188,7 @@ public class Protocols implements Runnable{
 				app.setProductionCommand("Idle");
 				out.writeObject(app.getJobsList());
 				out.reset();
+				out.flush();
 				command = (String)in.readObject();
 				if(command.equals("Received")){
 					
@@ -197,10 +210,13 @@ public class Protocols implements Runnable{
 		try {
 			out.writeObject(app.getKitRobot());
 			out.reset();
+			out.flush();
 			out.writeObject(app.getPartsRobot());
 			out.reset();
+			out.flush();
 			out.writeObject(app.getKitAssemblyManager());
-			out.reset();	
+			out.reset();
+			out.flush();
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();

@@ -207,6 +207,7 @@ public class GUIKitModification implements ActionListener{
 			int num = kitList.getSelectedIndex();
 			app.getKitsList().remove((int)num);
 			updateBox(num);
+			app.getClient().setCommandSent("Update Kits");
 		}
 		
 		for(int i=0;i<partList.size();i++){

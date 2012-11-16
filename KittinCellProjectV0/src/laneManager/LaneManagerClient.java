@@ -32,8 +32,8 @@ public class LaneManagerClient implements Runnable {
 	public Integer connect(){
 		try {
 			s = new Socket(serverName, 61337); //attempt to connect to servername
-			out = new ObjectOutputStream(s.getOutputStream()); //output stream
-			in = new ObjectInputStream(s.getInputStream()); //input stream
+			out = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream())); //output stream
+			in = new ObjectInputStream(new BufferedInputStream(s.getInputStream())); //input stream
 		} catch (UnknownHostException e) {
 			System.err.println("Can't find server " + serverName);
             return -1;
@@ -50,6 +50,7 @@ public class LaneManagerClient implements Runnable {
 			commandSent = "Lane Manager";
 			out.writeObject(commandSent); //send to server identifying what client this is
 			out.reset();
+			out.flush();
 			/*
 			command = (String)in.readObject();
 			if(command.equals("Confirmed")){

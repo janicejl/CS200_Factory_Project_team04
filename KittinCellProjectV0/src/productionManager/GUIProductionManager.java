@@ -27,7 +27,7 @@ public class GUIProductionManager extends JPanel{
 		
 		kamGraphics = new GUIKitAssemblyManager(2);
 		kamGraphics.setOpaque(false);
-		laneGraphics = new LaneGraphics();
+		laneGraphics = new LaneGraphics(2);
 		laneGraphics.setOpaque(false);
 		gantryGraphics = new GUIGantryManager(2);
 		gantryGraphics.setOpaque(false);

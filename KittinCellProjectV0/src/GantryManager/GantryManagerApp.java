@@ -18,7 +18,7 @@ public class GantryManagerApp extends JFrame implements ActionListener
 	public static void main(String[] args)
 	{
 		GantryManagerApp app = new GantryManagerApp();
-		app.setSize(345,600);
+		app.setSize(345,620);
 		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		app.setVisible(true);
 		app.setResizable(false);

@@ -51,7 +51,17 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		
+		/*	g2.drawImage(feeder, -28, 8, null);
+		g2.drawImage(feeder, -100, 146, null);
+		g2.drawImage(feeder, -100, 284,null);
+		g2.drawImage(feeder,  -28, 422, null);*/
+		if(managerNum == 1){
+			g2.drawImage(background,0,0,null);
+			g2.drawImage(feeder, -35, 30, null);
+			g2.drawImage(feeder, -110, 170, null);
+			g2.drawImage(feeder, -110, 310,null);
+			g2.drawImage(feeder,  -35, 450, null);
+		}
 		g2.drawImage(station, 275,157, null);
 			g2.drawImage(station, 325, 157,null);
 		g2.drawImage(station, 275,207,null);
@@ -60,16 +70,8 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			g2.drawImage(station, 325, 295,null);
 		g2.drawImage(station, 275,345,null);
 			g2.drawImage(station, 325,345,null);
-	/*	g2.drawImage(feeder, -28, 8, null);
-		g2.drawImage(feeder, -100, 146, null);
-		g2.drawImage(feeder, -100, 284,null);
-		g2.drawImage(feeder,  -28, 422, null);*/
-		if(managerNum == 1){
-			g2.drawImage(feeder, -35, 30, null);
-			g2.drawImage(feeder, -110, 170, null);
-			g2.drawImage(feeder, -110, 310,null);
-			g2.drawImage(feeder,  -35, 450, null);
-		}
+	
+		
 		
 		
 		int i=0;

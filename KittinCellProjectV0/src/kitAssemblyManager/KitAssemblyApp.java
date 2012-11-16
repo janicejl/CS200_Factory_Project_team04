@@ -23,12 +23,9 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     JMenuItem showControls;
     GridBagConstraints gbc;
     ArrayList<JButton> buttons;
-    BufferedImage background = null;
     String[] nests = { "Nest 1", "Nest 2", "Nest 3", "Nest 4", "Nest 5", "Nest 6", "Nest 7", "Nest 8" };
     String[] grips = { "Gripper 1", "Gripper 2", "Gripper 3", "Gripper 4"};
-
-    JComboBox nestList;
-    JComboBox gripList;
+    
     javax.swing.Timer timer;
     GUIKitAssemblyManager kamPanel;
 
@@ -47,9 +44,6 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         jm.add(showControls);
         jmb.add(jm);
         setJMenuBar(jmb);
-        try {
-            background = ImageIO.read(new File("images/background.png"));
-        } catch (IOException e) {}
         
         kamPanel = new GUIKitAssemblyManager(1);
         add(kamPanel, "graphics");

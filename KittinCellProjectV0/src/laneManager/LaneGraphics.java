@@ -34,7 +34,10 @@ public class LaneGraphics extends JPanel implements ActionListener {
 	private LaneManagerClient client;
 	private javax.swing.Timer timer;
 	
-    public LaneGraphics() {
+	int managerNum;
+	
+    public LaneGraphics(int m) {
+    	managerNum = m;
     	client = new LaneManagerClient(this);
     	
 
@@ -119,7 +122,9 @@ public class LaneGraphics extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
     	Graphics2D g2 = (Graphics2D)g;
 		g2.setColor(Color.LIGHT_GRAY);
-		g2.drawImage(background, 0, 0, null);
+		if(managerNum == 1){
+			g2.drawImage(background, 0, 0, null);
+		}
 		for (int i = 0; i < 8; i++) {
 			 if(emptyConveyorOnList.get(i)){
 		            emptyConveyorMoveList.set(i,emptyConveyorMoveList.get(i) + 0.23 * lanes.get(i).getConveyerBeltSpeed()); //magic ratio

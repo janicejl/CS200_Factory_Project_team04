@@ -31,7 +31,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	Vector<Job> jobs;
 	
 	public ProductionManagerApp(){
-		setSize(1200, 660);
+		setSize(1200, 645);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		

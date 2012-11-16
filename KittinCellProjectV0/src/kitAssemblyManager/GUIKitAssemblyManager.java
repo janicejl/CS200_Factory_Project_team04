@@ -3,6 +3,7 @@ package kitAssemblyManager;
 import server.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -37,16 +38,16 @@ public class GUIKitAssemblyManager extends JPanel{
     BufferedImage stand = null;
     BufferedImage conveyorImage = null;
 
-    Vector<Boolean> stationOccupied;
-    Vector<GUIKit> emptyKits;
-    Vector<GUIKit> finishedKits;
-    Vector<GUIKit> stationKits;
-    Vector<Kit> baseEmptyKits;
-    Vector<Kit> baseFinishedKits;
-    Vector<Kit> baseStationKits;
+    CopyOnWriteArrayList<Boolean> stationOccupied;
+    CopyOnWriteArrayList<GUIKit> emptyKits;
+    CopyOnWriteArrayList<GUIKit> finishedKits;
+    CopyOnWriteArrayList<GUIKit> stationKits;
+    CopyOnWriteArrayList<Kit> baseEmptyKits;
+    CopyOnWriteArrayList<Kit> baseFinishedKits;
+    CopyOnWriteArrayList<Kit> baseStationKits;
 
-    Vector<GUINest> gNests;
-    Vector<Nest> nests;
+    CopyOnWriteArrayList<GUINest> gNests;
+    CopyOnWriteArrayList<Nest> nests;
     
     int[] stationPositions = {160, 140, 160, 360, 80, 490, 10, 490, 160, 250}; // stations 1 - 2 - 3 - 4 - 5 (image corner coords)
     boolean emptyConveyorOn;
@@ -70,8 +71,8 @@ public class GUIKitAssemblyManager extends JPanel{
         kitClient = new KitAssemblyClient(this);
 //    	partsClient = new PartsManagerClient(this);
     	
-    	gNests = new Vector<GUINest>();
-    	nests = new Vector<Nest>();
+    	gNests = new CopyOnWriteArrayList<GUINest>();
+    	nests = new CopyOnWriteArrayList<Nest>();
     	
     	kam = new KitAssemblyManager(nests);
     	kitRobot = new KitRobot(kam);
@@ -80,13 +81,13 @@ public class GUIKitAssemblyManager extends JPanel{
         setPreferredSize(new Dimension (450,600));
         gKitRobot = new GUIKitRobot(this);
         gPartsRobot = new GUIPartsRobot(this);
-        stationOccupied = new Vector<Boolean>();
-        emptyKits = new Vector<GUIKit>();
-        finishedKits = new Vector<GUIKit>();
-        stationKits = new Vector<GUIKit>();
-        baseEmptyKits = new Vector<Kit>();
-        baseFinishedKits = new Vector<Kit>();
-        baseStationKits = new Vector<Kit>();
+        stationOccupied = new CopyOnWriteArrayList<Boolean>();
+        emptyKits = new CopyOnWriteArrayList<GUIKit>();
+        finishedKits = new CopyOnWriteArrayList<GUIKit>();
+        stationKits = new CopyOnWriteArrayList<GUIKit>();
+        baseEmptyKits = new CopyOnWriteArrayList<Kit>();
+        baseFinishedKits = new CopyOnWriteArrayList<Kit>();
+        baseStationKits = new CopyOnWriteArrayList<Kit>();
 
         int i = kitClient.connect();
 		if(i == -1){
@@ -220,19 +221,19 @@ public class GUIKitAssemblyManager extends JPanel{
         gKitRobot.paintKitRobot(g2);
     }
 
-	public Vector<Kit> getBaseEmptyKits() {
+	public CopyOnWriteArrayList<Kit> getBaseEmptyKits() {
 		return baseEmptyKits;
 	}
 
-	public void setBaseEmptyKits(Vector<Kit> baseEmptyKits) {
+	public void setBaseEmptyKits(CopyOnWriteArrayList<Kit> baseEmptyKits) {
 		this.baseEmptyKits = baseEmptyKits;
 	}
 
-	public Vector<Kit> getBaseFinishedKits() {
+	public CopyOnWriteArrayList<Kit> getBaseFinishedKits() {
 		return baseFinishedKits;
 	}
 
-	public void setBaseFinishedKits(Vector<Kit> baseFinishedKits) {
+	public void setBaseFinishedKits(CopyOnWriteArrayList<Kit> baseFinishedKits) {
 		this.baseFinishedKits = baseFinishedKits;
 	}
 	

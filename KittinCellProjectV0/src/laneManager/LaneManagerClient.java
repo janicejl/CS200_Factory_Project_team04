@@ -3,6 +3,7 @@ package laneManager;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import Feeder.Feeder;
 
@@ -69,9 +70,9 @@ public class LaneManagerClient implements Runnable {
 			
 			commandSent = "Received";*/
 			/*while(true){
-				app.setLanes((Vector<Lane>)in.readObject());
-				app.setFeeders((Vector<Feeder>)in.readObject());
-				app.setNests((Vector<Nest>)in.readObject());
+				app.setLanes((CopyOnWriteArrayList<Lane>)in.readObject());
+				app.setFeeders((CopyOnWriteArrayList<Feeder>)in.readObject());
+				app.setNests((CopyOnWriteArrayList<Nest>)in.readObject());
 				out.writeObject(commandSent);
 				out.reset();
 			}*/
@@ -123,9 +124,9 @@ public class LaneManagerClient implements Runnable {
 	
 	public synchronized void updateThread(){
 		try {
-			app.setLanes((Vector<Lane>)in.readObject());
-			app.setFeeders((Vector<Feeder>)in.readObject());
-			app.setNests((Vector<Nest>)in.readObject());
+			app.setLanes((CopyOnWriteArrayList<Lane>)in.readObject());
+			app.setFeeders((CopyOnWriteArrayList<Feeder>)in.readObject());
+			app.setNests((CopyOnWriteArrayList<Nest>)in.readObject());
 		} catch (Exception ignore){
 			ignore.printStackTrace();
 			System.exit(1);

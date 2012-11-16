@@ -2,7 +2,7 @@ package server;
 
 import java.io.*;
 import java.net.*;
-import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import data.Job;
 import data.KitInfo;
@@ -133,7 +133,7 @@ public class Protocols implements Runnable{
 			commandSent = app.getKitCreateCommand();
 			command = (String)in.readObject();
 			if(command.equals("Update Kits")){	
-				app.setKitsList((Vector<KitInfo>)in.readObject());
+				app.setKitsList((CopyOnWriteArrayList<KitInfo>)in.readObject());
 				out.writeObject("Received");
 				out.reset();
 				out.flush();
@@ -168,7 +168,7 @@ public class Protocols implements Runnable{
 		try{
 			command = (String)in.readObject();
 			if(command.equals("Update")){
-				app.setJobsList((Vector<Job>)in.readObject());
+				app.setJobsList((CopyOnWriteArrayList<Job>)in.readObject());
 			}
 			commandSent = app.getProductionCommand();
 			out.writeObject(commandSent);

@@ -4,7 +4,7 @@ package kitAssemblyManager;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
-import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.io.*;
 import javax.imageio.*;
 import server.PartsRobot;
@@ -19,14 +19,14 @@ public class GUIPartsRobot{
     BufferedImage flash;
     boolean takePicture, flashUp, flashDown;
 
-    Vector<Boolean> gripperHolding;
-    Vector<Double> gripperExtensions;
-    Vector<String> commands;
-    Vector<String> subCommands;
-    Vector<String> nestLocations;
-    Vector<String> kitLocations;
-    Vector<BufferedImage> partImages;
-    Vector<Integer> gripperPartIDs;
+    CopyOnWriteArrayList<Boolean> gripperHolding;
+    CopyOnWriteArrayList<Double> gripperExtensions;
+    CopyOnWriteArrayList<String> commands;
+    CopyOnWriteArrayList<String> subCommands;
+    CopyOnWriteArrayList<String> nestLocations;
+    CopyOnWriteArrayList<String> kitLocations;
+    CopyOnWriteArrayList<BufferedImage> partImages;
+    CopyOnWriteArrayList<Integer> gripperPartIDs;
     float opacity, flashCounter;
     double cameraX;
     double cameraY;
@@ -48,14 +48,14 @@ public class GUIPartsRobot{
         flashCounter = 1.0f;
         cameraX = 350;
         cameraY = 100;
-        gripperExtensions = new Vector<Double>();
-        gripperHolding = new Vector<Boolean>();
-        commands = new Vector<String>();
-        subCommands = new Vector<String>();
-        nestLocations = new Vector<String>();
-        kitLocations = new Vector<String>();
-        partImages = new Vector<BufferedImage>();
-        gripperPartIDs = new Vector<Integer>();
+        gripperExtensions = new CopyOnWriteArrayList<Double>();
+        gripperHolding = new CopyOnWriteArrayList<Boolean>();
+        commands = new CopyOnWriteArrayList<String>();
+        subCommands = new CopyOnWriteArrayList<String>();
+        nestLocations = new CopyOnWriteArrayList<String>();
+        kitLocations = new CopyOnWriteArrayList<String>();
+        partImages = new CopyOnWriteArrayList<BufferedImage>();
+        gripperPartIDs = new CopyOnWriteArrayList<Integer>();
 
         for (int i = 0; i < 4; i++) {
         	gripperPartIDs.add(1);

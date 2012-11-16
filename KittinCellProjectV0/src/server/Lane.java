@@ -164,7 +164,9 @@ public class Lane implements ActionListener, Serializable{
     
     public void releasePart() {
     	if(importList.size() != 0) {
-			itemList.add(importList.remove(0));
+    		Part temp = importList.remove(0);
+    		temp.setY(maxY/2 + verticalSpacing);
+			itemList.add(temp);
 			System.out.println("release!");
 		}
     }

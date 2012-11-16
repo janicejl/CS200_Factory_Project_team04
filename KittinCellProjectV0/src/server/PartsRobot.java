@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.Random;
-import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.TreeMap;
 import java.util.concurrent.*;
 import java.io.*;
@@ -36,17 +36,17 @@ public class PartsRobot implements Runnable, Serializable{
     
     BufferedImage partsRobotImage;
 
-    Vector<Boolean> gripperHolding;
-    Vector<Double> gripperExtensions;
-    Vector<Double> newGripperExtensions;
-    Vector<String> commands;
-    Vector<String> subCommands;
-    Vector<String> nestLocations;
-    Vector<String> kitLocations;
-    Vector<Integer> gripperPartIDs;
+    CopyOnWriteArrayList<Boolean> gripperHolding;
+    CopyOnWriteArrayList<Double> gripperExtensions;
+    CopyOnWriteArrayList<Double> newGripperExtensions;
+    CopyOnWriteArrayList<String> commands;
+    CopyOnWriteArrayList<String> subCommands;
+    CopyOnWriteArrayList<String> nestLocations;
+    CopyOnWriteArrayList<String> kitLocations;
+    CopyOnWriteArrayList<Integer> gripperPartIDs;
     int[] nl = {55,125,195,265,335,405,475,545};
     int[] kl = {190,410};
-    Vector<Part> partsHeld;
+    CopyOnWriteArrayList<Part> partsHeld;
     float opacity;
     boolean animationDone;
 
@@ -57,13 +57,13 @@ public class PartsRobot implements Runnable, Serializable{
         cameraX = 350;
         cameraY = 100;
         takePicture = false;
-        gripperHolding = new Vector<Boolean>();
-        gripperExtensions = new Vector<Double>();
-        newGripperExtensions = new Vector<Double>();
-        nestLocations = new Vector<String>();
-        kitLocations = new Vector<String>();
-        gripperPartIDs = new Vector<Integer>();
-        partsHeld = new Vector<Part>();
+        gripperHolding = new CopyOnWriteArrayList<Boolean>();
+        gripperExtensions = new CopyOnWriteArrayList<Double>();
+        newGripperExtensions = new CopyOnWriteArrayList<Double>();
+        nestLocations = new CopyOnWriteArrayList<String>();
+        kitLocations = new CopyOnWriteArrayList<String>();
+        gripperPartIDs = new CopyOnWriteArrayList<Integer>();
+        partsHeld = new CopyOnWriteArrayList<Part>();
         flashDown = false;
         flashUp = false;
         animationDone = false;
@@ -74,8 +74,8 @@ public class PartsRobot implements Runnable, Serializable{
             gripperExtensions.add(0.0);
             newGripperExtensions.add(0.0);
         }
-        commands = new Vector<String>();
-        subCommands = new Vector<String>();
+        commands = new CopyOnWriteArrayList<String>();
+        subCommands = new CopyOnWriteArrayList<String>();
         msg = new Boolean(false);
         
         try {
@@ -260,11 +260,11 @@ public class PartsRobot implements Runnable, Serializable{
         return angle;
     }
 
-    public Vector<Boolean> getGripperHolding(){
+    public CopyOnWriteArrayList<Boolean> getGripperHolding(){
         return gripperHolding;
     }
 
-    public Vector<Double> getGripperExtensions(){
+    public CopyOnWriteArrayList<Double> getGripperExtensions(){
         return gripperExtensions;
     }
     public boolean getTakePicture(){
@@ -282,11 +282,11 @@ public class PartsRobot implements Runnable, Serializable{
 		return msg;
 	}
     
-    public Vector<Integer> getGripperPartIDs(){
+    public CopyOnWriteArrayList<Integer> getGripperPartIDs(){
     	return gripperPartIDs;
     }
 
-    public Vector<Part> getPartsHeld(){
+    public CopyOnWriteArrayList<Part> getPartsHeld(){
     	return partsHeld;
     }
     

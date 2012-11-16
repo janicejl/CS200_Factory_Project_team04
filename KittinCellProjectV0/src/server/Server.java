@@ -3,14 +3,12 @@ package server;
 import java.net.*;
 import java.util.concurrent.*;
 
-import java.util.Vector;
-import java.util.Scanner;
-import java.util.Vector;
-import java.awt.event.ActionListener;
+import java.util.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.Timer;
 
 import Agents.GantryFeederAgents.FeederAgent;
 import Agents.GantryFeederAgents.FeederLaneAgent;
@@ -49,21 +47,21 @@ public class Server extends JFrame implements Runnable, ActionListener{
 //	PartsRobotProtocol partsPro;
 //	GantryManagerProtocol gantryPro;
 	
-	Vector<PartInfo> partsList;
-	Vector<KitInfo> kitsList;
-	Vector<Job> jobsList;
+	CopyOnWriteArrayList<PartInfo> partsList;
+	CopyOnWriteArrayList<KitInfo> kitsList;
+	CopyOnWriteArrayList<Job> jobsList;
 	String kitCreateCommand = "Idle";
 	String productionCommand;
 	String partsCommand;
 	
 	PartsRobot partsRobot;
 	PartsRobotAgent partsRobotAgent;
-	Vector<NestAgent> nests = new Vector<NestAgent>();
+	CopyOnWriteArrayList<NestAgent> nests = new CopyOnWriteArrayList<NestAgent>();
 	VisionAgent nestvisionagent1;
 	VisionAgent nestvisionagent2;
 	VisionAgent nestvisionagent3;
 	VisionAgent nestvisionagent4;
-	Vector<VisionAgent> visions = new Vector<VisionAgent>();
+	CopyOnWriteArrayList<VisionAgent> visions = new CopyOnWriteArrayList<VisionAgent>();
 	Semaphore flashpermit;
 	
 	GantryManager gantryManager;
@@ -90,9 +88,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	GantryAgent gantry2;
 	GantryControllerAgent gantryController;
 
-	Vector<Feeder> feeders;
-	Vector<Lane> lanes;
-	Vector<Nest> nestList;
+	CopyOnWriteArrayList<Feeder> feeders;
+	CopyOnWriteArrayList<Lane> lanes;
+	CopyOnWriteArrayList<Nest> nestList;
 
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
@@ -156,7 +154,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryManager.getGantry().setState("free");
 		gantryManager.getGantry().setBox(1);
 
-		feeders = new Vector<Feeder>();
+		feeders = new CopyOnWriteArrayList<Feeder>();
 		for(int i = 0; i < 4; i++){
 			if(i == 0 || i == 3){
     			feeders.add(new Feeder(475,30 + i*140));
@@ -165,7 +163,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			feeders.add(new Feeder(400,30 + i*140));    			
     		}
 		}
-		nestList = new Vector<Nest>();
+		nestList = new CopyOnWriteArrayList<Nest>();
     	
     	
     	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
@@ -178,7 +176,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	nestList.add(new Nest(0, 520));	//x coordinate is zero for laneManagerApp
     	
     	
-		lanes = new Vector<Lane>();
+		lanes = new CopyOnWriteArrayList<Lane>();
 		lanes.add(new Lane(600,30, nestList.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(600,100, nestList.get(1))); 
     	lanes.add(new Lane(600,170, nestList.get(2))); 
@@ -618,30 +616,30 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return nests.get(index);
 	}
 		
-	public Vector<Lane> getLanes() {
+	public CopyOnWriteArrayList<Lane> getLanes() {
 		return lanes;
 	}
 
-	public void setLanes(Vector<Lane> lanes) {
+	public void setLanes(CopyOnWriteArrayList<Lane> lanes) {
 		this.lanes = lanes;
 	}
-	public Vector<VisionAgent> getVisions(){
+	public CopyOnWriteArrayList<VisionAgent> getVisions(){
 		return this.visions;
 	}
 
-	public Vector<Feeder> getFeeders() {
+	public CopyOnWriteArrayList<Feeder> getFeeders() {
 		return feeders;
 	}
 
-	public void setFeeders(Vector<Feeder> feeders) {
+	public void setFeeders(CopyOnWriteArrayList<Feeder> feeders) {
 		this.feeders = feeders;
 	}
 	
-	public Vector<Nest> getNests() {
+	public CopyOnWriteArrayList<Nest> getNests() {
 		return nestList;
 	}
 	
-	public void setNests(Vector<Nest> nests) {
+	public void setNests(CopyOnWriteArrayList<Nest> nests) {
 		this.nestList = nests;
 	}
 	
@@ -655,27 +653,27 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryManager = g;
 	}
 
-	public Vector<PartInfo> getPartsList() {
+	public CopyOnWriteArrayList<PartInfo> getPartsList() {
 		return partsList;
 	}
 
-	public void setPartsList(Vector<PartInfo> partsList) {
+	public void setPartsList(CopyOnWriteArrayList<PartInfo> partsList) {
 		this.partsList = partsList;
 	}
 
-	public Vector<KitInfo> getKitsList() {
+	public CopyOnWriteArrayList<KitInfo> getKitsList() {
 		return kitsList;
 	}
 
-	public void setKitsList(Vector<KitInfo> kitsList) {
+	public void setKitsList(CopyOnWriteArrayList<KitInfo> kitsList) {
 		this.kitsList = kitsList;
 	}
 
-	public Vector<Job> getJobsList() {
+	public CopyOnWriteArrayList<Job> getJobsList() {
 		return jobsList;
 	}
 
-	public void setJobsList(Vector<Job> jobsList) {
+	public void setJobsList(CopyOnWriteArrayList<Job> jobsList) {
 		this.jobsList = jobsList;
 	}
 

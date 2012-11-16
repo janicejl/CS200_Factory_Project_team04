@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.Random;
-import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.TreeMap;
 import java.util.concurrent.*;
 import java.io.*;
@@ -36,20 +36,20 @@ public class KitRobot implements Runnable, Serializable{
     int[] waypointY = {190,190,410,410,410,300,190};
     double speed = 4.0;
 
-    Vector<String> stationRotations;
-    Vector<String> commands;
-    Vector<String> subCommands;
-    Vector<String> commandsSkipped;
+    CopyOnWriteArrayList<String> stationRotations;
+    CopyOnWriteArrayList<String> commands;
+    CopyOnWriteArrayList<String> subCommands;
+    CopyOnWriteArrayList<String> commandsSkipped;
     KitAssemblyManager kitAssemblyManager;
 
     Thread thread;
 
     public KitRobot(KitAssemblyManager kam){
         kitAssemblyManager = kam;
-        commands = new Vector<String>();
-        subCommands = new Vector<String>();
-        commandsSkipped = new Vector<String>();
-        stationRotations = new Vector<String>();
+        commands = new CopyOnWriteArrayList<String>();
+        subCommands = new CopyOnWriteArrayList<String>();
+        commandsSkipped = new CopyOnWriteArrayList<String>();
+        stationRotations = new CopyOnWriteArrayList<String>();
         x = 100;
         y = 300;
         newX = x;
@@ -274,35 +274,35 @@ public class KitRobot implements Runnable, Serializable{
         this.kit = kit;
     }
 
-    public Vector<String> getStationRotations() {
+    public CopyOnWriteArrayList<String> getStationRotations() {
         return stationRotations;
     }
 
-    public void setStationRotations(Vector<String> stationRotations) {
+    public void setStationRotations(CopyOnWriteArrayList<String> stationRotations) {
         this.stationRotations = stationRotations;
     }
 
-    public Vector<String> getCommands() {
+    public CopyOnWriteArrayList<String> getCommands() {
         return commands;
     }
 
-    public void setCommands(Vector<String> commands) {
+    public void setCommands(CopyOnWriteArrayList<String> commands) {
         this.commands = commands;
     }
 
-    public Vector<String> getSubCommands() {
+    public CopyOnWriteArrayList<String> getSubCommands() {
         return subCommands;
     }
 
-    public void setSubCommands(Vector<String> subCommands) {
+    public void setSubCommands(CopyOnWriteArrayList<String> subCommands) {
         this.subCommands = subCommands;
     }
 
-    public Vector<String> getCommandsSkipped() {
+    public CopyOnWriteArrayList<String> getCommandsSkipped() {
         return commandsSkipped;
     }
 
-    public void setCommandsSkipped(Vector<String> commandsSkipped) {
+    public void setCommandsSkipped(CopyOnWriteArrayList<String> commandsSkipped) {
         this.commandsSkipped = commandsSkipped;
     }
 

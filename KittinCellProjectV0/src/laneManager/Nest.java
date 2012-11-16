@@ -67,4 +67,8 @@ public class Nest implements Serializable{
 	public synchronized Vector<Part> getParts() {
 		return parts;
 	}
+	
+	public synchronized void purgeNest() {
+		parts.clear();
+	}
 }

@@ -469,6 +469,20 @@ public class Server extends JFrame implements Runnable, ActionListener{
     }
     
 	public void actionPerformed(ActionEvent e){
+		if(getKitAssemblyManager().getMsg().equals(true)){
+			getKitAssemblyManager().setMsg(false);
+			getKitConveyorAgent().msgKitHasArrived();
+		}
+		if(getPartsRobot().getMsg().equals(true)){
+			getPartsRobotAgent().msgAnimationDone();
+			getPartsRobot().setMsg(false);
+		}
+		if(getPartsRobot().getAnimationDone()){
+			for(int i = 0; i<4; i++){
+				getVisions().get(i).msgAnimationDone();
+			}
+			getPartsRobot().setAnimationDone(false);
+		}	
 		for(int i = 0; i < lanes.size(); i++){
 			lanes.get(i).actionPerformed(e);
 		}

@@ -34,7 +34,7 @@ public class GUINest {
 		
 		if (managerNum == 0) { 				//For the Kit Assembly Manager
 			//Move it
-			x = x + 350;
+			x = x + 320;
 		} else if (managerNum == 1) { 		//For the Lane Manager  
 			// No need to change x, already set to zero. 
 		}

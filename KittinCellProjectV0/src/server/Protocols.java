@@ -81,24 +81,13 @@ public class Protocols implements Runnable{
 		try {
 			out.writeObject(app.getKitRobot());
 			out.reset();
-			if(app.getKitAssemblyManager().getMsg().equals(true)){
-				app.getKitAssemblyManager().setMsg(false);
-				app.getKitConveyorAgent().msgKitHasArrived();
-			}
+			
 			out.writeObject(app.getPartsRobot());
 			out.reset();
-			if(app.getPartsRobot().getMsg().equals(true)){
-				app.getPartsRobotAgent().msgAnimationDone();
-				app.getPartsRobot().setMsg(false);
-			}
+			
 			out.writeObject(app.getKitAssemblyManager());
 			out.reset();
-			if(app.getPartsRobot().getAnimationDone()){
-				for(int i = 0; i<4; i++){
-					app.getVisions().get(i).msgAnimationDone();
-				}
-				app.getPartsRobot().setAnimationDone(false);
-			}		
+				
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();

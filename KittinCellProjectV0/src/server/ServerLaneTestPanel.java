@@ -21,9 +21,11 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 	JButton feedLaneButton;
 	JButton feedNestButton;
 	JButton feedPartButton;
+	JButton feedAllButton;
 	JButton exit;
 	
 	ImageIcon background;
+	int temp;
 	
 	public ServerLaneTestPanel(Server _server){
 		server = _server;
@@ -39,6 +41,7 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		feedLaneButton = new JButton("Feed Lane");
 		feedNestButton = new JButton("Feed Nest");
 		feedPartButton = new JButton("Feed part into feeder");
+		feedAllButton = new JButton("Feed All");
 		exit = new JButton("Exit");
 		background = new ImageIcon("images/server3.jpeg");
 		
@@ -70,6 +73,13 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 	    exit.setActionCommand("Exit");
 	    exit.addActionListener(this);
 	    
+	    feedAllButton.setPreferredSize(new Dimension(125, 25));
+	    feedAllButton.setMaximumSize(new Dimension(125, 25));
+	    feedAllButton.setMinimumSize(new Dimension(125, 25));
+	    feedAllButton.setAlignmentX(CENTER_ALIGNMENT);
+	    feedAllButton.setActionCommand("Feed All");
+	    feedAllButton.addActionListener(this);
+	    
 		laneSelectBox.setPreferredSize(new Dimension(100, 25));
 		laneSelectBox.setMaximumSize(new Dimension(100, 25));
 		laneSelectBox.setMinimumSize(new Dimension(100, 25));
@@ -83,7 +93,10 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 		add(Box.createRigidArea(new Dimension(0, 20)),"");
 		add(feedNestButton);
 		add(Box.createRigidArea(new Dimension(0, 20)),"");
+		add(feedAllButton);
+		add(Box.createRigidArea(new Dimension(0, 20)),"");
 		add(exit);
+		temp = 0;
 		
 	}
 	
@@ -105,6 +118,24 @@ public class ServerLaneTestPanel extends JPanel implements ActionListener{
 	    else if("Feed Feeder".equals(ae.getActionCommand())){
 	    	server.execute("Feed Feeder", (int)laneSelectBox.getSelectedIndex());
 	    	//msg to MockLaneAgent
+	    }
+	    else if("Feed All".equals(ae.getActionCommand())){
+	    	for(int i = 0; i < 8; i++){
+	    		for(int j = 0; j < 8; j++){
+		    		if(temp == 0){
+			    		server.execute("Feed Feeder", i);
+		    		}
+		    		else if(temp == 1){
+				    	server.execute("Feed Lane",  i);
+		    		}
+		    		else if (temp == 2){
+				    	server.execute("Feed Nest",  i);
+		    		}
+	    		}
+	    	}
+	    	temp++;
+	    	if(temp == 3)
+	    		temp = 0;
 	    }
 	    else if("Exit".equals(ae.getActionCommand())){
 	    	System.exit(1);

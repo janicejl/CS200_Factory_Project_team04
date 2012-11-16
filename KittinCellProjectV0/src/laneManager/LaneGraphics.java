@@ -21,10 +21,11 @@ public class LaneGraphics extends JPanel implements ActionListener {
 	private Vector<Lane> lanes = new Vector<Lane> ();
 	private int maxX;
 	private int maxY;
-	private Rectangle2D.Double backgroundRectangle;
+	//private Rectangle2D.Double backgroundRectangle;
 	private Vector<Boolean> emptyConveyorOnList;
 	private Vector<Double> emptyConveyorMoveList;
 	private BufferedImage conveyorImage; 
+	private BufferedImage background;
 	private Vector<GUIFeeder> gFeeders;
 	private Vector<Feeder> feeders = new Vector<Feeder>();
 	
@@ -65,7 +66,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
     	maxY = 600;
     	
     	
-    	this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
+    	//this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
     	this.setSize(maxX, maxY);
     	this.setVisible(true);
 		
@@ -90,6 +91,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		
 		try {
             conveyorImage = ImageIO.read(new File("images/conveyerLong.png"));
+            background = ImageIO.read(new File("images/background.png"));
         } catch (IOException e) {
         	System.out.println("Image load issue");
         }	
@@ -112,7 +114,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
     	Graphics2D g2 = (Graphics2D)g;
 		g2.setColor(Color.LIGHT_GRAY);
-		g2.fill( backgroundRectangle );
+		g2.drawImage(background, 0, 0, null);
 		for (int i = 0; i < 8; i++) {
 			 if(emptyConveyorOnList.get(i)){
 		            emptyConveyorMoveList.set(i,emptyConveyorMoveList.get(i) + 0.23 * lanes.get(i).getConveyerBeltSpeed()); //magic ratio
@@ -124,7 +126,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		
 		//window needs to be 600
 		
-        for(int i = -1; i < 40; i++){ // main conveyor images
+        for(int i = 1; i < 30; i++){ // main conveyor images
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(0).intValue(),30,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(1).intValue(),100,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(2).intValue(),170,null); // empty conveyor   

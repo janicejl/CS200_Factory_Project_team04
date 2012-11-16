@@ -145,6 +145,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		if(e.getSource() == next){
 			next();
 		}
+		graphics.update();
 		repaint();
 	}
 

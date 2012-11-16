@@ -105,21 +105,14 @@ public class GUIKitRobot {
 
         at.translate(25,25); // center of rotation
         at.rotate(angle);
-
-        g2.transform(at); // apply rotation to graphics2d object
-
-        at = new AffineTransform(); // reset transform object
         at.translate(0,-2*(int)extension); // move to center of crate image
         at.rotate(-angle); // rotate crate back to orthogonal
-        at.translate(-25,-50); // move to point of crate image
-        /*if(hasKit){
-        	gKit.paintKit(g22);
-            //g2.drawImage(crateImage,at, null); // base
-        }*/
-        at.translate(-5,20); // move to point of grip image
+        at.translate(-30,-30); // move to point of grip image
         g2.drawImage(grip,at, null);
 
         at = new AffineTransform(); // reset transform object
+        at.translate(x,y); // center of rotation
+        at.rotate(angle);
 
         at.translate(-29,-5); // move to hinge 1 (left end)
         g2.drawImage(bar1,at, null);
@@ -130,7 +123,10 @@ public class GUIKitRobot {
         at.translate(5,2*(int)extension -15); // move to center
         at.scale(1,.2);
         g2.drawImage(metal,at,null);
+        
         at = new AffineTransform(); // reset transform object
+        at.translate(x,y); // center of rotation
+        at.rotate(angle);
 
         at.translate(-24, b); // left lower
         at.scale(1,-(b - a)/200.0);
@@ -139,6 +135,8 @@ public class GUIKitRobot {
         g2.drawImage(metal,at,null);
 
         at = new AffineTransform();
+        at.translate(x,y); // center of rotation
+        at.rotate(angle);
         at.translate(-24, c); // left lower end
         at.scale(1,(b - c)/200.0);
         g2.drawImage(metal,at,null);
@@ -146,11 +144,15 @@ public class GUIKitRobot {
         g2.drawImage(metal,at,null);
 
         at = new AffineTransform();
+        at.translate(x,y); // center of rotation
+        at.rotate(angle);
         at.translate(-8, d); // upper end
         at.scale(1,-(d - e)/200.0);
         g2.drawImage(metal,at,null);
 
         at = new AffineTransform();
+        at.translate(x,y); // center of rotation
+        at.rotate(angle);
         at.translate(-8, f); // upper
         at.scale(1,-(f - d)/200.0);
         g2.drawImage(metal,at,null);

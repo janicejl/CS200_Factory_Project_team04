@@ -48,6 +48,7 @@ public class PartsRobot implements Runnable, Serializable{
     ArrayList<Part> partsHeld;
     float opacity;
     boolean animationDone;
+    boolean dumped;
 
     public PartsRobot(KitAssemblyManager _app){
     	app = _app;
@@ -76,6 +77,7 @@ public class PartsRobot implements Runnable, Serializable{
         commands = new ArrayList<String>();
         subCommands = new ArrayList<String>();
         msg = new Boolean(false);
+        dumped = false;
         
         try {
             partsRobotImage = ImageIO.read(new File("crate.png"));
@@ -210,7 +212,7 @@ public class PartsRobot implements Runnable, Serializable{
                 app.getStationKit(Integer.parseInt(ss[2])+1).addPart(partsHeld.get(0));
                 partsHeld.remove(0);
                 if(partsHeld.size() == 0){
-                	msg = true;
+                	dumped = true;
                 }
                 System.out.println("Size : " + app.getStationKit(Integer.parseInt(ss[2])+1).getPartsList().size());
                 processing = true;
@@ -327,6 +329,14 @@ public class PartsRobot implements Runnable, Serializable{
 	
 	public void setAnimationDone(boolean b){
 		animationDone = b;
+	}
+
+	public boolean isDumped() {
+		return dumped;
+	}
+
+	public void setDumped(boolean dumped) {
+		this.dumped = dumped;
 	}
 
 	public void update(){

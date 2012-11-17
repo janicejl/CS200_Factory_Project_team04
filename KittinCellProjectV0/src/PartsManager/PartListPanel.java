@@ -148,6 +148,7 @@ public class PartListPanel extends JPanel implements ActionListener{
 				break;
 			}
 		}
+		app.updateEditPanel();
 		
 	}
 	

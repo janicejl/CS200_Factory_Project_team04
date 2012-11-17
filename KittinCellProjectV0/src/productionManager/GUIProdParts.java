@@ -6,7 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -22,14 +22,14 @@ public class GUIProdParts {
     BufferedImage flash;
     boolean takePicture, flashUp, flashDown;
 
-    Vector<Boolean> gripperHolding;
-    Vector<Double> gripperExtensions;
-    Vector<String> commands;
-    Vector<String> subCommands;
-    Vector<String> nestLocations;
-    Vector<String> kitLocations;
-    Vector<BufferedImage> partImages;
-    Vector<Integer> gripperPartIDs;
+    ArrayList<Boolean> gripperHolding;
+    ArrayList<Double> gripperExtensions;
+    ArrayList<String> commands;
+    ArrayList<String> subCommands;
+    ArrayList<String> nestLocations;
+    ArrayList<String> kitLocations;
+    ArrayList<BufferedImage> partImages;
+    ArrayList<Integer> gripperPartIDs;
     float opacity, flashCounter;
     double cameraX;
     double cameraY;
@@ -51,14 +51,14 @@ public class GUIProdParts {
         flashCounter = 1.0f;
         cameraX = 350;
         cameraY = 100;
-        gripperExtensions = new Vector<Double>();
-        gripperHolding = new Vector<Boolean>();
-        commands = new Vector<String>();
-        subCommands = new Vector<String>();
-        nestLocations = new Vector<String>();
-        kitLocations = new Vector<String>();
-        partImages = new Vector<BufferedImage>();
-        gripperPartIDs = new Vector<Integer>();
+        gripperExtensions = new ArrayList<Double>();
+        gripperHolding = new ArrayList<Boolean>();
+        commands = new ArrayList<String>();
+        subCommands = new ArrayList<String>();
+        nestLocations = new ArrayList<String>();
+        kitLocations = new ArrayList<String>();
+        partImages = new ArrayList<BufferedImage>();
+        gripperPartIDs = new ArrayList<Integer>();
 
         for (int i = 0; i < 4; i++) {
         	gripperPartIDs.add(1);

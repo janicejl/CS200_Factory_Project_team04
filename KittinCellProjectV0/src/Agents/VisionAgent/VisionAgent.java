@@ -8,6 +8,7 @@ import java.util.concurrent.*;
 import Agent.*;
 import Agents.PartsRobotAgent.*;
 import Interface.VisionAgent.*;
+import Interface.VisionAgent.Vision;
 import Interface.KitRobotAgent.*;
 import Interface.PartsRobotAgent.*;
 import data.*;
@@ -21,18 +22,18 @@ public class VisionAgent extends Agent implements Vision {
 	/** DATA **/
 	
 	String name;
+	List<NestAgent> nestsList= Collections.synchronizedList( new ArrayList<NestAgent>() ); // list of all the nests that we need parts from
 	List<Nest> nestsList= Collections.synchronizedList( new ArrayList<Nest>() ); // list of all the nests that we need parts from
 	List<Part> neededPartsList = Collections.synchronizedList( new ArrayList<Part>() ); // list of all the parts that should be in each kit
 	
+	Map<Integer, NestAgent> fullNestsMap = Collections.synchronizedMap( new TreeMap<Integer, NestAgent>() ); // list of all the nests that are full and ready to have their picture taken
 	Map<Integer, Nest> fullNestsMap = Collections.synchronizedMap( new TreeMap<Integer, Nest>() ); // list of all the nests that are full and ready to have their picture taken
 	List<Part.PartType> fullNestsPartsList = Collections.synchronizedList( new ArrayList<Part.PartType>() ); // parallel array that holds all parts that each nest is supposed to hold
 	
 	enum State {IDLE, SCHEMATIC_RECEIVED, READY_TO_TAKE_PICTURE, PICTURE_TAKEN};
 	enum Type {NESTS_INSPECTOR, KIT_INSPECTOR};
 	
-	Semaphore flashpermit; //Hack because CS200 team's picture animation can only take 1 picture at a time. We realize that the fact
-	//that all the visionagents share this semaphore violates the no-shared data rule but due to the limitations of the gui
-	//this was the most elegant solution
+	Semaphore flashpermit;
 	
 	State state;
 	Type type;
@@ -48,12 +49,14 @@ public class VisionAgent extends Agent implements Vision {
 	Server server;
 	
 	boolean approved;
+	boolean waiting;
 	
 	/////////////////////////////////////////////////////////////
 	/** CONSTRUCTOR **/
 	
 	public VisionAgent (String type, KitRobot kr, PartsRobot pr, Server server) {
-		approved=false;
+		approved = false;
+		waiting = false;
 		
 		kitRobot = kr;
 		partsRobot = pr;
@@ -66,6 +69,7 @@ public class VisionAgent extends Agent implements Vision {
 	/////////////////////////////////////////////////////////////
 	/** MESSAGES **/
 	
+	public void msgHereIsSchematic(List<Part> partsList, List<NestAgent> nestsList)  {
 	public void msgHereIsSchematic(List<Part> partsList, List<Nest> nestsList)  {
 		// receive a list of all the parts that a kit needs, and a list of all the nests
 		this.nestsList = nestsList;
@@ -80,6 +84,7 @@ public class VisionAgent extends Agent implements Vision {
 	}
 	
 	// sent by NestAgent
+	public void msgImFull(NestAgent nest) {
 	public void msgImFull(Nest nest) {
 		// here i am assuming that we will name the nests with a number.
 		// i can do this differently if we later decide not to do this, but this makes it easier for me to organize parts
@@ -96,12 +101,17 @@ public class VisionAgent extends Agent implements Vision {
 		stateChanged();
 	}
 	
-	//sent by GUI
-	public void msgAnimationDone(){
-		flashpermit.drainPermits();
-		flashpermit.release();
+	// sent by GUI
+	public void msgCameraBusy() {
+		waiting = true;
 	}
 	
+	//sent by GUI
+	public void msgCameraAvailable(){
+		waiting = false;
+		flashpermit.drainPermits();
+		flashpermit.release();
+	}	
 	
 	/////////////////////////////////////////////////////////////
 	/** ACTIONS**/
@@ -220,6 +230,7 @@ public class VisionAgent extends Agent implements Vision {
 		nest1 = null;
 		nest2 = null;
 		
+		state = State.IDLE;
 		stateChanged();
 		
 	}
@@ -242,7 +253,7 @@ public class VisionAgent extends Agent implements Vision {
 			return true;
 		}
 		
-		if (state==State.READY_TO_TAKE_PICTURE) {
+		if (state==State.READY_TO_TAKE_PICTURE && waiting == false) {
 			takePicture();
 			return true;
 		}
@@ -260,12 +271,6 @@ public class VisionAgent extends Agent implements Vision {
 		return false;
 	}
 
-
-
-
-
-
-	
 	/////////////////////////////////////////////////////////////
 	/** OTHER **/
 	public void setFlashPermit(Semaphore flashpermit){
@@ -273,7 +278,6 @@ public class VisionAgent extends Agent implements Vision {
 	}
 
 
-	
 
 	
 }

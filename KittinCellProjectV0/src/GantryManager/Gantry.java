@@ -38,12 +38,7 @@ public class Gantry implements Serializable
 			else
 				yCurrent+=1;
 		}
-		/*if(Math.abs(xCurrent-xFinal) < 10){
-			xCurrent = xFinal;
-		}
-		if(Math.abs(yCurrent-yFinal) < 10){
-			yCurrent = yFinal;
-		}*/
+		
 		if(feed == 0)
 		{
 			
@@ -123,7 +118,6 @@ public class Gantry implements Serializable
 
 	public synchronized void setFeed(int feed)
 	{
-		System.out.println("wtfffffff!!!!");
 		this.feed = feed;
 		if(feed == 0)
 		{

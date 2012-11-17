@@ -23,7 +23,6 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 		setMaximumSize(new Dimension(200,400));
 		setMinimumSize(new Dimension(200,400));
 		
-		createButton("Load Config");
 		createButton("Load Feeder 1");
 		createButton("Load Feeder 2");
 		createButton("Load Feeder 3");
@@ -32,6 +31,11 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 		createButton("Dump Feeder 2");
 		createButton("Dump Feeder 3");
 		createButton("Dump Feeder 4");
+		createButton("Purge Feeder 1");
+		createButton("Purge Feeder 2");
+		createButton("Purge Feeder 3");
+		createButton("Purge Feeder 4");
+		
 		background = new ImageIcon("images/server3.jpeg");
 		
 		int i=0;
@@ -93,6 +97,22 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 		else if("Dump Feeder 4".equals(ae.getActionCommand()))
 		{
 			server.execute("Dump Feeder 4");
+		}
+		else if("Purge Feeder 1".equals(ae.getActionCommand()))
+		{
+			server.execute("Purge Feeder 1");
+		}
+		else if("Purge Feeder 2".equals(ae.getActionCommand()))
+		{
+			server.execute("Purge Feeder 2");
+		}
+		else if("Purge Feeder 3".equals(ae.getActionCommand()))
+		{
+			server.execute("Purge Feeder 3");
+		}
+		else if("Purge Feeder 4".equals(ae.getActionCommand()))
+		{
+			server.execute("Purge Feeder 4");
 		}
 	}
 }

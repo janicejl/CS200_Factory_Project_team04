@@ -5,9 +5,8 @@ import java.awt.geom.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.TreeMap;
+
+import java.util.*;
 import java.util.concurrent.*;
 import java.io.*;
 import javax.imageio.*;
@@ -36,17 +35,17 @@ public class PartsRobot implements Runnable, Serializable{
     
     BufferedImage partsRobotImage;
 
-    CopyOnWriteArrayList<Boolean> gripperHolding;
-    CopyOnWriteArrayList<Double> gripperExtensions;
-    CopyOnWriteArrayList<Double> newGripperExtensions;
-    CopyOnWriteArrayList<String> commands;
-    CopyOnWriteArrayList<String> subCommands;
-    CopyOnWriteArrayList<String> nestLocations;
-    CopyOnWriteArrayList<String> kitLocations;
-    CopyOnWriteArrayList<Integer> gripperPartIDs;
+    ArrayList<Boolean> gripperHolding;
+    ArrayList<Double> gripperExtensions;
+    ArrayList<Double> newGripperExtensions;
+    ArrayList<String> commands;
+    ArrayList<String> subCommands;
+    ArrayList<String> nestLocations;
+    ArrayList<String> kitLocations;
+    ArrayList<Integer> gripperPartIDs;
     int[] nl = {55,125,195,265,335,405,475,545};
     int[] kl = {190,410};
-    CopyOnWriteArrayList<Part> partsHeld;
+    ArrayList<Part> partsHeld;
     float opacity;
     boolean animationDone;
 
@@ -57,13 +56,13 @@ public class PartsRobot implements Runnable, Serializable{
         cameraX = 350;
         cameraY = 100;
         takePicture = false;
-        gripperHolding = new CopyOnWriteArrayList<Boolean>();
-        gripperExtensions = new CopyOnWriteArrayList<Double>();
-        newGripperExtensions = new CopyOnWriteArrayList<Double>();
-        nestLocations = new CopyOnWriteArrayList<String>();
-        kitLocations = new CopyOnWriteArrayList<String>();
-        gripperPartIDs = new CopyOnWriteArrayList<Integer>();
-        partsHeld = new CopyOnWriteArrayList<Part>();
+        gripperHolding = new ArrayList<Boolean>();
+        gripperExtensions = new ArrayList<Double>();
+        newGripperExtensions = new ArrayList<Double>();
+        nestLocations = new ArrayList<String>();
+        kitLocations = new ArrayList<String>();
+        gripperPartIDs = new ArrayList<Integer>();
+        partsHeld = new ArrayList<Part>();
         flashDown = false;
         flashUp = false;
         animationDone = false;
@@ -74,8 +73,8 @@ public class PartsRobot implements Runnable, Serializable{
             gripperExtensions.add(0.0);
             newGripperExtensions.add(0.0);
         }
-        commands = new CopyOnWriteArrayList<String>();
-        subCommands = new CopyOnWriteArrayList<String>();
+        commands = new ArrayList<String>();
+        subCommands = new ArrayList<String>();
         msg = new Boolean(false);
         
         try {
@@ -210,6 +209,9 @@ public class PartsRobot implements Runnable, Serializable{
                 gripperHolding.set(Integer.parseInt(ss[1]),false);
                 app.getStationKit(Integer.parseInt(ss[2])+1).addPart(partsHeld.get(0));
                 partsHeld.remove(0);
+                if(partsHeld.size() == 0){
+                	msg = true;
+                }
                 System.out.println("Size : " + app.getStationKit(Integer.parseInt(ss[2])+1).getPartsList().size());
                 processing = true;
             }
@@ -260,11 +262,11 @@ public class PartsRobot implements Runnable, Serializable{
         return angle;
     }
 
-    public CopyOnWriteArrayList<Boolean> getGripperHolding(){
+    public ArrayList<Boolean> getGripperHolding(){
         return gripperHolding;
     }
 
-    public CopyOnWriteArrayList<Double> getGripperExtensions(){
+    public ArrayList<Double> getGripperExtensions(){
         return gripperExtensions;
     }
     public boolean getTakePicture(){
@@ -282,11 +284,11 @@ public class PartsRobot implements Runnable, Serializable{
 		return msg;
 	}
     
-    public CopyOnWriteArrayList<Integer> getGripperPartIDs(){
+    public ArrayList<Integer> getGripperPartIDs(){
     	return gripperPartIDs;
     }
 
-    public CopyOnWriteArrayList<Part> getPartsHeld(){
+    public ArrayList<Part> getPartsHeld(){
     	return partsHeld;
     }
     

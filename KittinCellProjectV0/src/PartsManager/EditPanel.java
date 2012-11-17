@@ -13,15 +13,15 @@ import data.PartInfo;
 public class EditPanel extends JPanel implements ActionListener{
 	
 	PartsManagerApp app;
-	JComboBox partsSelectBox;
+	JComboBox partsSelectBox, imagesSelectBox;
 	ArrayList<JLabel> promptLabels;
 	ArrayList<JTextField> editFields;
 	JButton editButton, submitButton, resetButton;
 	ArrayList<JPanel> horizPanels;
 	JTextArea descriptionArea;
-	Timer timer;
 //	String[] parts;
 	Vector<String> partNames;
+	Vector<ImageIcon> partImages;
 	
 	public EditPanel(PartsManagerApp _app){
 		app = _app;
@@ -37,6 +37,17 @@ public class EditPanel extends JPanel implements ActionListener{
 		partsSelectBox.setMinimumSize(new Dimension(270, 27));
 		partsSelectBox.setMaximumSize(new Dimension(270, 27));
 		updateSelectionBox(0);
+		
+		partImages = new Vector<ImageIcon>();
+		for(int i=0;i<10;i++){
+			partImages.add(new ImageIcon("images/kt"+i+".png"));
+		}
+		imagesSelectBox = new JComboBox(partNames);
+		imagesSelectBox.setAlignmentY(Component.CENTER_ALIGNMENT);
+		imagesSelectBox.setPreferredSize(new Dimension(270, 27));
+		imagesSelectBox.setMinimumSize(new Dimension(270, 27));
+		imagesSelectBox.setMaximumSize(new Dimension(270, 27));
+		imagesSelectBox.setEnabled(false);
 		
 		promptLabels.add(new JLabel("Part:"));
 		promptLabels.get(promptLabels.size()-1).setAlignmentY(Component.CENTER_ALIGNMENT);

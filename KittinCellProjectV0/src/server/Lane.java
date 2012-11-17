@@ -3,15 +3,15 @@ import java.awt.geom.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.Serializable;
-import java.util.Vector;
+import java.util.ArrayList;
 import data.Part;
 import Feeder.Feeder;
 import laneManager.Nest;
 
 public class Lane implements ActionListener, Serializable{
-    private Vector<Part> importList;  //Item Collection that is imported
-	private Vector<Part> itemList;  //items moving down 
-    private Vector<Part> queueList; 
+    private ArrayList<Part> importList;  //Item Collection that is imported
+	private ArrayList<Part> itemList;  //items moving down 
+    private ArrayList<Part> queueList; 
     private Rectangle2D.Double backgroundRectangle;
     private int conveyerBeltSpeed;
     private int maxX;
@@ -59,9 +59,9 @@ public class Lane implements ActionListener, Serializable{
 		this.maxY = 30;
     	this.verticalSpacing = 0;
 	    this.conveyerBeltSpeed = 1;
-	    this.itemList = new Vector<Part> ();
-	    this.importList = new Vector<Part> ();
-	    this.queueList = new Vector<Part> ();
+	    this.itemList = new ArrayList<Part> ();
+	    this.importList = new ArrayList<Part> ();
+	    this.queueList = new ArrayList<Part> ();
 		this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		this.queueFull = false;
 		this.openGate = false;
@@ -73,9 +73,9 @@ public class Lane implements ActionListener, Serializable{
 		maxY = 30;
     	this.verticalSpacing = verticalSpacing;
 	    conveyerBeltSpeed = 1;
-	    itemList = new Vector<Part> ();
-	    importList = new Vector<Part> ();
-	    queueList = new Vector<Part> ();
+	    itemList = new ArrayList<Part> ();
+	    importList = new ArrayList<Part> ();
+	    queueList = new ArrayList<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		//nestFull = false;
 		gate = new Gate();
@@ -97,9 +97,9 @@ public class Lane implements ActionListener, Serializable{
 		maxY = 50;
     	this.verticalSpacing = verticalSpacing;
 	    conveyerBeltSpeed = 1;
-	    itemList = new Vector<Part> ();
-	    importList = new Vector<Part> ();
-	    queueList = new Vector<Part> ();
+	    itemList = new ArrayList<Part> ();
+	    importList = new ArrayList<Part> ();
+	    queueList = new ArrayList<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		queueFull = false;		
 		for(int i = 0; i < importList.size(); i++) {
@@ -146,11 +146,11 @@ public class Lane implements ActionListener, Serializable{
     	return this.gate;
     }
     
-    public Vector<Part> getItemList() {
+    public ArrayList<Part> getItemList() {
     	return this.itemList;
     }
     
-    public Vector<Part> getQueueList() {
+    public ArrayList<Part> getQueueList() {
     	return this.queueList;
     }
     

@@ -12,7 +12,7 @@ public interface Vision{
 	public void msgHereIsSchematic(List<Part> partsList, List<Nest> nestsList);
 	public void msgImFull(Nest nest);
 	public void msgTakePicture(Kit k);
-	public void msgAnimationDone();
+	public void msgCameraAvailable();
 	
 	public void setFlashPermit(Semaphore flashpermit);
 	

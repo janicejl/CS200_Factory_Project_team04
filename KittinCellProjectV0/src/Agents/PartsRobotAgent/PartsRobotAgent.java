@@ -25,7 +25,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 
 	boolean executed = false;
 	
-	int count = 0;
+	public int count = 0;
 	public List <Part.PartType> recipe = new ArrayList<Part.PartType>();
 	public List <Part> camerarecipe = new ArrayList<Part>();
 	public List <MyNest> nests = new ArrayList<MyNest>();
@@ -37,7 +37,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 
 	public enum AnimationStatus {atHome, movingToNest, atNest, movingToStand, atStand, movingHome,waitingForPart,placingParts}//Will need to use when integrating with the animation
 
-	private enum CurrentKit{kit1, kit2}
+	public enum CurrentKit{kit1, kit2}
 	private enum RobotState{mustOrderParts,PartsOrdered}
 
 	//Constructor must instantiate all the MyNests and have references to all the nests

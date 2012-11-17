@@ -514,7 +514,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		if(getPartsRobot().getAnimationDone()){
 			for(int i = 0; i<4; i++){
-		//		getVisions().get(i).msgAnimationDone();
+				getVisions().get(i).msgCameraAvailable();
 			}
 			getPartsRobot().setAnimationDone(false);
 		}	

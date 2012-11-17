@@ -209,6 +209,9 @@ public class PartsRobot implements Runnable, Serializable{
                 gripperHolding.set(Integer.parseInt(ss[1]),false);
                 app.getStationKit(Integer.parseInt(ss[2])+1).addPart(partsHeld.get(0));
                 partsHeld.remove(0);
+                if(partsHeld.size() == 0){
+                	msg = true;
+                }
                 System.out.println("Size : " + app.getStationKit(Integer.parseInt(ss[2])+1).getPartsList().size());
                 processing = true;
             }

@@ -89,10 +89,74 @@ public class PartsRobotTest extends TestCase{
 		Assert.assertTrue("Moving to Nest",partsrobotagent.animationstate == AnimationStatus.movingToNest);
 		
 		partsrobotagent.msgAnimationDone();
-		Assert.assertTrue("Asked nest for part",nest1.log.containsString("Asked For a Part"));
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Asked nest for part",nest1.log.containsString("Asked for a Part"));
 		
+		Part.PartType type1 = PartType.part1;
+		partsrobotagent.msgHereIsPart(new Part(type1));
+		Assert.assertTrue("Has part",partsrobotagent.grippers[0].p!= null);
+		Assert.assertTrue("Nest no longer has part",partsrobotagent.nests.get(0).state!= NestStatus.hasPart);
 		
+		partsrobotagent.msgPartsApproved(2);
+		Assert.assertTrue("Parts Approved",partsrobotagent.nests.get(1).state == NestStatus.hasPart);
 		
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Moving to Part",partsrobotagent.kit1.partsneeded.size()==2);
+		Assert.assertTrue("Gripper is occupied",partsrobotagent.grippers[1].full);
+		Assert.assertTrue("Gripper destination nest is correct",partsrobotagent.grippers[1].nestindex == 2);
+		Assert.assertTrue("Moving to Nest",partsrobotagent.animationstate == AnimationStatus.movingToNest);
+				
+		partsrobotagent.msgAnimationDone();
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Asked nest for part",nest2.log.containsString("Asked for a Part"));
+		
+		Part.PartType type2 = PartType.part2;
+		partsrobotagent.msgHereIsPart(new Part(type2));
+		Assert.assertTrue("Has part",partsrobotagent.grippers[1].p!= null);
+		
+		partsrobotagent.msgPartsApproved(3);
+		Assert.assertTrue("Parts Approved",partsrobotagent.nests.get(2).state == NestStatus.hasPart);
+		
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Moving to Part",partsrobotagent.kit1.partsneeded.size()==1);
+		Assert.assertTrue("Gripper is occupied",partsrobotagent.grippers[2].full);
+		Assert.assertTrue("Gripper destination nest is correct",partsrobotagent.grippers[2].nestindex == 3);
+		Assert.assertTrue("Moving to Nest",partsrobotagent.animationstate == AnimationStatus.movingToNest);
+				
+		partsrobotagent.msgAnimationDone();
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Asked nest for part",nest3.log.containsString("Asked for a Part"));
+		
+		Part.PartType type3 = PartType.part3;
+		partsrobotagent.msgHereIsPart(new Part(type3));
+		Assert.assertTrue("Has part",partsrobotagent.grippers[2].p!= null);
+		
+		partsrobotagent.msgPartsApproved(4);
+		Assert.assertTrue("Parts Approved",partsrobotagent.nests.get(3).state == NestStatus.hasPart);
+		
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Moving to Part",partsrobotagent.kit1.partsneeded.isEmpty());
+		Assert.assertTrue("Gripper is occupied",partsrobotagent.grippers[3].full);
+		Assert.assertTrue("Gripper destination nest is correct",partsrobotagent.grippers[3].nestindex == 4);
+		Assert.assertTrue("Moving to Nest",partsrobotagent.animationstate == AnimationStatus.movingToNest);
+				
+		partsrobotagent.msgAnimationDone();
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Asked nest for part",nest4.log.containsString("Asked for a Part"));
+		
+		Part.PartType type4 = PartType.part4;
+		partsrobotagent.msgHereIsPart(new Part(type4));
+		Assert.assertTrue("Has part",partsrobotagent.grippers[3].p!= null);
+		Assert.assertTrue("All grippers full",partsrobotagent.allGrippersFull());
+		
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Moving to Kit Stand",partsrobotagent.animationstate == AnimationStatus.movingToStand);
+		
+		partsrobotagent.msgAnimationDone();
+		Assert.assertTrue("At Kit Stand",partsrobotagent.animationstate == AnimationStatus.atStand);
+		
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Grippers Empty",partsrobotagent.grippersEmpty());
 
 		
 		

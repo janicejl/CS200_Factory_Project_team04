@@ -276,7 +276,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		requestEmptyKit();
 		return true;
 	}
-	if((kit1.partsneeded.isEmpty() || kit2.partsneeded.isEmpty()) && grippersEmpty() && !recipe.isEmpty()&& animationstate != AnimationStatus.atStand && animationstate != AnimationStatus.movingToStand)
+	if((kit1.partsneeded.isEmpty() || kit2.partsneeded.isEmpty()) && grippersEmpty() && !recipe.isEmpty()&& animationstate != AnimationStatus.atStand && animationstate != AnimationStatus.movingToStand&& animationstate != AnimationStatus.placingParts)
 	{
 		count--;
 		print("A kit is finished (" + count + " to go)");
@@ -454,7 +454,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		
 	}
 	private void getPart(){
-		print("Picking up part");
+		print("Picking up part at nest" + nests.get(currentnest-1).index);
 		animationstate = AnimationStatus.waitingForPart;
 
 		//gui.DoGetPart();//Any sort of animation for getting the part from the nest
@@ -567,7 +567,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		//gui.DoReturnToHome(); // Move to the original home position of the robot.
 		animationstate = AnimationStatus.movingHome;
 	}
-	private boolean grippersEmpty()
+	public boolean grippersEmpty()
 	{
 		for(int i = 0; i<4; i++)
 		{
@@ -576,7 +576,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		}
 		return true;
 	}
-	private boolean allGrippersFull()
+	public boolean allGrippersFull()
 	{
 		for(int i = 0; i<4; i++)
 		{

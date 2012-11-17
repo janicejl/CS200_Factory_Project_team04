@@ -52,6 +52,13 @@ public class GantryManager implements Serializable,ActionListener
 				i++;
 		}
 		
+		i=0;
+		while(i<purged.size())
+		{
+			purged.get(i).update();
+			i++;
+		}
+		
 		
 		i=0;
 		boolean go = true;
@@ -111,6 +118,7 @@ public class GantryManager implements Serializable,ActionListener
 		}
 		else if(gantry.getState().equals("dumpi"))
 		{
+			gantry.setxFinal(gantry.getxFinal()+60);
 			int c=0;
 			while(c<purged.size())
 			{
@@ -120,7 +128,7 @@ public class GantryManager implements Serializable,ActionListener
 				}
 				c++;
 			}
-			if(purged.get(gantry.getBox()).getFeeder()!=gantry.getFeed())
+			if(purged.size()==0 || purged.get(gantry.getBox()).getFeeder()!=gantry.getFeed())
 			{
 				gantry.setState("free");
 			}

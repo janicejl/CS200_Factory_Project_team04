@@ -21,5 +21,6 @@ public interface Nest {
 	public PartType getPartType();
 	public void setVisionAgent(VisionAgent camera);
 	public Integer getIndex();
+	public boolean pickAndExecuteAnAction();
 	
 }

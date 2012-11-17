@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+//Client class for connecting to the server
 public class GantryManagerClient implements Runnable
 {
 	Socket s;
@@ -58,21 +59,12 @@ public class GantryManagerClient implements Runnable
 	{
 		return thread;
 	}
-	
-	public synchronized void send()
-	{
-		try
-		{
-			out.writeObject(gui.manager);
-			out.reset();
-		}
-		catch(Exception e){}
-	}
-	
+
 	public synchronized void update()
 	{
 		try
 		{
+			//Reads in the new gantry manager and sets it as the applications current one
 			gui.setGantryManager((GantryManager)in.readObject());
 		}
 		catch(Exception ignore){}

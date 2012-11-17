@@ -11,6 +11,7 @@ public class GantryManager implements Serializable,ActionListener
 	Vector<PartsBox> parts;
 	Vector<Integer> feeders;
 	Vector<PartsBox> exiting;
+	Vector<PartsBox> purged;
 	int speed;
 	Random rand;
 	
@@ -31,6 +32,7 @@ public class GantryManager implements Serializable,ActionListener
 		}
 	
 		exiting = new Vector<PartsBox>();
+		purged = new Vector<PartsBox>();
 	}
 	
 	public synchronized void update()
@@ -76,7 +78,7 @@ public class GantryManager implements Serializable,ActionListener
 				}
 				i++;	
 			}
-			if(go==false && parts.size()<4)
+			if(go==false && parts.size()<9)
 			{
 				parts.add(new PartsBox((rand.nextInt(10)+1)*20));
 			}
@@ -108,6 +110,23 @@ public class GantryManager implements Serializable,ActionListener
 			parts.get(gantry.getBox()).setFeeder(gantry.getFeed());	
 		}
 		else if(gantry.getState().equals("dumpi"))
+		{
+			int c=0;
+			while(c<purged.size())
+			{
+				if(purged.get(c).getFeeder()==gantry.getFeed())
+				{
+					gantry.setBox(c);
+				}
+				c++;
+			}
+			if(purged.get(gantry.getBox()).getFeeder()!=gantry.getFeed())
+			{
+				gantry.setState("free");
+			}
+			
+		}
+		else if(gantry.getState().equals("purgei"))
 		{
 			int c=0;
 			while(c<parts.size())
@@ -143,18 +162,36 @@ public class GantryManager implements Serializable,ActionListener
 				state = "dumpf";
 				feeders.set(gantry.getFeed(), 0);
 				gantry.setFeed(-1);
-				parts.get(gantry.getBox()).setState("dumpf");
+				purged.get(gantry.getBox()).setState("dumpf");
 				gantry.setxFinal(285);
 				gantry.setyFinal(172);
-				parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
-				parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
+				purged.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
+				purged.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
 			}
 			else if(state.equals("dumpf"))
 			{
-				parts.remove(gantry.getBox());
+				purged.remove(gantry.getBox());
 				gantry.setState("free");
 				state = "free";
 				exiting.add(new PartsBox(0));
+			}
+			else if(state.equals("purgei"))
+			{
+				gantry.setState("purgef");
+				state="purgi";
+				feeders.set(gantry.getFeed(), 0);
+				gantry.setxFinal(gantry.getxFinal()+60);
+				parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
+				parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
+				gantry.setFeed(-1);
+				parts.get(gantry.getBox()).setState("purgef");
+			}
+			else if(state.equals("purgef"))
+			{
+				System.out.println("done");
+				purged.add(parts.get(gantry.getBox()));
+				parts.remove(gantry.getBox());
+				gantry.setState("free");
 			}
 		}
 	
@@ -185,8 +222,13 @@ public class GantryManager implements Serializable,ActionListener
 		parts = p;
 	}
 	
-	public synchronized Vector<PartsBox> getExiting()
+	public Vector<PartsBox> getExiting()
 	{
 		return exiting;
+	}
+	
+	public Vector<PartsBox> getPurged()
+	{
+		return purged;
 	}
 }

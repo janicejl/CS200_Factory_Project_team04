@@ -432,6 +432,38 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setFeed(3);
     		}
     	}
+    	else if(process.equals("Purge Feeder 1"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("purgei");
+    			gantryManager.getGantry().setFeed(0);
+    		}
+    	}
+    	else if(process.equals("Purge Feeder 2"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("purgei");
+    			gantryManager.getGantry().setFeed(1);
+    		}
+    	}
+    	else if(process.equals("Purge Feeder 3"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("purgei");
+    			gantryManager.getGantry().setFeed(2);
+    		}
+    	}
+    	else if(process.equals("Purge Feeder 4"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("purgei");
+    			gantryManager.getGantry().setFeed(3);
+    		}
+    	}
     	
     }
 	 
@@ -482,7 +514,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		if(getPartsRobot().getAnimationDone()){
 			for(int i = 0; i<4; i++){
-				getVisions().get(i).msgAnimationDone();
+		//		getVisions().get(i).msgAnimationDone();
 			}
 			getPartsRobot().setAnimationDone(false);
 		}	

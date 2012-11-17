@@ -31,9 +31,7 @@ public class VisionAgent extends Agent implements Vision {
 	enum State {IDLE, SCHEMATIC_RECEIVED, READY_TO_TAKE_PICTURE, PICTURE_TAKEN};
 	enum Type {NESTS_INSPECTOR, KIT_INSPECTOR};
 	
-	Semaphore flashpermit; //Hack because CS200 team's picture animation can only take 1 picture at a time. We realize that the fact
-	//that all the visionagents share this semaphore violates the no-shared data rule but due to the limitations of the gui
-	//this was the most elegant solution
+	Semaphore flashpermit;
 	
 	State state;
 	Type type;
@@ -49,12 +47,14 @@ public class VisionAgent extends Agent implements Vision {
 	Server server;
 	
 	boolean approved;
+	boolean waiting;
 	
 	/////////////////////////////////////////////////////////////
 	/** CONSTRUCTOR **/
 	
 	public VisionAgent (String type, KitRobot kr, PartsRobot pr, Server server) {
-		approved=false;
+		approved = false;
+		waiting = false;
 		
 		kitRobot = kr;
 		partsRobot = pr;
@@ -97,12 +97,17 @@ public class VisionAgent extends Agent implements Vision {
 		stateChanged();
 	}
 	
-	//sent by GUI
-	public void msgAnimationDone(){
-		flashpermit.drainPermits();
-		flashpermit.release();
+	// sent by GUI
+	public void msgCameraBusy() {
+		waiting = true;
 	}
 	
+	//sent by GUI
+	public void msgCameraAvailable(){
+		waiting = false;
+		flashpermit.drainPermits();
+		flashpermit.release();
+	}	
 	
 	/////////////////////////////////////////////////////////////
 	/** ACTIONS**/
@@ -221,6 +226,7 @@ public class VisionAgent extends Agent implements Vision {
 		nest1 = null;
 		nest2 = null;
 		
+		state = State.IDLE;
 		stateChanged();
 		
 	}
@@ -243,7 +249,7 @@ public class VisionAgent extends Agent implements Vision {
 			return true;
 		}
 		
-		if (state==State.READY_TO_TAKE_PICTURE) {
+		if (state==State.READY_TO_TAKE_PICTURE && waiting == false) {
 			takePicture();
 			return true;
 		}
@@ -261,17 +267,13 @@ public class VisionAgent extends Agent implements Vision {
 		return false;
 	}
 
-
-
-
-
-
-	
 	/////////////////////////////////////////////////////////////
 	/** OTHER **/
 	public void setFlashPermit(Semaphore flashpermit){
 		this.flashpermit = flashpermit;
 	}
+
+
 
 	
 }

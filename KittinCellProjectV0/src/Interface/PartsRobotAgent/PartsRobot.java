@@ -1,6 +1,7 @@
 package Interface.PartsRobotAgent;
 
 import java.util.List;
+import Interface.VisionAgent.*;
 import Agents.PartsRobotAgent.*;
 import Agents.VisionAgent.*;
 import data.Part;
@@ -19,6 +20,6 @@ public interface PartsRobot {
 	public void kitFinished();
 	public String getName();
 	public void setTestGUI(TestGUI test);
-	public void setVisionAgents(List <VisionAgent> cams);
+	public void setMockVisionAgents(List <Vision> cams);
 	
 }

@@ -8,7 +8,6 @@ import java.util.concurrent.*;
 import Agent.*;
 import Agents.PartsRobotAgent.*;
 import Interface.VisionAgent.*;
-import Interface.VisionAgent.Vision;
 import Interface.KitRobotAgent.*;
 import Interface.PartsRobotAgent.*;
 import data.*;
@@ -22,10 +21,10 @@ public class VisionAgent extends Agent implements Vision {
 	/** DATA **/
 	
 	String name;
-	List<NestAgent> nestsList= Collections.synchronizedList( new ArrayList<NestAgent>() ); // list of all the nests that we need parts from
+	List<Nest> nestsList= Collections.synchronizedList( new ArrayList<Nest>() ); // list of all the nests that we need parts from
 	List<Part> neededPartsList = Collections.synchronizedList( new ArrayList<Part>() ); // list of all the parts that should be in each kit
 	
-	Map<Integer, NestAgent> fullNestsMap = Collections.synchronizedMap( new TreeMap<Integer, NestAgent>() ); // list of all the nests that are full and ready to have their picture taken
+	Map<Integer, Nest> fullNestsMap = Collections.synchronizedMap( new TreeMap<Integer, Nest>() ); // list of all the nests that are full and ready to have their picture taken
 	List<Part.PartType> fullNestsPartsList = Collections.synchronizedList( new ArrayList<Part.PartType>() ); // parallel array that holds all parts that each nest is supposed to hold
 	
 	enum State {IDLE, SCHEMATIC_RECEIVED, READY_TO_TAKE_PICTURE, PICTURE_TAKEN};
@@ -67,7 +66,7 @@ public class VisionAgent extends Agent implements Vision {
 	/////////////////////////////////////////////////////////////
 	/** MESSAGES **/
 	
-	public void msgHereIsSchematic(List<Part> partsList, List<NestAgent> nestsList)  {
+	public void msgHereIsSchematic(List<Part> partsList, List<Nest> nestsList)  {
 		// receive a list of all the parts that a kit needs, and a list of all the nests
 		this.nestsList = nestsList;
 		this.neededPartsList = partsList;
@@ -81,7 +80,7 @@ public class VisionAgent extends Agent implements Vision {
 	}
 	
 	// sent by NestAgent
-	public void msgImFull(NestAgent nest) {
+	public void msgImFull(Nest nest) {
 		// here i am assuming that we will name the nests with a number.
 		// i can do this differently if we later decide not to do this, but this makes it easier for me to organize parts
 		
@@ -272,6 +271,9 @@ public class VisionAgent extends Agent implements Vision {
 	public void setFlashPermit(Semaphore flashpermit){
 		this.flashpermit = flashpermit;
 	}
+
+
+	
 
 	
 }

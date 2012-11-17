@@ -15,13 +15,13 @@ public class GUINest {
 	
 	Nest nest;
 	BufferedImage image;
-	Vector<Part> parts;
-	Vector<GUIPart> gParts;
+	ArrayList<Part> parts;
+	ArrayList<GUIPart> gParts;
 	
 	public GUINest(Nest n) {
 		nest = n;
-		parts = new Vector<Part>();
-		gParts = new Vector<GUIPart>();
+		parts = new ArrayList<Part>();
+		gParts = new ArrayList<GUIPart>();
 		try {
 			image = ImageIO.read(new File("images/nest.png"));
 		} catch (IOException e) {

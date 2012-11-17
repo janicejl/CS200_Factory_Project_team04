@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-import java.util.Vector;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import data.GUIPart;
@@ -73,7 +73,7 @@ public class GUIFeeder {
 		}
 		
 		
-		Vector<GUIPart> parts = new Vector<GUIPart>();
+		ArrayList<GUIPart> parts = new ArrayList<GUIPart>();
 		for (int i = 0; i < feeder.getPartAmount(); i++) {	
 			parts.add(new GUIPart(feeder.getParts().get(i)));
 			parts.get(i).paintPart(g2);

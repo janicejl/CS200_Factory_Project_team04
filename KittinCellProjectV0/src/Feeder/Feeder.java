@@ -15,12 +15,12 @@ public class Feeder implements Serializable{
 	
 	private boolean topLane;
 	private boolean empty;
-	private Vector<Part> parts;
+	private ArrayList<Part> parts;
 	private Random random;
 	public Feeder(double nX, double nY){
 		x = nX;
 		y = nY;
-		parts = new Vector<Part> ();
+		parts = new ArrayList<Part> ();
 		random = new Random();
 		
 		partAmount = 0;
@@ -63,7 +63,7 @@ public class Feeder implements Serializable{
 		}
 	}
 	
-	public void setParts(Vector<Part> parts) {
+	public void setParts(ArrayList<Part> parts) {
 		this.parts = parts;
 	}
 	
@@ -93,7 +93,7 @@ public class Feeder implements Serializable{
 		return topLane;
 	}
 	
-	public Vector<Part> getParts() {
+	public ArrayList<Part> getParts() {
 		return parts;
 	}
 

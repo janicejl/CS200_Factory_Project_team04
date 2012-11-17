@@ -56,12 +56,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	PartsRobot partsRobot;
 	PartsRobotAgent partsRobotAgent;
-	CopyOnWriteArrayList<NestAgent> nests = new CopyOnWriteArrayList<NestAgent>();
+	ArrayList<NestAgent> nests = new ArrayList<NestAgent>();
 	VisionAgent nestvisionagent1;
 	VisionAgent nestvisionagent2;
 	VisionAgent nestvisionagent3;
 	VisionAgent nestvisionagent4;
-	CopyOnWriteArrayList<VisionAgent> visions = new CopyOnWriteArrayList<VisionAgent>();
+	ArrayList<VisionAgent> visions = new ArrayList<VisionAgent>();
 	Semaphore flashpermit;
 	
 	GantryManager gantryManager;
@@ -88,9 +88,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	GantryAgent gantry2;
 	GantryControllerAgent gantryController;
 
-	CopyOnWriteArrayList<Feeder> feeders;
-	CopyOnWriteArrayList<Lane> lanes;
-	CopyOnWriteArrayList<Nest> nestList;
+	ArrayList<Feeder> feeders;
+	ArrayList<Lane> lanes;
+	ArrayList<Nest> nestList;
 
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
@@ -154,7 +154,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryManager.getGantry().setState("free");
 		gantryManager.getGantry().setBox(1);
 
-		feeders = new CopyOnWriteArrayList<Feeder>();
+		feeders = new ArrayList<Feeder>();
 		for(int i = 0; i < 4; i++){
 			if(i == 0 || i == 3){
     			feeders.add(new Feeder(475,30 + i*140));
@@ -163,7 +163,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			feeders.add(new Feeder(400,30 + i*140));    			
     		}
 		}
-		nestList = new CopyOnWriteArrayList<Nest>();
+		nestList = new ArrayList<Nest>();
     	
     	
     	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
@@ -176,7 +176,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	nestList.add(new Nest(0, 520));	//x coordinate is zero for laneManagerApp
     	
     	
-		lanes = new CopyOnWriteArrayList<Lane>();
+		lanes = new ArrayList<Lane>();
 		lanes.add(new Lane(600,30, nestList.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(600,100, nestList.get(1))); 
     	lanes.add(new Lane(600,170, nestList.get(2))); 
@@ -616,30 +616,30 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return nests.get(index);
 	}
 		
-	public CopyOnWriteArrayList<Lane> getLanes() {
+	public ArrayList<Lane> getLanes() {
 		return lanes;
 	}
 
-	public void setLanes(CopyOnWriteArrayList<Lane> lanes) {
+	public void setLanes(ArrayList<Lane> lanes) {
 		this.lanes = lanes;
 	}
-	public CopyOnWriteArrayList<VisionAgent> getVisions(){
+	public ArrayList<VisionAgent> getVisions(){
 		return this.visions;
 	}
 
-	public CopyOnWriteArrayList<Feeder> getFeeders() {
+	public ArrayList<Feeder> getFeeders() {
 		return feeders;
 	}
 
-	public void setFeeders(CopyOnWriteArrayList<Feeder> feeders) {
+	public void setFeeders(ArrayList<Feeder> feeders) {
 		this.feeders = feeders;
 	}
 	
-	public CopyOnWriteArrayList<Nest> getNests() {
+	public ArrayList<Nest> getNests() {
 		return nestList;
 	}
 	
-	public void setNests(CopyOnWriteArrayList<Nest> nests) {
+	public void setNests(ArrayList<Nest> nests) {
 		this.nestList = nests;
 	}
 	

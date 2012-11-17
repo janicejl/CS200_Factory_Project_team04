@@ -97,6 +97,10 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		editPanel.updateSelectionBox(0);
 	}
 	
+	public void updatePartsPanel(){
+		partPanel.updatePartList();
+	}
+	
 	public static void main(String[] args){
 		new PartsManagerApp();
 	}

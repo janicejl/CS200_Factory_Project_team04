@@ -64,11 +64,11 @@ public class Nest implements Serializable{
 		}
 	}
 	
-	public synchronized ArrayList<Part> getParts() {
+	public ArrayList<Part> getParts() {
 		return parts;
 	}
 	
-	public synchronized void purgeNest() {
+	public void purgeNest() {
 		parts.clear();
 	}
 }

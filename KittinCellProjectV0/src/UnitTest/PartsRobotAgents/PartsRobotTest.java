@@ -17,6 +17,7 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import Agents.PartsRobotAgent.*;
 import Agents.PartsRobotAgent.PartsRobotAgent.AnimationStatus;
+import Agents.PartsRobotAgent.PartsRobotAgent.CurrentKit;
 import Agents.PartsRobotAgent.PartsRobotAgent.KitStatus;
 import Agents.PartsRobotAgent.PartsRobotAgent.NestStatus;
 import Agents.KitRobotAgents.*;
@@ -29,7 +30,7 @@ public class PartsRobotTest extends TestCase{
 	
 	
 	
-	public void testPartsRobot1()
+	public void testPartsRobotWith4Parts()
 	{
 		PartsRobotAgent partsrobotagent;
 		MockNest nest1 = new MockNest("nest1");
@@ -157,6 +158,14 @@ public class PartsRobotTest extends TestCase{
 		
 		while(partsrobotagent.pickAndExecuteAnAction());
 		Assert.assertTrue("Grippers Empty",partsrobotagent.grippersEmpty());
+		Assert.assertTrue("KitStand received parts",kitstand.log.containsString("Got parts"));
+		
+		partsrobotagent.msgPartsDropped();
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Kit is finished",partsrobotagent.currentkit == CurrentKit.kit2);
+		Assert.assertTrue("Asked for new kit1",partsrobotagent.kit1.state == KitStatus.pending);
+		Assert.assertTrue("Notified stand kit is done",kitstand.log.containsString("Kit is done"));
+		Assert.assertTrue("Lowered count",partsrobotagent.count == 2);
 
 		
 		

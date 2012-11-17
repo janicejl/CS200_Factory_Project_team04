@@ -35,7 +35,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	int currentnest = -1;
 	public AnimationStatus animationstate = AnimationStatus.atHome;
 
-	public enum AnimationStatus {atHome, movingToNest, atNest, movingToStand, atStand, movingHome,waitingForPart}//Will need to use when integrating with the animation
+	public enum AnimationStatus {atHome, movingToNest, atNest, movingToStand, atStand, movingHome,waitingForPart,placingParts}//Will need to use when integrating with the animation
 
 	private enum CurrentKit{kit1, kit2}
 	private enum RobotState{mustOrderParts,PartsOrdered}
@@ -215,8 +215,13 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 			stateChanged();
 		}
 		else if(animationstate == AnimationStatus.movingToStand){
-			print("Done at Stand");
+			print("Reached at Stand");
 			animationstate = AnimationStatus.atStand;
+			stateChanged();
+		}
+		else if (animationstate == AnimationStatus.placingParts){
+			print("Finished at Stand");
+			animationstate = AnimationStatus.movingHome;
 			stateChanged();
 		}
 		else if(animationstate == AnimationStatus.movingHome){
@@ -224,6 +229,15 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		}
 		
 	}
+	
+	public void msgPartsDropped(){
+		if(animationstate == AnimationStatus.placingParts){
+			print("Finished at Stand");
+			animationstate = AnimationStatus.movingHome;
+			stateChanged();
+		}
+	}
+	
 	public void msgHereIsPart(Part p)
 	{
 		for(int i = 0; i<4; i++)
@@ -522,7 +536,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 				mn.state = NestStatus.hasPart;
 			}
 		}
-		returnToStart();
+		animationstate = AnimationStatus.placingParts;
 	}
 	public void kitFinished(){
 

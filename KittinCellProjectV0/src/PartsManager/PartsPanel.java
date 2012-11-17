@@ -60,6 +60,7 @@ public class PartsPanel extends JPanel implements ActionListener{
 			partListPanel.removeAll();
 			app.getPartsList().clear();
 		}
+		app.updateEditPanel();
 	}
 	
 	public void updateLoad(){

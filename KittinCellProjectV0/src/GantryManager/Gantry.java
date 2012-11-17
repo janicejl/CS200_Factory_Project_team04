@@ -22,7 +22,7 @@ public class Gantry implements Serializable
 		box = -1;
 	}
 	
-	public synchronized void update()
+	public void update()
 	{
 		if(xFinal!=xCurrent)
 		{
@@ -62,7 +62,7 @@ public class Gantry implements Serializable
 		}
 	}
 
-	public synchronized int getxFinal() 
+	public int getxFinal() 
 	{
 		return xFinal;
 	}
@@ -72,7 +72,7 @@ public class Gantry implements Serializable
 		this.xFinal = xFinal;
 	}
 
-	public synchronized int getyFinal() {
+	public int getyFinal() {
 		return yFinal;
 	}
 
@@ -81,22 +81,22 @@ public class Gantry implements Serializable
 		this.yFinal = yFinal;
 	}
 
-	public synchronized int getxCurrent()
+	public int getxCurrent()
 	{
 		return xCurrent;
 	}
 
-	public synchronized void setxCurrent(int xCurrent)
+	public void setxCurrent(int xCurrent)
 	{
 		this.xCurrent = xCurrent;
 	}
 
-	public synchronized int getyCurrent()
+	public int getyCurrent()
 	{
 		return yCurrent;
 	}
 
-	public synchronized void setyCurrent(int yCurrent)
+	public void setyCurrent(int yCurrent)
 	{
 		this.yCurrent = yCurrent;
 	}
@@ -142,7 +142,7 @@ public class Gantry implements Serializable
 		}
 	}
 	
-	public synchronized boolean done()
+	public boolean done()
 	{
 		if(xFinal==xCurrent && yFinal==yCurrent)
 			return true;
@@ -150,7 +150,7 @@ public class Gantry implements Serializable
 			return false;
 	}
 	
-	public synchronized int getBox()
+	public int getBox()
 	{
 		return box;
 	}

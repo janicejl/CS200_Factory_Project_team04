@@ -35,7 +35,7 @@ public class GantryManager implements Serializable,ActionListener
 		purged = new Vector<PartsBox>();
 	}
 	
-	public synchronized void update()
+	public void update()
 	{
 		String state = gantry.getState();
 		
@@ -205,17 +205,17 @@ public class GantryManager implements Serializable,ActionListener
 	
 	}
 	
-	public synchronized void actionPerformed(ActionEvent ae)
+	public void actionPerformed(ActionEvent ae)
 	{
 		this.update();
 	}
 	
-	public synchronized Gantry getGantry()
+	public Gantry getGantry()
 	{
 		return gantry;
 	}
 	
-	public synchronized Vector<PartsBox> getPartsBoxes()
+	public Vector<PartsBox> getPartsBoxes()
 	{
 		return parts;
 	}

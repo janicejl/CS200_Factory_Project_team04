@@ -108,11 +108,11 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		}
 	}
 	
-	public synchronized GantryManager getGantryManager()
+	public GantryManager getGantryManager()
 	{
 		return manager;
 	}
-	public synchronized void setGantryManager(GantryManager gm)
+	public void setGantryManager(GantryManager gm)
 	{
 		manager = gm;
 	}

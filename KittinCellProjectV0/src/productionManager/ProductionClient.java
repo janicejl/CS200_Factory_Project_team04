@@ -3,7 +3,7 @@ package productionManager;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import data.Job;
 import data.KitInfo;
@@ -69,9 +69,9 @@ public class ProductionClient implements Runnable{
 			
 			commandSent = "Received";*/
 			/*while(true){
-				app.setLanes((Vector<Lane>)in.readObject());
-				app.setFeeders((Vector<Feeder>)in.readObject());
-				app.setNests((Vector<Nest>)in.readObject());
+				app.setLanes((ArrayList<Lane>)in.readObject());
+				app.setFeeders((ArrayList<Feeder>)in.readObject());
+				app.setNests((ArrayList<Nest>)in.readObject());
 				out.writeObject(commandSent);
 				out.reset();
 			}*/
@@ -134,12 +134,12 @@ public class ProductionClient implements Runnable{
 			if(command.equals("Idle")){
 			}
 			else if(command.equals("Update Kits")){
-				app.setkitsList((Vector<KitInfo>)in.readObject());
+				app.setkitsList((ArrayList<KitInfo>)in.readObject());
 				out.writeObject("Received");
 				out.reset();
 			}
 			else if(command.equals("Update Jobs")){
-				app.setJobs((Vector<Job>)in.readObject());
+				app.setJobs((ArrayList<Job>)in.readObject());
 				out.writeObject("Received");
 				out.reset();
 			}

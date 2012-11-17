@@ -2,7 +2,7 @@ package KitCreationManager;
 
 import java.io.*;
 import java.net.*;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import data.Job;
 import data.KitInfo;
@@ -92,7 +92,7 @@ public class KitCreationClient implements Runnable{
 			
 			command=(String)in.readObject();
 			if(command.equals("Update Parts")){
-				app.setPartsList((Vector<PartInfo>)in.readObject());
+				app.setPartsList((ArrayList<PartInfo>)in.readObject());
 				out.writeObject("Received");
 				out.reset();
 			}

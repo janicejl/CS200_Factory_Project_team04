@@ -2,7 +2,7 @@ package PartsManager;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.io.*;
 
 import javax.swing.*;
@@ -13,12 +13,12 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 	
 	PartsPanel partPanel;
 	EditPanel editPanel;
-	Vector<PartInfo> partsList;
+	ArrayList<PartInfo> partsList;
 	PartsManagerClient partsManagerClient;
 	JTabbedPane tabbedPane;
 	
 	public PartsManagerApp(){
-		partsList = new Vector<PartInfo>();
+		partsList = new ArrayList<PartInfo>();
 		partsManagerClient = new PartsManagerClient(this);
 		
 		addWindowListener(this);
@@ -60,7 +60,7 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		try{
 			FileInputStream fileIn = new FileInputStream(path); //access  file
 			ObjectInputStream streamIn = new ObjectInputStream(fileIn); //inputstream
-			partsList = ((Vector<PartInfo>) streamIn.readObject()); //load
+			partsList = ((ArrayList<PartInfo>) streamIn.readObject()); //load
 			streamIn.close();
 			fileIn.close();
 		}
@@ -109,11 +109,11 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		this.partPanel = partPanel;
 	}
 
-	public synchronized Vector<PartInfo> getPartsList() {
+	public synchronized ArrayList<PartInfo> getPartsList() {
 		return partsList;
 	}
 
-	public synchronized void setPartsList(Vector<PartInfo> partsList) {
+	public synchronized void setPartsList(ArrayList<PartInfo> partsList) {
 		this.partsList = partsList;
 	}
 

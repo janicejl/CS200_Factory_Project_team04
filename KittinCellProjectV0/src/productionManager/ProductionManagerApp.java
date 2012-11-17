@@ -27,8 +27,8 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	JMenu menu;
 	JMenuItem next;
 	
-	Vector<KitInfo> kitsList;
-	Vector<Job> jobs;
+	ArrayList<KitInfo> kitsList;
+	ArrayList<Job> jobs;
 	
 	public ProductionManagerApp(){
 		setSize(1200, 645);
@@ -37,9 +37,10 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		
 		client = new ProductionClient(this);
 		
-		kitsList = new Vector<KitInfo>();
+		kitsList = new ArrayList<KitInfo>();
+		kitsList.add(null);
 		load("kitsList.sav");
-		jobs = new Vector<Job>();
+		jobs = new ArrayList<Job>();
 		load("jobsList.sav");
 
 		panel = new ProductionManagerPanel(this);
@@ -97,10 +98,10 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 			FileInputStream fileIn = new FileInputStream(path); //access  file
 			ObjectInputStream streamIn = new ObjectInputStream(fileIn); //inputstream
 			if(path.equals("kitsList.sav")){
-				kitsList = ((Vector<KitInfo>) streamIn.readObject());
+				kitsList = ((ArrayList<KitInfo>) streamIn.readObject());
 			}
 			else if(path.equals("jobsList.sav")){
-				jobs = ((Vector<Job>) streamIn.readObject());
+				jobs = ((ArrayList<Job>) streamIn.readObject());
 			}
 			streamIn.close();
 			fileIn.close();
@@ -154,19 +155,19 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		app.timer.start();
 	}
 
-	public synchronized Vector<KitInfo> getKitsList() {
+	public synchronized ArrayList<KitInfo> getKitsList() {
 		return kitsList;
 	}
 
-	public synchronized void setkitsList(Vector<KitInfo> kitsList) {
+	public synchronized void setkitsList(ArrayList<KitInfo> kitsList) {
 		this.kitsList = kitsList;
 	}
 
-	public synchronized Vector<Job> getJobs() {
+	public synchronized ArrayList<Job> getJobs() {
 		return jobs;
 	}
 
-	public synchronized void setJobs(Vector<Job> jobs) {
+	public synchronized void setJobs(ArrayList<Job> jobs) {
 		this.jobs = jobs;
 	}
 	

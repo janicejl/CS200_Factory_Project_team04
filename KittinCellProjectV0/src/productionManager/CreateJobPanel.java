@@ -50,8 +50,13 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 		kitLabel.setMinimumSize(new Dimension(40, 30));
 		
 		kitNames = new Vector<String>();
-		for(int i = 0; i < app.getApp().getKitsList().size(); i++){
-			kitNames.add(app.getApp().getKitsList().get(i).getName());
+		if(app.getApp().getKitsList().get(0) != null){
+			for(int i = 0; i < app.getApp().getKitsList().size(); i++){
+				kitNames.add(app.getApp().getKitsList().get(i).getName());
+			}
+		}
+		else{
+			kitNames.add("");
 		}
 		
 		kitBox = new JComboBox(kitNames);

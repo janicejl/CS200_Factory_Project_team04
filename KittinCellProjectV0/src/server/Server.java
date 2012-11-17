@@ -47,9 +47,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 //	PartsRobotProtocol partsPro;
 //	GantryManagerProtocol gantryPro;
 	
-	CopyOnWriteArrayList<PartInfo> partsList;
-	CopyOnWriteArrayList<KitInfo> kitsList;
-	CopyOnWriteArrayList<Job> jobsList;
+	ArrayList<PartInfo> partsList;
+	ArrayList<KitInfo> kitsList;
+	ArrayList<Job> jobsList;
 	String kitCreateCommand = "Idle";
 	String productionCommand;
 	String partsCommand;
@@ -685,27 +685,27 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryManager = g;
 	}
 
-	public CopyOnWriteArrayList<PartInfo> getPartsList() {
+	public ArrayList<PartInfo> getPartsList() {
 		return partsList;
 	}
 
-	public void setPartsList(CopyOnWriteArrayList<PartInfo> partsList) {
+	public void setPartsList(ArrayList<PartInfo> partsList) {
 		this.partsList = partsList;
 	}
 
-	public CopyOnWriteArrayList<KitInfo> getKitsList() {
+	public ArrayList<KitInfo> getKitsList() {
 		return kitsList;
 	}
 
-	public void setKitsList(CopyOnWriteArrayList<KitInfo> kitsList) {
+	public void setKitsList(ArrayList<KitInfo> kitsList) {
 		this.kitsList = kitsList;
 	}
 
-	public CopyOnWriteArrayList<Job> getJobsList() {
+	public ArrayList<Job> getJobsList() {
 		return jobsList;
 	}
 
-	public void setJobsList(CopyOnWriteArrayList<Job> jobsList) {
+	public void setJobsList(ArrayList<Job> jobsList) {
 		this.jobsList = jobsList;
 	}
 

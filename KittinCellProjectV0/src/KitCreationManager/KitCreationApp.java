@@ -19,14 +19,14 @@ public class KitCreationApp extends JFrame implements Serializable, WindowListen
 	GUIKitModification km;
 	GUIKitCreation kc;
 	JTabbedPane kp;
-	Vector<PartInfo> partsList;
-	Vector<KitInfo> kitsList;
+	ArrayList<PartInfo> partsList;
+	ArrayList<KitInfo> kitsList;
 	KitCreationClient client;
 
 	public KitCreationApp(){
-		partsList = new Vector<PartInfo>();
+		partsList = new ArrayList<PartInfo>();
 		load("partsList.sav");
-		kitsList = new Vector<KitInfo>();
+		kitsList = new ArrayList<KitInfo>();
 		load("kitsList.sav");
 		
 		km=new GUIKitModification(this);
@@ -79,10 +79,10 @@ public class KitCreationApp extends JFrame implements Serializable, WindowListen
 			FileInputStream fileIn = new FileInputStream(path); //access  file
 			ObjectInputStream streamIn = new ObjectInputStream(fileIn); //inputstream
 			if(path.equals("partsList.sav")){
-				partsList = ((Vector<PartInfo>) streamIn.readObject()); //load
+				partsList = ((ArrayList<PartInfo>) streamIn.readObject()); //load
 			}
 			else if(path.equals("kitsList.sav")){
-				kitsList = ((Vector<KitInfo>) streamIn.readObject());
+				kitsList = ((ArrayList<KitInfo>) streamIn.readObject());
 			}
 			streamIn.close();
 			fileIn.close();
@@ -97,16 +97,16 @@ public class KitCreationApp extends JFrame implements Serializable, WindowListen
 			return;
 		}
 	}
-	public synchronized Vector<PartInfo> getPartsList() {
+	public synchronized ArrayList<PartInfo> getPartsList() {
 		return partsList;
 	}
-	public synchronized void setPartsList(Vector<PartInfo> partsList) {
+	public synchronized void setPartsList(ArrayList<PartInfo> partsList) {
 		this.partsList = partsList;
 	}
-	public synchronized Vector<KitInfo> getKitsList() {
+	public synchronized ArrayList<KitInfo> getKitsList() {
 		return kitsList;
 	}
-	public synchronized void setKitsList(Vector<KitInfo> kitsList) {
+	public synchronized void setKitsList(ArrayList<KitInfo> kitsList) {
 		this.kitsList = kitsList;
 	}
 	public synchronized GUIKitModification getKm() {

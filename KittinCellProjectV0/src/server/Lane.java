@@ -179,13 +179,19 @@ public class Lane implements ActionListener, Serializable{
 		this.atQueue = atQueue;
 	}
 
-	public void releasePart() {
-    	if(importList.size() != 0) {
-    		Part temp = importList.remove(0);
-    		temp.setY(maxY/2 + verticalSpacing);
-			itemList.add(temp);
-			System.out.println("release!");
-		}
+	//f = whether or not it should release part to top lane or bottom lane. 
+    public void releasePart(int f) {
+    	if ( (f % 2 == 0 && feeder.getTopLane() == true) || (f % 2 == 1 && feeder.getTopLane() == false) ) {
+    		if(importList.size() != 0) {
+    			Part temp = importList.remove(0);
+    			temp.setY(maxY/2 + verticalSpacing);
+    			itemList.add(temp);
+    			System.out.println("release!");
+    			feeder.removePart();
+    		}
+    	} else {
+    		feeder.setTopLane(!feeder.getTopLane());
+    	}
     }
     
     public void addPart(Part part) {

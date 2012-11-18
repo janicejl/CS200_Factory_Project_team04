@@ -59,6 +59,7 @@ public class GUIFeeder {
 				else{
 					g2.drawImage(diverter, diverterX, diverterY, null);
 					previousPositiion = feeder.getLane();
+					feeder.setMoving(false);
 				}	
 			}
 			else {
@@ -69,6 +70,7 @@ public class GUIFeeder {
 				else{
 					g2.drawImage(diverter, diverterX, diverterY, null);
 					previousPositiion = feeder.getLane();
+					feeder.setMoving(false);
 				}
 			}
 		}

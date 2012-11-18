@@ -218,6 +218,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		feeder2.setGantryController(gantryController);
 		feeder3.setGantryController(gantryController);
 		feeder4.setGantryController(gantryController);
+		/*
 		lane1.setFeeder(feeder1);
 		lane2.setFeeder(feeder1);
 		lane3.setFeeder(feeder2);
@@ -226,7 +227,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		lane6.setFeeder(feeder3);
 		lane7.setFeeder(feeder4);
 		lane8.setFeeder(feeder4);
-		
+		*/
 
     	
 
@@ -420,11 +421,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Feed Feeder")){
     		Part temp = new Part("" + num, "images/kt" + num + ".png");
     		temp.setImagePath("images/kt" + temp.getId() + ".png");
-    		if (num % 2 == 0) {
-    			feeders.get(num/2).setTopLane(true);
-    		} else {
-    			feeders.get(num/2).setTopLane(false);
-    		}
+    		
     		System.out.println("TOPLANE: " + feeders.get(num/2).getTopLane());
     		feeders.get(num/2).addParts(temp);
     	}
@@ -434,6 +431,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			lanes.get(num).setRelease(true);
     			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
     		}
+    		//feeders.get(num/2).setMoving(true);
+    		if (num % 2 == 0) {
+    			feeders.get(num/2).setTopLane(true);
+    		} else {
+    			feeders.get(num/2).setTopLane(false);
+    		}
+    		
     		//feeders.get(num/2).removePart();
     	}
     	else if(process.equals("Feed Nest")){

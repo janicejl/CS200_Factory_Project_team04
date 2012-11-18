@@ -9,6 +9,6 @@ import MoveableObjects.*;
 public interface FCS {
 
 	public void msgHereAreBins(Vector<Bin> binsList);
-	public void mgStartKitProduction(List<PartInfo> kitRecipe, int numKits);
+	public void msgStartKitProduction(List<PartInfo> kitRecipe, int numKits);
 	
 }

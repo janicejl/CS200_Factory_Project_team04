@@ -76,6 +76,7 @@ public class NestAgent extends Agent implements Nest{
 					break;
 				}
 			}
+
 			stateChanged();
 	}
 
@@ -122,13 +123,6 @@ public class NestAgent extends Agent implements Nest{
 	
 	public boolean pickAndExecuteAnAction()
 	{
-		int ct=0;
-		for(int i = 0; i<8; i++){
-			if(nestslots[i]!=null){
-				ct++;
-			}
-		}
-		print("Number of items in nest " + ct);
 		
 		
 		if(partsrobotstate == PartsRobotStatus.readyforpart)
@@ -154,7 +148,7 @@ public class NestAgent extends Agent implements Nest{
 		
 		if(lanestate == LaneStatus.hasPart)
 		{
-			for(int i = 0; i<7; i++)
+			for(int i = 0; i<8; i++)
 			{
 				if(nestslots[i] == null)
 				{

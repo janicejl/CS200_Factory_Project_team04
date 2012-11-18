@@ -22,6 +22,7 @@ public class Lane implements ActionListener, Serializable{
     private boolean openGate;
     private Feeder feeder;
     private Nest n;
+    private boolean atQueue = false;
     private int gateCounter;
     public class Gate implements Serializable{
     	public double topNodeX, topNodeY, bottomNodeX, bottomNodeY;
@@ -116,6 +117,7 @@ public class Lane implements ActionListener, Serializable{
 		    	}	    	
 		    	else {
 		    		itemList.get(i).setDestination(true);
+		    		atQueue = true;
 		    	}
 	    	}
 	    } 
@@ -164,7 +166,15 @@ public class Lane implements ActionListener, Serializable{
     	return this.conveyerBeltSpeed;
     }
     
-    public void releasePart() {
+    public boolean isAtQueue() {
+		return atQueue;
+	}
+
+	public void setAtQueue(boolean atQueue) {
+		this.atQueue = atQueue;
+	}
+
+	public void releasePart() {
     	if(importList.size() != 0) {
     		Part temp = importList.remove(0);
     		temp.setY(maxY/2 + verticalSpacing);
@@ -183,7 +193,8 @@ public class Lane implements ActionListener, Serializable{
     	if(itemList.size() != 0){
     		if(itemList.get(0).getDestination() == true){
     			n.addPart(itemList.remove(0));
-    			openGate = true;	
+    			openGate = true;
+    			atQueue = false;
     		}
     	}
     	System.out.println("Rawr!!!!");

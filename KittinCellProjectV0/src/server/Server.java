@@ -531,6 +531,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}	
 		for(int i = 0; i < lanes.size(); i++){
 			lanes.get(i).actionPerformed(e);
+			if(lanes.get(i).isAtQueue()){
+				//send msg part at queue
+			}
 		}
 		gantryManager.actionPerformed(e);
 		repaint();

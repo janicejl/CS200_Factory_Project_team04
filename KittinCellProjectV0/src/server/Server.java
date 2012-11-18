@@ -122,6 +122,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		laneTest.setMinimumSize(new Dimension(300, 400));
 		gantryTest = new ServerGantryTestPanel(this);
 		
+		
+		//Agents
+		
 		feeder1 = new FeederAgent("feeder1", 5, fLane1, fLane2, 1, this);
 		fLane1 = new FeederLaneAgent("left", 1, this);
 		fLane2 = new FeederLaneAgent("right", 2, this);
@@ -145,6 +148,77 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		fLane8 = new FeederLaneAgent("right", 8, this);
 		fLane7.setFeeder(feeder4);
 		fLane8.setFeeder(feeder4);
+    	
+    	NestAgent nest1 = new NestAgent(1,this);
+    	NestAgent nest2 = new NestAgent(2,this);
+    	NestAgent nest3 = new NestAgent(3,this);
+    	NestAgent nest4 = new NestAgent(4,this);
+    	NestAgent nest5 = new NestAgent(5,this);
+    	NestAgent nest6 = new NestAgent(6,this);
+    	NestAgent nest7 = new NestAgent(7,this);
+    	NestAgent nest8 = new NestAgent(8,this);
+    	nests.add(nest1);
+    	nests.add(nest2);
+    	nests.add(nest3);
+    	nests.add(nest4);
+    	nests.add(nest5);
+    	nests.add(nest6);
+    	nests.add(nest7);
+    	nests.add(nest8);
+    	
+		kitRobotAgent = new KitRobotAgent(this);
+		kitStandAgent = new KitStandAgent(this); 
+		kitConveyorAgent = new KitConveyorAgent(this);
+		
+		kitStandAgent.SetRobotAgent(kitRobotAgent);
+		kitRobotAgent.SetConveyorAgent(kitConveyorAgent);
+		kitRobotAgent.SetStandAgent(kitStandAgent);
+		kitConveyorAgent.SetKitRobot(kitRobotAgent);
+		
+        partsRobotAgent = new PartsRobotAgent(nests, kitStandAgent, this);
+        kitStandAgent.SetPartsRobotAgent(partsRobotAgent);
+        kitRobotAgent.startThread();
+		kitStandAgent.startThread();
+		kitConveyorAgent.startThread();
+		
+		
+        for(NestAgent nest : nests){
+        	nest.setPartsRobotAgent(partsRobotAgent);
+        	nest.startThread();
+        }
+        nestvisionagent1 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
+        nestvisionagent2 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
+        nestvisionagent3 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
+        nestvisionagent4 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
+        
+        flashpermit = new Semaphore(1);
+        nestvisionagent1.setFlashPermit(flashpermit);
+        nestvisionagent2.setFlashPermit(flashpermit);
+        nestvisionagent3.setFlashPermit(flashpermit);
+        nestvisionagent4.setFlashPermit(flashpermit);
+        
+        nests.get(0).setVisionAgent(nestvisionagent1);
+        nests.get(1).setVisionAgent(nestvisionagent1);
+        nests.get(2).setVisionAgent(nestvisionagent2);
+        nests.get(3).setVisionAgent(nestvisionagent2);
+        nests.get(4).setVisionAgent(nestvisionagent3);
+        nests.get(5).setVisionAgent(nestvisionagent3);
+        nests.get(6).setVisionAgent(nestvisionagent4);
+        nests.get(7).setVisionAgent(nestvisionagent4);
+        visions.add(nestvisionagent1);
+        visions.add(nestvisionagent2);
+        visions.add(nestvisionagent3);
+        visions.add(nestvisionagent4);
+        partsRobotAgent.setVisionAgents(visions);
+
+        nestvisionagent1.startThread();
+        nestvisionagent2.startThread();
+        nestvisionagent3.startThread();
+        nestvisionagent4.startThread();
+        
+		partsRobotAgent.startThread();
+		
+		//Hardware and Managers
 		
 		/**gantryController = new GantryControllerAgent(this);
 		gantry1 = new GantryAgent("gantry1", this);
@@ -194,86 +268,21 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	for (int i = 0; i < 8; i ++) {
     		lanes.get(i).setConveyerBeltSpeed(15);
     	}
-    	
-    	NestAgent nest1 = new NestAgent(1,this);
-    	NestAgent nest2 = new NestAgent(2,this);
-    	NestAgent nest3 = new NestAgent(3,this);
-    	NestAgent nest4 = new NestAgent(4,this);
-    	NestAgent nest5 = new NestAgent(5,this);
-    	NestAgent nest6 = new NestAgent(6,this);
-    	NestAgent nest7 = new NestAgent(7,this);
-    	NestAgent nest8 = new NestAgent(8,this);
-    	nests.add(nest1);
-    	nests.add(nest2);
-    	nests.add(nest3);
-    	nests.add(nest4);
-    	nests.add(nest5);
-    	nests.add(nest6);
-    	nests.add(nest7);
-    	nests.add(nest8);
-    	
-		kitRobotAgent = new KitRobotAgent(this);
-		kitStandAgent = new KitStandAgent(this); 
-		kitConveyorAgent = new KitConveyorAgent(this);
+		
+		
 		kitAssemblyManager = new KitAssemblyManager(nestList);
 		kitRobot = new KitRobot(kitAssemblyManager);
-		kitStandAgent.SetRobotAgent(kitRobotAgent);
-		kitRobotAgent.SetConveyorAgent(kitConveyorAgent);
-		kitRobotAgent.SetStandAgent(kitStandAgent);
-		kitConveyorAgent.SetKitRobot(kitRobotAgent);
-		
-		
 		new Thread(kitAssemblyManager).start();
         new Thread(kitRobot).start();
         
-        partsRobotAgent = new PartsRobotAgent(nests, kitStandAgent, this);
-        kitStandAgent.SetPartsRobotAgent(partsRobotAgent);
-        kitRobotAgent.startThread();
-		kitStandAgent.startThread();
-		kitConveyorAgent.startThread();
-		
-		
-        for(NestAgent nest : nests){
-        	nest.setPartsRobotAgent(partsRobotAgent);
-        	nest.startThread();
-        }
-        nestvisionagent1 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
-        nestvisionagent2 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
-        nestvisionagent3 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
-        nestvisionagent4 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
-        
-        flashpermit = new Semaphore(1);
-        nestvisionagent1.setFlashPermit(flashpermit);
-        nestvisionagent2.setFlashPermit(flashpermit);
-        nestvisionagent3.setFlashPermit(flashpermit);
-        nestvisionagent4.setFlashPermit(flashpermit);
-        
-        nests.get(0).setVisionAgent(nestvisionagent1);
-        nests.get(1).setVisionAgent(nestvisionagent1);
-        nests.get(2).setVisionAgent(nestvisionagent2);
-        nests.get(3).setVisionAgent(nestvisionagent2);
-        nests.get(4).setVisionAgent(nestvisionagent3);
-        nests.get(5).setVisionAgent(nestvisionagent3);
-        nests.get(6).setVisionAgent(nestvisionagent4);
-        nests.get(7).setVisionAgent(nestvisionagent4);
-        visions.add(nestvisionagent1);
-        visions.add(nestvisionagent2);
-        visions.add(nestvisionagent3);
-        visions.add(nestvisionagent4);
-        partsRobotAgent.setVisionAgents(visions);
 
-        
-        nestvisionagent1.startThread();
-        nestvisionagent2.startThread();
-        nestvisionagent3.startThread();
-        nestvisionagent4.startThread();
-
-
-        
-		partsRobotAgent.startThread();
         partsRobot = new PartsRobot(kitAssemblyManager);
         new Thread(partsRobot).start();
 		
+        partsList = new ArrayList<PartInfo>();
+        kitsList = new ArrayList<KitInfo>();
+        jobsList = new ArrayList<Job>();
+        
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");
 		timer = new Timer(10, this);
@@ -362,7 +371,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Check Kit 2")){
     		getKitRobot().addCommand("load,2,5");
     	}
-    	
     	else if(process.equals("Remove Finished")){
     		getKitRobot().addCommand("load,5,6");
     	}
@@ -465,6 +473,23 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		{
     			gantryManager.getGantry().setState("purgei");
     			gantryManager.getGantry().setFeed(3);
+    		}
+    	}
+    	else if(process.equals("Job Finished")){
+    		if(jobsList.size() != 0){
+    			if(jobsList.get(0).getAmount() > 0){
+    				jobsList.get(0).setAmount(jobsList.get(0).getAmount() - 1);
+    			}
+    			else{
+    				jobsList.remove(0);
+    			}
+    			setProductionCommand("Update Jobs");
+    		}
+    	}
+    	else if(process.equals("Get Job")){
+    		if(jobsList.size() != 0){
+    			getPartsRobotAgent().msgMakeThisKit(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
+    			getKitRobotAgent().msgGetKits(jobsList.get(0).getAmount());
     		}
     	}
     	

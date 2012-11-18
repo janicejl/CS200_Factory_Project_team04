@@ -7,6 +7,8 @@ import Interface.PartsRobotAgent.Lane;
 import Interface.GantryFeederAgent.Gantry;
 import Interface.GantryFeederAgent.GantryController;
 import MoveableObjects.Bin;
+import UnitTest.GantryFeederAgents.EventLog;
+import UnitTest.GantryFeederAgents.LoggedEvent;
 import data.Part;
 import data.Part.PartType;
 
@@ -20,6 +22,7 @@ public class FeederAgent extends Agent implements Feeder {
 	int lowParts;
 	int number;
 	Bin myBin;
+	EventLog log;
 	
 	
 	enum FeederState{feeding, low, waitingLane, purging, waitingGantry, beingFed};
@@ -67,12 +70,15 @@ public class FeederAgent extends Agent implements Feeder {
 			right.partWanted = p;
 		}
 		
+		log.add(new LoggedEvent("msgNeedThisPart received from "+laneName+" lane."));
+		
 		stateChanged();
 	}
 
 	@Override
 	public void msgHaveParts(Gantry g1) {
 		gantry = g1;
+		log.add(new LoggedEvent("msgHaveParts received from Gantry " + g1.getName() + "."));
 		stateChanged();
 	}
 
@@ -82,6 +88,7 @@ public class FeederAgent extends Agent implements Feeder {
 		partsInFeeder = bin.getQuantity();
 		myBin = bin;
 		fstate = FeederState.beingFed;	
+		log.add(new LoggedEvent("msgHereAreParts received from gantry."));
 		stateChanged();
 	}
 	

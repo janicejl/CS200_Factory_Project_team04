@@ -431,7 +431,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			lanes.get(num).setRelease(true);
     			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
     		}
-    		//feeders.get(num/2).setMoving(true);
+    		feeders.get(num/2).setMoving(true);
     		if (num % 2 == 0) {
     			feeders.get(num/2).setTopLane(true);
     		} else {

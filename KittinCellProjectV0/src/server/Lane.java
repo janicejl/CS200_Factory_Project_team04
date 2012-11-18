@@ -147,6 +147,9 @@ public class Lane implements ActionListener, Serializable{
 	    		openGate = false;
 	    	}	
 	    }
+	    
+	    //update feeder
+	    feeder.updateDiverter();
     }
 	    
     public Gate getGate1() {

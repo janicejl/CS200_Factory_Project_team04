@@ -5,6 +5,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import data.Part.PartType;
+
 import server.Server;
 
 import Agents.GantryFeederAgents.FeederAgent;
@@ -30,8 +32,10 @@ public class FeederTests extends TestCase{
 	}
 	
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testLaneInteractions() {
+		
+		feeder1.msgNeedThisPart(PartType.part1, "left");
+		assertTrue("Feeder should have received msgNeedThisPart.", feeder1.log.containsString("msgNeedThisPart"));
 	}
 
 }

@@ -1,8 +1,7 @@
 package Agents.PartsRobotAgent;
 
 
-import data.Part;
-import data.Part.PartType;
+import data.PartInfo;
 import Agent.Agent;
 import Agents.GantryFeederAgents.FeederAgent;
 import Interface.PartsRobotAgent.Lane;
@@ -22,9 +21,9 @@ public class LaneAgent extends Agent implements Lane{
 	
 	int index = 0;
 	
-	public List<Part> lanequeue = new ArrayList<Part>();
+	public List<PartInfo> lanequeue = new ArrayList<PartInfo>();
 	
-	public PartType type = PartType.none;
+	public PartInfo type = null;
 	
 	public LaneNestStatus neststate = LaneNestStatus.noAction;
 	public OrderStatus orderstate = OrderStatus.noAction;
@@ -34,7 +33,7 @@ public class LaneAgent extends Agent implements Lane{
 	public enum OrderStatus{noAction,partRequested,partOrdered};
 	public enum LaneNestStatus{noAction,readyForPart,askedToTakePart};
 	public enum FeederStatus{wantsToPlacePart,noAction};
-	public enum LaneStatus{noParts,hasParts,partsAtEndOfLane}
+	public enum LaneStatus{noParts,hasParts,partsAtEndOfLane};
 	
 	
 	public LaneAgent(Nest mynest,FeederAgent feed,Server server,String name,int index){
@@ -60,7 +59,7 @@ public class LaneAgent extends Agent implements Lane{
 	}
 
 	@Override
-	public void msgNeedThisPart(PartType type) {
+	public void msgNeedThisPart(PartInfo type) {
 		if(this.type != type)
 			orderstate = OrderStatus.partRequested;
 		this.type = type;
@@ -69,7 +68,7 @@ public class LaneAgent extends Agent implements Lane{
 		
 	}
 	
-	public void msgHereIsAPart(Part p){
+	public void msgHereIsAPart(PartInfo p){
 		lanequeue.add(p);
 		lanestate = LaneStatus.hasParts;
 		stateChanged();
@@ -85,7 +84,7 @@ public class LaneAgent extends Agent implements Lane{
 		if(lanestate!= LaneStatus.partsAtEndOfLane){
 			print("Part at end of lane");
 			if(lanequeue.isEmpty()){
-				lanequeue.add(new Part(type));
+				lanequeue.add(new PartInfo(type));
 			}
 			lanestate = LaneStatus.partsAtEndOfLane;
 			stateChanged();

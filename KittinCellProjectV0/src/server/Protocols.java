@@ -82,7 +82,6 @@ public class Protocols implements Runnable{
 			}
 			out.writeObject(app.getGantryManager());
 			out.reset();
-			out.flush();
 		}
 		catch(Exception e)
 		{

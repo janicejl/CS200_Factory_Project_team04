@@ -416,6 +416,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setState("load");
     			gantryManager.getGantry().setFeed(0);
     		}
+       		else
+    		{
+    			gantryWaitList.add("load");
+    			gantryFeedList.add(0);
+    		}
     	}
     	else if(process.equals("Load Feeder 2"))
     	{
@@ -423,6 +428,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		{
     			gantryManager.getGantry().setState("load");
     			gantryManager.getGantry().setFeed(1);
+    		}
+       		else
+    		{
+    			gantryWaitList.add("load");
+    			gantryFeedList.add(1);
     		}
     	}
     	else if(process.equals("Load Feeder 3"))
@@ -432,12 +442,22 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setState("load");
     			gantryManager.getGantry().setFeed(2);
     		}
+       		else
+    		{
+    			gantryWaitList.add("load");
+    			gantryFeedList.add(2);
+    		}
     	}
     	else if(process.equals("Load Feeder 4")){
     		if(gantryManager.getGantry().getState().equals("free"))
     		{
     			gantryManager.getGantry().setState("load");
     			gantryManager.getGantry().setFeed(3);
+    		}
+       		else
+    		{
+    			gantryWaitList.add("load");
+    			gantryFeedList.add(3);
     		}
     	}
     	else if(process.equals("Dump Feeder 1"))
@@ -447,6 +467,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     				gantryManager.getGantry().setState("dumpi");
     				gantryManager.getGantry().setFeed(0);
     		}
+       		else
+    		{
+    			gantryWaitList.add("dumpi");
+    			gantryFeedList.add(0);
+    		}
     	}
     	else if(process.equals("Dump Feeder 2"))
     	{
@@ -454,6 +479,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		{
     			gantryManager.getGantry().setState("dumpi");
     			gantryManager.getGantry().setFeed(1);
+    		}
+       		else
+    		{
+    			gantryWaitList.add("dumpi");
+    			gantryFeedList.add(1);
     		}
     	}
     	else if(process.equals("Dump Feeder 3"))
@@ -463,6 +493,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setState("dumpi");
     			gantryManager.getGantry().setFeed(2);
     		}
+       		else
+    		{
+    			gantryWaitList.add("dumpi");
+    			gantryFeedList.add(2);
+    		}
     	}
     	else if(process.equals("Dump Feeder 4"))
     	{
@@ -470,6 +505,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		{	
     			gantryManager.getGantry().setState("dumpi");
     			gantryManager.getGantry().setFeed(3);
+    		}
+    		else
+    		{
+    			gantryWaitList.add("dumpi");
+    			gantryFeedList.add(3);
     		}
     	}
     	else if(process.equals("Purge Feeder 1"))
@@ -479,6 +519,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setState("purgei");
     			gantryManager.getGantry().setFeed(0);
     		}
+    		else
+    		{
+    			gantryWaitList.add("purgei");
+    			gantryFeedList.add(0);
+    		}
     	}
     	else if(process.equals("Purge Feeder 2"))
     	{
@@ -486,6 +531,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		{
     			gantryManager.getGantry().setState("purgei");
     			gantryManager.getGantry().setFeed(1);
+    		}
+    		else
+    		{
+    			gantryWaitList.add("purgei");
+    			gantryFeedList.add(1);
     		}
     	}
     	else if(process.equals("Purge Feeder 3"))
@@ -495,6 +545,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setState("purgei");
     			gantryManager.getGantry().setFeed(2);
     		}
+    		else
+    		{
+    			gantryWaitList.add("purgei");
+    			gantryFeedList.add(2);
+    		}
     	}
     	else if(process.equals("Purge Feeder 4"))
     	{
@@ -502,6 +557,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		{
     			gantryManager.getGantry().setState("purgei");
     			gantryManager.getGantry().setFeed(3);
+    		}
+    		else
+    		{
+    			gantryWaitList.add("purgei");
+    			gantryFeedList.add(3);
     		}
     	}
     	

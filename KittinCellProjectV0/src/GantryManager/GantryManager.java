@@ -169,7 +169,8 @@ public class GantryManager implements Serializable,ActionListener
 				state = "loading";
 			}
 			else if(state.equals("loading"))
-			{
+			{ 
+				feeders.set(gantry.getFeed(), parts.get(gantry.getBox()).getPartInfo());
 				parts.get(gantry.getBox()).setState("feeding");
 				gantry.setState("free");
 				state = "free";
@@ -178,7 +179,6 @@ public class GantryManager implements Serializable,ActionListener
 			{
 				gantry.setState("dumpf");
 				state = "dumpf";
-				feeder.set(gantry.getFeed(), 0);
 				gantry.setFeed(-1);
 				purged.get(gantry.getBox()).setState("dumpf");
 				gantry.setxFinal(285);
@@ -223,6 +223,7 @@ public class GantryManager implements Serializable,ActionListener
 					state="purgi";
 					parts.get(gantry.getBox()).setState("purgef");
 				}
+				feeders.set(gantry.getFeed(),null);
 				feeder.set(gantry.getFeed(), 0);
 				gantry.setFeed(-1);
 			}

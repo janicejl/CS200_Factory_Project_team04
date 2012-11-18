@@ -410,7 +410,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Feed Lane")){
     		if (feeders.get(num/2).getPartAmount() > 0){
     			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
-    			lanes.get(num).releasePart();
+    			lanes.get(num).setRelease(true);
+    			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
     		}
     		//feeders.get(num/2).removePart();
     	}
@@ -487,6 +488,17 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			lanes.get(i).actionPerformed(e);
 			if(lanes.get(i).isAtQueue()){
 				laneagents.get(i).msgPartAtEndOfLane();
+			}
+			//check feeder movement
+			if(lanes.get(i).isRelease()){
+				if(!lanes.get(i).getFeeder().isMoving()){
+					lanes.get(i).releasePart();
+					lanes.get(i).setReleaseCount(lanes.get(i).getReleaseCount() - 1);
+				}
+				//determine if it can stop releasing
+				if(lanes.get(i).getReleaseCount() == 0){
+					lanes.get(i).setRelease(false);
+				}
 			}
 		}
 		gantryManager.actionPerformed(e);

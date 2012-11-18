@@ -155,14 +155,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	
     	
 		lanes = new ArrayList<Lane>();
-		lanes.add(new Lane(600,30, nestList.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
-    	lanes.add(new Lane(600,100, nestList.get(1))); 
-    	lanes.add(new Lane(600,170, nestList.get(2))); 
-    	lanes.add(new Lane(600,240, nestList.get(3)));
-    	lanes.add(new Lane(600,310, nestList.get(4))); 
-    	lanes.add(new Lane(600,380, nestList.get(5)));
-    	lanes.add(new Lane(600,450, nestList.get(6))); 
-    	lanes.add(new Lane(600,520, nestList.get(7)));
+		lanes.add(new Lane(600,30, nestList.get(0), feeders.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
+    	lanes.add(new Lane(600,100, nestList.get(1), feeders.get(0))); 
+    	lanes.add(new Lane(600,170, nestList.get(2),feeders.get(1))); 
+    	lanes.add(new Lane(600,240, nestList.get(3), feeders.get(1)));
+    	lanes.add(new Lane(600,310, nestList.get(4), feeders.get(2))); 
+    	lanes.add(new Lane(600,380, nestList.get(5), feeders.get(2)));
+    	lanes.add(new Lane(600,450, nestList.get(6), feeders.get(3))); 
+    	lanes.add(new Lane(600,520, nestList.get(7), feeders.get(3)));
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
     	
@@ -409,8 +409,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		feeders.get(num/2).addParts(temp);
     	}
     	else if(process.equals("Feed Lane")){
-    		lanes.get(num).releasePart();
-    		feeders.get(num/2).removePart();
+    		lanes.get(num).releasePart(num);
+    		//feeders.get(num/2).removePart();
     	}
     	else if(process.equals("Feed Nest")){
     		lanes.get(num).releaseQueue();
@@ -441,7 +441,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryFeedList.add(num);
     		}
     	}
-    	else if(process.equals("Purge Feeder"))
+    	else if(process.equals("Idle Bin"))
     	{
     		if(gantryManager.getGantry().getState().equals("free"))
     		{

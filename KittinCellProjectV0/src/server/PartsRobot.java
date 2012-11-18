@@ -206,6 +206,7 @@ public class PartsRobot implements Runnable, Serializable{
                 partsHeld.add(app.nests.get(Integer.parseInt(ss[2])).getParts().get(0));
                 app.nests.get(Integer.parseInt(ss[2])).getParts().remove(0);
                 processing = true;
+                msg = true;
             }
             else if(ss[0].equals("d")){							//Drop
                 gripperHolding.set(Integer.parseInt(ss[1]),false);
@@ -371,7 +372,6 @@ public class PartsRobot implements Runnable, Serializable{
                 }
                 if(Math.abs(y - newY) < moveSpeed){
                     y = newY;
-                    msg = true;
                 }
             }
             if (angle != newAngle){

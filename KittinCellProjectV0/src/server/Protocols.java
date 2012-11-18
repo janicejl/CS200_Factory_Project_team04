@@ -73,6 +73,13 @@ public class Protocols implements Runnable{
 	public void runGantryProtocol(){
 		try
 		{
+			if(app.getGantryManager().getGantry().getState().equals("free") && app.getGantryWaitList().size()!=0)
+			{
+				app.getGantryManager().getGantry().setState(app.getGantryWaitList().get(0));
+				app.getGantryManager().getGantry().setFeed(app.getGantryFeedList().get(0));
+				app.getGantryWaitList().remove(0);
+				app.getGantryFeedList().remove(0);
+			}
 			out.writeObject(app.getGantryManager());
 			out.reset();
 			out.flush();

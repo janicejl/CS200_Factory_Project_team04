@@ -83,14 +83,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	FeederAgent feeder2;
 	FeederAgent feeder3;
 	FeederAgent feeder4;
-	FeederLaneAgent fLane1;
-	FeederLaneAgent fLane2;
-	FeederLaneAgent fLane3;
-	FeederLaneAgent fLane4;
-	FeederLaneAgent fLane5;
-	FeederLaneAgent fLane6;
-	FeederLaneAgent fLane7;
-	FeederLaneAgent fLane8;
 	GantryAgent gantry1;
 	GantryAgent gantry2;
 	GantryControllerAgent gantryController;
@@ -125,39 +117,15 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		laneTest.setMaximumSize(new Dimension(300, 400));
 		laneTest.setMinimumSize(new Dimension(300, 400));
 		gantryTest = new ServerGantryTestPanel(this);
-		/*
-		feeder1 = new FeederAgent("feeder1", 5, fLane1, fLane2, 1, this);
-		fLane1 = new FeederLaneAgent("left", 1, this);
-		fLane2 = new FeederLaneAgent("right", 2, this);
-		fLane1.setFeeder(feeder1);
-		fLane2.setFeeder(feeder1);
 		
-		feeder2 = new FeederAgent("feeder2", 5, fLane3, fLane4, 2, this);
-		fLane3 = new FeederLaneAgent("left", 3, this);
-		fLane4 = new FeederLaneAgent("right", 4, this);
-		fLane3.setFeeder(feeder2);
-		fLane4.setFeeder(feeder2);
-		
-		feeder3 = new FeederAgent("feeder3", 5, fLane5, fLane6, 3, this);
-		fLane5 = new FeederLaneAgent("left", 5, this);
-		fLane6 = new FeederLaneAgent("right", 6, this);
-		fLane5.setFeeder(feeder3);
-		fLane6.setFeeder(feeder3);
-		
-		feeder4 = new FeederAgent("feeder4", 5, fLane7, fLane8, 4, this);
-		fLane7 = new FeederLaneAgent("left", 7, this);
-		fLane8 = new FeederLaneAgent("right", 8, this);
-		fLane7.setFeeder(feeder4);
-		fLane8.setFeeder(feeder4);
-		*/
-		
-		/**gantryController = new GantryControllerAgent(this);
+		gantryController = new GantryControllerAgent(this);
 		gantry1 = new GantryAgent("gantry1", this);
 		gantry2 = new GantryAgent("gantry2", this);
 		gantry1.setGantryController(gantryController);
 		gantry2.setGantryController(gantryController);
 		gantryController.msgGantryAdded(gantry1);
-		gantryController.msgGantryAdded(gantry2);**/
+		gantryController.msgGantryAdded(gantry2);
+		
 		gantryManager = new GantryManager();
 		gantryManager.getGantry().setState("free");
 		gantryManager.getGantry().setBox(1);
@@ -187,14 +155,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	
     	
 		lanes = new ArrayList<Lane>();
-		lanes.add(new Lane(600,30, nestList.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
-    	lanes.add(new Lane(600,100, nestList.get(1))); 
-    	lanes.add(new Lane(600,170, nestList.get(2))); 
-    	lanes.add(new Lane(600,240, nestList.get(3)));
-    	lanes.add(new Lane(600,310, nestList.get(4))); 
-    	lanes.add(new Lane(600,380, nestList.get(5)));
-    	lanes.add(new Lane(600,450, nestList.get(6))); 
-    	lanes.add(new Lane(600,520, nestList.get(7)));
+		lanes.add(new Lane(600,30, nestList.get(0), feeders.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
+    	lanes.add(new Lane(600,100, nestList.get(1), feeders.get(0))); 
+    	lanes.add(new Lane(600,170, nestList.get(2),feeders.get(1))); 
+    	lanes.add(new Lane(600,240, nestList.get(3), feeders.get(1)));
+    	lanes.add(new Lane(600,310, nestList.get(4), feeders.get(2))); 
+    	lanes.add(new Lane(600,380, nestList.get(5), feeders.get(2)));
+    	lanes.add(new Lane(600,450, nestList.get(6), feeders.get(3))); 
+    	lanes.add(new Lane(600,520, nestList.get(7), feeders.get(3)));
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
     	
@@ -246,7 +214,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		feeder2 = new FeederAgent("feeder2", 5, lane3, lane4, 2, this);		
 		feeder3 = new FeederAgent("feeder3", 5, lane5, lane6, 3, this);		
 		feeder4 = new FeederAgent("feeder4", 5, lane7, lane8, 4, this);
-
+		feeder1.setGantryController(gantryController);
+		feeder2.setGantryController(gantryController);
+		feeder3.setGantryController(gantryController);
+		feeder4.setGantryController(gantryController);
 
     	
 
@@ -438,8 +409,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		feeders.get(num/2).addParts(temp);
     	}
     	else if(process.equals("Feed Lane")){
-    		lanes.get(num).releasePart();
-    		feeders.get(num/2).removePart();
+    		lanes.get(num).releasePart(num);
+    		//feeders.get(num/2).removePart();
     	}
     	else if(process.equals("Feed Nest")){
     		lanes.get(num).releaseQueue();
@@ -470,7 +441,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryFeedList.add(num);
     		}
     	}
-    	else if(process.equals("Purge Feeder"))
+    	else if(process.equals("Idle Bin"))
     	{
     		if(gantryManager.getGantry().getState().equals("free"))
     		{

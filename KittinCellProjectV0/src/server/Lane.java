@@ -21,7 +21,7 @@ public class Lane implements ActionListener, Serializable{
     private boolean queueFull; 
     private boolean openGate;
     private Feeder feeder;
-    private Nest n;
+    private Nest nest;
     private boolean atQueue = false;
     private int gateCounter;
     public class Gate implements Serializable{
@@ -72,7 +72,7 @@ public class Lane implements ActionListener, Serializable{
 	 }
     
     public Lane(int width, int verticalSpacing, Nest n) {
-    	this.n = n;
+    	this.nest = n;
 		maxX = width;
 		maxY = 30;
     	this.verticalSpacing = verticalSpacing;
@@ -92,7 +92,7 @@ public class Lane implements ActionListener, Serializable{
 	    }
     }
     
-    public Lane(int width, int verticalSpacing, Feeder f) {
+    public Lane(int width, int verticalSpacing, Nest n, Feeder f) {
 		maxX = width;
 		maxY = 50;
     	this.verticalSpacing = verticalSpacing;
@@ -101,11 +101,16 @@ public class Lane implements ActionListener, Serializable{
 	    importList = new ArrayList<Part> ();
 	    queueList = new ArrayList<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		queueFull = false;		
+		gate1 = new Gate();
+		gate1.setDefaultPosition();
+		gate2 = new Gate();
+		gate2.setNodes(105, verticalSpacing + 30, 105, verticalSpacing + 50);
+		queueFull = false;			
 		for(int i = 0; i < importList.size(); i++) {
 	    	importList.get(i).setX(width-80);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
 	    }
+		nest = n;
 	    feeder = f;
     }
     
@@ -174,13 +179,19 @@ public class Lane implements ActionListener, Serializable{
 		this.atQueue = atQueue;
 	}
 
-	public void releasePart() {
-    	if(importList.size() != 0) {
-    		Part temp = importList.remove(0);
-    		temp.setY(maxY/2 + verticalSpacing);
-			itemList.add(temp);
-			System.out.println("release!");
-		}
+	//f = whether or not it should release part to top lane or bottom lane. 
+    public void releasePart(int f) {
+    	if ( (f % 2 == 0 && feeder.getTopLane() == true) || (f % 2 == 1 && feeder.getTopLane() == false) ) {
+    		if(importList.size() != 0) {
+    			Part temp = importList.remove(0);
+    			temp.setY(maxY/2 + verticalSpacing);
+    			itemList.add(temp);
+    			System.out.println("release!");
+    			feeder.removePart();
+    		}
+    	} else {
+    		feeder.setTopLane(!feeder.getTopLane());
+    	}
     }
     
     public void addPart(Part part) {
@@ -192,7 +203,7 @@ public class Lane implements ActionListener, Serializable{
     public void releaseQueue(){
     	if(itemList.size() != 0){
     		if(itemList.get(0).getDestination() == true){
-    			n.addPart(itemList.remove(0));
+    			nest.addPart(itemList.remove(0));
     			openGate = true;
     			atQueue = false;
     		}

@@ -9,7 +9,7 @@ public class TitlePanel extends JPanel{
 	ImageIcon background;
 	
 	public TitlePanel(){
-		background = new ImageIcon("images/background2.png");
+		background = new ImageIcon("images/background1.png");
 		titleText = new JLabel("Production Manager");
 		Font f = new Font("Verdana", Font.BOLD, 24);
 		titleText.setFont(f);

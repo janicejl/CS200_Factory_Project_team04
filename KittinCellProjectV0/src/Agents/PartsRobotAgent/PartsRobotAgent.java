@@ -213,20 +213,19 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 			animationstate = AnimationStatus.atNest;
 			stateChanged();
 		}
-		else if(animationstate == AnimationStatus.movingToStand){
+		
+		
+	}
+	
+	public void msgMovementDone(){
+		if(animationstate == AnimationStatus.movingToStand){
 			print("Reached at Stand");
 			animationstate = AnimationStatus.atStand;
-			stateChanged();
-		}
-		else if (animationstate == AnimationStatus.placingParts){
-			print("Finished at Stand");
-			animationstate = AnimationStatus.movingHome;
 			stateChanged();
 		}
 		else if(animationstate == AnimationStatus.movingHome){
 			animationstate = AnimationStatus.atHome;
 		}
-		
 	}
 	
 	public void msgPartsDropped(){

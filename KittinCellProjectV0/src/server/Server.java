@@ -125,8 +125,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		laneTest.setMaximumSize(new Dimension(300, 400));
 		laneTest.setMinimumSize(new Dimension(300, 400));
 		gantryTest = new ServerGantryTestPanel(this);
-		
-		/*feeder1 = new FeederAgent("feeder1", 5, fLane1, fLane2, 1, this);
+		/*
+		feeder1 = new FeederAgent("feeder1", 5, fLane1, fLane2, 1, this);
 		fLane1 = new FeederLaneAgent("left", 1, this);
 		fLane2 = new FeederLaneAgent("right", 2, this);
 		fLane1.setFeeder(feeder1);

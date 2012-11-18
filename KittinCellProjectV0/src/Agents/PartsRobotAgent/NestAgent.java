@@ -121,6 +121,15 @@ public class NestAgent extends Agent implements Nest{
 	
 	public boolean pickAndExecuteAnAction()
 	{
+		int ct=0;
+		for(int i = 0; i<8; i++){
+			if(nestslots[i]!=null){
+				ct++;
+			}
+		}
+		print("Number of items in nest " + ct);
+		
+		
 		if(partsrobotstate == PartsRobotStatus.readyforpart)
 		{
 			givePart();
@@ -144,7 +153,7 @@ public class NestAgent extends Agent implements Nest{
 		
 		if(lanestate == LaneStatus.hasPart)
 		{
-			for(int i = 0; i<8; i++)
+			for(int i = 0; i<6; i++)
 			{
 				if(nestslots[i] == null)
 				{
@@ -166,6 +175,7 @@ public class NestAgent extends Agent implements Nest{
 			settleNest();
 			return true;
 		}
+		print("current" + lanestate);
 		return false;
 	}
 
@@ -203,13 +213,16 @@ public class NestAgent extends Agent implements Nest{
 		//gui.DoSettleNest(); // Settle Nest so that the parts behind in the nest move to the front
 		for(int i = 0; i<7; i++){
 			if(nestslots[i] == null && nestslots[i+1]!= null){
-				print("settling");
 				nestslots[i] = nestslots[i+1];
 				nestslots[i+1] = null;
 				if(i==0)
 					neststate = NestStatus.needCheck;
 			}
+			
 		}
+		//if(lanestate == LaneStatus.hasPart && nestslots[7]==null){
+		//	acceptPart();
+		//}
 	}
 	private void givePart()
 	{
@@ -217,7 +230,7 @@ public class NestAgent extends Agent implements Nest{
 		partsrobot.msgHereIsPart(nestslots[0]);
 		nestslots[0] = null;
 		partsrobotstate = PartsRobotStatus.waitingForParts;
-		//settleNest();
+		settleNest();
 	}
 		
 	private void askForParts()

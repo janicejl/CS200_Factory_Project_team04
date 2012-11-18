@@ -156,7 +156,6 @@ public class LaneAgent extends Agent implements Lane{
 		neststate = LaneNestStatus.askedToTakePart;		
 	}
 	private void givePart(){
-		print("Giving Part");
 		nest.msgHereIsPart(lanequeue.get(0));
 		lanequeue.remove(0);
 		neststate = LaneNestStatus.noAction;
@@ -166,6 +165,7 @@ public class LaneAgent extends Agent implements Lane{
 		else{
 			lanestate = LaneStatus.noParts;
 		}
+		print("Giving Part and calling server execute function");
 		server.execute("Feed Nest",index);
 		
 	}

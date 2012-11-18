@@ -100,19 +100,19 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 		}
 		else if("Purge Feeder 1".equals(ae.getActionCommand()))
 		{
-			server.execute("Purge Feeder",0);
+			server.execute("Idle Bin",0);
 		}
 		else if("Purge Feeder 2".equals(ae.getActionCommand()))
 		{
-			server.execute("Purge Feeder",1);
+			server.execute("Idle Bin",1);
 		}
 		else if("Purge Feeder 3".equals(ae.getActionCommand()))
 		{
-			server.execute("Purge Feeder",2);
+			server.execute("Idle Bin",2);
 		}
 		else if("Purge Feeder 4".equals(ae.getActionCommand()))
 		{
-			server.execute("Purge Feeder",3);
+			server.execute("Idle Bin",3);
 		}
 	}
 }

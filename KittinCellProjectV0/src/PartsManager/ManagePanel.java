@@ -16,91 +16,144 @@ public class ManagePanel extends JPanel{
 	
 	Vector<ImageIcon> partImages;
 	ArrayList<JButton> manageButtons;
-	JTextField nameField;
+	ArrayList<JLabel> promptLabels;
+	ArrayList<JTextField> infoFields;
+	ArrayList<JPanel> horizPanels;
 	JComboBox imagesSelectBox;
-	ComboBoxRenderer renderer;
+	JTextArea descriptionArea;
+	ImageIcon background;
 	
 	public ManagePanel(){
 		manageButtons = new ArrayList<JButton>();
-		nameField =  new JTextField();
-		nameField.setPreferredSize(new Dimension(175, 25));
-		nameField.setMaximumSize(new Dimension(175, 25));
-		nameField.setMinimumSize(new Dimension(175, 25));
+		promptLabels = new ArrayList<JLabel>();
+		infoFields = new ArrayList<JTextField>();
+		horizPanels = new ArrayList<JPanel>();
+		
 		partImages = new Vector<ImageIcon>();
 		for(int i=0;i<10;i++){
 			partImages.add(new ImageIcon("images/kt"+i+".png"));
 		}
+		
 		imagesSelectBox = new JComboBox(partImages);
 		imagesSelectBox.setPreferredSize(new Dimension(175, 25));
 		imagesSelectBox.setMaximumSize(new Dimension(175, 25));
 		imagesSelectBox.setMinimumSize(new Dimension(175, 25));
 		
-		createButtons();
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		//c.weightx = 1.0;
-		//c.weighty = 0.1;
-		c.insets = new Insets(20, 30, 20, 30);
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = 3;
-		add(imagesSelectBox, c);
+		promptLabels.add(new JLabel("Image:"));
+		promptLabels.get(promptLabels.size()-1).setAlignmentY(Component.CENTER_ALIGNMENT);
+		promptLabels.add(new JLabel("Name:"));
+		promptLabels.add(new JLabel("Number:"));
+		promptLabels.add(new JLabel("Description:"));
 		
-		c.gridx = 0;
-		c.gridy = 1;
-		c.gridwidth = 3;
-		add(nameField, c);
+		promptLabels.get(promptLabels.size()-1).setAlignmentY(Component.TOP_ALIGNMENT);
 		
-		c.gridy = 0;
-		c.gridx = 3;
-		c.gridwidth = 1;
-		c.gridheight = 2;
-		add(manageButtons.get(0), c);
+		for(int i=0;i<2;i++){
+			infoFields.add(new JTextField());
+			infoFields.get(i).setAlignmentX(Component.LEFT_ALIGNMENT);
+			infoFields.get(i).setPreferredSize(new Dimension(140, 27));
+			infoFields.get(i).setMaximumSize(new Dimension(140, 27));
+			infoFields.get(i).setMinimumSize(new Dimension(140, 27));
+		}
 		
-		//c.weightx = 1.0;
-		//c.weighty = 0.1;
-		c.insets = new Insets(20, 50, 20, 15);
-		c.gridx = 1;
-		c.gridy = 2;
-		c.gridheight = 1;
-		add(manageButtons.get(1), c);
+		descriptionArea = new JTextArea(100, 5);
+		descriptionArea.setAlignmentY(Component.TOP_ALIGNMENT);
+		descriptionArea.setPreferredSize(new Dimension(250, 90));
+		descriptionArea.setMaximumSize(new Dimension(250, 90));
+		descriptionArea.setMinimumSize(new Dimension(250, 90));
+		descriptionArea.setLineWrap(true);
 		
-		c.insets = new Insets(20, 30, 20, 30);
-		c.gridy = 2;
-		c.gridx = 3;
-		add(manageButtons.get(2), c);
+		manageButtons.add(new JButton("Create"));
+		manageButtons.get(manageButtons.size()-1).setAlignmentY(Component.CENTER_ALIGNMENT);
+		manageButtons.get(manageButtons.size()-1).setPreferredSize(new Dimension(70, 40));
+		manageButtons.get(manageButtons.size()-1).setMaximumSize(new Dimension(70, 40));
+		manageButtons.get(manageButtons.size()-1).setMinimumSize(new Dimension(70, 40));
+		
+		manageButtons.add(new JButton("Clear"));
+		manageButtons.get(manageButtons.size()-1).setAlignmentY(Component.CENTER_ALIGNMENT);
+		manageButtons.get(manageButtons.size()-1).setPreferredSize(new Dimension(70, 40));
+		manageButtons.get(manageButtons.size()-1).setMaximumSize(new Dimension(70, 40));
+		manageButtons.get(manageButtons.size()-1).setMinimumSize(new Dimension(70, 40));
+		
+		manageButtons.add(new JButton("Remove All"));
+		manageButtons.get(manageButtons.size()-1).setAlignmentY(Component.CENTER_ALIGNMENT);
+		manageButtons.get(manageButtons.size()-1).setPreferredSize(new Dimension(90, 40));
+		manageButtons.get(manageButtons.size()-1).setMaximumSize(new Dimension(90, 40));
+		manageButtons.get(manageButtons.size()-1).setMinimumSize(new Dimension(90, 40));
+		
+		horizPanels.add(new JPanel());
+		horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
+		horizPanels.get(horizPanels.size()-1).setPreferredSize(new Dimension(500, 30));
+		horizPanels.get(horizPanels.size()-1).setMaximumSize(new Dimension(500, 30));
+		horizPanels.get(horizPanels.size()-1).setMinimumSize(new Dimension(500, 30));
+		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,27)));
+		horizPanels.get(horizPanels.size()-1).add(promptLabels.get(0));
+		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(125, 27)));
+		horizPanels.get(horizPanels.size()-1).add(imagesSelectBox);
+
+		for(int i=0;i<2;i++){
+			horizPanels.add(new JPanel());
+			horizPanels.get(horizPanels.size()-1).setPreferredSize(new Dimension(500, 30));
+			horizPanels.get(horizPanels.size()-1).setMaximumSize(new Dimension(500, 30));
+			horizPanels.get(horizPanels.size()-1).setMinimumSize(new Dimension(500, 30));
+			horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
+			horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,27)));
+			horizPanels.get(horizPanels.size()-1).add(promptLabels.get(i+1));
+			if(i==0){
+				horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(158,27)));
+			}
+			else if(i==1){
+				horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(145,27)));
+			}
+			horizPanels.get(horizPanels.size()-1).add(infoFields.get(i));
+		}
+		
+		horizPanels.add(new JPanel());
+		horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
+		horizPanels.get(horizPanels.size()-1).setPreferredSize(new Dimension(500, 110));
+		horizPanels.get(horizPanels.size()-1).setMaximumSize(new Dimension(500, 110));
+		horizPanels.get(horizPanels.size()-1).setMinimumSize(new Dimension(500, 110));
+		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,27)));
+		horizPanels.get(horizPanels.size()-1).add(promptLabels.get(3));
+		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,20)));
+		horizPanels.get(horizPanels.size()-1).add(descriptionArea);
+		
+		horizPanels.add(new JPanel());
+		horizPanels.get(horizPanels.size()-1).setPreferredSize(new Dimension(500, 40));
+		horizPanels.get(horizPanels.size()-1).setMinimumSize(new Dimension(500, 40));
+		horizPanels.get(horizPanels.size()-1).setMaximumSize(new Dimension(500, 40));
+		horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
+		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(120,10)));
+		for(int i=0;i<manageButtons.size();i++){
+			horizPanels.get(horizPanels.size()-1).add(manageButtons.get(i));
+		}
+		
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		for(int i=0;i<horizPanels.size();i++){
+			add(horizPanels.get(i));
+			//add(Box.createRigidArea(new Dimension(500, 10)));
+		}
+		
+		
 		
 		TitledBorder border = new TitledBorder("Part Creation");
 		setBorder(border);
+	}
+	
+	public void resetForm(){
+		
+		imagesSelectBox.setSelectedIndex(0);
+		for(int i=0;i<infoFields.size();i++){
+			infoFields.get(i).setText("");
+		}
+		descriptionArea.setText("");
 	}
 	
 	public void paintComponent(Graphics g){
 		revalidate();
 	}
 	
-	private void createButtons(){
-		manageButtons.add(new JButton("Create"));
-		manageButtons.add(new JButton("Clear"));
-		manageButtons.add(new JButton("Remove All"));
-		for(int i=1;i<3;i++){
-			manageButtons.get(i).setPreferredSize(new Dimension(125, 40));
-			manageButtons.get(i).setMaximumSize(new Dimension(125, 40));
-			manageButtons.get(i).setMinimumSize(new Dimension(125, 40));
-		}
-		manageButtons.get(0).setPreferredSize(new Dimension(125, 50));
-		manageButtons.get(0).setMaximumSize(new Dimension(125, 50));
-		manageButtons.get(0).setMinimumSize(new Dimension(125, 50));
-	}
-	
-	public class ComboBoxRenderer extends JLabel implements ListCellRenderer{
-
-		
-		public Component getListCellRendererComponent(JList arg0, Object arg1,
-				int arg2, boolean arg3, boolean arg4) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-	}
 }

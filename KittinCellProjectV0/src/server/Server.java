@@ -68,6 +68,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	Semaphore flashpermit;
 	
 	GantryManager gantryManager;
+	ArrayList<String> gantryWaitList;
+	ArrayList<Integer> gantryFeedList;
 	
 	KitRobotAgent kitRobotAgent; 
 	KitStandAgent kitStandAgent;
@@ -122,6 +124,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		laneTest.setMinimumSize(new Dimension(300, 400));
 		gantryTest = new ServerGantryTestPanel(this);
 		
+		
+		//Agents
+		
 		feeder1 = new FeederAgent("feeder1", 5, fLane1, fLane2, 1, this);
 		fLane1 = new FeederLaneAgent("left", 1, this);
 		fLane2 = new FeederLaneAgent("right", 2, this);
@@ -145,55 +150,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		fLane8 = new FeederLaneAgent("right", 8, this);
 		fLane7.setFeeder(feeder4);
 		fLane8.setFeeder(feeder4);
-		
-		/**gantryController = new GantryControllerAgent(this);
-		gantry1 = new GantryAgent("gantry1", this);
-		gantry2 = new GantryAgent("gantry2", this);
-		gantry1.setGantryController(gantryController);
-		gantry2.setGantryController(gantryController);
-		gantryController.msgGantryAdded(gantry1);
-		gantryController.msgGantryAdded(gantry2);**/
-		gantryManager = new GantryManager();
-		gantryManager.getGantry().setState("free");
-		gantryManager.getGantry().setBox(1);
-
-		feeders = new ArrayList<Feeder>();
-		for(int i = 0; i < 4; i++){
-			if(i == 0 || i == 3){
-    			feeders.add(new Feeder(475,30 + i*140));
-    		}
-    		else {
-    			feeders.add(new Feeder(400,30 + i*140));    			
-    		}
-		}
-		nestList = new ArrayList<Nest>();
-    	
-    	
-    	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
-    	nestList.add(new Nest(0, 100));	//x coordinate is zero for laneManagerApp
-    	nestList.add(new Nest(0, 170));	//x coordinate is zero for laneManagerApp
-    	nestList.add(new Nest(0, 240));	//x coordinate is zero for laneManagerApp
-    	nestList.add(new Nest(0, 310));	//x coordinate is zero for laneManagerApp
-    	nestList.add(new Nest(0, 380));	//x coordinate is zero for laneManagerApp
-    	nestList.add(new Nest(0, 450));	//x coordinate is zero for laneManagerApp
-    	nestList.add(new Nest(0, 520));	//x coordinate is zero for laneManagerApp
-    	
-    	
-		lanes = new ArrayList<Lane>();
-		lanes.add(new Lane(600,30, nestList.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
-    	lanes.add(new Lane(600,100, nestList.get(1))); 
-    	lanes.add(new Lane(600,170, nestList.get(2))); 
-    	lanes.add(new Lane(600,240, nestList.get(3)));
-    	lanes.add(new Lane(600,310, nestList.get(4))); 
-    	lanes.add(new Lane(600,380, nestList.get(5)));
-    	lanes.add(new Lane(600,450, nestList.get(6))); 
-    	lanes.add(new Lane(600,520, nestList.get(7)));
-    	lanes.get(1).setConveyerBeltSpeed(4);
-    	lanes.get(2).setConveyerBeltSpeed(3);
-    	
-    	for (int i = 0; i < 8; i ++) {
-    		lanes.get(i).setConveyerBeltSpeed(15);
-    	}
     	
     	NestAgent nest1 = new NestAgent(1,this);
     	NestAgent nest2 = new NestAgent(2,this);
@@ -215,17 +171,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		kitRobotAgent = new KitRobotAgent(this);
 		kitStandAgent = new KitStandAgent(this); 
 		kitConveyorAgent = new KitConveyorAgent(this);
-		kitAssemblyManager = new KitAssemblyManager(nestList);
-		kitRobot = new KitRobot(kitAssemblyManager);
+		
 		kitStandAgent.SetRobotAgent(kitRobotAgent);
 		kitRobotAgent.SetConveyorAgent(kitConveyorAgent);
 		kitRobotAgent.SetStandAgent(kitStandAgent);
 		kitConveyorAgent.SetKitRobot(kitRobotAgent);
 		
-		
-		new Thread(kitAssemblyManager).start();
-        new Thread(kitRobot).start();
-        
         partsRobotAgent = new PartsRobotAgent(nests, kitStandAgent, this);
         kitStandAgent.SetPartsRobotAgent(partsRobotAgent);
         kitRobotAgent.startThread();
@@ -262,18 +213,80 @@ public class Server extends JFrame implements Runnable, ActionListener{
         visions.add(nestvisionagent4);
         partsRobotAgent.setVisionAgents(visions);
 
-        
         nestvisionagent1.startThread();
         nestvisionagent2.startThread();
         nestvisionagent3.startThread();
         nestvisionagent4.startThread();
-
-
         
 		partsRobotAgent.startThread();
+		
+		//Hardware and Managers
+		
+		/**gantryController = new GantryControllerAgent(this);
+		gantry1 = new GantryAgent("gantry1", this);
+		gantry2 = new GantryAgent("gantry2", this);
+		gantry1.setGantryController(gantryController);
+		gantry2.setGantryController(gantryController);
+		gantryController.msgGantryAdded(gantry1);
+		gantryController.msgGantryAdded(gantry2);**/
+		gantryManager = new GantryManager();
+		gantryManager.getGantry().setState("free");
+		gantryManager.getGantry().setBox(1);
+		gantryWaitList = new ArrayList<String>();
+		gantryFeedList = new ArrayList<Integer>();
+
+		feeders = new ArrayList<Feeder>();
+		for(int i = 0; i < 4; i++){
+			if(i == 0 || i == 3){
+    			feeders.add(new Feeder(475,30 + i*140));
+    		}
+    		else {
+    			feeders.add(new Feeder(400,30 + i*140));    			
+    		}
+		}
+		nestList = new ArrayList<Nest>();
+    	
+    	
+    	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 100));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 170));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 240));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 310));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 380));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 450));	//x coordinate is zero for laneManagerApp
+    	nestList.add(new Nest(0, 520));	//x coordinate is zero for laneManagerApp
+    	
+    	
+		lanes = new ArrayList<Lane>();
+		lanes.add(new Lane(600,30, nestList.get(0), feeders.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
+    	lanes.add(new Lane(600,100, nestList.get(1), feeders.get(0))); 
+    	lanes.add(new Lane(600,170, nestList.get(2), feeders.get(1))); 
+    	lanes.add(new Lane(600,240, nestList.get(3), feeders.get(1)));
+    	lanes.add(new Lane(600,310, nestList.get(4), feeders.get(2))); 
+    	lanes.add(new Lane(600,380, nestList.get(5), feeders.get(2)));
+    	lanes.add(new Lane(600,450, nestList.get(6), feeders.get(3))); 
+    	lanes.add(new Lane(600,520, nestList.get(7), feeders.get(3)));
+    	lanes.get(1).setConveyerBeltSpeed(4);
+    	lanes.get(2).setConveyerBeltSpeed(3);
+    	
+    	for (int i = 0; i < 8; i ++) {
+    		lanes.get(i).setConveyerBeltSpeed(15);
+    	}
+		
+		
+		kitAssemblyManager = new KitAssemblyManager(nestList);
+		kitRobot = new KitRobot(kitAssemblyManager);
+		new Thread(kitAssemblyManager).start();
+        new Thread(kitRobot).start();
+        
+
         partsRobot = new PartsRobot(kitAssemblyManager);
         new Thread(partsRobot).start();
 		
+        partsList = new ArrayList<PartInfo>();
+        kitsList = new ArrayList<KitInfo>();
+        jobsList = new ArrayList<Job>();
+        
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");
 		timer = new Timer(10, this);
@@ -362,7 +375,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Check Kit 2")){
     		getKitRobot().addCommand("load,2,5");
     	}
-    	
     	else if(process.equals("Remove Finished")){
     		getKitRobot().addCommand("load,5,6");
     	}
@@ -379,6 +391,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setState("load");
     			gantryManager.getGantry().setFeed(0);
     		}
+    		else
+    		{
+    			gantryWaitList.add("load");
+    			gantryFeedList.add(0);
+    		}
     	}
     	else if(process.equals("Load Feeder 2"))
     	{
@@ -386,6 +403,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		{
     			gantryManager.getGantry().setState("load");
     			gantryManager.getGantry().setFeed(1);
+    		}
+    		else
+    		{
+    			gantryWaitList.add("load");
+    			gantryFeedList.add(1);
     		}
     	}
     	else if(process.equals("Load Feeder 3"))
@@ -395,12 +417,22 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setState("load");
     			gantryManager.getGantry().setFeed(2);
     		}
+    		else
+    		{
+    			gantryWaitList.add("load");
+    			gantryFeedList.add(2);
+    		}
     	}
     	else if(process.equals("Load Feeder 4")){
     		if(gantryManager.getGantry().getState().equals("free"))
     		{
     			gantryManager.getGantry().setState("load");
     			gantryManager.getGantry().setFeed(3);
+    		}
+    		else
+    		{
+    			gantryWaitList.add("load");
+    			gantryFeedList.add(3);
     		}
     	}
     	else if(process.equals("Dump Feeder 1"))
@@ -410,6 +442,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     				gantryManager.getGantry().setState("dumpi");
     				gantryManager.getGantry().setFeed(0);
     		}
+    		else
+    		{
+    			gantryWaitList.add("dumpi");
+    			gantryFeedList.add(0);
+    		}
     	}
     	else if(process.equals("Dump Feeder 2"))
     	{
@@ -417,6 +454,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		{
     			gantryManager.getGantry().setState("dumpi");
     			gantryManager.getGantry().setFeed(1);
+    		}
+    		else
+    		{
+    			gantryWaitList.add("dumpi");
+    			gantryFeedList.add(1);
     		}
     	}
     	else if(process.equals("Dump Feeder 3"))
@@ -426,6 +468,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setState("dumpi");
     			gantryManager.getGantry().setFeed(2);
     		}
+    		else
+    		{
+    			gantryWaitList.add("dumpi");
+    			gantryFeedList.add(2);
+    		}
     	}
     	else if(process.equals("Dump Feeder 4"))
     	{
@@ -433,6 +480,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		{	
     			gantryManager.getGantry().setState("dumpi");
     			gantryManager.getGantry().setFeed(3);
+    		}
+    		else
+    		{
+    			gantryWaitList.add("dumpi");
+    			gantryFeedList.add(3);
     		}
     	}
     	else if(process.equals("Purge Feeder 1"))
@@ -442,6 +494,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setState("purgei");
     			gantryManager.getGantry().setFeed(0);
     		}
+    		else
+    		{
+    			gantryWaitList.add("purgei");
+    			gantryFeedList.add(0);
+    		}
     	}
     	else if(process.equals("Purge Feeder 2"))
     	{
@@ -449,6 +506,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		{
     			gantryManager.getGantry().setState("purgei");
     			gantryManager.getGantry().setFeed(1);
+    		}
+    		else
+    		{
+    			gantryWaitList.add("purgei");
+    			gantryFeedList.add(1);
     		}
     	}
     	else if(process.equals("Purge Feeder 3"))
@@ -458,6 +520,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setState("purgei");
     			gantryManager.getGantry().setFeed(2);
     		}
+    		else
+    		{
+    			gantryWaitList.add("purgei");
+    			gantryFeedList.add(2);
+    		}
     	}
     	else if(process.equals("Purge Feeder 4"))
     	{
@@ -465,6 +532,28 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		{
     			gantryManager.getGantry().setState("purgei");
     			gantryManager.getGantry().setFeed(3);
+    		}
+    		else
+    		{
+    			gantryWaitList.add("purgei");
+    			gantryFeedList.add(3);
+    		}
+    	}
+    	else if(process.equals("Job Finished")){
+    		if(jobsList.size() != 0){
+    			if(jobsList.get(0).getAmount() > 0){
+    				jobsList.get(0).setAmount(jobsList.get(0).getAmount() - 1);
+    			}
+    			else{
+    				jobsList.remove(0);
+    			}
+    			setProductionCommand("Update Jobs");
+    		}
+    	}
+    	else if(process.equals("Get Job")){
+    		if(jobsList.size() != 0){
+    			getPartsRobotAgent().msgMakeThisKit(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
+    			getKitRobotAgent().msgGetKits(jobsList.get(0).getAmount());
     		}
     	}
     	
@@ -492,8 +581,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		feeders.get(num/2).addParts(temp);
     	}
     	else if(process.equals("Feed Lane")){
-    		lanes.get(num).releasePart();
-    		feeders.get(num/2).removePart();
+    		lanes.get(num).releasePart(num/2);
+    		//feeders.get(num/2).removePart();
     	}
     	else if(process.equals("Feed Nest")){
     		lanes.get(num).releaseQueue();
@@ -738,5 +827,15 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public void setPartsCommand(String partsCommand) {
 		this.partsCommand = partsCommand;
+	}
+	
+	public ArrayList<Integer> getGantryFeedList()
+	{
+		return gantryFeedList;
+	}
+	
+	public ArrayList<String> getGantryWaitList()
+	{
+		return gantryWaitList;
 	}
 }

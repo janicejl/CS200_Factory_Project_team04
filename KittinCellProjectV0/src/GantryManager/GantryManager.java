@@ -191,14 +191,36 @@ public class GantryManager implements Serializable,ActionListener
 			}
 			else if(state.equals("purgei"))
 			{
-				gantry.setState("purgef");
-				state="purgi";
+				int c=0;
+				while(c<purged.size())
+				{
+					if(purged.get(c).getFeeder()==gantry.getFeed())
+					{
+						gantry.setState("dumpf");
+						gantry.setxFinal(285);
+						gantry.setyFinal(172);
+						purged.add(parts.get(gantry.getBox()));
+						parts.remove(gantry.getBox());
+						gantry.setBox(purged.size()-1);
+						purged.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
+						purged.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
+						purged.get(gantry.getBox()).setState("dumpf");
+						state="dumpf";
+						break;
+					}
+					c++;
+				}
+				if(!state.equals("dumpf"))
+				{
+					gantry.setState("purgef");
+					gantry.setxFinal(gantry.getxFinal()+60);
+					parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
+					parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
+					state="purgi";
+					parts.get(gantry.getBox()).setState("purgef");
+				}
 				feeders.set(gantry.getFeed(), 0);
-				gantry.setxFinal(gantry.getxFinal()+60);
-				parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
-				parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
 				gantry.setFeed(-1);
-				parts.get(gantry.getBox()).setState("purgef");
 			}
 			else if(state.equals("purgef"))
 			{

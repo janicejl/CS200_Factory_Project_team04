@@ -15,7 +15,7 @@ public class EditPanel extends JPanel implements ActionListener{
 	PartsManagerApp app;
 	JComboBox partsSelectBox, imagesSelectBox;
 	ArrayList<JLabel> promptLabels;
-	ArrayList<JTextField> editFields;
+	ArrayList<JTextField> infoFields;
 	JButton editButton, submitButton, resetButton;
 	ArrayList<JPanel> horizPanels;
 	JTextArea descriptionArea;
@@ -26,7 +26,7 @@ public class EditPanel extends JPanel implements ActionListener{
 	public EditPanel(PartsManagerApp _app){
 		app = _app;
 		promptLabels = new ArrayList<JLabel>();
-		editFields = new ArrayList<JTextField>();
+		infoFields = new ArrayList<JTextField>();
 		horizPanels = new ArrayList<JPanel>();
 		
 		partNames = new Vector<String>();
@@ -59,11 +59,11 @@ public class EditPanel extends JPanel implements ActionListener{
 		promptLabels.get(promptLabels.size()-1).setAlignmentY(Component.TOP_ALIGNMENT);
 		
 		for(int i=0;i<2;i++){
-			editFields.add(new JTextField());
-			editFields.get(i).setAlignmentX(Component.LEFT_ALIGNMENT);
-			editFields.get(i).setPreferredSize(new Dimension(140, 27));
-			editFields.get(i).setMaximumSize(new Dimension(140, 27));
-			editFields.get(i).setMinimumSize(new Dimension(140, 27));
+			infoFields.add(new JTextField());
+			infoFields.get(i).setAlignmentX(Component.LEFT_ALIGNMENT);
+			infoFields.get(i).setPreferredSize(new Dimension(140, 27));
+			infoFields.get(i).setMaximumSize(new Dimension(140, 27));
+			infoFields.get(i).setMinimumSize(new Dimension(140, 27));
 		}
 		
 		descriptionArea = new JTextArea(100, 5);
@@ -71,6 +71,7 @@ public class EditPanel extends JPanel implements ActionListener{
 		descriptionArea.setPreferredSize(new Dimension(270, 180));
 		descriptionArea.setMaximumSize(new Dimension(270, 180));
 		descriptionArea.setMinimumSize(new Dimension(270, 180));
+		descriptionArea.setLineWrap(true);
 		
 		editButton = new JButton("Edit");
 		editButton.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -129,7 +130,7 @@ public class EditPanel extends JPanel implements ActionListener{
 			else if(i==1){
 				horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(168,27)));
 			}
-			horizPanels.get(horizPanels.size()-1).add(editFields.get(i));
+			horizPanels.get(horizPanels.size()-1).add(infoFields.get(i));
 		}
 		
 		horizPanels.add(new JPanel());
@@ -184,8 +185,10 @@ public class EditPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent ae){
 		updateSelectionBox(partsSelectBox.getSelectedIndex());
 		if(ae.getSource()==editButton){
-			editFields.get(0).setText(app.getPartsList().get(partsSelectBox.getSelectedIndex()).getName());
+			infoFields.get(0).setText(app.getPartsList().get(partsSelectBox.getSelectedIndex()).getName());
 			imagesSelectBox.setSelectedIndex(Integer.parseInt(app.getPartsList().get(partsSelectBox.getSelectedIndex()).getImagePath().substring(9, 10)));
+			infoFields.get(1).setText(""+app.getPartsList().get(partsSelectBox.getSelectedIndex()).getIdNumber());
+			descriptionArea.setText(app.getPartsList().get(partsSelectBox.getSelectedIndex()).getDescription());
 			imagesSelectBox.setEnabled(true);
 			partsSelectBox.setEnabled(false);
 			editButton.setEnabled(false);
@@ -204,8 +207,8 @@ public class EditPanel extends JPanel implements ActionListener{
 		else if(ae.getSource()==submitButton){
 			PartInfo temp = app.getPartsList().get(partsSelectBox.getSelectedIndex());
 			temp.setImagePath("images/kt"+imagesSelectBox.getSelectedIndex()+".png");
-			temp.setName(editFields.get(0).getText());
-			//temp.setIdNumber(Integer.parseInt(editFields.get(1).getText()));
+			temp.setName(infoFields.get(0).getText());
+			temp.setIdNumber(Integer.parseInt(infoFields.get(1).getText()));
 			temp.setDescription(descriptionArea.getText());
 			resetEditForm();
 			app.updatePartsPanel();
@@ -222,8 +225,8 @@ public class EditPanel extends JPanel implements ActionListener{
 	
 	public void resetEditForm(){
 		imagesSelectBox.setSelectedIndex(0);
-		for(int i=0;i<editFields.size();i++){
-			editFields.get(i).setText("");
+		for(int i=0;i<infoFields.size();i++){
+			infoFields.get(i).setText("");
 		}
 		descriptionArea.setText("");
 	}

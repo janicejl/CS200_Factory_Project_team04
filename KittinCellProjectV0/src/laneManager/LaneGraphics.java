@@ -22,7 +22,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
 	private ArrayList<Double> emptyConveyorMoveList;
 	private BufferedImage conveyorImage; 
 	private BufferedImage background;
-	private ArrayList<GUIFeeder> gFeeders;
+	private ArrayList<GUIFeeder> gFeeders = new ArrayList<GUIFeeder>();
 	private ArrayList<Feeder> feeders = new ArrayList<Feeder>();
 	private ArrayList<GUINest> gNests = new ArrayList<GUINest>();
 	private ArrayList<Nest> nests = new ArrayList<Nest>();
@@ -41,34 +41,10 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		else if(j == 1){
 			client.getThread().start();
 		}
+<<<<<<< HEAD
 	
 		for (int i = 0; i < 8; i++) {
-    		nests.add(new Nest(0, 30+(i*70)));
-    	}
-    	
-    	lanes.add(new Lane(600,-10, nests.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
-    	lanes.add(new Lane(600,60, nests.get(1))); 
-    	lanes.add(new Lane(600,120, nests.get(2))); 
-    	lanes.add(new Lane(600,170, nests.get(3)));
-    	lanes.add(new Lane(600,230, nests.get(4))); 
-    	lanes.add(new Lane(600,290, nests.get(5)));
-    	lanes.add(new Lane(600,350, nests.get(6))); 
-    	lanes.add(new Lane(600,410, nests.get(7)));
-    	lanes.get(1).setConveyerBeltSpeed(4);
-    	lanes.get(2).setConveyerBeltSpeed(3);
-    	maxX = 600;
-    	maxY = 600;
-    	
-    	this.setSize(maxX, maxY);
-    	this.setVisible(true);
-		emptyConveyorOnList  = new ArrayList<Boolean>(); 
-    	emptyConveyorMoveList = new ArrayList<Double> ();
-    	gFeeders = new ArrayList<GUIFeeder> ();
-    	
-    	for(int i = 0; i < 8; i++) {
-    		emptyConveyorOnList.add(true);
-    		emptyConveyorMoveList.add(0.0);	
-    	}
+=======
     	
     	for (int i = 0; i < 4; i++) {
     		if(i == 0 || i == 3){
@@ -81,9 +57,35 @@ public class LaneGraphics extends JPanel implements ActionListener {
     	}
     	
     	for (int i = 0; i < 8; i++) {
+>>>>>>> bf802cf3401ada865a69b821b7d6948d6d9527da
     		nests.add(new Nest(0, 30+(i*70)));
     		gNests.add(new GUINest(nests.get(i)));
     	}
+    	
+    	lanes.add(new Lane(600,-10, nests.get(0), feeders.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
+    	lanes.add(new Lane(600,60, nests.get(1), feeders.get(0))); 
+    	lanes.add(new Lane(600,120, nests.get(2), feeders.get(1))); 
+    	lanes.add(new Lane(600,170, nests.get(3), feeders.get(1)));
+    	lanes.add(new Lane(600,230, nests.get(4), feeders.get(2))); 
+    	lanes.add(new Lane(600,290, nests.get(5), feeders.get(2)));
+    	lanes.add(new Lane(600,350, nests.get(6), feeders.get(3))); 
+    	lanes.add(new Lane(600,410, nests.get(7), feeders.get(3)));
+    	lanes.get(1).setConveyerBeltSpeed(4);
+    	lanes.get(2).setConveyerBeltSpeed(3);
+    	maxX = 600;
+    	maxY = 600;
+    	
+    	this.setSize(maxX, maxY);
+    	this.setVisible(true);
+		emptyConveyorOnList  = new ArrayList<Boolean>(); 
+    	emptyConveyorMoveList = new ArrayList<Double> ();
+    	
+    	for(int i = 0; i < 8; i++) {
+    		emptyConveyorOnList.add(true);
+    		emptyConveyorMoveList.add(0.0);	
+    	}
+    	
+    	
 		
 		try {
             conveyorImage = ImageIO.read(new File("images/conveyerLong.png"));
@@ -96,13 +98,14 @@ public class LaneGraphics extends JPanel implements ActionListener {
     }
     
     public void updateGUIFeeders(){
-    	for(int i = 0; i < 4; i++){
+    	System.out.println("Updated" + gFeeders.size());
+    	for(int i = 0; i < gFeeders.size(); i++){
     		gFeeders.get(i).setFeeder(feeders.get(i));
     	}
     }
     
     public void updateGUINests() {
-    	for (int i = 0; i < 8; i++) {
+    	for (int i = 0; i < gNests.size(); i++) {
     		gNests.get(i).setNest(nests.get(i));
     	}
     }
@@ -136,7 +139,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
         g2.setColor(Color.BLUE);		
         updateGUIFeeders();
 		for (int i = 0; i < lanes.size(); i++) {
-			if(i < 4) //only four nests
+			if(i < gFeeders.size()) //only four nests
 				gFeeders.get(i).paintNest(g2);
 			ArrayList<GUIPart> guiPart = new ArrayList<GUIPart>();
 			
@@ -196,7 +199,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
     }
     
     public void releaseItem(int lane) {
-    	lanes.get(lane).releasePart();
+    	lanes.get(lane).releasePart(lane/2);
     }
     
     public void removeItem(int lane){

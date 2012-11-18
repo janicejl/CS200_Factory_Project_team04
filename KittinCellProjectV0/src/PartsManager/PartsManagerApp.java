@@ -153,7 +153,7 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-//		save("partsList.sav");		
+		save("partsList.sav");		
 	}
 
 	@Override

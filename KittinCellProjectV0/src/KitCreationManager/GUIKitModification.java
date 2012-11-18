@@ -142,14 +142,16 @@ public class GUIKitModification implements ActionListener{
 			GridBagConstraints c=new GridBagConstraints();
 			c.gridx=0;
 			c.gridy=0;		
-			for(int i=0;i<8;i++){
-				JButton temp = new JButton(new ImageIcon(app.getKitsList().get(kitList.getSelectedIndex()).getParts().get(i).getImagePath()));
-				temp.setPreferredSize(new Dimension (170,30));
-				temp.addActionListener(this);
-				partList.add(temp);
-				partDisplay.add(partList.get(i),c);
-				c.gridy+=2;
-				tempKit.put(i, app.getKitsList().get(kitList.getSelectedIndex()).getParts().get(i));
+			if(app.getKitsList().size() != 0){
+				for(int i=0;i<8;i++){
+					JButton temp = new JButton(new ImageIcon(app.getKitsList().get(kitList.getSelectedIndex()).getParts().get(i).getImagePath()));
+					temp.setPreferredSize(new Dimension (170,30));
+					temp.addActionListener(this);
+					partList.add(temp);
+					partDisplay.add(partList.get(i),c);
+					c.gridy+=2;
+					tempKit.put(i, app.getKitsList().get(kitList.getSelectedIndex()).getParts().get(i));
+				}
 			}
 	}
 	

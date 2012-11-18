@@ -34,6 +34,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		setSize(1200, 645);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		addWindowListener(this);
 		
 		client = new ProductionClient(this);
 		

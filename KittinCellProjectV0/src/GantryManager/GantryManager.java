@@ -15,11 +15,14 @@ public class GantryManager implements Serializable,ActionListener
 	Vector<PartsBox> purged; //Partsboxes that have been purged
 	ArrayList<Integer> feeder;
 	Vector<PartInfo> feeders;
+	ArrayList<Feeder.Feeder> feed; 
 	int speed;
 	Random rand;
 	
-	public GantryManager()
+	
+	public GantryManager(ArrayList<Feeder.Feeder> f)
 	{
+		feed = f;
 		rand = new Random();
 		gantry = new Gantry();
 		
@@ -47,7 +50,7 @@ public class GantryManager implements Serializable,ActionListener
 		String state = gantry.getState();
 		
 		gantry.update();
-		//Updating exiting parts boxes
+		//Updating exiting p)arts boxes
 		int i=0;
 		while(i<exiting.size())
 		{
@@ -170,13 +173,15 @@ public class GantryManager implements Serializable,ActionListener
 			}
 			else if(state.equals("loading"))
 			{ 
-				feeders.set(gantry.getFeed(), parts.get(gantry.getBox()).getPartInfo());
+				feed.get(gantry.getFeed()).setHasCrate(true);
+				feed.get(gantry.getFeed()).setInfo(parts.get(gantry.getBox()).getPartInfo());
 				parts.get(gantry.getBox()).setState("feeding");
 				gantry.setState("free");
 				state = "free";
 			}
 			else if(state.equals("dumpi"))
 			{
+				feed.get(gantry.getFeed()).setHasCrate(false);
 				gantry.setState("dumpf");
 				state = "dumpf";
 				gantry.setFeed(-1);

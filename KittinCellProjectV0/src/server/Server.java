@@ -126,11 +126,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryController.msgGantryAdded(gantry1);
 		gantryController.msgGantryAdded(gantry2);
 		
-		gantryManager = new GantryManager();
-		gantryManager.getGantry().setState("free");
-		gantryManager.getGantry().setBox(1);
-		gantryFeedList = new ArrayList<Integer>();
-		gantryWaitList = new ArrayList<String>();
 
 		feeders = new ArrayList<Feeder>();
 		for(int i = 0; i < 4; i++){
@@ -141,9 +136,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			feeders.add(new Feeder(400,30 + i*140));    			
     		}
 		}
+		
+		gantryManager = new GantryManager(feeders);
+		gantryManager.getGantry().setState("free");
+		gantryManager.getGantry().setBox(1);
+		gantryFeedList = new ArrayList<Integer>();
+		gantryWaitList = new ArrayList<String>();
+		
 		nestList = new ArrayList<Nest>();
-    	
-    	
     	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 100));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 170));	//x coordinate is zero for laneManagerApp

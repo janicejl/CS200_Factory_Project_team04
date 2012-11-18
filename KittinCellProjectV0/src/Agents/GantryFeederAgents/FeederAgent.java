@@ -24,7 +24,8 @@ public class FeederAgent extends Agent implements Feeder {
 	public EventLog log;
 	
 	
-	enum FeederState{feeding, low, waitingLane, purging, waitingGantry, beingFed};
+	enum FeederState{feeding, low, waitingLane, purging, waitingGantry};
+	//possible additional state: beingFed
 	FeederState fstate = FeederState.waitingGantry;
 	
 	MyLane left;
@@ -86,7 +87,7 @@ public class FeederAgent extends Agent implements Feeder {
 		currentPart = bin.getPartInfo();
 		partsInFeeder = bin.getQuantity();
 		myBin = bin;
-		fstate = FeederState.beingFed;	
+		//fstate = FeederState.beingFed;	
 		log.add(new LoggedEvent("msgHereAreParts received from gantry."));
 		stateChanged();
 	}
@@ -95,7 +96,7 @@ public class FeederAgent extends Agent implements Feeder {
 	public void msgHereAreParts(PartInfo part, int quantity){
 		currentPart = part;
 		partsInFeeder = quantity;
-		fstate = FeederState.beingFed;
+		//fstate = FeederState.beingFed;
 		stateChanged();
 	}
 
@@ -134,10 +135,10 @@ public class FeederAgent extends Agent implements Feeder {
 			return true;
 		}
 		
-		if(fstate == FeederState.beingFed){
+		/*if(fstate == FeederState.beingFed){
 			FeedFeeder();
 			return true;
-		}
+		}*/
 		
 		if(fstate == FeederState.waitingLane || fstate == FeederState.low){
 			if(currentPart == left.partWanted && left.readyForParts){
@@ -200,11 +201,11 @@ public class FeederAgent extends Agent implements Feeder {
 		
 	}
 	
-	private void FeedFeeder(){
+	/*private void FeedFeeder(){
 		//DoFeedFeeder();
 		app.execute("Feed Feeder", number);
 		fstate = FeederState.waitingLane;
-	}
+	}*/
 	
 	
 	

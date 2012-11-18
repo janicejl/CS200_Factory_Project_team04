@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 import java.util.Random;
 import java.awt.event.*;
-import Feeder.Feeder;
 import data.PartInfo;
 
 //Simulation class, handles the gantry as well as all of the parts boxes and logic of states
@@ -12,10 +11,10 @@ public class GantryManager implements Serializable,ActionListener
 {
 	Gantry gantry;
 	Vector<PartsBox> parts; //Partsboxes that are not purged or exiting
-	Vector<Integer> feeders;
 	Vector<PartsBox> exiting; //Partsboxes that are leaving the factory
 	Vector<PartsBox> purged; //Partsboxes that have been purged
-	ArrayList<Feeder> feeder;
+	ArrayList<Integer> feeder;
+	ArrayList<PartInfo> feeders;
 	int speed;
 	Random rand;
 	
@@ -28,11 +27,13 @@ public class GantryManager implements Serializable,ActionListener
 		parts.add(new PartsBox(new PartInfo("test","images/part.png"))); //Initial box placed on conveyor, for testing only
 		
 		//Populating the feeders
-		feeders = new Vector<Integer>();
+		feeders = new ArrayList<PartInfo>();
+		feeder = new ArrayList<Integer>();
 		int i=0;
 		while(i<4)
 		{
-			feeders.add(0);
+			feeder.add(0);
+			feeders.add(null);
 			i++;
 		}
 	
@@ -177,7 +178,7 @@ public class GantryManager implements Serializable,ActionListener
 			{
 				gantry.setState("dumpf");
 				state = "dumpf";
-				feeders.set(gantry.getFeed(), 0);
+				feeder.set(gantry.getFeed(), 0);
 				gantry.setFeed(-1);
 				purged.get(gantry.getBox()).setState("dumpf");
 				gantry.setxFinal(285);
@@ -222,7 +223,7 @@ public class GantryManager implements Serializable,ActionListener
 					state="purgi";
 					parts.get(gantry.getBox()).setState("purgef");
 				}
-				feeders.set(gantry.getFeed(), 0);
+				feeder.set(gantry.getFeed(), 0);
 				gantry.setFeed(-1);
 			}
 			else if(state.equals("purgef"))
@@ -271,8 +272,13 @@ public class GantryManager implements Serializable,ActionListener
 		return purged;
 	}
 	
-	public void setFeeders(ArrayList<Feeder> f)
+	public void setFeeders(ArrayList<PartInfo> f)
 	{
-		feeder = f;
+		feeders = f;
+	}
+	
+	public  ArrayList<PartInfo> getFeeders()
+	{
+		return feeders;
 	}
 }

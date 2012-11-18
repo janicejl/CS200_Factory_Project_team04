@@ -131,7 +131,7 @@ public class NestAgent extends Agent implements Nest{
 			settleNest();
 			return true;
 		}
-		if(neststate == NestStatus.badParts || animationstate == AnimationStatus.needPurge)
+		if((neststate == NestStatus.badParts || animationstate == AnimationStatus.needPurge)&&animationstate != AnimationStatus.purging)
 		{
 			purgeNest();
 			return true;
@@ -177,7 +177,7 @@ public class NestAgent extends Agent implements Nest{
 		//server.DoPurge(); // Run the purge animation
 		
 		animationstate = AnimationStatus.purging;
-		for(int i = 0; i<9; i++)
+		for(int i = 0; i<8; i++)
 		{
 			nestslots[i] = null;
 		}

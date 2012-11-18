@@ -181,7 +181,6 @@ public class GantryManager implements Serializable,ActionListener
 			}
 			else if(state.equals("dumpi"))
 			{
-				feed.get(gantry.getFeed()).setHasCrate(false);
 				gantry.setState("dumpf");
 				state = "dumpf";
 				gantry.setFeed(-1);
@@ -230,6 +229,7 @@ public class GantryManager implements Serializable,ActionListener
 				}
 				feeders.set(gantry.getFeed(),null);
 				feeder.set(gantry.getFeed(), 0);
+				feed.get(gantry.getFeed()).setHasCrate(false);
 				gantry.setFeed(-1);
 			}
 			else if(state.equals("purgef"))

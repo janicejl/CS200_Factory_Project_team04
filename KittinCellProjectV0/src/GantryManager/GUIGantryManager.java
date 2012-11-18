@@ -102,7 +102,7 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			g2.drawImage(crate,manager.getPurged().get(i).getxCurrent(),manager.getPurged().get(i).getyCurrent(),null);
 			try
 			{
-				g2.drawImage(ImageIO.read(new File(manager.getPartsBoxes().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
+				g2.drawImage(ImageIO.read(new File(manager.getPurged().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
 			}
 			catch(IOException e){}
 			i++;

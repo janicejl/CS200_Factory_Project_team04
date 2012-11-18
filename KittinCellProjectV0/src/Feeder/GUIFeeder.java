@@ -47,8 +47,10 @@ public class GUIFeeder {
 			else if (!previousPositiion){
 				g2.drawImage(diverter, diverterX, (int)feeder.getY() + 70, null);
 			}
+			feeder.setMoving(false);
 		}
 		else{
+			feeder.setMoving(true);
 			if (previousPositiion){
 				if (diverterY != feeder.getY() + 70){
 					diverterY += 2;
@@ -68,7 +70,6 @@ public class GUIFeeder {
 					g2.drawImage(diverter, diverterX, diverterY, null);
 					previousPositiion = feeder.getLane();
 				}
-				
 			}
 		}
 		

@@ -3,13 +3,13 @@ package Mocks.PartsRobotAgents;
 import java.util.List;
 
 import data.Part;
-import data.Part.PartType;
 import Agents.PartsRobotAgent.TestGUI;
 import Interface.PartsRobotAgent.*;
 import Interface.VisionAgent.Vision;
 import Mocks.KitRobotAgents.MockAgent;
 import UnitTest.KitRobotAgents.EventLog;
 import UnitTest.KitRobotAgents.LoggedEvent;
+import data.PartInfo;
 
 public class MockPartsRobot extends MockAgent implements PartsRobot{
 
@@ -23,7 +23,7 @@ public class MockPartsRobot extends MockAgent implements PartsRobot{
 
 
 	@Override
-	public void msgMakeThisKit(List<PartType> kitrecipe, int ct) {
+	public void msgMakeThisKit(List<PartInfo> kitrecipe, int ct) {
 		log.add(new LoggedEvent("Received Recipe"));
 		
 	}

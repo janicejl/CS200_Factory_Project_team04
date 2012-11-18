@@ -1,6 +1,7 @@
 package Agents.PartsRobotAgent;
 
 
+import data.Part;
 import data.PartInfo;
 import Agent.Agent;
 import Agents.GantryFeederAgents.FeederAgent;
@@ -21,7 +22,7 @@ public class LaneAgent extends Agent implements Lane{
 	
 	int index = 0;
 	
-	public List<PartInfo> lanequeue = new ArrayList<PartInfo>();
+	public List<Part> lanequeue = new ArrayList<Part>();
 	
 	public PartInfo type = null;
 	
@@ -69,7 +70,7 @@ public class LaneAgent extends Agent implements Lane{
 	}
 	
 	public void msgHereIsAPart(PartInfo p){
-		lanequeue.add(p);
+		lanequeue.add(new Part(p));
 		lanestate = LaneStatus.hasParts;
 		stateChanged();
 	}
@@ -84,7 +85,7 @@ public class LaneAgent extends Agent implements Lane{
 		if(lanestate!= LaneStatus.partsAtEndOfLane){
 			print("Part at end of lane");
 			if(lanequeue.isEmpty()){
-				lanequeue.add(new PartInfo(type));
+				lanequeue.add(new Part(type));
 			}
 			lanestate = LaneStatus.partsAtEndOfLane;
 			stateChanged();
@@ -155,7 +156,6 @@ public class LaneAgent extends Agent implements Lane{
 		neststate = LaneNestStatus.askedToTakePart;		
 	}
 	private void givePart(){
-		print("Giving Part");
 		nest.msgHereIsPart(lanequeue.get(0));
 		lanequeue.remove(0);
 		neststate = LaneNestStatus.noAction;
@@ -165,6 +165,7 @@ public class LaneAgent extends Agent implements Lane{
 		else{
 			lanestate = LaneStatus.noParts;
 		}
+		print("Giving Part and calling server execute function");
 		server.execute("Feed Nest",index);
 		
 	}

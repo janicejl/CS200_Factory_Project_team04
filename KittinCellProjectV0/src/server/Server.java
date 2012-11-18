@@ -1,16 +1,15 @@
 package server;
 
+
 import java.net.*;
 import java.util.concurrent.*;
 
-import java.util.Vector;
-import java.util.Scanner;
-import java.util.Vector;
-import java.awt.event.ActionListener;
+import java.util.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.Timer;
 
 import Agents.GantryFeederAgents.FeederAgent;
 import Agents.GantryFeederAgents.FeederLaneAgent;
@@ -22,6 +21,8 @@ import Agents.KitRobotAgents.KitStandAgent;
 import Agents.PartsRobotAgent.NestAgent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
 import Agents.VisionAgent.VisionAgent;
+import Interface.*;
+import Interface.VisionAgent.Vision;
 import Feeder.Feeder;
 import data.Job;
 import data.KitInfo;
@@ -49,21 +50,21 @@ public class Server extends JFrame implements Runnable, ActionListener{
 //	PartsRobotProtocol partsPro;
 //	GantryManagerProtocol gantryPro;
 	
-	Vector<PartInfo> partsList;
-	Vector<KitInfo> kitsList;
-	Vector<Job> jobsList;
+	ArrayList<PartInfo> partsList;
+	ArrayList<KitInfo> kitsList;
+	ArrayList<Job> jobsList;
 	String kitCreateCommand = "Idle";
-	String productionCommand;
-	String partsCommand;
+	String productionCommand = "Idle";
+	String partsCommand = "Idle";
 	
 	PartsRobot partsRobot;
 	PartsRobotAgent partsRobotAgent;
-	Vector<NestAgent> nests = new Vector<NestAgent>();
+	ArrayList<NestAgent> nests = new ArrayList<NestAgent>();
 	VisionAgent nestvisionagent1;
 	VisionAgent nestvisionagent2;
 	VisionAgent nestvisionagent3;
 	VisionAgent nestvisionagent4;
-	Vector<VisionAgent> visions = new Vector<VisionAgent>();
+	ArrayList<VisionAgent> visions = new ArrayList<VisionAgent>();
 	Semaphore flashpermit;
 	
 	GantryManager gantryManager;
@@ -90,9 +91,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	GantryAgent gantry2;
 	GantryControllerAgent gantryController;
 
-	Vector<Feeder> feeders;
-	Vector<Lane> lanes;
-	Vector<Nest> nestList;
+	ArrayList<Feeder> feeders;
+	ArrayList<Lane> lanes;
+	ArrayList<Nest> nestList;
 
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
@@ -156,7 +157,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryManager.getGantry().setState("free");
 		gantryManager.getGantry().setBox(1);
 
-		feeders = new Vector<Feeder>();
+		feeders = new ArrayList<Feeder>();
 		for(int i = 0; i < 4; i++){
 			if(i == 0 || i == 3){
     			feeders.add(new Feeder(475,30 + i*140));
@@ -165,7 +166,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			feeders.add(new Feeder(400,30 + i*140));    			
     		}
 		}
-		nestList = new Vector<Nest>();
+		nestList = new ArrayList<Nest>();
     	
     	
     	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
@@ -178,7 +179,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	nestList.add(new Nest(0, 520));	//x coordinate is zero for laneManagerApp
     	
     	
-		lanes = new Vector<Lane>();
+		lanes = new ArrayList<Lane>();
 		lanes.add(new Lane(600,30, nestList.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(600,100, nestList.get(1))); 
     	lanes.add(new Lane(600,170, nestList.get(2))); 
@@ -434,6 +435,38 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setFeed(3);
     		}
     	}
+    	else if(process.equals("Purge Feeder 1"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("purgei");
+    			gantryManager.getGantry().setFeed(0);
+    		}
+    	}
+    	else if(process.equals("Purge Feeder 2"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("purgei");
+    			gantryManager.getGantry().setFeed(1);
+    		}
+    	}
+    	else if(process.equals("Purge Feeder 3"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("purgei");
+    			gantryManager.getGantry().setFeed(2);
+    		}
+    	}
+    	else if(process.equals("Purge Feeder 4"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("purgei");
+    			gantryManager.getGantry().setFeed(3);
+    		}
+    	}
     	
     }
 	 
@@ -482,9 +515,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			getPartsRobotAgent().msgAnimationDone();
 			getPartsRobot().setMsg(false);
 		}
+		if(getPartsRobot().isDumped()){
+			getPartsRobotAgent().msgPartsDropped();
+			getPartsRobot().setDumped(false);
+		}
 		if(getPartsRobot().getAnimationDone()){
 			for(int i = 0; i<4; i++){
-				getVisions().get(i).msgAnimationDone();
+				getVisions().get(i).msgCameraAvailable();
 			}
 			getPartsRobot().setAnimationDone(false);
 		}	
@@ -618,30 +655,30 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return nests.get(index);
 	}
 		
-	public Vector<Lane> getLanes() {
+	public ArrayList<Lane> getLanes() {
 		return lanes;
 	}
 
-	public void setLanes(Vector<Lane> lanes) {
+	public void setLanes(ArrayList<Lane> lanes) {
 		this.lanes = lanes;
 	}
-	public Vector<VisionAgent> getVisions(){
+	public ArrayList<VisionAgent> getVisions(){
 		return this.visions;
 	}
 
-	public Vector<Feeder> getFeeders() {
+	public ArrayList<Feeder> getFeeders() {
 		return feeders;
 	}
 
-	public void setFeeders(Vector<Feeder> feeders) {
+	public void setFeeders(ArrayList<Feeder> feeders) {
 		this.feeders = feeders;
 	}
 	
-	public Vector<Nest> getNests() {
+	public ArrayList<Nest> getNests() {
 		return nestList;
 	}
 	
-	public void setNests(Vector<Nest> nests) {
+	public void setNests(ArrayList<Nest> nests) {
 		this.nestList = nests;
 	}
 	
@@ -655,27 +692,27 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryManager = g;
 	}
 
-	public Vector<PartInfo> getPartsList() {
+	public ArrayList<PartInfo> getPartsList() {
 		return partsList;
 	}
 
-	public void setPartsList(Vector<PartInfo> partsList) {
+	public void setPartsList(ArrayList<PartInfo> partsList) {
 		this.partsList = partsList;
 	}
 
-	public Vector<KitInfo> getKitsList() {
+	public ArrayList<KitInfo> getKitsList() {
 		return kitsList;
 	}
 
-	public void setKitsList(Vector<KitInfo> kitsList) {
+	public void setKitsList(ArrayList<KitInfo> kitsList) {
 		this.kitsList = kitsList;
 	}
 
-	public Vector<Job> getJobsList() {
+	public ArrayList<Job> getJobsList() {
 		return jobsList;
 	}
 
-	public void setJobsList(Vector<Job> jobsList) {
+	public void setJobsList(ArrayList<Job> jobsList) {
 		this.jobsList = jobsList;
 	}
 

@@ -2,10 +2,12 @@ package PartsManager;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.io.*;
 
 import javax.swing.*;
+
+import KitCreationManager.KitCreationClient;
 
 import data.PartInfo;
 
@@ -13,13 +15,12 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 	
 	PartsPanel partPanel;
 	EditPanel editPanel;
-	Vector<PartInfo> partsList;
-	PartsManagerClient partsManagerClient;
+	ArrayList<PartInfo> partsList;
+	PartsManagerClient client;
 	JTabbedPane tabbedPane;
 	
 	public PartsManagerApp(){
-		partsList = new Vector<PartInfo>();
-		partsManagerClient = new PartsManagerClient(this);
+		partsList = new ArrayList<PartInfo>();
 		
 		addWindowListener(this);
 		tabbedPane = new JTabbedPane();
@@ -35,6 +36,15 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		load("partsList.sav");
 		partPanel.updateLoad();
 		editPanel.updateSelectionBox(0);
+		
+		client = new PartsManagerClient(this);
+		int j = client.connect();
+		if(j == -1){
+			System.exit(1);
+		}
+		else if(j == 1){
+			client.getThread().start();
+		}
 		
 		new Timer(10, this).start();
 	}
@@ -60,7 +70,7 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		try{
 			FileInputStream fileIn = new FileInputStream(path); //access  file
 			ObjectInputStream streamIn = new ObjectInputStream(fileIn); //inputstream
-			partsList = ((Vector<PartInfo>) streamIn.readObject()); //load
+			partsList = ((ArrayList<PartInfo>) streamIn.readObject()); //load
 			streamIn.close();
 			fileIn.close();
 		}
@@ -93,6 +103,14 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		tabbedPane.revalidate();
 	}
 	
+	public void updateEditPanel(){
+		editPanel.updateSelectionBox(0);
+	}
+	
+	public void updatePartsPanel(){
+		partPanel.updatePartList();
+	}
+	
 	public static void main(String[] args){
 		new PartsManagerApp();
 	}
@@ -105,12 +123,20 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		this.partPanel = partPanel;
 	}
 
-	public synchronized Vector<PartInfo> getPartsList() {
+	public synchronized ArrayList<PartInfo> getPartsList() {
 		return partsList;
 	}
 
-	public synchronized void setPartsList(Vector<PartInfo> partsList) {
+	public synchronized void setPartsList(ArrayList<PartInfo> partsList) {
 		this.partsList = partsList;
+	}
+
+	public PartsManagerClient getClient() {
+		return client;
+	}
+
+	public void setClient(PartsManagerClient client) {
+		this.client = client;
 	}
 
 	@Override
@@ -127,7 +153,7 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		save("partsList.sav");		
+//		save("partsList.sav");		
 	}
 
 	@Override

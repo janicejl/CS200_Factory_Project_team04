@@ -1,6 +1,7 @@
 package server;
 
 import java.util.*;
+//import java.util.concurrent.ArrayList;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -15,11 +16,11 @@ import data.Kit;
 import laneManager.Nest;
 
 public class KitAssemblyManager implements Runnable, Serializable{
-    Vector<Boolean> stationOccupied;
-    Vector<Kit> emptyKits;
-    Vector<Kit> finishedKits;
-    Vector<Kit> stationKits;
-    Vector<Nest> nests;
+    ArrayList<Boolean> stationOccupied;
+    ArrayList<Kit> emptyKits;
+    ArrayList<Kit> finishedKits;
+    ArrayList<Kit> stationKits;
+    ArrayList<Nest> nests;
     boolean finishedConveyorOn;
     boolean emptyConveyorOn;
     boolean badConveyorOn;
@@ -30,10 +31,10 @@ public class KitAssemblyManager implements Runnable, Serializable{
    
     boolean checked = false;
 
-    public KitAssemblyManager(Vector<Nest> n){
+    public KitAssemblyManager(ArrayList<Nest> n){
     	nests = n;
-        stationOccupied = new Vector<Boolean>();
-        stationKits = new Vector<Kit>();
+        stationOccupied = new ArrayList<Boolean>();
+        stationKits = new ArrayList<Kit>();
         idCounter = 0;
         for(int i = 0; i < 7; i++){
             stationOccupied.add(false);
@@ -47,8 +48,8 @@ public class KitAssemblyManager implements Runnable, Serializable{
             idCounter++;
         }
 
-        emptyKits = new Vector<Kit>();
-        finishedKits = new Vector<Kit>();
+        emptyKits = new ArrayList<Kit>();
+        finishedKits = new ArrayList<Kit>();
         msg = new Boolean(false);
     }
 
@@ -181,23 +182,23 @@ public class KitAssemblyManager implements Runnable, Serializable{
         return incompleteConveyorOn;
     }
 
-    public Vector<Kit> getEmptyKits(){
+    public ArrayList<Kit> getEmptyKits(){
         return emptyKits;
     }
 
-    public Vector<Kit> getFinishedKits(){
+    public ArrayList<Kit> getFinishedKits(){
         return finishedKits;
     }
 
-    public Vector<Kit> getStationKits(){
+    public ArrayList<Kit> getStationKits(){
         return stationKits;
     }
 
-    public Vector<Boolean> getStationOccupied(){
+    public ArrayList<Boolean> getStationOccupied(){
         return stationOccupied;
     }
     
-    public Vector<Nest> getNests() {
+    public ArrayList<Nest> getNests() {
     	return nests;
     }
     
@@ -225,19 +226,19 @@ public class KitAssemblyManager implements Runnable, Serializable{
 		this.conveyorSpeed = conveyorSpeed;
 	}
 
-	public void setStationOccupied(Vector<Boolean> stationOccupied) {
+	public void setStationOccupied(ArrayList<Boolean> stationOccupied) {
 		this.stationOccupied = stationOccupied;
 	}
 
-	public void setEmptyKits(Vector<Kit> emptyKits) {
+	public void setEmptyKits(ArrayList<Kit> emptyKits) {
 		this.emptyKits = emptyKits;
 	}
 
-	public void setFinishedKits(Vector<Kit> finishedKits) {
+	public void setFinishedKits(ArrayList<Kit> finishedKits) {
 		this.finishedKits = finishedKits;
 	}
 
-	public void setStationKits(Vector<Kit> stationKits) {
+	public void setStationKits(ArrayList<Kit> stationKits) {
 		this.stationKits = stationKits;
 	}
 

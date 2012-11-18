@@ -6,7 +6,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.Random;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import data.GUIPart;
@@ -72,15 +73,8 @@ public class GUIFeeder {
 		}
 		
 		
-		Vector<GUIPart> parts = new Vector<GUIPart>();
-		for (int i = 0, j = 0; i < feeder.getPartAmount(); i++) {
-			feeder.getParts().get(i).setX(feeder.getX() + ((i % 4) * 25));		//25 = size of testing image parts. 
-			feeder.getParts().get(i).setY(feeder.getY()+ (j * 25));
-			
-			if (i % 4 == 3) {
-				j++;
-			}
-			
+		ArrayList<GUIPart> parts = new ArrayList<GUIPart>();
+		for (int i = 0; i < feeder.getPartAmount(); i++) {	
 			parts.add(new GUIPart(feeder.getParts().get(i)));
 			parts.get(i).paintPart(g2);
 		}

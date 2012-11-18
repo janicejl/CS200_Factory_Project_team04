@@ -36,7 +36,12 @@ public class KitPanel extends JPanel {
 		app = _app;
 		background = new ImageIcon("images/background.png");
 		
-		title = BorderFactory.createTitledBorder("  " + kitInfo.getName() + "  ");
+		if(kitInfo == null){
+			title = BorderFactory.createTitledBorder("  ");
+		}
+		else{
+			title = BorderFactory.createTitledBorder("  " + kitInfo.getName() + "  ");
+		}
 		title.setTitleJustification(TitledBorder.CENTER);
 		Font f = new Font("Cabrilli", Font.BOLD, 16);
 		title.setTitleFont(f);
@@ -137,10 +142,12 @@ public class KitPanel extends JPanel {
 	}
 	
 	public void updateKit(KitInfo kitInfo){
-		for(int i = 0; i < parts.size(); i++){
-			parts.get(i).setIcon(new ImageIcon(kitInfo.getParts().get(i).getImagePath()));
+		if(kitInfo != null){
+			for(int i = 0; i < parts.size(); i++){
+				parts.get(i).setIcon(new ImageIcon(kitInfo.getParts().get(i).getImagePath()));
+			}
+			title.setTitle("  " + kitInfo.getName() + "  ");
 		}
-		title.setTitle("  " + kitInfo.getName() + "  ");
 	}
 //	public void updateKit(KitInfo kitInfo){
 //		for (int i=0; i<kitInfo.getSize(); i++){

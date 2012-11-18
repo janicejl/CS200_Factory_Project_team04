@@ -8,6 +8,7 @@ import java.io.*;
 import javax.swing.*;
 import java.util.*;
 
+//Class that handles all of the painting, as well as containing the client and the gantry manager
 public class GUIGantryManager extends JPanel implements ActionListener
 {
 	protected BufferedImage background = null;
@@ -31,12 +32,14 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			client.getThread().start();
 		try
 		{
+			//Static images
 			background = ImageIO.read(new File("images/background.png"));
 			rail = ImageIO.read(new File("images/rail.png"));
 			station = ImageIO.read(new File("images/station.png"));
 			feeder = ImageIO.read(new File("images/Feeder.png"));
 			gantryImage = ImageIO.read(new File("images/gantryrobot.png"));
 			crate = ImageIO.read(new File("images/crate.png"));
+			//Dynamic image in final implementation
 			part = ImageIO.read(new File("images/part.png"));
 		}
 		catch(IOException e) {}
@@ -51,11 +54,9 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		/*	g2.drawImage(feeder, -28, 8, null);
-		g2.drawImage(feeder, -100, 146, null);
-		g2.drawImage(feeder, -100, 284,null);
-		g2.drawImage(feeder,  -28, 422, null);*/
-		if(managerNum == 1){
+		//If the GUI is not a part of the Production manager, draw extra parts of the factory
+		if(managerNum == 1)
+		{
 			g2.drawImage(background,0,0,null);
 			g2.drawImage(feeder, -35, 30, null);
 			g2.drawImage(feeder, -110, 170, null);
@@ -73,7 +74,7 @@ public class GUIGantryManager extends JPanel implements ActionListener
 	
 		
 		
-		
+		//These blocks iterate through the different parts boxes and paint them if necessary
 		int i=0;
 		while(i<manager.getPartsBoxes().size())
 		{
@@ -86,6 +87,13 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		{
 			g2.drawImage(crate,manager.getExiting().get(i).getxCurrent(),manager.getExiting().get(i).getyCurrent(),null);
 			g2.drawImage(part,manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
+			i++;
+		}
+		i=0;
+		while(i<manager.getPurged().size())
+		{
+			g2.drawImage(crate,manager.getPurged().get(i).getxCurrent(),manager.getPurged().get(i).getyCurrent(),null);
+			g2.drawImage(part, manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
 			i++;
 		}
 		g2.drawImage(rail, manager.getGantry().getxCurrent()+10,0,null);
@@ -101,11 +109,11 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		}
 	}
 	
-	public synchronized GantryManager getGantryManager()
+	public GantryManager getGantryManager()
 	{
 		return manager;
 	}
-	public synchronized void setGantryManager(GantryManager gm)
+	public void setGantryManager(GantryManager gm)
 	{
 		manager = gm;
 	}

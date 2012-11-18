@@ -13,15 +13,15 @@ import data.PartInfo;
 public class EditPanel extends JPanel implements ActionListener{
 	
 	PartsManagerApp app;
-	JComboBox partsSelectBox;
+	JComboBox partsSelectBox, imagesSelectBox;
 	ArrayList<JLabel> promptLabels;
 	ArrayList<JTextField> editFields;
 	JButton editButton, submitButton, resetButton;
 	ArrayList<JPanel> horizPanels;
 	JTextArea descriptionArea;
-	Timer timer;
 //	String[] parts;
 	Vector<String> partNames;
+	Vector<ImageIcon> partImages;
 	
 	public EditPanel(PartsManagerApp _app){
 		app = _app;
@@ -33,13 +33,25 @@ public class EditPanel extends JPanel implements ActionListener{
 		partsSelectBox = new JComboBox(partNames);
 //		partsSelectBox = new JComboBox(parts);
 		partsSelectBox.setAlignmentY(Component.CENTER_ALIGNMENT);
-		partsSelectBox.setPreferredSize(new Dimension(270, 27));
-		partsSelectBox.setMinimumSize(new Dimension(270, 27));
-		partsSelectBox.setMaximumSize(new Dimension(270, 27));
+		partsSelectBox.setPreferredSize(new Dimension(250, 27));
+		partsSelectBox.setMinimumSize(new Dimension(250, 27));
+		partsSelectBox.setMaximumSize(new Dimension(250, 27));
 		updateSelectionBox(0);
+		
+		partImages = new Vector<ImageIcon>();
+		for(int i=0;i<10;i++){
+			partImages.add(new ImageIcon("images/kt"+i+".png"));
+		}
+		imagesSelectBox = new JComboBox(partImages);
+		imagesSelectBox.setAlignmentY(Component.CENTER_ALIGNMENT);
+		imagesSelectBox.setPreferredSize(new Dimension(140, 27));
+		imagesSelectBox.setMinimumSize(new Dimension(140, 27));
+		imagesSelectBox.setMaximumSize(new Dimension(140, 27));
+		imagesSelectBox.setEnabled(false);
 		
 		promptLabels.add(new JLabel("Part:"));
 		promptLabels.get(promptLabels.size()-1).setAlignmentY(Component.CENTER_ALIGNMENT);
+		promptLabels.add(new JLabel("Image:"));
 		promptLabels.add(new JLabel("Name:"));
 		promptLabels.add(new JLabel("Number:"));
 		promptLabels.add(new JLabel("Description:"));
@@ -88,9 +100,21 @@ public class EditPanel extends JPanel implements ActionListener{
 		horizPanels.get(horizPanels.size()-1).setMinimumSize(new Dimension(500, 50));
 		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,27)));
 		horizPanels.get(horizPanels.size()-1).add(promptLabels.get(0));
+		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,27)));
 		horizPanels.get(horizPanels.size()-1).add(partsSelectBox);
 		horizPanels.get(horizPanels.size()-1).add(editButton);
 		
+		
+		horizPanels.add(new JPanel());
+		horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
+		horizPanels.get(horizPanels.size()-1).setPreferredSize(new Dimension(500, 50));
+		horizPanels.get(horizPanels.size()-1).setMaximumSize(new Dimension(500, 50));
+		horizPanels.get(horizPanels.size()-1).setMinimumSize(new Dimension(500, 50));
+		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,27)));
+		horizPanels.get(horizPanels.size()-1).add(promptLabels.get(1));
+		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(177, 27)));
+		horizPanels.get(horizPanels.size()-1).add(imagesSelectBox);
+
 		for(int i=0;i<2;i++){
 			horizPanels.add(new JPanel());
 			horizPanels.get(horizPanels.size()-1).setPreferredSize(new Dimension(500, 50));
@@ -98,7 +122,7 @@ public class EditPanel extends JPanel implements ActionListener{
 			horizPanels.get(horizPanels.size()-1).setMinimumSize(new Dimension(500, 50));
 			horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
 			horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,27)));
-			horizPanels.get(horizPanels.size()-1).add(promptLabels.get(i+1));
+			horizPanels.get(horizPanels.size()-1).add(promptLabels.get(i+2));
 			if(i==0){
 				horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(180,27)));
 			}
@@ -114,7 +138,7 @@ public class EditPanel extends JPanel implements ActionListener{
 		horizPanels.get(horizPanels.size()-1).setMaximumSize(new Dimension(500, 180));
 		horizPanels.get(horizPanels.size()-1).setMinimumSize(new Dimension(500, 180));
 		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,27)));
-		horizPanels.get(horizPanels.size()-1).add(promptLabels.get(3));
+		horizPanels.get(horizPanels.size()-1).add(promptLabels.get(4));
 		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10,20)));
 		horizPanels.get(horizPanels.size()-1).add(descriptionArea);
 		
@@ -130,7 +154,7 @@ public class EditPanel extends JPanel implements ActionListener{
 
 		for(int i=0;i<horizPanels.size();i++){
 			add(horizPanels.get(i));
-			add(Box.createRigidArea(new Dimension(500, 20)));
+			add(Box.createRigidArea(new Dimension(500, 16)));
 		}
 		
 		editButton.addActionListener(this);
@@ -161,23 +185,47 @@ public class EditPanel extends JPanel implements ActionListener{
 		updateSelectionBox(partsSelectBox.getSelectedIndex());
 		if(ae.getSource()==editButton){
 			editFields.get(0).setText(app.getPartsList().get(partsSelectBox.getSelectedIndex()).getName());
+			imagesSelectBox.setSelectedIndex(Integer.parseInt(app.getPartsList().get(partsSelectBox.getSelectedIndex()).getImagePath().substring(9, 10)));
+			imagesSelectBox.setEnabled(true);
+			partsSelectBox.setEnabled(false);
 			editButton.setEnabled(false);
 			resetButton.setEnabled(true);
 			submitButton.setEnabled(true);
 		}
 		else if(ae.getSource()==resetButton){
-			editFields.get(0).setText(app.getPartsList().get(partsSelectBox.getSelectedIndex()).getName());
+			resetEditForm();
+			partsSelectBox.setSelectedIndex(0);
+			partsSelectBox.setEnabled(true);
+			imagesSelectBox.setEnabled(false);
 			editButton.setEnabled(true);
 			resetButton.setEnabled(false);
 			submitButton.setEnabled(false);
 		}
 		else if(ae.getSource()==submitButton){
 			PartInfo temp = app.getPartsList().get(partsSelectBox.getSelectedIndex());
+			temp.setImagePath("images/kt"+imagesSelectBox.getSelectedIndex()+".png");
 			temp.setName(editFields.get(0).getText());
+			//temp.setIdNumber(Integer.parseInt(editFields.get(1).getText()));
+			temp.setDescription(descriptionArea.getText());
+			resetEditForm();
+			app.updatePartsPanel();
+			updateSelectionBox(0);
+			partsSelectBox.setEnabled(true);
+			imagesSelectBox.setEnabled(false);
 			editButton.setEnabled(true);
 			resetButton.setEnabled(false);
 			submitButton.setEnabled(false);
+			
+			app.getClient().setCommandSent("Update Parts");
 		}
+	}
+	
+	public void resetEditForm(){
+		imagesSelectBox.setSelectedIndex(0);
+		for(int i=0;i<editFields.size();i++){
+			editFields.get(i).setText("");
+		}
+		descriptionArea.setText("");
 	}
 	
 //	public static void main(String[] args){

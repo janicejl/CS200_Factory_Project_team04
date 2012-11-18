@@ -1,143 +1,179 @@
 package UnitTest.PartsRobotAgents;
 
 import static org.junit.Assert.*;
+import Mocks.PartsRobotAgents.*;
+import Mocks.KitRobotAgents.*;
 import Agents.VisionAgent.*;
 import server.Server;
+import Interface.PartsRobotAgent.*;
+import Interface.VisionAgent.*;
+import Interface.KitRobotAgent.*;
 
 import org.junit.Test;
 
 import java.util.*;
+
+import junit.framework.Assert;
+import junit.framework.TestCase;
 import Agents.PartsRobotAgent.*;
+import Agents.PartsRobotAgent.PartsRobotAgent.AnimationStatus;
+import Agents.PartsRobotAgent.PartsRobotAgent.CurrentKit;
+import Agents.PartsRobotAgent.PartsRobotAgent.KitStatus;
+import Agents.PartsRobotAgent.PartsRobotAgent.NestStatus;
 import Agents.KitRobotAgents.*;
 import MoveableObjects.*;
+import UnitTest.KitRobotAgents.LoggedEvent;
+import data.*;
+import data.Part.PartType;
 
-public class PartsRobotTest {
+public class PartsRobotTest extends TestCase{
 	
 	
 	
-	public static void fourPartTestRecipe()
+	public void testPartsRobotWith4Parts()
 	{
 		PartsRobotAgent partsrobotagent;
-		MockKitStandV0 kitstand;
-		NestAgent nest1;
-		NestAgent nest2;
-		NestAgent nest3;
-		NestAgent nest4;
-		NestAgent nest5;
-		NestAgent nest6;
-		NestAgent nest7;
-		NestAgent nest8;
-		MockLaneAgentV0 lane1;
-		MockLaneAgentV0 lane2;
-		MockLaneAgentV0 lane3;
-		MockLaneAgentV0 lane4;
-		MockLaneAgentV0 lane5;
-		MockLaneAgentV0 lane6;
-		MockLaneAgentV0 lane7;
-		MockLaneAgentV0 lane8;
-		kitstand = new MockKitStandV0();
-		VisionAgent camera1 = new VisionAgent("nests",new KitRobotAgent(new Server()), partsrobotagent,new Server());
-		VisionAgent camera2 = new VisionAgent("nests",new KitRobotAgent(new Server()), partsrobotagent,new Server());
-		VisionAgent camera3 = new VisionAgent("nests",new KitRobotAgent(new Server()), partsrobotagent,new Server());
-		VisionAgent camera4 = new VisionAgent("nests",new KitRobotAgent(new Server()), partsrobotagent,new Server());
+		MockNest nest1 = new MockNest("nest1");
+		MockNest nest2 = new MockNest("nest2");
+		MockNest nest3 = new MockNest("nest3");
+		MockNest nest4 = new MockNest("nest4");
+		List<Nest> nests = new ArrayList<Nest>();
+		nests.add(nest1);nests.add(nest2);nests.add(nest3);nests.add(nest4);
+		MockVision camera1 = new MockVision("camera1");
+		MockVision camera2 = new MockVision("camera2");
+		List<Vision> cameras = new ArrayList<Vision>();
+		cameras.add(camera1);cameras.add(camera2);
+		MockKitStand kitstand = new MockKitStand("Kit Stand");
+		partsrobotagent = new PartsRobotAgent(nests,cameras,kitstand);
+		Assert.assertTrue("Camera size = 2",partsrobotagent.cameras.size() == 2);
+		Assert.assertTrue("Nests size = 4",partsrobotagent.nests.size() == 4);
+		Assert.assertTrue("2nd nest equals nest2",partsrobotagent.nests.get(1).nest == nest2);
+		Assert.assertTrue("Recipe is Empty",partsrobotagent.recipe.isEmpty());
+		KitInfo kitinfo = new KitInfo("Test Kit");
+		PartInfo p1 = new PartInfo("parttype1","image");
+		PartInfo p2 = new PartInfo("parttype2","image");
+		PartInfo p3 = new PartInfo("parttype3","image");
+		PartInfo p4 = new PartInfo("parttype4","image");
+		p1.setType(0);
+		p2.setType(1);
+		p3.setType(2);
+		p4.setType(3);
+		kitinfo.add(p1);kitinfo.add(p2);kitinfo.add(p3);kitinfo.add(p4);
+		
+		partsrobotagent.msgMakeThisKit(kitinfo, 3);
+		Assert.assertTrue("Recipe read properly",partsrobotagent.recipe.get(1)==PartType.part2);
+		Assert.assertTrue("Partsneeded Set correctly",partsrobotagent.kit1.partsneeded.get(2)==PartType.part3);
+		Assert.assertTrue("Kit status correct",partsrobotagent.kit2.state==KitStatus.notAvailable);
+		
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Camera received recipe",camera1.log.size()==1);
+		Assert.assertTrue("Cameras received recipe",camera1.log.containsString("Received Schematic"));
+		Assert.assertTrue("Nest 4 received proper part type",nest4.log.containsString("Received PartType part4"));
+		Assert.assertTrue("KitStand asked for 2 kits",kitstand.log.size()==2);
+		Assert.assertTrue("KitStand received correct message",kitstand.log.containsString("Is there an empty kit"));
+		Assert.assertTrue("Confirmed that recipe sent to camera",partsrobotagent.camerahasrecipe);
+		
+		partsrobotagent.msgEmptyKit(0);
+		Assert.assertTrue("Received Empty Kit message",partsrobotagent.kit1.state == KitStatus.available);
+		Assert.assertTrue("Did not receive two Empty Kit messages",partsrobotagent.kit2.state == KitStatus.pending);
+		
+		partsrobotagent.msgEmptyKit(1);
+		Assert.assertTrue("Received Empty Kit message",partsrobotagent.kit2.state == KitStatus.available);
+		
+		partsrobotagent.msgPartsApproved(1);
+		Assert.assertTrue("Parts Approved",partsrobotagent.nests.get(0).state == NestStatus.hasPart);
+		
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Moving to Part",partsrobotagent.kit1.partsneeded.size()==3);
+		Assert.assertTrue("Gripper is occupied",partsrobotagent.grippers[0].full);
+		Assert.assertTrue("Gripper destination nest is correct",partsrobotagent.grippers[0].nestindex == 1);
+		Assert.assertTrue("Moving to Nest",partsrobotagent.animationstate == AnimationStatus.movingToNest);
+		
+		partsrobotagent.msgAnimationDone();
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Asked nest for part",nest1.log.containsString("Asked for a Part"));
+		
+		Part.PartType type1 = PartType.part1;
+		partsrobotagent.msgHereIsPart(new Part(type1));
+		Assert.assertTrue("Has part",partsrobotagent.grippers[0].p!= null);
+		Assert.assertTrue("Nest no longer has part",partsrobotagent.nests.get(0).state!= NestStatus.hasPart);
+		
+		partsrobotagent.msgPartsApproved(2);
+		Assert.assertTrue("Parts Approved",partsrobotagent.nests.get(1).state == NestStatus.hasPart);
+		
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Moving to Part",partsrobotagent.kit1.partsneeded.size()==2);
+		Assert.assertTrue("Gripper is occupied",partsrobotagent.grippers[1].full);
+		Assert.assertTrue("Gripper destination nest is correct",partsrobotagent.grippers[1].nestindex == 2);
+		Assert.assertTrue("Moving to Nest",partsrobotagent.animationstate == AnimationStatus.movingToNest);
+				
+		partsrobotagent.msgAnimationDone();
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Asked nest for part",nest2.log.containsString("Asked for a Part"));
+		
+		Part.PartType type2 = PartType.part2;
+		partsrobotagent.msgHereIsPart(new Part(type2));
+		Assert.assertTrue("Has part",partsrobotagent.grippers[1].p!= null);
+		
+		partsrobotagent.msgPartsApproved(3);
+		Assert.assertTrue("Parts Approved",partsrobotagent.nests.get(2).state == NestStatus.hasPart);
+		
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Moving to Part",partsrobotagent.kit1.partsneeded.size()==1);
+		Assert.assertTrue("Gripper is occupied",partsrobotagent.grippers[2].full);
+		Assert.assertTrue("Gripper destination nest is correct",partsrobotagent.grippers[2].nestindex == 3);
+		Assert.assertTrue("Moving to Nest",partsrobotagent.animationstate == AnimationStatus.movingToNest);
+				
+		partsrobotagent.msgAnimationDone();
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Asked nest for part",nest3.log.containsString("Asked for a Part"));
+		
+		Part.PartType type3 = PartType.part3;
+		partsrobotagent.msgHereIsPart(new Part(type3));
+		Assert.assertTrue("Has part",partsrobotagent.grippers[2].p!= null);
+		
+		partsrobotagent.msgPartsApproved(4);
+		Assert.assertTrue("Parts Approved",partsrobotagent.nests.get(3).state == NestStatus.hasPart);
+		
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Moving to Part",partsrobotagent.kit1.partsneeded.isEmpty());
+		Assert.assertTrue("Gripper is occupied",partsrobotagent.grippers[3].full);
+		Assert.assertTrue("Gripper destination nest is correct",partsrobotagent.grippers[3].nestindex == 4);
+		Assert.assertTrue("Moving to Nest",partsrobotagent.animationstate == AnimationStatus.movingToNest);
+				
+		partsrobotagent.msgAnimationDone();
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Asked nest for part",nest4.log.containsString("Asked for a Part"));
+		
+		Part.PartType type4 = PartType.part4;
+		partsrobotagent.msgHereIsPart(new Part(type4));
+		Assert.assertTrue("Has part",partsrobotagent.grippers[3].p!= null);
+		Assert.assertTrue("All grippers full",partsrobotagent.allGrippersFull());
+		
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Moving to Kit Stand",partsrobotagent.animationstate == AnimationStatus.movingToStand);
+		
+		partsrobotagent.msgAnimationDone();
+		Assert.assertTrue("At Kit Stand",partsrobotagent.animationstate == AnimationStatus.atStand);
+		
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Grippers Empty",partsrobotagent.grippersEmpty());
+		Assert.assertTrue("KitStand received parts",kitstand.log.containsString("Got parts"));
+		
+		partsrobotagent.msgPartsDropped();
+		while(partsrobotagent.pickAndExecuteAnAction());
+		Assert.assertTrue("Kit is finished",partsrobotagent.currentkit == CurrentKit.kit2);
+		Assert.assertTrue("Asked for new kit1",partsrobotagent.kit1.state == KitStatus.pending);
+		Assert.assertTrue("Notified stand kit is done",kitstand.log.containsString("Kit is done"));
+		Assert.assertTrue("Lowered count",partsrobotagent.count == 2);
 
-		lane1 = new MockLaneAgentV0(1);
-		nest1 = new NestAgent(lane1,camera1,1);
-		lane1.setNest(nest1);
-		lane2 = new MockLaneAgentV0(2);
-		nest2 = new NestAgent(lane2,camera1,2);
-		lane2.setNest(nest2);
-		lane3 = new MockLaneAgentV0(3);
-		nest3 = new NestAgent(lane3,camera2,3);
-		lane3.setNest(nest3);
-		lane4 = new MockLaneAgentV0(4);
-		nest4 = new NestAgent(lane4,camera2,4);
-		lane4.setNest(nest4);
-		lane5 = new MockLaneAgentV0(5);
-		nest5 = new NestAgent(lane5,camera3,5);
-		lane5.setNest(nest5);
-		lane6 = new MockLaneAgentV0(6);
-		nest6 = new NestAgent(lane6,camera3,6);
-		lane6.setNest(nest6);
-		lane7 = new MockLaneAgentV0(7);
-		nest7 = new NestAgent(lane7,camera4,7);
-		lane7.setNest(nest7);
-		lane8 = new MockLaneAgentV0(8);
-		nest8 = new NestAgent(lane8,camera4,8);
-		lane8.setNest(nest8);
-		List<NestAgent> nests = new ArrayList<NestAgent>();
-		nests.add(nest1);
-		nests.add(nest2);
-		nests.add(nest3);
-		nests.add(nest4);
-		nests.add(nest5);
-		nests.add(nest6);
-		nests.add(nest7);
-		nests.add(nest8);
-		Server server = new Server();
-		partsrobotagent = new PartsRobotAgent(nests,camera,kitstand,server);
-		TestGUI gui = new TestGUI(partsrobotagent);
-		partsrobotagent.setTestGUI(gui);
-		nest1.setPartsRobotAgent(partsrobotagent);
-		nest2.setPartsRobotAgent(partsrobotagent);
-		nest3.setPartsRobotAgent(partsrobotagent);
-		nest4.setPartsRobotAgent(partsrobotagent);
-		nest5.setPartsRobotAgent(partsrobotagent);
-		nest6.setPartsRobotAgent(partsrobotagent);
-		nest7.setPartsRobotAgent(partsrobotagent);
-		nest8.setPartsRobotAgent(partsrobotagent);
-		kitstand.setPartsRobot(partsrobotagent);
-		partsrobotagent.startThread();
-		kitstand.startThread();
-		camera1.startThread();
-		camera2.startThread();
-		camera3.startThread();
-		camera4.startThread();
-
-		lane1.startThread();
-		lane2.startThread();
-		lane3.startThread();
-		lane4.startThread();
-		lane5.startThread();
-		lane6.startThread();
-		lane7.startThread();
-		lane8.startThread();
-		nest1.startThread();
-		nest2.startThread();
-		nest3.startThread();
-		nest4.startThread();
-		nest5.startThread();
-		nest6.startThread();
-		nest7.startThread();
-		nest8.startThread();
-		gui.startThread();
-		List<Part.PartType> recipe = new ArrayList<Part.PartType>();
-		Part.PartType part1 = Part.PartType.part1;
-		Part.PartType part2 = Part.PartType.part2;
-		Part.PartType part3 = Part.PartType.part3;
-		Part.PartType part4 = Part.PartType.part4;
-		Part.PartType part5 = Part.PartType.part5;
-		//Part.PartType part6 = Part.PartType.part6;
-		//Part.PartType part7 = Part.PartType.part7;
-		//Part.PartType part8 = Part.PartType.part8;
-		recipe.add(part1);
-		recipe.add(part2);
-		recipe.add(part3);
-		recipe.add(part4);
-		recipe.add(part5);
-		//recipe.add(part6);
-		//recipe.add(part7);
-		//recipe.add(part8);
-		partsrobotagent.msgMakeThisKit(recipe,2);
+		
 		
 		
 	}
 	
 
-	public static void main(String [] args)
-	{
-		fourPartTestRecipe();
-	}
+	
 		
 
 }

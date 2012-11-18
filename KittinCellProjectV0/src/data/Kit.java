@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 public class Kit implements Serializable {
@@ -17,8 +17,8 @@ public class Kit implements Serializable {
 	
 	private boolean grabbed;
 	
-	//Vector<Part> parts;
-	private Vector<Part> partsList = new Vector<Part>();
+	//ArrayList<Part> parts;
+	private ArrayList<Part> partsList = new ArrayList<Part>();
 	public Kit(String name, double nX, double nY) {
 		id = name;
 		x = nX;
@@ -35,7 +35,7 @@ public class Kit implements Serializable {
 		
 	}
 	
-	public Vector<Part> getParts(){
+	public ArrayList<Part> getParts(){
 		return partsList;
 	}
 
@@ -128,7 +128,7 @@ public class Kit implements Serializable {
 		//destinationY = nY;
 	}
 	
-	public Vector<Part> getPartsList() {
+	public ArrayList<Part> getPartsList() {
 		return partsList;
 	}
 }

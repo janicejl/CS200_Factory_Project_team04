@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.Random;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.concurrent.*;
 import java.io.*;
@@ -36,20 +36,20 @@ public class KitRobot implements Runnable, Serializable{
     int[] waypointY = {190,190,410,410,410,300,190};
     double speed = 4.0;
 
-    Vector<String> stationRotations;
-    Vector<String> commands;
-    Vector<String> subCommands;
-    Vector<String> commandsSkipped;
+    ArrayList<String> stationRotations;
+    ArrayList<String> commands;
+    ArrayList<String> subCommands;
+    ArrayList<String> commandsSkipped;
     KitAssemblyManager kitAssemblyManager;
 
     Thread thread;
 
     public KitRobot(KitAssemblyManager kam){
         kitAssemblyManager = kam;
-        commands = new Vector<String>();
-        subCommands = new Vector<String>();
-        commandsSkipped = new Vector<String>();
-        stationRotations = new Vector<String>();
+        commands = new ArrayList<String>();
+        subCommands = new ArrayList<String>();
+        commandsSkipped = new ArrayList<String>();
+        stationRotations = new ArrayList<String>();
         x = 100;
         y = 300;
         newX = x;
@@ -274,35 +274,35 @@ public class KitRobot implements Runnable, Serializable{
         this.kit = kit;
     }
 
-    public Vector<String> getStationRotations() {
+    public ArrayList<String> getStationRotations() {
         return stationRotations;
     }
 
-    public void setStationRotations(Vector<String> stationRotations) {
+    public void setStationRotations(ArrayList<String> stationRotations) {
         this.stationRotations = stationRotations;
     }
 
-    public Vector<String> getCommands() {
+    public ArrayList<String> getCommands() {
         return commands;
     }
 
-    public void setCommands(Vector<String> commands) {
+    public void setCommands(ArrayList<String> commands) {
         this.commands = commands;
     }
 
-    public Vector<String> getSubCommands() {
+    public ArrayList<String> getSubCommands() {
         return subCommands;
     }
 
-    public void setSubCommands(Vector<String> subCommands) {
+    public void setSubCommands(ArrayList<String> subCommands) {
         this.subCommands = subCommands;
     }
 
-    public Vector<String> getCommandsSkipped() {
+    public ArrayList<String> getCommandsSkipped() {
         return commandsSkipped;
     }
 
-    public void setCommandsSkipped(Vector<String> commandsSkipped) {
+    public void setCommandsSkipped(ArrayList<String> commandsSkipped) {
         this.commandsSkipped = commandsSkipped;
     }
 

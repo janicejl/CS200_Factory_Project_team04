@@ -145,10 +145,19 @@ public class PartListPanel extends JPanel implements ActionListener{
 				basePanel.remove(i);
 				revalidate();
 				app.getPartsList().remove(i);
+				app.getClient().setCommandSent("Update Parts");
 				break;
 			}
 		}
-		
+		app.updateEditPanel();
 	}
 	
+	public void updatePartList(){
+		for(int i=0;i<partLabels.size();i++){
+			partLabels.get(i).setText(app.getPartsList().get(i).getName());
+		}
+		for(int i=0;i<imageLabels.size();i++){
+			imageLabels.get(i).setIcon(new ImageIcon(app.getPartsList().get(i).getImagePath()));
+		}		
+	}
 }

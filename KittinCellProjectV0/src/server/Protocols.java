@@ -2,10 +2,12 @@ package server;
 
 import java.io.*;
 import java.net.*;
-import java.util.Vector;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import data.Job;
 import data.KitInfo;
+import data.PartInfo;
 import GantryManager.GantryManager;
 
 public class Protocols implements Runnable{
@@ -23,6 +25,9 @@ public class Protocols implements Runnable{
 		app = _app;
 		s = _s;
 		try {
+//			out = new ObjectOutputStream(s.getOutputStream());
+//			out.flush();
+//			in = new ObjectInputStream(s.getInputStream());
 			out = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream()));
 			out.flush();
 			in = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));
@@ -56,9 +61,9 @@ public class Protocols implements Runnable{
 			else if (protocolName.equals("Kit Manager")){
 				runKitsManagerProtocol();
 			}
-			else if (protocolName.equals("Production Kit Client")){
-				runProdKitProtocol();
-			}
+//			else if (protocolName.equals("Production Kit Client")){
+//				runProdKitProtocol();
+//			}
 			else if (protocolName.equals("Production Manager")){
 				runProductionProtocol();
 			}
@@ -70,10 +75,18 @@ public class Protocols implements Runnable{
 		{
 			out.writeObject(app.getGantryManager());
 			out.reset();
+			out.flush();
 		}
 		catch(Exception e)
 		{
+			System.err.println(protocolName);
 			e.printStackTrace();
+			try{
+				s.close();
+				thread.stop();
+			} catch(Exception ae){
+				System.out.println("Socket Fail to Close");
+			}
 		}
 	}
 	
@@ -81,18 +94,19 @@ public class Protocols implements Runnable{
 		try {
 			out.writeObject(app.getKitRobot());
 			out.reset();
-			
+			out.flush();
 			out.writeObject(app.getPartsRobot());
 			out.reset();
-			
+			out.flush();
 			out.writeObject(app.getKitAssemblyManager());
 			out.reset();
-				
+			out.flush();
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();
 			try{
 				s.close();
+				thread.stop();
 			} catch(Exception ae){
 				System.out.println("Socket Fail to Close");
 			}
@@ -102,15 +116,19 @@ public class Protocols implements Runnable{
 		try {
 			out.writeObject(app.getLanes());
 			out.reset();
+			out.flush();
 			out.writeObject(app.getFeeders());
 			out.reset();
+			out.flush();
 			out.writeObject(app.getNests());
 			out.reset();
+			out.flush();
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();
 			try{
 				s.close();
+				thread.stop();
 			} catch(Exception ae){
 				System.out.println("Socket Fail to Close");
 			}
@@ -118,7 +136,32 @@ public class Protocols implements Runnable{
 	}
 	
 	public void runPartsManagerProtocol(){
-		
+		try{
+			commandSent = app.getPartsCommand();
+			command = (String)in.readObject();
+			if(command.equals("Update Parts")){	
+				app.setPartsList((ArrayList<PartInfo>)in.readObject());
+				out.writeObject("Received");
+				out.reset();
+				out.flush();
+				app.setKitCreateCommand("Update Parts"); //make kit manager update parts
+				for(int i = 0; i < app.getPartsList().size(); i++){
+					System.out.println(app.getPartsList().get(i).getName());
+				}
+			}
+			out.writeObject(commandSent);
+			out.reset();
+			out.flush();			
+		} catch (Exception e){
+			System.err.println(protocolName);
+			e.printStackTrace();
+			try{
+				s.close();
+				thread.stop();
+			} catch(Exception ae){
+				System.out.println("Socket Fail to Close");
+			}
+		}
 	}
 	
 	public void runKitsManagerProtocol(){
@@ -126,21 +169,25 @@ public class Protocols implements Runnable{
 			commandSent = app.getKitCreateCommand();
 			command = (String)in.readObject();
 			if(command.equals("Update Kits")){	
-				app.setKitsList((Vector<KitInfo>)in.readObject());
+				app.setKitsList((ArrayList<KitInfo>)in.readObject());
 				out.writeObject("Received");
 				out.reset();
+				out.flush();
 				app.setProductionCommand("Update Kits"); //make production manager update kits
 			}
 			out.writeObject(commandSent);
 			out.reset();
+			out.flush();
 			if(commandSent.equals("Update Parts")){
 				app.setKitCreateCommand("Idle");
 				out.writeObject(app.getPartsList());
 				out.reset();
+				out.flush();
 				command = (String)in.readObject();
 				if(command.equals("Received")){
 					
 				}
+				app.setProductionCommand("Update Kits");
 			}
 			
 		} catch (Exception e){
@@ -148,6 +195,7 @@ public class Protocols implements Runnable{
 			e.printStackTrace();
 			try{
 				s.close();
+				thread.stop();
 			} catch(Exception ae){
 				System.out.println("Socket Fail to Close");
 			}
@@ -158,15 +206,17 @@ public class Protocols implements Runnable{
 		try{
 			command = (String)in.readObject();
 			if(command.equals("Update")){
-				app.setJobsList((Vector<Job>)in.readObject());
+				app.setJobsList((ArrayList<Job>)in.readObject());
 			}
 			commandSent = app.getProductionCommand();
 			out.writeObject(commandSent);
 			out.reset();
+			out.flush();
 			if(commandSent.equals("Update Kits")){
 				app.setProductionCommand("Idle");
 				out.writeObject(app.getKitsList());
 				out.reset();
+				out.flush();
 				command = (String)in.readObject();
 				if(command.equals("Received")){
 					
@@ -176,6 +226,7 @@ public class Protocols implements Runnable{
 				app.setProductionCommand("Idle");
 				out.writeObject(app.getJobsList());
 				out.reset();
+				out.flush();
 				command = (String)in.readObject();
 				if(command.equals("Received")){
 					
@@ -186,6 +237,7 @@ public class Protocols implements Runnable{
 			e.printStackTrace();
 			try{
 				s.close();
+				thread.stop();
 			} catch(Exception ae){
 				System.out.println("Socket Fail to Close");
 			}
@@ -193,23 +245,26 @@ public class Protocols implements Runnable{
 	}
 	
 	
-	public void runProdKitProtocol(){
-		try {
-			out.writeObject(app.getKitRobot());
-			out.reset();
-			out.writeObject(app.getPartsRobot());
-			out.reset();
-			out.writeObject(app.getKitAssemblyManager());
-			out.reset();	
-		} catch (Exception e){
-			System.err.println(protocolName);
-			e.printStackTrace();
-			try{
-				s.close();
-			} catch(Exception ae){
-				System.out.println("Socket Fail to Close");
-			}
-		}
-	}
+//	public void runProdKitProtocol(){
+//		try {
+//			out.writeObject(app.getKitRobot());
+//			out.reset();
+//			out.flush();
+//			out.writeObject(app.getPartsRobot());
+//			out.reset();
+//			out.flush();
+//			out.writeObject(app.getKitAssemblyManager());
+//			out.reset();
+//			out.flush();
+//		} catch (Exception e){
+//			System.err.println(protocolName);
+//			e.printStackTrace();
+//			try{
+//				s.close();
+//			} catch(Exception ae){
+//				System.out.println("Socket Fail to Close");
+//			}
+//		}
+//	}
 		
 }

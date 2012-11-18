@@ -5,9 +5,8 @@ import java.awt.geom.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.Random;
-import java.util.Vector;
-import java.util.TreeMap;
+
+import java.util.*;
 import java.util.concurrent.*;
 import java.io.*;
 import javax.imageio.*;
@@ -36,19 +35,20 @@ public class PartsRobot implements Runnable, Serializable{
     
     BufferedImage partsRobotImage;
 
-    Vector<Boolean> gripperHolding;
-    Vector<Double> gripperExtensions;
-    Vector<Double> newGripperExtensions;
-    Vector<String> commands;
-    Vector<String> subCommands;
-    Vector<String> nestLocations;
-    Vector<String> kitLocations;
-    Vector<Integer> gripperPartIDs;
+    ArrayList<Boolean> gripperHolding;
+    ArrayList<Double> gripperExtensions;
+    ArrayList<Double> newGripperExtensions;
+    ArrayList<String> commands;
+    ArrayList<String> subCommands;
+    ArrayList<String> nestLocations;
+    ArrayList<String> kitLocations;
+    ArrayList<Integer> gripperPartIDs;
     int[] nl = {55,125,195,265,335,405,475,545};
     int[] kl = {190,410};
-    Vector<Part> partsHeld;
+    ArrayList<Part> partsHeld;
     float opacity;
     boolean animationDone;
+    boolean dumped;
 
     public PartsRobot(KitAssemblyManager _app){
     	app = _app;
@@ -57,13 +57,13 @@ public class PartsRobot implements Runnable, Serializable{
         cameraX = 350;
         cameraY = 100;
         takePicture = false;
-        gripperHolding = new Vector<Boolean>();
-        gripperExtensions = new Vector<Double>();
-        newGripperExtensions = new Vector<Double>();
-        nestLocations = new Vector<String>();
-        kitLocations = new Vector<String>();
-        gripperPartIDs = new Vector<Integer>();
-        partsHeld = new Vector<Part>();
+        gripperHolding = new ArrayList<Boolean>();
+        gripperExtensions = new ArrayList<Double>();
+        newGripperExtensions = new ArrayList<Double>();
+        nestLocations = new ArrayList<String>();
+        kitLocations = new ArrayList<String>();
+        gripperPartIDs = new ArrayList<Integer>();
+        partsHeld = new ArrayList<Part>();
         flashDown = false;
         flashUp = false;
         animationDone = false;
@@ -74,9 +74,10 @@ public class PartsRobot implements Runnable, Serializable{
             gripperExtensions.add(0.0);
             newGripperExtensions.add(0.0);
         }
-        commands = new Vector<String>();
-        subCommands = new Vector<String>();
+        commands = new ArrayList<String>();
+        subCommands = new ArrayList<String>();
         msg = new Boolean(false);
+        dumped = false;
         
         try {
             partsRobotImage = ImageIO.read(new File("crate.png"));
@@ -210,6 +211,9 @@ public class PartsRobot implements Runnable, Serializable{
                 gripperHolding.set(Integer.parseInt(ss[1]),false);
                 app.getStationKit(Integer.parseInt(ss[2])+1).addPart(partsHeld.get(0));
                 partsHeld.remove(0);
+                if(partsHeld.size() == 0){
+                	dumped = true;
+                }
                 System.out.println("Size : " + app.getStationKit(Integer.parseInt(ss[2])+1).getPartsList().size());
                 processing = true;
             }
@@ -260,11 +264,11 @@ public class PartsRobot implements Runnable, Serializable{
         return angle;
     }
 
-    public Vector<Boolean> getGripperHolding(){
+    public ArrayList<Boolean> getGripperHolding(){
         return gripperHolding;
     }
 
-    public Vector<Double> getGripperExtensions(){
+    public ArrayList<Double> getGripperExtensions(){
         return gripperExtensions;
     }
     public boolean getTakePicture(){
@@ -282,11 +286,11 @@ public class PartsRobot implements Runnable, Serializable{
 		return msg;
 	}
     
-    public Vector<Integer> getGripperPartIDs(){
+    public ArrayList<Integer> getGripperPartIDs(){
     	return gripperPartIDs;
     }
 
-    public Vector<Part> getPartsHeld(){
+    public ArrayList<Part> getPartsHeld(){
     	return partsHeld;
     }
     
@@ -325,6 +329,14 @@ public class PartsRobot implements Runnable, Serializable{
 	
 	public void setAnimationDone(boolean b){
 		animationDone = b;
+	}
+
+	public boolean isDumped() {
+		return dumped;
+	}
+
+	public void setDumped(boolean dumped) {
+		this.dumped = dumped;
 	}
 
 	public void update(){

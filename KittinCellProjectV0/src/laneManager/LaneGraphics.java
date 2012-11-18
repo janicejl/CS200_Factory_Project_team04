@@ -16,21 +16,22 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LaneGraphics extends JPanel implements ActionListener {
-	private Vector<Lane> lanes = new Vector<Lane> ();
+	private ArrayList<Lane> lanes = new ArrayList<Lane> ();
 	private int maxX;
 	private int maxY;
 	//private Rectangle2D.Double backgroundRectangle;
-	private Vector<Boolean> emptyConveyorOnList;
-	private Vector<Double> emptyConveyorMoveList;
+	private ArrayList<Boolean> emptyConveyorOnList;
+	private ArrayList<Double> emptyConveyorMoveList;
 	private BufferedImage conveyorImage; 
 	private BufferedImage background;
-	private Vector<GUIFeeder> gFeeders;
-	private Vector<Feeder> feeders = new Vector<Feeder>();
+	private ArrayList<GUIFeeder> gFeeders;
+	private ArrayList<Feeder> feeders = new ArrayList<Feeder>();
 	
-	private Vector<GUINest> gNests = new Vector<GUINest>();
-	private Vector<Nest> nests = new Vector<Nest>();
+	private ArrayList<GUINest> gNests = new ArrayList<GUINest>();
+	private ArrayList<Nest> nests = new ArrayList<Nest>();
 	private LaneManagerClient client;
 	private javax.swing.Timer timer;
 	
@@ -73,9 +74,9 @@ public class LaneGraphics extends JPanel implements ActionListener {
     	this.setSize(maxX, maxY);
     	this.setVisible(true);
 		
-    	emptyConveyorOnList  = new Vector<Boolean>(); 
-    	emptyConveyorMoveList = new Vector<Double> ();
-    	gFeeders = new Vector<GUIFeeder> ();
+    	emptyConveyorOnList  = new ArrayList<Boolean>(); 
+    	emptyConveyorMoveList = new ArrayList<Double> ();
+    	gFeeders = new ArrayList<GUIFeeder> ();
     	
     	for(int i = 0; i < 8; i++) {
     		emptyConveyorOnList.add(true);
@@ -152,7 +153,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		for (int i = 0; i < lanes.size(); i++) {
 			if(i < 4) //only four nests
 				gFeeders.get(i).paintNest(g2);
-			Vector<GUIPart> guiPart = new Vector<GUIPart>();
+			ArrayList<GUIPart> guiPart = new ArrayList<GUIPart>();
 			
 			for (int j = 0; j < lanes.get(i).getItemList().size(); j++){
 				guiPart.add(new GUIPart(lanes.get(i).getItemList().get(j)));
@@ -197,28 +198,28 @@ public class LaneGraphics extends JPanel implements ActionListener {
     	lanes.get(lane).releaseQueue();
     }
     
-    public synchronized void setLanes(Vector<Lane> _lanes) {
+    public synchronized void setLanes(ArrayList<Lane> _lanes) {
 		this.lanes = _lanes;
 	}
     
-	public synchronized Vector<Lane> getLanes() {
+	public synchronized ArrayList<Lane> getLanes() {
 		return lanes;
 	}
 
-	public synchronized Vector<Feeder> getFeeders() {
+	public synchronized ArrayList<Feeder> getFeeders() {
 		return feeders;
 	}
 
-	public synchronized void setFeeders(Vector<Feeder> feeders) {
+	public synchronized void setFeeders(ArrayList<Feeder> feeders) {
 		this.feeders = feeders;
 		updateGUIFeeders();
 	}
 	
-	public synchronized Vector<Nest> getNests() {
+	public synchronized ArrayList<Nest> getNests() {
 		return nests;
 	}
 	
-	public synchronized void setNests(Vector<Nest> nests) {
+	public synchronized void setNests(ArrayList<Nest> nests) {
 		this.nests = nests;
 		updateGUINests();
 	}

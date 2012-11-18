@@ -3,6 +3,7 @@ package laneManager;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import Feeder.Feeder;
 
@@ -32,8 +33,8 @@ public class LaneManagerClient implements Runnable {
 	public Integer connect(){
 		try {
 			s = new Socket(serverName, 61337); //attempt to connect to servername
-			out = new ObjectOutputStream(s.getOutputStream()); //output stream
-			in = new ObjectInputStream(s.getInputStream()); //input stream
+			out = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream())); //output stream
+			in = new ObjectInputStream(new BufferedInputStream(s.getInputStream())); //input stream
 		} catch (UnknownHostException e) {
 			System.err.println("Can't find server " + serverName);
             return -1;
@@ -50,6 +51,7 @@ public class LaneManagerClient implements Runnable {
 			commandSent = "Lane Manager";
 			out.writeObject(commandSent); //send to server identifying what client this is
 			out.reset();
+			out.flush();
 			/*
 			command = (String)in.readObject();
 			if(command.equals("Confirmed")){
@@ -68,9 +70,9 @@ public class LaneManagerClient implements Runnable {
 			
 			commandSent = "Received";*/
 			/*while(true){
-				app.setLanes((Vector<Lane>)in.readObject());
-				app.setFeeders((Vector<Feeder>)in.readObject());
-				app.setNests((Vector<Nest>)in.readObject());
+				app.setLanes((CopyOnWriteArrayList<Lane>)in.readObject());
+				app.setFeeders((CopyOnWriteArrayList<Feeder>)in.readObject());
+				app.setNests((CopyOnWriteArrayList<Nest>)in.readObject());
 				out.writeObject(commandSent);
 				out.reset();
 			}*/
@@ -122,9 +124,9 @@ public class LaneManagerClient implements Runnable {
 	
 	public synchronized void updateThread(){
 		try {
-			app.setLanes((Vector<Lane>)in.readObject());
-			app.setFeeders((Vector<Feeder>)in.readObject());
-			app.setNests((Vector<Nest>)in.readObject());
+			app.setLanes((ArrayList<Lane>)in.readObject());
+			app.setFeeders((ArrayList<Feeder>)in.readObject());
+			app.setNests((ArrayList<Nest>)in.readObject());
 		} catch (Exception ignore){
 			ignore.printStackTrace();
 			System.exit(1);

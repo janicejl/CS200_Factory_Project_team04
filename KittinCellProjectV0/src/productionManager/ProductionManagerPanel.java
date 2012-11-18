@@ -19,24 +19,24 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 		app = _app;
 		
 		listPanel = new ProductionListPanel(app);
-		listPanel.setPreferredSize(new Dimension(500, 500));
-		listPanel.setMaximumSize(new Dimension(500, 500));
-		listPanel.setMinimumSize(new Dimension(500, 500));
+		listPanel.setPreferredSize(new Dimension(600, 500));
+		listPanel.setMaximumSize(new Dimension(600, 500));
+		listPanel.setMinimumSize(new Dimension(600, 500));
 		
 		title = new TitlePanel();
-		title.setPreferredSize(new Dimension(1000, 120));
-		title.setMaximumSize(new Dimension(1000, 120));
-		title.setMinimumSize(new Dimension(1000, 120));
+		title.setPreferredSize(new Dimension(1200, 120));
+		title.setMaximumSize(new Dimension(1200, 120));
+		title.setMinimumSize(new Dimension(1200, 120));
 		
 		createPanel = new CreateJobPanel(this);
-		createPanel.setPreferredSize(new Dimension(500, 250));
-		createPanel.setMaximumSize(new Dimension(500, 250));
-		createPanel.setMinimumSize(new Dimension(500, 250));
+		createPanel.setPreferredSize(new Dimension(600, 250));
+		createPanel.setMaximumSize(new Dimension(600, 250));
+		createPanel.setMinimumSize(new Dimension(600, 250));
 		
 		kitPanel = new KitPanel(this, app.getKitsList().get(0));
-		kitPanel.setPreferredSize(new Dimension(500, 250));
-		kitPanel.setMaximumSize(new Dimension(500, 250));
-		kitPanel.setMinimumSize(new Dimension(500, 250));
+		kitPanel.setPreferredSize(new Dimension(600, 250));
+		kitPanel.setMaximumSize(new Dimension(600, 250));
+		kitPanel.setMinimumSize(new Dimension(600, 250));
 		
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();

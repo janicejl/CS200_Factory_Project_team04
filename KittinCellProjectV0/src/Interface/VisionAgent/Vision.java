@@ -4,14 +4,15 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import Agents.PartsRobotAgent.*;
+import Interface.PartsRobotAgent.Nest;
 import data.*;
 
 public interface Vision{
 
-	public void msgHereIsSchematic(List<Part> partsList, List<NestAgent> nestsList);
-	public void msgImFull(NestAgent nest);
+	public void msgHereIsSchematic(List<Part> partsList, List<Nest> nestsList);
+	public void msgImFull(Nest nest);
 	public void msgTakePicture(Kit k);
-	public void msgAnimationDone();
+	public void msgCameraAvailable();
 	
 	public void setFlashPermit(Semaphore flashpermit);
 	

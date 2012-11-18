@@ -2,15 +2,19 @@ package GantryManager;
 
 import java.io.*;
 
-public class Gantry implements Serializable
+//Class that keeps track of GantryRobot position, destination, and state information
+public class Gantry implements Serializable 
 {
-	int xFinal;
+	//Destination Coordinates
+	int xFinal; 
 	int yFinal;
+	//Current Coordinates
 	int xCurrent;
 	int yCurrent;
+	//State Information
 	String state;
-	int feed;
-	int box;
+	int feed; //Feeder #
+	int box; //Array index of box gantry is picking up
 	
 	public Gantry()
 	{
@@ -22,7 +26,8 @@ public class Gantry implements Serializable
 		box = -1;
 	}
 	
-	public synchronized void update()
+	//Function to update position 
+	public void update()
 	{
 		if(xFinal!=xCurrent)
 		{
@@ -38,12 +43,8 @@ public class Gantry implements Serializable
 			else
 				yCurrent+=1;
 		}
-		/*if(Math.abs(xCurrent-xFinal) < 10){
-			xCurrent = xFinal;
-		}
-		if(Math.abs(yCurrent-yFinal) < 10){
-			yCurrent = yFinal;
-		}*/
+		
+		//Depending on feeder information, will change final destination
 		if(feed == 0)
 		{
 			
@@ -67,7 +68,7 @@ public class Gantry implements Serializable
 		}
 	}
 
-	public synchronized int getxFinal() 
+	public int getxFinal() 
 	{
 		return xFinal;
 	}
@@ -77,7 +78,7 @@ public class Gantry implements Serializable
 		this.xFinal = xFinal;
 	}
 
-	public synchronized int getyFinal() {
+	public int getyFinal() {
 		return yFinal;
 	}
 
@@ -86,22 +87,22 @@ public class Gantry implements Serializable
 		this.yFinal = yFinal;
 	}
 
-	public synchronized int getxCurrent()
+	public int getxCurrent()
 	{
 		return xCurrent;
 	}
 
-	public synchronized void setxCurrent(int xCurrent)
+	public void setxCurrent(int xCurrent)
 	{
 		this.xCurrent = xCurrent;
 	}
 
-	public synchronized int getyCurrent()
+	public int getyCurrent()
 	{
 		return yCurrent;
 	}
 
-	public synchronized void setyCurrent(int yCurrent)
+	public void setyCurrent(int yCurrent)
 	{
 		this.yCurrent = yCurrent;
 	}
@@ -121,9 +122,9 @@ public class Gantry implements Serializable
 		return feed;
 	}
 
+	//Same as second half of update, updates destination based on provided feeder
 	public synchronized void setFeed(int feed)
 	{
-		System.out.println("wtfffffff!!!!");
 		this.feed = feed;
 		if(feed == 0)
 		{
@@ -148,7 +149,8 @@ public class Gantry implements Serializable
 		}
 	}
 	
-	public synchronized boolean done()
+	//Function for determining if the gantry has reached its destination
+	public boolean done()
 	{
 		if(xFinal==xCurrent && yFinal==yCurrent)
 			return true;
@@ -156,7 +158,7 @@ public class Gantry implements Serializable
 			return false;
 	}
 	
-	public synchronized int getBox()
+	public int getBox()
 	{
 		return box;
 	}

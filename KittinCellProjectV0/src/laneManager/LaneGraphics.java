@@ -3,18 +3,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import server.Lane;
-
 import data.GUIPart;
 import data.Part;
 import Feeder.*;
 import java.io.File;
 import java.io.IOException;
-
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -22,26 +18,22 @@ public class LaneGraphics extends JPanel implements ActionListener {
 	private ArrayList<Lane> lanes = new ArrayList<Lane> ();
 	private int maxX;
 	private int maxY;
-	//private Rectangle2D.Double backgroundRectangle;
 	private ArrayList<Boolean> emptyConveyorOnList;
 	private ArrayList<Double> emptyConveyorMoveList;
 	private BufferedImage conveyorImage; 
 	private BufferedImage background;
 	private ArrayList<GUIFeeder> gFeeders;
 	private ArrayList<Feeder> feeders = new ArrayList<Feeder>();
-	
 	private ArrayList<GUINest> gNests = new ArrayList<GUINest>();
 	private ArrayList<Nest> nests = new ArrayList<Nest>();
 	private LaneManagerClient client;
 	private javax.swing.Timer timer;
-	
 	int managerNum;
 	
     public LaneGraphics(int m) {
     	managerNum = m;
     	client = new LaneManagerClient(this);
     	
-
 		int j = client.connect();
 		if(j == -1){
 			System.exit(1);
@@ -50,9 +42,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
 			client.getThread().start();
 		}
 	
-    	
-    	
-    	for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 8; i++) {
     		nests.add(new Nest(0, 30+(i*70)));
     	}
     	
@@ -69,12 +59,9 @@ public class LaneGraphics extends JPanel implements ActionListener {
     	maxX = 600;
     	maxY = 600;
     	
-    	
-    	//this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
     	this.setSize(maxX, maxY);
     	this.setVisible(true);
-		
-    	emptyConveyorOnList  = new ArrayList<Boolean>(); 
+		emptyConveyorOnList  = new ArrayList<Boolean>(); 
     	emptyConveyorMoveList = new ArrayList<Double> ();
     	gFeeders = new ArrayList<GUIFeeder> ();
     	
@@ -135,8 +122,6 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		        }
 		}
 		
-		//window needs to be 600
-		
         for(int i = 1; i < 29; i++){ // main conveyor images
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(0).intValue(),30,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(1).intValue(),100,null); // empty conveyor   
@@ -158,9 +143,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
 			for (int j = 0; j < lanes.get(i).getItemList().size(); j++){
 				guiPart.add(new GUIPart(lanes.get(i).getItemList().get(j)));
 				guiPart.get(j).paintPart(g2);
-				//g2.drawImage(p, (int)lanes.get(i).getItemList().get(j).getX(), (int)lanes.get(i).getItemList().get(j).getY(), null);
 			}
-				//g2.fill(new Ellipse2D.Double(lanes.get(i).getItemList().get(j).getX(),lanes.get(i).getItemList().get(j).getY(),20,20));
 		}
 		
 		updateGUINests();
@@ -169,17 +152,41 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		}
 		
 		double x1, y1, x2, y2 = 0;
+		double x11, y11, x21, y21 = 0;
+		
 		//Display gates
 		for(int i = 0; i < lanes.size(); i++) {		
-			x1 = lanes.get(i).getGate().getBottomNodeX();
-			y1 = lanes.get(i).getGate().getBottomNodeY();
-			x2 = lanes.get(i).getGate().getTopNodeX();
-			y2 = lanes.get(i).getGate().getTopNodeY();	
-			//System.out.println("Positions: (" + x1 + ", " + y1 + "), (" + x2 + ", " + y2 + ").");
-			Shape l = new Line2D.Double(x1, y1, x2, y2);
-			g2.setColor(Color.WHITE);
-            g2.draw(l);
-
+			x1 = lanes.get(i).getGate1().getBottomNodeX();
+			y1 = lanes.get(i).getGate1().getBottomNodeY();
+			x2 = lanes.get(i).getGate1().getTopNodeX();
+			y2 = lanes.get(i).getGate1().getTopNodeY();
+			
+			x11 = lanes.get(i).getGate2().getBottomNodeX();
+			y11 = lanes.get(i).getGate2().getBottomNodeY();
+			x21 = lanes.get(i).getGate2().getTopNodeX();
+			y21 = lanes.get(i).getGate2().getTopNodeY();
+			
+			Shape l0 = new Line2D.Double(x1,y1,x2,y2);
+			Shape l1 = new Line2D.Double(x1+1, y1, x2+1, y2);
+			Shape l2 = new Line2D.Double(x1+2, y1, x2+2, y2);
+			Shape l3 = new Line2D.Double(x1+3, y1, x2+3, y2);
+			
+			Shape l01 = new Line2D.Double(x11,y11,x21,y21);
+			Shape l11 = new Line2D.Double(x11+1,y11,x21+1,y21);
+			Shape l21 = new Line2D.Double(x11+2,y11,x21+2,y21);
+			Shape l31 = new Line2D.Double(x11+2,y11,x21+2,y21);
+			
+			g2.setColor(Color.LIGHT_GRAY);
+            
+			g2.draw(l0);
+			g2.draw(l1);
+			g2.draw(l2);
+			g2.draw(l3);
+			
+			g2.draw(l01);
+			g2.draw(l11);
+			g2.draw(l21);
+			g2.draw(l31);
 		}
 		
     }
@@ -188,10 +195,6 @@ public class LaneGraphics extends JPanel implements ActionListener {
     	System.out.println("Unimplemented");
     }
     
-  /*  public void feedItem(int lane){
-    	lanes.get(lane).addPart(new Part("" + lane, "images/kt" + lane + ".png"));
-    }*/
-      
     public void releaseItem(int lane) {
     	lanes.get(lane).releasePart();
     }
@@ -237,5 +240,5 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		}
 	}
 	
-    
 }
+

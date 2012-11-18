@@ -83,14 +83,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	FeederAgent feeder2;
 	FeederAgent feeder3;
 	FeederAgent feeder4;
-	FeederLaneAgent fLane1;
-	FeederLaneAgent fLane2;
-	FeederLaneAgent fLane3;
-	FeederLaneAgent fLane4;
-	FeederLaneAgent fLane5;
-	FeederLaneAgent fLane6;
-	FeederLaneAgent fLane7;
-	FeederLaneAgent fLane8;
 	GantryAgent gantry1;
 	GantryAgent gantry2;
 	GantryControllerAgent gantryController;
@@ -126,13 +118,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		laneTest.setMinimumSize(new Dimension(300, 400));
 		gantryTest = new ServerGantryTestPanel(this);
 		
-		/**gantryController = new GantryControllerAgent(this);
+		gantryController = new GantryControllerAgent(this);
 		gantry1 = new GantryAgent("gantry1", this);
 		gantry2 = new GantryAgent("gantry2", this);
 		gantry1.setGantryController(gantryController);
 		gantry2.setGantryController(gantryController);
 		gantryController.msgGantryAdded(gantry1);
-		gantryController.msgGantryAdded(gantry2);**/
+		gantryController.msgGantryAdded(gantry2);
+		
 		gantryManager = new GantryManager();
 		gantryManager.getGantry().setState("free");
 		gantryManager.getGantry().setBox(1);
@@ -221,7 +214,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		feeder2 = new FeederAgent("feeder2", 5, lane3, lane4, 2, this);		
 		feeder3 = new FeederAgent("feeder3", 5, lane5, lane6, 3, this);		
 		feeder4 = new FeederAgent("feeder4", 5, lane7, lane8, 4, this);
-
+		feeder1.setGantryController(gantryController);
+		feeder2.setGantryController(gantryController);
+		feeder3.setGantryController(gantryController);
+		feeder4.setGantryController(gantryController);
 
     	
 

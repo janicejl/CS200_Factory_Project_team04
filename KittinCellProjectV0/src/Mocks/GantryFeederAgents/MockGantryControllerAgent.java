@@ -32,7 +32,7 @@ public class MockGantryControllerAgent extends MockAgent implements
 
 	@Override
 	public void msgNeedThisPart(PartInfo p, Feeder f1) {
-		log.add(new LoggedEvent("msgNeedThisPart received from Feeder " + f1.getName() + " requesting part type " + p + "."));
+		log.add(new LoggedEvent("msgNeedThisPart received from Feeder " + f1.getName() + " requesting part type " + p.getName() + "."));
 	}
 
 	@Override

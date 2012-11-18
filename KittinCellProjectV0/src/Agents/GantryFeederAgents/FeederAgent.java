@@ -26,7 +26,7 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	enum FeederState{feeding, low, waitingLane, purging, waitingGantry};
 	//possible additional state: beingFed
-	FeederState fstate = FeederState.waitingGantry;
+	FeederState fstate = FeederState.low;
 	
 	MyLane left;
 	MyLane right;
@@ -54,13 +54,16 @@ public class FeederAgent extends Agent implements Feeder {
 		this.right = new MyLane(right);
 		this.number = number;
 		this.app = app;
+		this.currentPart = new PartInfo("blank", "source1");
+		this.requestedPart = new PartInfo("blank", "source2");
+		this.log = new EventLog();
 	}
 	
 	//Messages
 
 	@Override
 	public void msgNeedThisPart(PartInfo p, String laneName) {
-		if(requestedPart.equals(null)){
+		if(requestedPart.getName().equals("blank")){
 			requestedPart = p;
 		}
 		if(laneName.equals("left")){
@@ -97,6 +100,7 @@ public class FeederAgent extends Agent implements Feeder {
 		currentPart = part;
 		partsInFeeder = quantity;
 		//fstate = FeederState.beingFed;
+		log.add(new LoggedEvent("msgHereAreParts received from GUI."));
 		stateChanged();
 	}
 
@@ -109,7 +113,7 @@ public class FeederAgent extends Agent implements Feeder {
 			right.readyForParts = false;
 		}
 		fstate = FeederState.waitingLane;
-		
+		log.add(new LoggedEvent("msgLaneIsFull received from " + laneName + " lane."));
 		stateChanged();
 	}
 
@@ -121,16 +125,16 @@ public class FeederAgent extends Agent implements Feeder {
 		else{
 			right.readyForParts = true;
 		}
-		
+		log.add(new LoggedEvent("msgLaneIsReadyForParts received from " + laneName + " lane."));
 		stateChanged();
 	}
 	
 	//Scheduler
 	
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		
-		if(fstate == FeederState.low){
+		if(fstate == FeederState.low && currentPart != null){
 			RequestParts(currentPart);
 			return true;
 		}
@@ -140,7 +144,7 @@ public class FeederAgent extends Agent implements Feeder {
 			return true;
 		}*/
 		
-		if(fstate == FeederState.waitingLane || fstate == FeederState.low){
+		else if(fstate == FeederState.waitingLane || fstate == FeederState.low){
 			if(currentPart == left.partWanted && left.readyForParts){
 				FeedParts(true);
 				return true;
@@ -157,7 +161,7 @@ public class FeederAgent extends Agent implements Feeder {
 			}
 		}
 		
-		if(fstate == FeederState.waitingGantry && gantry != null){
+		else if(fstate == FeederState.waitingGantry && gantry != null){
 			AcceptParts();
 			return true;
 		}
@@ -188,10 +192,12 @@ public class FeederAgent extends Agent implements Feeder {
 	}
 	
 	private void PurgeFeeder(){
-		myBin.setQuantity(partsInFeeder);
-		myBin.setPartInfo(currentPart);
-		partsInFeeder = 0;
-		//DoPurgeFeeder();
+		if(partsInFeeder > 0){
+			myBin.setQuantity(partsInFeeder);
+			myBin.setPartInfo(currentPart);
+			partsInFeeder = 0;
+			//DoPurgeFeeder();
+		}
 		
 	}
 	
@@ -235,6 +241,10 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	public int getNumber(){
 		return this.number;
+	}
+	
+	public int getQuantity(){
+		return this.partsInFeeder;
 	}
 
 }

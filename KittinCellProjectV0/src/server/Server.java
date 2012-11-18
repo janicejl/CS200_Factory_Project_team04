@@ -409,8 +409,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		feeders.get(num/2).addParts(temp);
     	}
     	else if(process.equals("Feed Lane")){
-    		lanes.get(num).releasePart();
-    		feeders.get(num/2).removePart();
+    		lanes.get(num).releasePart(num);
+    		//feeders.get(num/2).removePart();
     	}
     	else if(process.equals("Feed Nest")){
     		lanes.get(num).releaseQueue();
@@ -441,7 +441,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryFeedList.add(num);
     		}
     	}
-    	else if(process.equals("Purge Feeder"))
+    	else if(process.equals("Idle Bin"))
     	{
     		if(gantryManager.getGantry().getState().equals("free"))
     		{

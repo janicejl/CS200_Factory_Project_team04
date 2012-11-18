@@ -191,7 +191,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
     }
     
     public void releaseItem(int lane) {
-    	lanes.get(lane).releasePart();
+    	lanes.get(lane).releasePart(lane);
     }
     
     public void removeItem(int lane){

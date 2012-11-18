@@ -54,8 +54,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	ArrayList<KitInfo> kitsList;
 	ArrayList<Job> jobsList;
 	String kitCreateCommand = "Idle";
-	String productionCommand;
-	String partsCommand;
+	String productionCommand = "Idle";
+	String partsCommand = "Idle";
 	
 	PartsRobot partsRobot;
 	PartsRobotAgent partsRobotAgent;

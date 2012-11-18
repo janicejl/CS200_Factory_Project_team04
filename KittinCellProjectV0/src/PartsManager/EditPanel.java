@@ -215,6 +215,8 @@ public class EditPanel extends JPanel implements ActionListener{
 			editButton.setEnabled(true);
 			resetButton.setEnabled(false);
 			submitButton.setEnabled(false);
+			
+			app.getClient().setCommandSent("Update Parts");
 		}
 	}
 	

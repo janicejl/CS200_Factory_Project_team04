@@ -145,6 +145,7 @@ public class PartListPanel extends JPanel implements ActionListener{
 				basePanel.remove(i);
 				revalidate();
 				app.getPartsList().remove(i);
+				app.getClient().setCommandSent("Update Parts");
 				break;
 			}
 		}

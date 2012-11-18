@@ -7,6 +7,8 @@ import java.io.*;
 
 import javax.swing.*;
 
+import KitCreationManager.KitCreationClient;
+
 import data.PartInfo;
 
 public class PartsManagerApp extends JFrame implements ActionListener, Serializable, WindowListener{
@@ -14,12 +16,11 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 	PartsPanel partPanel;
 	EditPanel editPanel;
 	ArrayList<PartInfo> partsList;
-	PartsManagerClient partsManagerClient;
+	PartsManagerClient client;
 	JTabbedPane tabbedPane;
 	
 	public PartsManagerApp(){
 		partsList = new ArrayList<PartInfo>();
-		partsManagerClient = new PartsManagerClient(this);
 		
 		addWindowListener(this);
 		tabbedPane = new JTabbedPane();
@@ -35,6 +36,15 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		load("partsList.sav");
 		partPanel.updateLoad();
 		editPanel.updateSelectionBox(0);
+		
+		client = new PartsManagerClient(this);
+		int j = client.connect();
+		if(j == -1){
+			System.exit(1);
+		}
+		else if(j == 1){
+			client.getThread().start();
+		}
 		
 		new Timer(10, this).start();
 	}
@@ -121,6 +131,14 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		this.partsList = partsList;
 	}
 
+	public PartsManagerClient getClient() {
+		return client;
+	}
+
+	public void setClient(PartsManagerClient client) {
+		this.client = client;
+	}
+
 	@Override
 	public void windowActivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub
@@ -135,7 +153,7 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		save("partsList.sav");		
+//		save("partsList.sav");		
 	}
 
 	@Override

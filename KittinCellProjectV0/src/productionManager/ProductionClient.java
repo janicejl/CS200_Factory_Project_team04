@@ -123,11 +123,16 @@ public class ProductionClient implements Runnable{
 	
 	public synchronized void updateThread(){
 		try {
-			out.writeObject(commandSent);
-			out.reset();
+			
 			if(commandSent.equals("Update")){
+				out.writeObject(commandSent);
+				out.reset();
 				commandSent = "Idle";
 				out.writeObject(app.getJobs());
+				out.reset();
+			}
+			else if(commandSent.equals("Idle")){
+				out.writeObject(commandSent);
 				out.reset();
 			}
 			command = (String)in.readObject();

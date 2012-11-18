@@ -7,6 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import data.Job;
 import data.KitInfo;
+import data.PartInfo;
 import GantryManager.GantryManager;
 
 public class Protocols implements Runnable{
@@ -135,7 +136,32 @@ public class Protocols implements Runnable{
 	}
 	
 	public void runPartsManagerProtocol(){
-		
+		try{
+			commandSent = app.getPartsCommand();
+			command = (String)in.readObject();
+			if(command.equals("Update Parts")){	
+				app.setPartsList((ArrayList<PartInfo>)in.readObject());
+				out.writeObject("Received");
+				out.reset();
+				out.flush();
+				app.setKitCreateCommand("Update Parts"); //make kit manager update parts
+				for(int i = 0; i < app.getPartsList().size(); i++){
+					System.out.println(app.getPartsList().get(i).getName());
+				}
+			}
+			out.writeObject(commandSent);
+			out.reset();
+			out.flush();			
+		} catch (Exception e){
+			System.err.println(protocolName);
+			e.printStackTrace();
+			try{
+				s.close();
+				thread.stop();
+			} catch(Exception ae){
+				System.out.println("Socket Fail to Close");
+			}
+		}
 	}
 	
 	public void runKitsManagerProtocol(){
@@ -161,6 +187,7 @@ public class Protocols implements Runnable{
 				if(command.equals("Received")){
 					
 				}
+				app.setProductionCommand("Update Kits");
 			}
 			
 		} catch (Exception e){

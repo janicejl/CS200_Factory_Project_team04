@@ -68,6 +68,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	Semaphore flashpermit;
 	
 	GantryManager gantryManager;
+	ArrayList<String> gantryWaitList;
+	ArrayList<Integer> gantryFeedList;
 	
 	KitRobotAgent kitRobotAgent; 
 	KitStandAgent kitStandAgent;
@@ -156,6 +158,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryManager = new GantryManager();
 		gantryManager.getGantry().setState("free");
 		gantryManager.getGantry().setBox(1);
+		gantryFeedList = new ArrayList<Integer>();
+		gantryWaitList = new ArrayList<String>();
 
 		feeders = new ArrayList<Feeder>();
 		for(int i = 0; i < 4; i++){
@@ -738,5 +742,15 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public void setPartsCommand(String partsCommand) {
 		this.partsCommand = partsCommand;
+	}
+	
+	public ArrayList<String> getGantryWaitList()
+	{
+		return gantryWaitList;
+	}
+	
+	public ArrayList<Integer> getGantryFeedList()
+	{
+		return gantryFeedList;
 	}
 }

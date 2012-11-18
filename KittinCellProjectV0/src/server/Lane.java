@@ -126,7 +126,7 @@ public class Lane implements ActionListener, Serializable{
 	    	}
 	    } 
 	    
-	    if(openGate == true && gateCounter < 40) {
+	    if(openGate == true && gateCounter < 41) {
 	    	if(gateCounter < 20) { //opengate
 	    		gate.setNodes(100, verticalSpacing + 50 - gateCounter);
 	    		//System.out.println("Opening (" +  (40 - gateCounter*0.25) + ", " + (verticalSpacing + 20 - gateCounter*0.25) + ")");

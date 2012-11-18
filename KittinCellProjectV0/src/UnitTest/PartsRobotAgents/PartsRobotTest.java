@@ -148,7 +148,7 @@ public class PartsRobotTest extends TestCase{
 		while(partsrobotagent.pickAndExecuteAnAction());
 		Assert.assertTrue("Moving to Kit Stand",partsrobotagent.animationstate == AnimationStatus.movingToStand);
 		
-		partsrobotagent.msgAnimationDone();
+		partsrobotagent.msgMovementDone();
 		Assert.assertTrue("At Kit Stand",partsrobotagent.animationstate == AnimationStatus.atStand);
 		
 		while(partsrobotagent.pickAndExecuteAnAction());

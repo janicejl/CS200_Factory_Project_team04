@@ -30,11 +30,13 @@ public class LaneAgent extends Agent implements Lane{
 	public OrderStatus orderstate = OrderStatus.noAction;
 	public LaneStatus lanestate = LaneStatus.noParts;
 	public FeederStatus feederstate = FeederStatus.noAction;
+	public ReadyStatus readystate = ReadyStatus.ready;
 	
 	public enum OrderStatus{noAction,partRequested,partOrdered};
 	public enum LaneNestStatus{noAction,readyForPart,askedToTakePart};
 	public enum FeederStatus{wantsToPlacePart,noAction};
 	public enum LaneStatus{noParts,hasParts,partsAtEndOfLane};
+	public enum ReadyStatus{ready,notready}
 	
 	
 	public LaneAgent(Nest mynest,FeederAgent feed,Server server,String name,int index){
@@ -114,13 +116,27 @@ public class LaneAgent extends Agent implements Lane{
 			return true;
 		}
 		
-		if(lanequeue.size()>maxsize){
+		if(lanequeue.size()>=maxsize){
 			if(index%2==0){
 				feeder.msgLaneIsFull("left");
 			}
 			else{
 				feeder.msgLaneIsFull("right");
 			}
+			readystate = ReadyStatus.notready;
+			return true;
+		}
+		if(readystate == ReadyStatus.notready){
+			if(lanequeue.size()<maxsize){
+				if(index%2==0){
+					feeder.msgLaneIsReadyForParts("left");
+				}
+				else{
+					feeder.msgLaneIsReadyForParts("right");
+				}
+				readystate = ReadyStatus.ready;
+			}
+			
 		}
 		
 		if(feederstate == FeederStatus.wantsToPlacePart){
@@ -145,17 +161,22 @@ public class LaneAgent extends Agent implements Lane{
 		if(feeder!=null){
 			if(index%2==0){
 				feeder.msgNeedThisPart(type,"left");
+				feeder.msgLaneIsReadyForParts("left");
 			}
 			else{
 				feeder.msgNeedThisPart(type,"right");
+				feeder.msgLaneIsReadyForParts("right");
 			}
 		}
 		orderstate = OrderStatus.partOrdered;
+		readystate = ReadyStatus.ready;//Need to implement purge functionality in
+		
 	}
 	private void acceptPart(){
 		feeder.msgLaneIsReadyForParts(name);
 		feederstate = FeederStatus.noAction;
 	}
+	
 	private void askToGivePart(){
 		nest.msgCanIPlacePart(this);
 		neststate = LaneNestStatus.askedToTakePart;		

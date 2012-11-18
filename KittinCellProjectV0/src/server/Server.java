@@ -218,6 +218,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		feeder2.setGantryController(gantryController);
 		feeder3.setGantryController(gantryController);
 		feeder4.setGantryController(gantryController);
+		/*
 		lane1.setFeeder(feeder1);
 		lane2.setFeeder(feeder1);
 		lane3.setFeeder(feeder2);
@@ -226,7 +227,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		lane6.setFeeder(feeder3);
 		lane7.setFeeder(feeder4);
 		lane8.setFeeder(feeder4);
-		
+		*/
 
     	
 

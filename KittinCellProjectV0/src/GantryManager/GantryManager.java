@@ -14,7 +14,7 @@ public class GantryManager implements Serializable,ActionListener
 	Vector<PartsBox> exiting; //Partsboxes that are leaving the factory
 	Vector<PartsBox> purged; //Partsboxes that have been purged
 	ArrayList<Integer> feeder;
-	ArrayList<PartInfo> feeders;
+	Vector<PartInfo> feeders;
 	int speed;
 	Random rand;
 	
@@ -27,7 +27,7 @@ public class GantryManager implements Serializable,ActionListener
 		parts.add(new PartsBox(new PartInfo("test","images/part.png"))); //Initial box placed on conveyor, for testing only
 		
 		//Populating the feeders
-		feeders = new ArrayList<PartInfo>();
+		feeders = new Vector<PartInfo>();
 		feeder = new ArrayList<Integer>();
 		int i=0;
 		while(i<4)
@@ -273,12 +273,12 @@ public class GantryManager implements Serializable,ActionListener
 		return purged;
 	}
 	
-	public void setFeeders(ArrayList<PartInfo> f)
+	public void setFeeders(Vector<PartInfo> f)
 	{
 		feeders = f;
 	}
 	
-	public  ArrayList<PartInfo> getFeeders()
+	public  Vector<PartInfo> getFeeders()
 	{
 		return feeders;
 	}

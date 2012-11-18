@@ -68,51 +68,51 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 	{
 		if("Load Feeder 1".equals(ae.getActionCommand()))
 		{
-			server.execute("Load Feeder 1");
+			server.execute("Load Feeder",0);
 		}
 		else if("Load Feeder 2".equals(ae.getActionCommand()))
 		{
-			server.execute("Load Feeder 2");
+			server.execute("Load Feeder",1);
 		}
 		else if("Load Feeder 3".equals(ae.getActionCommand()))
 		{
-			server.execute("Load Feeder 3");
+			server.execute("Load Feeder",2);
 		}
 		else if("Load Feeder 4".equals(ae.getActionCommand()))
 		{
-			server.execute("Load Feeder 4");
+			server.execute("Load Feeder",3);
 		}
 		else if("Dump Feeder 1".equals(ae.getActionCommand()))
 		{
-			server.execute("Dump Feeder 1");
+			server.execute("Dump Feeder",0);
 		}
 		else if("Dump Feeder 2".equals(ae.getActionCommand()))
 		{
-			server.execute("Dump Feeder 2");
+			server.execute("Dump Feeder",1);
 		}
 		else if("Dump Feeder 3".equals(ae.getActionCommand()))
 		{
-			server.execute("Dump Feeder 3");
+			server.execute("Dump Feeder",2);
 		}
 		else if("Dump Feeder 4".equals(ae.getActionCommand()))
 		{
-			server.execute("Dump Feeder 4");
+			server.execute("Dump Feeder",3);
 		}
 		else if("Purge Feeder 1".equals(ae.getActionCommand()))
 		{
-			server.execute("Purge Feeder 1");
+			server.execute("Purge Feeder",0);
 		}
 		else if("Purge Feeder 2".equals(ae.getActionCommand()))
 		{
-			server.execute("Purge Feeder 2");
+			server.execute("Purge Feeder",1);
 		}
 		else if("Purge Feeder 3".equals(ae.getActionCommand()))
 		{
-			server.execute("Purge Feeder 3");
+			server.execute("Purge Feeder",2);
 		}
 		else if("Purge Feeder 4".equals(ae.getActionCommand()))
 		{
-			server.execute("Purge Feeder 4");
+			server.execute("Purge Feeder",3);
 		}
 	}
 }

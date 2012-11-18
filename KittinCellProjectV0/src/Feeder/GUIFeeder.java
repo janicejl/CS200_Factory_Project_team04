@@ -17,16 +17,9 @@ public class GUIFeeder {
 	
 	Feeder feeder;
 	BufferedImage image, diverter;
-	boolean previousPositiion;
-	boolean moving;
-	int diverterX, diverterY;
 	
 	public GUIFeeder(Feeder f){
 		feeder = f;
-		diverterX = (int)feeder.getX() - 3;
-		diverterY = (int)feeder.getY();
-		moving = false;
-		previousPositiion = feeder.getLane();
 		try {
 			image = ImageIO.read(new File("images/feeder.png"));
 			diverter = ImageIO.read(new File("images/diverter.png"));
@@ -40,35 +33,29 @@ public class GUIFeeder {
 		double y = feeder.getY();
 		g2.drawImage(image, (int)x, (int)y, null);
 		
-		if (previousPositiion == feeder.getLane()){
-			if (previousPositiion){
-				g2.drawImage(diverter, diverterX, diverterY, null);
+		if (feeder.isPreviousPosition() == feeder.getLane()){
+			if (feeder.isPreviousPosition()){
+				g2.drawImage(diverter, feeder.getDiverterX(), feeder.getDiverterY(), null);
 			}
-			else if (!previousPositiion){
-				g2.drawImage(diverter, diverterX, (int)feeder.getY() + 70, null);
+			else if (!feeder.isPreviousPosition()){
+				g2.drawImage(diverter, feeder.getDiverterX(), (int)feeder.getY() + 70, null);
 			}
-			feeder.setMoving(false);
 		}
 		else{
-			feeder.setMoving(true);
-			if (previousPositiion){
-				if (diverterY != feeder.getY() + 70){
-					diverterY += 2;
-					g2.drawImage(diverter, diverterX, diverterY, null);
+			if (feeder.isPreviousPosition()){
+				if (feeder.getDiverterY() != feeder.getY() + 70){
+					g2.drawImage(diverter, feeder.getDiverterX(), feeder.getDiverterY(), null);
 				}
 				else{
-					g2.drawImage(diverter, diverterX, diverterY, null);
-					previousPositiion = feeder.getLane();
+					g2.drawImage(diverter, feeder.getDiverterX(), feeder.getDiverterY(), null);
 				}	
 			}
 			else {
-				if (diverterY != feeder.getY()){
-					diverterY -= 2;
-					g2.drawImage(diverter, diverterX, diverterY, null);
+				if (feeder.getDiverterY() != feeder.getY()){
+					g2.drawImage(diverter, feeder.getDiverterX(), feeder.getDiverterY(), null);
 				}
 				else{
-					g2.drawImage(diverter, diverterX, diverterY, null);
-					previousPositiion = feeder.getLane();
+					g2.drawImage(diverter, feeder.getDiverterX(), feeder.getDiverterY(), null);
 				}
 			}
 		}

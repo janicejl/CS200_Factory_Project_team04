@@ -12,11 +12,16 @@ public class Feeder implements Serializable{
 	private double x;
 	private double y;
 	private double partAmount;
-	private boolean moving;
-	private boolean topLane;
 	private boolean empty;
 	private ArrayList<Part> parts;
 	private Random random;
+	
+	//diverter stuff
+	int diverterX, diverterY;
+	boolean previousPosition;
+	private boolean moving;
+	private boolean topLane;
+	
 	public Feeder(double nX, double nY){
 		x = nX;
 		y = nY;
@@ -27,6 +32,35 @@ public class Feeder implements Serializable{
 		empty = true;
 		moving = false;
 		topLane = true;
+		previousPosition = topLane;
+		
+		diverterX = (int)(getX() - 3);
+		diverterY = (int)getY();
+	}
+	
+	public void updateDiverter(){
+		if (previousPosition == topLane){
+			moving = false;
+		}
+		else{
+			moving = true;
+			if (previousPosition){
+				if (diverterY != y + 70){
+					diverterY += 2;
+				}
+				else{
+					previousPosition = topLane;
+				}	
+			}
+			else {
+				if (diverterY != y){
+					diverterY -= 2;
+				}
+				else{
+					previousPosition = topLane;
+				}
+			}
+		}
 	}
 	
 	public double getX(){
@@ -116,5 +150,33 @@ public class Feeder implements Serializable{
 
 	public void setMoving(boolean moving) {
 		this.moving = moving;
+	}
+
+	public int getDiverterX() {
+		return diverterX;
+	}
+
+	public void setDiverterX(int diverterX) {
+		this.diverterX = diverterX;
+	}
+
+	public int getDiverterY() {
+		return diverterY;
+	}
+
+	public void setDiverterY(int diverterY) {
+		this.diverterY = diverterY;
+	}
+
+	public boolean isPreviousPosition() {
+		return previousPosition;
+	}
+
+	public void setPreviousPosition(boolean previousPosition) {
+		this.previousPosition = previousPosition;
+	}
+
+	public void setTopLane(boolean topLane) {
+		this.topLane = topLane;
 	}
 }

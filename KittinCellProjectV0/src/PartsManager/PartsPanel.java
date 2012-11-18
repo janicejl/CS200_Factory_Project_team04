@@ -51,7 +51,7 @@ public class PartsPanel extends JPanel implements ActionListener{
 			//create button
 			partListPanel.addPart(managePanel.infoFields.get(0).getText(), new ImageIcon(tempPart.getImagePath()));
 			managePanel.resetForm();
-			
+			app.getClient().setCommandSent("Update Parts");
 		}
 		else if(ae.getSource()==managePanel.manageButtons.get(1)){
 			//clear button
@@ -61,6 +61,7 @@ public class PartsPanel extends JPanel implements ActionListener{
 			//remove all button
 			partListPanel.removeAll();
 			app.getPartsList().clear();
+			app.getClient().setCommandSent("Update Parts");
 		}
 		app.updateEditPanel();
 	}

@@ -1,8 +1,11 @@
 package PartsManager;
 
 import data.Part;
+import data.PartInfo;
+
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
 public class PartsManagerClient implements Runnable{
 	
@@ -19,48 +22,67 @@ public class PartsManagerClient implements Runnable{
 		app = _app;
 		serverName = "localhost";
 		command = "";
-		commandSent = "";
+		commandSent = "Part Manager";
 		thread = new Thread(this,"PartsManagerClient_Thread");
 		//thread.run();
 	}
 	
 	public Integer connect(){
-		try
-		{
-			s = new Socket(serverName, 61337);
-			out = new ObjectOutputStream(s.getOutputStream());
-			in = new ObjectInputStream(s.getInputStream());
+		try {
+			s = new Socket(serverName, 61337); //attempt to connect to servername
+			out = new ObjectOutputStream(s.getOutputStream()); //output stream
+			in = new ObjectInputStream(s.getInputStream()); //input stream
+		} catch (UnknownHostException e) {
+			System.err.println("Can't find server " + serverName);
+            return -1;
+		} catch (IOException e) {
+			System.err.println("Can't find server " + serverName);
+            return -1;
 		}
-		catch(UnknownHostException e){
-			return -1;
-		}
-		catch(IOException e){
-			return -1;
-		}
-		System.out.println("Connected to " + serverName);
-		return 1;
+		System.out.println("Connected to "+ serverName);
+		return 1; //successful connection
 	}
 	
 	public void run(){
-		if(connect().equals(1)){
-			try{
-				commandSent = "Part Manager";
-				out.writeObject(commandSent);
-				out.reset();
-				command = (String)in.readObject();
-				if(command.equals("Part Manager Protocol")){
-					while(true){
-						//constantly send the list of part to server
-						out.writeObject(app.getPartsList());
-						out.reset();
-					}
-				}
-			}catch(Exception e){
-				e.getStackTrace();
+		try{
+			out.writeObject(commandSent);
+			out.reset();
+			commandSent = "Update Parts";
+			while(true){
+				updateThread();
 			}
+		}catch(Exception e){
+			e.getStackTrace();
 		}
 	}
 	
+	public synchronized void updateThread() {
+		try {
+			if(commandSent.equals("Update Parts")){
+				out.writeObject(commandSent);
+				out.reset();
+				commandSent = "Idle";
+				out.writeObject(app.getPartsList());
+				out.reset();
+				command = (String) in.readObject();
+				if(command.equals("Received")){
+					
+				}
+			}
+			else if(commandSent.equals("Idle")){	
+				out.writeObject(commandSent);
+				out.reset();
+			}
+			
+			command=(String)in.readObject();
+			if(command.equals("Idle")){
+				
+			}
+		} catch (Exception ignore){
+			ignore.printStackTrace();
+			System.exit(1);
+		}
+	}
 	
 	public synchronized Thread getThread(){
 		return  thread;
@@ -68,6 +90,14 @@ public class PartsManagerClient implements Runnable{
 	
 	public synchronized void setThread(Thread _thread){
 		thread = _thread;
+	}
+
+	public String getCommandSent() {
+		return commandSent;
+	}
+
+	public void setCommandSent(String commandSent) {
+		this.commandSent = commandSent;
 	}
 	
 }

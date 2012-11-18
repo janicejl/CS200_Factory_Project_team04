@@ -69,11 +69,10 @@ public class KitCreationClient implements Runnable{
 	
 	public synchronized void updateThread() {
 		try {
-			out.writeObject(commandSent);
-			out.reset();
 			if(commandSent.equals("Update Kits")){
 //				updateCounter = 0;
-				System.out.println("hi");
+				out.writeObject(commandSent);
+				out.reset();
 				commandSent = "Idle";
 				out.writeObject(app.getKitsList());
 				out.reset();
@@ -83,6 +82,8 @@ public class KitCreationClient implements Runnable{
 				}
 			}
 			else if(commandSent.equals("Idle")){
+				out.writeObject(commandSent);
+				out.reset();
 //				updateCounter++;
 //				if(updateCounter > 5000){
 //					commandSent = "Update Kits";

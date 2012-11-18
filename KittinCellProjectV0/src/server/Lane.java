@@ -47,7 +47,10 @@ public class Lane implements ActionListener, Serializable{
 		public double getBottomNodeY() {
 			return bottomNodeY;
 		}
-    	
+		
+		public void setDefaultPosition() {
+			this.setNodes(100, verticalSpacing + 50, 100, verticalSpacing + 10);
+		}
     	
     }
     
@@ -79,7 +82,8 @@ public class Lane implements ActionListener, Serializable{
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		//nestFull = false;
 		gate = new Gate();
-		gate.setNodes(80, verticalSpacing + 20, 100, verticalSpacing + 5);
+		//bottom, top
+		gate.setNodes(100, verticalSpacing + 50, 100, verticalSpacing + 10);
 		queueFull = false;		
 		/*importList.add(new Part("1"));
 		importList.add(new Part("2"));
@@ -122,24 +126,28 @@ public class Lane implements ActionListener, Serializable{
 	    	}
 	    } 
 	    
-	    if(openGate == true && gateCounter < 50) {
-	    	gateCounter++;
-	    	if(gateCounter < 25) { //opengate
-	    		gate.setNodes(40 - gateCounter*0.25, verticalSpacing + 20 - gateCounter*0.25);
-	    		System.out.println("Opening (" +  (40 - gateCounter*0.25) + ", " + (verticalSpacing + 20 - gateCounter*0.25) + ")");
+	    if(openGate == true && gateCounter < 41) {
+	    	if(gateCounter < 20) { //opengate
+	    		gate.setNodes(100, verticalSpacing + 50 - gateCounter);
+	    		//System.out.println("Opening (" +  (40 - gateCounter*0.25) + ", " + (verticalSpacing + 20 - gateCounter*0.25) + ")");
+	    		gateCounter++;
 	    	}	
-	    	else if(gateCounter < 50) {
-	    		gate.setNodes(40 + gateCounter*0.25, verticalSpacing + 20 + gateCounter*0.25);
-	    		System.out.println("Closing (" +  (40 + gateCounter*0.25) + ", " + (verticalSpacing + 20 + gateCounter*0.25) + ")");
+	    	else if(gateCounter < 40 && gateCounter > 19) {
+	    		gate.setNodes(100, verticalSpacing + 30 + gateCounter);
+	    		
+//	    		gate.setNodes(40 + gateCounter*0.25, verticalSpacing + 20 + gateCounter*0.25);
+	//    		System.out.println("Closing (" +  (40 + gateCounter*0.25) + ", " + (verticalSpacing + 20 + gateCounter*0.25) + ")");
+	    		gateCounter++;
 	    	}
 	    		
-	    	else if(gateCounter == 50) {
+	    	else if(gateCounter == 40) {
+	    		gate.setDefaultPosition();
+	    		//gate.setNodes(40 , verticalSpacing, 100, verticalSpacing + 5);
 	    		System.out.println("Gate done");
 	    		gateCounter = 0;
 	    		openGate = false;
-	    	}
+	    	}	
 	    }
-	    
     }
 	    
     public Gate getGate() {
@@ -181,8 +189,7 @@ public class Lane implements ActionListener, Serializable{
     	if(itemList.size() != 0){
     		if(itemList.get(0).getDestination() == true){
     			n.addPart(itemList.remove(0));
-    			openGate = true;
-    			
+    			openGate = true;	
     		}
     	}
     	System.out.println("Rawr!!!!");

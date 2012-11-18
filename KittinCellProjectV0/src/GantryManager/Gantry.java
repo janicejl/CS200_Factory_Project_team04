@@ -2,15 +2,19 @@ package GantryManager;
 
 import java.io.*;
 
-public class Gantry implements Serializable
+//Class that keeps track of GantryRobot position, destination, and state information
+public class Gantry implements Serializable 
 {
-	int xFinal;
+	//Destination Coordinates
+	int xFinal; 
 	int yFinal;
+	//Current Coordinates
 	int xCurrent;
 	int yCurrent;
+	//State Information
 	String state;
-	int feed;
-	int box;
+	int feed; //Feeder #
+	int box; //Array index of box gantry is picking up
 	
 	public Gantry()
 	{
@@ -22,6 +26,7 @@ public class Gantry implements Serializable
 		box = -1;
 	}
 	
+	//Function to update position 
 	public void update()
 	{
 		if(xFinal!=xCurrent)
@@ -39,6 +44,7 @@ public class Gantry implements Serializable
 				yCurrent+=1;
 		}
 		
+		//Depending on feeder information, will change final destination
 		if(feed == 0)
 		{
 			
@@ -116,6 +122,7 @@ public class Gantry implements Serializable
 		return feed;
 	}
 
+	//Same as second half of update, updates destination based on provided feeder
 	public synchronized void setFeed(int feed)
 	{
 		this.feed = feed;
@@ -142,6 +149,7 @@ public class Gantry implements Serializable
 		}
 	}
 	
+	//Function for determining if the gantry has reached its destination
 	public boolean done()
 	{
 		if(xFinal==xCurrent && yFinal==yCurrent)

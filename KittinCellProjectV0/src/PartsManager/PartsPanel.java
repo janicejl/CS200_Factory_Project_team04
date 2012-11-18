@@ -34,7 +34,7 @@ public class PartsPanel extends JPanel implements ActionListener{
 	}
 	
 	public void paintComponent(Graphics g){
-		background.paintIcon(this, g, 0, 0);
+		//background.paintIcon(this, g, 0, 0);
 		revalidate();
 	}
 	
@@ -42,18 +42,20 @@ public class PartsPanel extends JPanel implements ActionListener{
 		
 		if(ae.getSource()== managePanel.manageButtons.get(0)){
 			//create Part
-			PartInfo tempPart = new PartInfo(managePanel.nameField.getText(), "images/kt" + managePanel.imagesSelectBox.getSelectedIndex() + ".png");
+			PartInfo tempPart = new PartInfo(managePanel.infoFields.get(0).getText(), "images/kt" + managePanel.imagesSelectBox.getSelectedIndex() + ".png");
 			tempPart.setType(managePanel.imagesSelectBox.getSelectedIndex());
+			tempPart.setIdNumber(Integer.parseInt(managePanel.infoFields.get(1).getText()));
+			tempPart.setDescription(managePanel.descriptionArea.getText());
 			app.getPartsList().add(tempPart);
 			
 			//create button
-			partListPanel.addPart(managePanel.nameField.getText(), new ImageIcon(tempPart.getImagePath()));
-			managePanel.nameField.setText("");
+			partListPanel.addPart(managePanel.infoFields.get(0).getText(), new ImageIcon(tempPart.getImagePath()));
+			managePanel.resetForm();
+			
 		}
 		else if(ae.getSource()==managePanel.manageButtons.get(1)){
 			//clear button
-			managePanel.imagesSelectBox.setSelectedIndex(0);
-			managePanel.nameField.setText("");
+			managePanel.resetForm();
 		}
 		else if(ae.getSource()==managePanel.manageButtons.get(2)){
 			//remove all button

@@ -12,6 +12,7 @@ import java.io.*;
 import javax.imageio.*;
 
 import data.Part;
+import kitAssemblyManager.Camera;
 
 public class PartsRobot implements Runnable, Serializable{
     boolean processing;
@@ -26,11 +27,14 @@ public class PartsRobot implements Runnable, Serializable{
     double moveSpeed = 10;
     double rotationSpeed = 2;
     double extensionSpeed = 2;
-    boolean takePicture;
-    double cameraX;
-    double cameraY;
+    
+    private Camera kitStandCamera;
+    private Camera nestCamera;
+    //boolean takePicture;
+    //double cameraX;
+    //double cameraY;
     Boolean msg;
-    boolean flashUp, flashDown;
+    //boolean flashUp, flashDown;
     KitAssemblyManager app;
     
     BufferedImage partsRobotImage;
@@ -46,8 +50,8 @@ public class PartsRobot implements Runnable, Serializable{
     int[] nl = {55,125,195,265,335,405,475,545};
     int[] kl = {190,410};
     ArrayList<Part> partsHeld;
-    float opacity;
-    boolean animationDone;
+    //float opacity;
+    //boolean animationDone;
     boolean movingMsg;
     boolean dumped;
 
@@ -55,9 +59,14 @@ public class PartsRobot implements Runnable, Serializable{
     	app = _app;
         y = 300;
         newY = y;
-        cameraX = 350;
+        
+        //Set the location for the inspection of  kit stand camera.
+        kitStandCamera = new Camera(140, 230); 		 
+        nestCamera = new Camera(350, 100);
+        
+        /*cameraX = 350;
         cameraY = 100;
-        takePicture = false;
+        takePicture = false;*/
         gripperHolding = new ArrayList<Boolean>();
         gripperExtensions = new ArrayList<Double>();
         newGripperExtensions = new ArrayList<Double>();
@@ -65,10 +74,10 @@ public class PartsRobot implements Runnable, Serializable{
         kitLocations = new ArrayList<String>();
         gripperPartIDs = new ArrayList<Integer>();
         partsHeld = new ArrayList<Part>();
-        flashDown = false;
+        /*flashDown = false;
         flashUp = false;
         animationDone = false;
-        opacity = 0.0f;
+        opacity = 0.0f;*/
         for(int i = 0; i < 4; i++){
         	gripperPartIDs.add(2);
             gripperHolding.add(false);
@@ -164,12 +173,12 @@ public class PartsRobot implements Runnable, Serializable{
         }
     }
 
-    public void takePicture(double x, double y){
+/*    public void takePicture(double x, double y){
         takePicture = true;
         flashUp = true;
         cameraX = x;
         cameraY = y;
-    }
+    }*/
 
     private void processSubCommand(String s){
     	try {
@@ -263,6 +272,22 @@ public class PartsRobot implements Runnable, Serializable{
     public double getY(){
         return y;
     }
+    
+    public Camera getKitStandCamera() {
+    	return kitStandCamera;
+    }
+    
+    public void setKitStandCamera(Camera c) {
+    	kitStandCamera = c;
+    }
+    
+    public Camera getNestCamera() {
+    	return nestCamera;
+    }
+    
+    public void setNestCamera(Camera c) {
+    	nestCamera = c;
+    }
 
     public double getAngle(){
         return angle;
@@ -275,16 +300,16 @@ public class PartsRobot implements Runnable, Serializable{
     public ArrayList<Double> getGripperExtensions(){
         return gripperExtensions;
     }
-    public boolean getTakePicture(){
-        /*if(takePicture){
+   /* public boolean getTakePicture(){
+        if(takePicture){
             takePicture = false;
             return true;
         }
         else {
             return false;
-        }*/
+        }
     	return takePicture;
-    }
+    }*/
 
     public Boolean getMsg() {
 		return msg;
@@ -301,7 +326,7 @@ public class PartsRobot implements Runnable, Serializable{
 	public void setMsg(Boolean msg) {
 		this.msg = msg;
 	}
-
+/*
 	public double getCameraX() {
 		return cameraX;
 	}
@@ -334,7 +359,7 @@ public class PartsRobot implements Runnable, Serializable{
 	public void setAnimationDone(boolean b){
 		animationDone = b;
 	}
-
+*/
 	public boolean isDumped() {
 		return dumped;
 	}
@@ -354,7 +379,7 @@ public class PartsRobot implements Runnable, Serializable{
 	public void update(){
         if(!paused){
             processing = false;
-            if(takePicture){
+  /*          if(takePicture){
 	            if(flashUp){
 	                opacity += 0.1;
 	                if(opacity >= 1){
@@ -371,7 +396,10 @@ public class PartsRobot implements Runnable, Serializable{
 	            		animationDone = true;
 	            	}	            			
 	            }
-            }
+            }*/
+            
+            kitStandCamera.update();
+            nestCamera.update();
             
             if(y != newY){
                 processing = true;

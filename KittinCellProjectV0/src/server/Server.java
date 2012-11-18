@@ -395,6 +395,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Load Kit 2")){
     		getPartsRobot().addCommand("dump,1");
     	}     	
+    	
+    	else if (process.equals("Take Picture")) {
+    		partsRobot.getKitStandCamera().takePicture();
+    	}
     }
 	 
 	public void execute(String process, Integer num, PartInfo info){
@@ -416,7 +420,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		}
     	}
     	else if(process.equals("Take Picture")){
-    		partsRobot.takePicture(320, 40 + 140*((num-1)/2));
+    		partsRobot.getNestCamera().takePicture(320, 40 + 140*((num-1)/2));
     	}
     	else if(process.equals("Feed Feeder")){
     		Part temp = new Part("" + num, "images/kt" + num + ".png");
@@ -507,11 +511,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			getPartsRobotAgent().msgPartsDropped();
 			getPartsRobot().setDumped(false);
 		}
-		if(getPartsRobot().getAnimationDone()){
+		if(getPartsRobot().getNestCamera().getAnimationDone()){
 			for(int i = 0; i<4; i++){
 				getVisions().get(i).msgCameraAvailable();
 			}
-			getPartsRobot().setAnimationDone(false);
+			getPartsRobot().getNestCamera().setAnimationDone(false);
 		}	
 		for(int i = 0; i < lanes.size(); i++){
 			lanes.get(i).actionPerformed(e);

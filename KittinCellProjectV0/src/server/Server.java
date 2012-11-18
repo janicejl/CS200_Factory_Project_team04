@@ -396,6 +396,18 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	}     	
     }
 	 
+	public void execute(String process, Integer num, PartInfo info){
+		if(process.equals("Feed Feeder")){
+    		Part temp = new Part(info);
+    		if (num % 2 == 0) {
+    			feeders.get(num/2).setTopLane(true);
+    		} else {
+    			feeders.get(num/2).setTopLane(false);
+    		}
+    		System.out.println("TOPLANE: " + feeders.get(num/2).getTopLane());
+    		feeders.get(num/2).addParts(temp);
+    	}
+	}
     public void execute(String process, Integer num){
     	if(process.equals("Spawn Kit")){
     		for(int i = 0; i < num; i++){

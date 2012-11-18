@@ -10,7 +10,6 @@ public class Nest implements Serializable{
 	private double x;
 	private double y;
 	
-	private boolean full;
 	
 	ArrayList<Part> parts;
 	
@@ -26,10 +25,9 @@ public class Nest implements Serializable{
 		parts = new ArrayList<Part>();
 		
 		//for v0
-		while (full != true) {
 			Part p = new Part(""+n, "images/kt" + n + ".png");
 			addPart(p);
-		}
+		
 	}
 	public double getX() {
 		return x;
@@ -47,21 +45,13 @@ public class Nest implements Serializable{
 		y = nY;
 	}
 	
-	public boolean isFull() {
-		return full;
-	}
 	
-	public void setFull(boolean f) {
-		full = f;
-	}
 	
 	public void addPart(Part p) {
-		if (full != true) {
+		
 			parts.add(p);
-		}
-		if (parts.size() >= 8) {
-			full = true;
-		}
+		
+		
 	}
 	
 	public ArrayList<Part> getParts() {

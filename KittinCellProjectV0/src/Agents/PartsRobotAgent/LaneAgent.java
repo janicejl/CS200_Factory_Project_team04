@@ -139,8 +139,10 @@ public class LaneAgent extends Agent implements Lane{
 			
 		}
 		
-		if(feederstate == FeederStatus.wantsToPlacePart){
-			if(lanequeue.size()>maxsize){
+		if(feederstate == FeederStatus.wantsToPlacePart)
+		{
+			if(lanequeue.size()>maxsize)
+			{
 				if(index%2==0){
 					feeder.msgLaneIsFull("left");
 				}

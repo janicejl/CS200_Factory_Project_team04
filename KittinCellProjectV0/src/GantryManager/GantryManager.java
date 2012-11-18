@@ -169,7 +169,7 @@ public class GantryManager implements Serializable,ActionListener
 				state = "loading";
 			}
 			else if(state.equals("loading"))
-			{
+			{ 
 				parts.get(gantry.getBox()).setState("feeding");
 				gantry.setState("free");
 				state = "free";

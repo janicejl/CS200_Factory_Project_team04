@@ -9,7 +9,7 @@ import Interface.GantryFeederAgent.Feeder;
 import Interface.GantryFeederAgent.Gantry;
 import Interface.GantryFeederAgent.GantryController;
 import MoveableObjects.Bin;
-import data.Part.PartType;
+import data.PartInfo;
 
 public class GantryControllerAgent extends Agent implements GantryController {
 
@@ -23,10 +23,10 @@ public class GantryControllerAgent extends Agent implements GantryController {
 	
 	class MyFeeder{
 		Feeder f1;
-		PartType type;
+		PartInfo type;
 		FeederState fstate;
 		
-		public MyFeeder(Feeder f1, PartType p){
+		public MyFeeder(Feeder f1, PartInfo p){
 			this.f1 = f1;
 			this.type = p;
 			this.fstate = FeederState.requested;
@@ -64,7 +64,7 @@ public class GantryControllerAgent extends Agent implements GantryController {
 	}
 
 	@Override
-	public void msgNeedThisPart(PartType p, Feeder f1) {
+	public void msgNeedThisPart(PartInfo p, Feeder f1) {
 		MyFeeder temp = new MyFeeder(f1, p);
 		this.requests.add(temp);
 		stateChanged();

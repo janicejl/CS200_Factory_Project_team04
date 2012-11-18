@@ -1,20 +1,20 @@
 package Interface.PartsRobotAgent;
 
-import data.Part;
+import data.PartInfo;
 
 public interface Lane {
 
 	public void msgReadyForPart();
 
 
-	public void msgNeedThisPart(Part.PartType type);
+	public void msgNeedThisPart(PartInfo type);
 
 
 	public void msgPartAtEndOfLane();
 	
 	
 	
-	public void msgHereIsAPart(Part p);
+	public void msgHereIsAPart(PartInfo p);
 		
 
 	public void msgCanIPlacePart();

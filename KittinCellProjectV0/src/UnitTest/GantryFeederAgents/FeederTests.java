@@ -45,12 +45,7 @@ public class FeederTests extends TestCase{
 	
 	@Test
 	public void testLaneInteractions() {
-		/**try {
-			setUp();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}**/
+
 		
 		feeder1.msgNeedThisPart(type1, "left");
 		assertTrue("Feeder should have received msgNeedThisPart.", feeder1.log.containsString("msgNeedThisPart") && feeder1.log.containsString("left"));

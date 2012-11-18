@@ -123,8 +123,14 @@ public class LaneAgent extends Agent implements Lane{
 		return false;
 	}
 	private void askForPart(){
-		if(feeder!=null)
-		feeder.msgNeedThisPart(type, name);
+		if(feeder!=null){
+			if(index%2==0){
+				feeder.msgNeedThisPart(type,"left");
+			}
+			else{
+				feeder.msgNeedThisPart(type,"right");
+			}
+		}
 		orderstate = OrderStatus.partOrdered;
 	}
 	private void acceptPart(){

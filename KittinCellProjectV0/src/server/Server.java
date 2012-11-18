@@ -126,30 +126,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		laneTest.setMinimumSize(new Dimension(300, 400));
 		gantryTest = new ServerGantryTestPanel(this);
 		
-		feeder1 = new FeederAgent("feeder1", 5, fLane1, fLane2, 1, this);
-		fLane1 = new FeederLaneAgent("left", 1, this);
-		fLane2 = new FeederLaneAgent("right", 2, this);
-		fLane1.setFeeder(feeder1);
-		fLane2.setFeeder(feeder1);
-		
-		feeder2 = new FeederAgent("feeder2", 5, fLane3, fLane4, 2, this);
-		fLane3 = new FeederLaneAgent("left", 3, this);
-		fLane4 = new FeederLaneAgent("right", 4, this);
-		fLane3.setFeeder(feeder2);
-		fLane4.setFeeder(feeder2);
-		
-		feeder3 = new FeederAgent("feeder3", 5, fLane5, fLane6, 3, this);
-		fLane5 = new FeederLaneAgent("left", 5, this);
-		fLane6 = new FeederLaneAgent("right", 6, this);
-		fLane5.setFeeder(feeder3);
-		fLane6.setFeeder(feeder3);
-		
-		feeder4 = new FeederAgent("feeder4", 5, fLane7, fLane8, 4, this);
-		fLane7 = new FeederLaneAgent("left", 7, this);
-		fLane8 = new FeederLaneAgent("right", 8, this);
-		fLane7.setFeeder(feeder4);
-		fLane8.setFeeder(feeder4);
-		
 		/**gantryController = new GantryControllerAgent(this);
 		gantry1 = new GantryAgent("gantry1", this);
 		gantry2 = new GantryAgent("gantry2", this);
@@ -241,6 +217,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	nest6.setLane(lane6);
     	nest7.setLane(lane7);
     	nest8.setLane(lane8);
+    	feeder1 = new FeederAgent("feeder1", 5, lane1, lane2, 1, this);		
+		feeder2 = new FeederAgent("feeder2", 5, lane3, lane4, 2, this);		
+		feeder3 = new FeederAgent("feeder3", 5, lane5, lane6, 3, this);		
+		feeder4 = new FeederAgent("feeder4", 5, lane7, lane8, 4, this);
 
 
     	

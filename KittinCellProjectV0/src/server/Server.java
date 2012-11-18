@@ -399,7 +399,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Feed Feeder")){
     		Part temp = new Part("" + num, "images/kt" + num + ".png");
     		temp.setImagePath("images/kt" + temp.getId() + ".png");
-    		lanes.get(num).addPart(temp);
     		if (num % 2 == 0) {
     			feeders.get(num/2).setTopLane(true);
     		} else {
@@ -409,7 +408,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		feeders.get(num/2).addParts(temp);
     	}
     	else if(process.equals("Feed Lane")){
-    		lanes.get(num).releasePart(num);
+    		if (feeders.get(num/2).getPartAmount() > 0){
+    			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
+    			lanes.get(num).releasePart();
+    		}
     		//feeders.get(num/2).removePart();
     	}
     	else if(process.equals("Feed Nest")){

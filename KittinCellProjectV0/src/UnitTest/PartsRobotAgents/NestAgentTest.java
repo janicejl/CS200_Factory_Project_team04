@@ -24,7 +24,6 @@ import Agents.KitRobotAgents.*;
 import MoveableObjects.*;
 import UnitTest.KitRobotAgents.LoggedEvent;
 import data.*;
-import data.Part.PartType;
 
 
 
@@ -43,8 +42,9 @@ public class NestAgentTest extends TestCase {
 		Assert.assertTrue("Proper Setup",nest.neststate == NestStatus.noParts);
 		Assert.assertTrue("Proper Setup",nest.animationstate == NestAgent.AnimationStatus.noAction);
 		
-		nest.msgNeedThisPart(PartType.part1);
-		Assert.assertTrue("Received proper type",nest.parttype == PartType.part1);
+		PartInfo p = new PartInfo("part1","image1");
+		nest.msgNeedThisPart(p);
+		Assert.assertTrue("Received proper type",nest.partinfo == p);
 		Assert.assertTrue("Proper State",nest.partsrobotstate == PartsRobotStatus.wantsParts);
 		
 		while(nest.pickAndExecuteAnAction());
@@ -57,7 +57,7 @@ public class NestAgentTest extends TestCase {
 		while(nest.pickAndExecuteAnAction());
 		Assert.assertTrue("Ready to take part",lane.log.containsString("Nest Ready for Part"));
 		
-		nest.msgHereIsPart(new Part(PartType.part1));
+		nest.msgHereIsPart(new Part(p));
 		Assert.assertTrue("Has Part",nest.nestslots[0]!=null);
 		Assert.assertTrue("Only 1 Part",nest.nestslots[1]== null);
 		Assert.assertTrue("Nest State needs check",nest.neststate == NestStatus.needCheck);
@@ -89,8 +89,9 @@ public class NestAgentTest extends TestCase {
 		Assert.assertTrue("Proper Setup",nest.neststate == NestStatus.noParts);
 		Assert.assertTrue("Proper Setup",nest.animationstate == NestAgent.AnimationStatus.noAction);
 		
-		nest.msgNeedThisPart(PartType.part1);
-		Assert.assertTrue("Received proper type",nest.parttype == PartType.part1);
+		PartInfo p = new PartInfo("part1","image1");
+		nest.msgNeedThisPart(p);
+		Assert.assertTrue("Received proper type",nest.partinfo == p);
 		Assert.assertTrue("Proper State",nest.partsrobotstate == PartsRobotStatus.wantsParts);
 		
 		while(nest.pickAndExecuteAnAction());
@@ -103,8 +104,8 @@ public class NestAgentTest extends TestCase {
 		while(nest.pickAndExecuteAnAction());
 		Assert.assertTrue("Ready to take part",lane.log.containsString("Nest Ready for Part"));
 		
-		nest.msgHereIsPart(new Part(PartType.part1));
-		nest.msgHereIsPart(new Part(PartType.part1));
+		nest.msgHereIsPart(new Part(p));
+		nest.msgHereIsPart(new Part(p));
 		Assert.assertTrue("Has Part",nest.nestslots[0]!=null);
 		Assert.assertTrue("Only 2 Parts",nest.nestslots[1]!= null);
 		Assert.assertTrue("Nest State needs check",nest.neststate == NestStatus.needCheck);
@@ -137,10 +138,11 @@ public class NestAgentTest extends TestCase {
 		MockVision camera = new MockVision("Vision");
 		MockPartsRobot partsrobot = new MockPartsRobot("PartsRobot");
 		NestAgent nest = new NestAgent(lane,camera,1);
+		PartInfo p = new PartInfo("part1","image1");
 		nest.setPartsRobotAgent(partsrobot);
-		nest.msgHereIsPart(new Part(PartType.part1));
-		nest.msgHereIsPart(new Part(PartType.part1));
-		nest.msgHereIsPart(new Part(PartType.part1));
+		nest.msgHereIsPart(new Part(p));
+		nest.msgHereIsPart(new Part(p));
+		nest.msgHereIsPart(new Part(p));
 		Assert.assertTrue("has 3 parts",nest.nestslots[2]!=null);
 		Assert.assertTrue("Only 3 parts",nest.nestslots[3]==null);
 		Assert.assertTrue("Nest State needs check",nest.neststate == NestStatus.needCheck);

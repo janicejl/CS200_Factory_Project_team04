@@ -24,7 +24,6 @@ import Agents.KitRobotAgents.*;
 import MoveableObjects.*;
 import UnitTest.KitRobotAgents.LoggedEvent;
 import data.*;
-import data.Part.PartType;
 
 public class PartsRobotTest extends TestCase{
 	
@@ -54,21 +53,17 @@ public class PartsRobotTest extends TestCase{
 		PartInfo p2 = new PartInfo("parttype2","image");
 		PartInfo p3 = new PartInfo("parttype3","image");
 		PartInfo p4 = new PartInfo("parttype4","image");
-		p1.setType(0);
-		p2.setType(1);
-		p3.setType(2);
-		p4.setType(3);
 		kitinfo.add(p1);kitinfo.add(p2);kitinfo.add(p3);kitinfo.add(p4);
 		
 		partsrobotagent.msgMakeThisKit(kitinfo, 3);
-		Assert.assertTrue("Recipe read properly",partsrobotagent.recipe.get(1)==PartType.part2);
-		Assert.assertTrue("Partsneeded Set correctly",partsrobotagent.kit1.partsneeded.get(2)==PartType.part3);
+		Assert.assertTrue("Recipe read properly",partsrobotagent.recipe.get(1)==p2);
+		Assert.assertTrue("Partsneeded Set correctly",partsrobotagent.kit1.partsneeded.get(2)==p3);
 		Assert.assertTrue("Kit status correct",partsrobotagent.kit2.state==KitStatus.notAvailable);
 		
 		while(partsrobotagent.pickAndExecuteAnAction());
 		Assert.assertTrue("Camera received recipe",camera1.log.size()==1);
 		Assert.assertTrue("Cameras received recipe",camera1.log.containsString("Received Schematic"));
-		Assert.assertTrue("Nest 4 received proper part type",nest4.log.containsString("Received PartType part4"));
+		Assert.assertTrue("Nest 4 received proper part type",nest4.log.containsString("Received PartInfo parttype4"));
 		Assert.assertTrue("KitStand asked for 2 kits",kitstand.log.size()==2);
 		Assert.assertTrue("KitStand received correct message",kitstand.log.containsString("Is there an empty kit"));
 		Assert.assertTrue("Confirmed that recipe sent to camera",partsrobotagent.camerahasrecipe);
@@ -93,8 +88,8 @@ public class PartsRobotTest extends TestCase{
 		while(partsrobotagent.pickAndExecuteAnAction());
 		Assert.assertTrue("Asked nest for part",nest1.log.containsString("Asked for a Part"));
 		
-		Part.PartType type1 = PartType.part1;
-		partsrobotagent.msgHereIsPart(new Part(type1));
+		
+		partsrobotagent.msgHereIsPart(new Part(p1));
 		Assert.assertTrue("Has part",partsrobotagent.grippers[0].p!= null);
 		Assert.assertTrue("Nest no longer has part",partsrobotagent.nests.get(0).state!= NestStatus.hasPart);
 		
@@ -111,8 +106,8 @@ public class PartsRobotTest extends TestCase{
 		while(partsrobotagent.pickAndExecuteAnAction());
 		Assert.assertTrue("Asked nest for part",nest2.log.containsString("Asked for a Part"));
 		
-		Part.PartType type2 = PartType.part2;
-		partsrobotagent.msgHereIsPart(new Part(type2));
+		
+		partsrobotagent.msgHereIsPart(new Part(p2));
 		Assert.assertTrue("Has part",partsrobotagent.grippers[1].p!= null);
 		
 		partsrobotagent.msgPartsApproved(3);
@@ -128,8 +123,8 @@ public class PartsRobotTest extends TestCase{
 		while(partsrobotagent.pickAndExecuteAnAction());
 		Assert.assertTrue("Asked nest for part",nest3.log.containsString("Asked for a Part"));
 		
-		Part.PartType type3 = PartType.part3;
-		partsrobotagent.msgHereIsPart(new Part(type3));
+		
+		partsrobotagent.msgHereIsPart(new Part(p3));
 		Assert.assertTrue("Has part",partsrobotagent.grippers[2].p!= null);
 		
 		partsrobotagent.msgPartsApproved(4);
@@ -145,8 +140,8 @@ public class PartsRobotTest extends TestCase{
 		while(partsrobotagent.pickAndExecuteAnAction());
 		Assert.assertTrue("Asked nest for part",nest4.log.containsString("Asked for a Part"));
 		
-		Part.PartType type4 = PartType.part4;
-		partsrobotagent.msgHereIsPart(new Part(type4));
+	
+		partsrobotagent.msgHereIsPart(new Part(p4));
 		Assert.assertTrue("Has part",partsrobotagent.grippers[3].p!= null);
 		Assert.assertTrue("All grippers full",partsrobotagent.allGrippersFull());
 		

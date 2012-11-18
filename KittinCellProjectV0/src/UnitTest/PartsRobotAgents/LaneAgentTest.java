@@ -9,7 +9,7 @@ import Mocks.PartsRobotAgents.MockNest;
 import server.Server;
 import org.junit.Test;
 
-import data.Part.PartType;
+import data.PartInfo;
 
 import java.util.*;
 
@@ -28,7 +28,8 @@ public class LaneAgentTest extends TestCase{
 		Assert.assertTrue("Lane Set up Properly",lane.feederstate == FeederStatus.noAction);
 		Assert.assertTrue("Lane Set up Properly",lane.lanestate == LaneStatus.noParts);
 		
-		lane.msgNeedThisPart(PartType.part1);
+		PartInfo p = new PartInfo("part1","imagepath1");
+		lane.msgNeedThisPart(p);
 		Assert.assertTrue("Needs to ask for Parts",lane.orderstate == OrderStatus.partRequested);
 		
 		while(lane.pickAndExecuteAnAction());

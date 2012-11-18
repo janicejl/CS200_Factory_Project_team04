@@ -1,14 +1,14 @@
 package Interface.GantryFeederAgent;
 
 import MoveableObjects.Bin;
-import data.Part.PartType;
+import data.PartInfo;
 
 public interface Feeder {
 	
-	void msgNeedThisPart(PartType p, String laneName);
+	void msgNeedThisPart(PartInfo p, String laneName);
 	void msgHaveParts(Gantry g1);
 	void msgHereAreParts(Bin b);
-	void msgHereAreParts(PartType p, int quantity);
+	void msgHereAreParts(PartInfo p, int quantity);
 	void msgLaneIsFull(String laneName);
 	void msgLaneIsReadyForParts(String laneName);
 	
@@ -17,4 +17,5 @@ public interface Feeder {
 	void removeGantry();
 	void setGantryController(GantryController gc);
 	String getName();
+	int getNumber();
 }

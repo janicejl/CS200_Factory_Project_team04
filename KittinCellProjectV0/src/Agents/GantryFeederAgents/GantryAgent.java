@@ -66,6 +66,9 @@ public class GantryAgent extends Agent implements Gantry {
 	private void GivePartsToFeeder(){
 		currentFeeder.msgHereAreParts(currentBin);
 		//DoFillFeeder()
+		app.execute("Load Feeder", currentFeeder.getNumber());
+		app.execute("Feed Feeder", currentFeeder.getNumber());
+		app.execute("Idle Bin", currentFeeder.getNumber());
 		currentFeeder = null;
 		fstate = FeederState.notReady;
 		gc.msgDoneDeliveringParts(this);

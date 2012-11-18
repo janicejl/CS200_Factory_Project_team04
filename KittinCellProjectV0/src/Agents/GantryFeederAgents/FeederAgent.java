@@ -10,19 +10,19 @@ import MoveableObjects.Bin;
 import UnitTest.GantryFeederAgents.EventLog;
 import UnitTest.GantryFeederAgents.LoggedEvent;
 import data.Part;
-import data.Part.PartType;
+import data.PartInfo;
 
 public class FeederAgent extends Agent implements Feeder {
 
 	//Data
 	String name;
-	PartType currentPart = PartType.none;
-	PartType requestedPart = PartType.none;
+	PartInfo currentPart;
+	PartInfo requestedPart;
 	int partsInFeeder = 0;
 	int lowParts;
 	int number;
 	Bin myBin;
-	EventLog log;
+	public EventLog log;
 	
 	
 	enum FeederState{feeding, low, waitingLane, purging, waitingGantry, beingFed};
@@ -36,12 +36,12 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	private class MyLane{
 		Lane fLane1;
-		PartType partWanted;
+		PartInfo partWanted;
 		boolean readyForParts;
 		
 		public MyLane(Lane f1){
 			this.fLane1 = f1;
-			partWanted = PartType.none;
+			partWanted = PartInfo.none;
 			readyForParts = false;
 		}
 	}
@@ -59,8 +59,8 @@ public class FeederAgent extends Agent implements Feeder {
 	//Messages
 
 	@Override
-	public void msgNeedThisPart(PartType p, String laneName) {
-		if(requestedPart.equals(PartType.none)){
+	public void msgNeedThisPart(PartInfo p, String laneName) {
+		if(requestedPart.equals(PartInfo.none)){
 			requestedPart = p;
 		}
 		if(laneName.equals("left")){
@@ -84,7 +84,7 @@ public class FeederAgent extends Agent implements Feeder {
 
 	@Override
 	public void msgHereAreParts(Bin bin) {
-		currentPart = bin.getPartType();
+		currentPart = bin.getPartInfo();
 		partsInFeeder = bin.getQuantity();
 		myBin = bin;
 		fstate = FeederState.beingFed;	
@@ -93,7 +93,7 @@ public class FeederAgent extends Agent implements Feeder {
 	}
 	
 	//will be from GUI
-	public void msgHereAreParts(PartType part, int quantity){
+	public void msgHereAreParts(PartInfo part, int quantity){
 		currentPart = part;
 		partsInFeeder = quantity;
 		fstate = FeederState.beingFed;
@@ -182,16 +182,17 @@ public class FeederAgent extends Agent implements Feeder {
 		}
 	}
 	
-	private void RequestParts(PartType part){
+	private void RequestParts(PartInfo part){
 		gc.msgNeedThisPart(part, this);
 		fstate = FeederState.waitingGantry;
 	}
 	
 	private void PurgeFeeder(){
 		myBin.setQuantity(partsInFeeder);
-		myBin.setPartType(currentPart);
+		myBin.setPartInfo(currentPart);
 		partsInFeeder = 0;
 		//DoPurgeFeeder();
+		
 	}
 	
 	private void AcceptParts(){
@@ -232,6 +233,8 @@ public class FeederAgent extends Agent implements Feeder {
 		return this.name;
 	}
 	
-	
+	public int getNumber(){
+		return this.number;
+	}
 
 }

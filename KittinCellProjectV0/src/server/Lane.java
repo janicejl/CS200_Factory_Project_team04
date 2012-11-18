@@ -123,23 +123,24 @@ public class Lane implements ActionListener, Serializable{
 	    } 
 	    
 	    if(openGate == true && gateCounter < 50) {
-	    	gateCounter++;
 	    	if(gateCounter < 25) { //opengate
 	    		gate.setNodes(40 - gateCounter*0.25, verticalSpacing + 20 - gateCounter*0.25);
 	    		System.out.println("Opening (" +  (40 - gateCounter*0.25) + ", " + (verticalSpacing + 20 - gateCounter*0.25) + ")");
+	    		gateCounter++;
 	    	}	
-	    	else if(gateCounter < 50) {
+	    	else if(gateCounter < 50 && gateCounter > 24) {
 	    		gate.setNodes(40 + gateCounter*0.25, verticalSpacing + 20 + gateCounter*0.25);
 	    		System.out.println("Closing (" +  (40 + gateCounter*0.25) + ", " + (verticalSpacing + 20 + gateCounter*0.25) + ")");
+	    		gateCounter++;
 	    	}
 	    		
 	    	else if(gateCounter == 50) {
+	    		gate.setNodes(40 , verticalSpacing, 100, verticalSpacing + 5);
 	    		System.out.println("Gate done");
 	    		gateCounter = 0;
 	    		openGate = false;
-	    	}
+	    	}	
 	    }
-	    
     }
 	    
     public Gate getGate() {
@@ -179,8 +180,7 @@ public class Lane implements ActionListener, Serializable{
     	if(itemList.size() != 0){
     		if(itemList.get(0).getDestination() == true){
     			n.addPart(itemList.remove(0));
-    			openGate = true;
-    			
+    			openGate = true;	
     		}
     	}
     	System.out.println("Rawr!!!!");

@@ -1,7 +1,7 @@
 package Mocks.PartsRobotAgents;
 
 import data.Part;
-import data.Part.PartType;
+import data.PartInfo;
 import Agent.*;
 import Agents.VisionAgent.VisionAgent;
 import Mocks.KitRobotAgents.*;
@@ -39,7 +39,7 @@ public class MockNest extends MockAgent implements Nest{
 	}
 
 	@Override
-	public void msgNeedThisPart(PartType type) {
+	public void msgNeedThisPart(PartInfo type) {
 		log.add(new LoggedEvent("Received PartType " + type));
 		
 	}
@@ -57,7 +57,7 @@ public class MockNest extends MockAgent implements Nest{
 	}
 
 	@Override
-	public PartType getPartType() {
+	public PartInfo getPartInfo() {
 		// TODO Auto-generated method stub
 		return null;
 	}

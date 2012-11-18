@@ -4,7 +4,8 @@ import  Agent.*;
 import Agents.VisionAgent.VisionAgent;
 import server.Server;
 import data.*;
-import data.Part.PartType;
+
+
 import Interface.PartsRobotAgent.*;
 import Interface.VisionAgent.Vision;
 
@@ -95,7 +96,7 @@ public class NestAgent extends Agent implements Nest{
 			for(int i = 0; i<8; i++)
 			{
 				if(nestslots[i] != null){
-					if(!nestslots[i].partinfo.equals(partinfo))
+					if(!nestslots[i].info.equals(partinfo))
 						animationstate = AnimationStatus.needPurge;
 				}
 			}

@@ -22,7 +22,7 @@ public class LaneAgent extends Agent implements Lane{
 	
 	int index = 0;
 	
-	public List<PartInfo> lanequeue = new ArrayList<PartInfo>();
+	public List<Part> lanequeue = new ArrayList<Part>();
 	
 	public PartInfo type = null;
 	
@@ -70,7 +70,7 @@ public class LaneAgent extends Agent implements Lane{
 	}
 	
 	public void msgHereIsAPart(PartInfo p){
-		lanequeue.add(p);
+		lanequeue.add(new Part(p));
 		lanestate = LaneStatus.hasParts;
 		stateChanged();
 	}
@@ -85,7 +85,7 @@ public class LaneAgent extends Agent implements Lane{
 		if(lanestate!= LaneStatus.partsAtEndOfLane){
 			print("Part at end of lane");
 			if(lanequeue.isEmpty()){
-				lanequeue.add(new PartInfo(type.getName(),type.getImagePath()));
+				lanequeue.add(new Part(type));
 			}
 			lanestate = LaneStatus.partsAtEndOfLane;
 			stateChanged();

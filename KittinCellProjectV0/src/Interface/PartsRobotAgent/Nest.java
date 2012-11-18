@@ -3,7 +3,6 @@ package Interface.PartsRobotAgent;
 
 import Agents.VisionAgent.VisionAgent;
 import data.*;
-import data.Part.PartType;
 
 public interface Nest {
 	

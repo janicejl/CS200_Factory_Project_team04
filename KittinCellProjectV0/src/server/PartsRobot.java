@@ -48,6 +48,7 @@ public class PartsRobot implements Runnable, Serializable{
     ArrayList<Part> partsHeld;
     float opacity;
     boolean animationDone;
+    boolean movingMsg;
     boolean dumped;
 
     public PartsRobot(KitAssemblyManager _app){
@@ -77,6 +78,7 @@ public class PartsRobot implements Runnable, Serializable{
         commands = new ArrayList<String>();
         subCommands = new ArrayList<String>();
         msg = new Boolean(false);
+        movingMsg = false;
         dumped = false;
         
         try {
@@ -181,6 +183,7 @@ public class PartsRobot implements Runnable, Serializable{
                     if("r".equals(ssc[0])){
                         newAngle = Double.parseDouble(ssc[1]);
                         subCommands.remove(0);
+                        movingMsg = true;
                     }
                 }
             }
@@ -338,6 +341,14 @@ public class PartsRobot implements Runnable, Serializable{
 
 	public void setDumped(boolean dumped) {
 		this.dumped = dumped;
+	}
+
+	public boolean isMovingMsg() {
+		return movingMsg;
+	}
+
+	public void setMovingMsg(boolean movingMsg) {
+		this.movingMsg = movingMsg;
 	}
 
 	public void update(){

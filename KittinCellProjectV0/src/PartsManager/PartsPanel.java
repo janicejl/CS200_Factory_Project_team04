@@ -43,7 +43,7 @@ public class PartsPanel extends JPanel implements ActionListener{
 		if(ae.getSource()== managePanel.manageButtons.get(0)){
 			//create Part
 			PartInfo tempPart = new PartInfo(managePanel.infoFields.get(0).getText(), "images/kt" + managePanel.imagesSelectBox.getSelectedIndex() + ".png");
-			tempPart.setType(managePanel.imagesSelectBox.getSelectedIndex());
+//			tempPart.setType(managePanel.imagesSelectBox.getSelectedIndex());
 			tempPart.setIdNumber(Integer.parseInt(managePanel.infoFields.get(1).getText()));
 			tempPart.setDescription(managePanel.descriptionArea.getText());
 			app.getPartsList().add(tempPart);

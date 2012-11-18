@@ -282,4 +282,9 @@ public class GantryManager implements Serializable,ActionListener
 	{
 		return feeders;
 	}
+	
+	public void addPartInfo(PartInfo p)
+	{
+		parts.add(new PartsBox(p));
+	}
 }

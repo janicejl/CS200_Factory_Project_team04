@@ -32,4 +32,22 @@ public class MockLane extends MockAgent implements Lane{
 		
 	}
 
+	@Override
+	public void msgHereIsAPart(Part p) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgCanIPlacePart() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getNumber() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

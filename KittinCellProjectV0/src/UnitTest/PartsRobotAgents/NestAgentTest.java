@@ -59,6 +59,7 @@ public class NestAgentTest extends TestCase {
 		
 		nest.msgHereIsPart(new Part(PartType.part1));
 		Assert.assertTrue("Has Part",nest.nestslots[0]!=null);
+		Assert.assertTrue("Only 1 Part",nest.nestslots[1]== null);
 		
 
 		

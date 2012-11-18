@@ -9,7 +9,6 @@ import Interface.GantryFeederAgent.GantryController;
 import MoveableObjects.Bin;
 import UnitTest.GantryFeederAgents.EventLog;
 import UnitTest.GantryFeederAgents.LoggedEvent;
-import data.Part;
 import data.PartInfo;
 
 public class FeederAgent extends Agent implements Feeder {
@@ -41,7 +40,7 @@ public class FeederAgent extends Agent implements Feeder {
 		
 		public MyLane(Lane f1){
 			this.fLane1 = f1;
-			partWanted = PartInfo.none;
+			partWanted = null;
 			readyForParts = false;
 		}
 	}
@@ -60,7 +59,7 @@ public class FeederAgent extends Agent implements Feeder {
 
 	@Override
 	public void msgNeedThisPart(PartInfo p, String laneName) {
-		if(requestedPart.equals(PartInfo.none)){
+		if(requestedPart.equals(null)){
 			requestedPart = p;
 		}
 		if(laneName.equals("left")){
@@ -169,13 +168,13 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	private void FeedParts(boolean divertLeft){
 		if(divertLeft){
-			left.fLane1.msgHereIsAPart(new Part(currentPart));
+			left.fLane1.msgHereIsAPart(currentPart);
 			partsInFeeder --;
 			//DoGiveLeftLaneAPart();
 			app.execute("Feed Lane", left.fLane1.getNumber());
 		}
 		else{
-			right.fLane1.msgHereIsAPart(new Part(currentPart));
+			right.fLane1.msgHereIsAPart(currentPart);
 			partsInFeeder--;
 			//DoGiveRightLaneAPart();
 			app.execute("Feed Lane", right.fLane1.getNumber());

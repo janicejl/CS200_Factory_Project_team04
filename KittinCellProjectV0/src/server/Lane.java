@@ -191,21 +191,6 @@ public class Lane implements ActionListener, Serializable{
 	public void setRelease(boolean release) {
 		this.release = release;
 	}
-
-	//f = whether or not it should release part to top lane or bottom lane. 
-    public void releasePart() {
-//    	if ( (f % 2 == 0 && feeder.getTopLane() == true) || (f % 2 == 1 && feeder.getTopLane() == false) ) {
-		if(importList.size() != 0) {
-			Part temp = importList.remove(0);
-			temp.setY(maxY/2 + verticalSpacing);
-			itemList.add(temp);
-			System.out.println("release!");
-			feeder.removePart();
-		}
-    	else {
-    		feeder.setTopLane(!feeder.getTopLane());
-    	}
-    }
     
     public Feeder getFeeder() {
 		return feeder;
@@ -225,10 +210,25 @@ public class Lane implements ActionListener, Serializable{
 
 	public void addPart(Part part) {
     	part.setX(maxX-80);
-    	part.setY(maxY/2 + verticalSpacing);
+    	part.setY(maxY/2 + verticalSpacing - 10);
     	importList.add(part);
     }
     
+	//f = whether or not it should release part to top lane or bottom lane. 
+    public void releasePart() {
+//    	if ( (f % 2 == 0 && feeder.getTopLane() == true) || (f % 2 == 1 && feeder.getTopLane() == false) ) {
+		if(importList.size() != 0) {
+			Part temp = importList.remove(0);
+			temp.setY(maxY/2 + verticalSpacing - 10);
+			itemList.add(temp);
+			System.out.println("release!");
+			feeder.removePart();
+		}
+    	else {
+    		feeder.setTopLane(!feeder.getTopLane());
+    	}
+    }
+	
     public void releaseQueue(){
     	if(itemList.size() != 0){
     		if(itemList.get(0).getDestination() == true){

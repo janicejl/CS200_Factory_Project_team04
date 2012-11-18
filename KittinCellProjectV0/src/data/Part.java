@@ -23,8 +23,6 @@ public class Part implements Serializable{
 		destination = p.getDestination();
 	}
 	
-
-	
 	public Part(Part.PartType type){
 		this.type = type;
 	}

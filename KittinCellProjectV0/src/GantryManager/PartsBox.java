@@ -1,6 +1,7 @@
 package GantryManager;
 
 import java.io.*;
+import data.PartInfo;
 
 //Class that holds parts box info such as destination, current location, and window size for painting
 public class PartsBox implements Serializable
@@ -18,6 +19,8 @@ public class PartsBox implements Serializable
 	static int ydim = 100;
 	static int xmax = 325;
 	static int ymax = 600;
+	PartInfo info;
+	
 	
 	public PartsBox(int c)
 	{
@@ -40,6 +43,18 @@ public class PartsBox implements Serializable
 			cycles = 0;
 			feeder = -1;
 		}
+	}
+	
+	public PartsBox(PartInfo i)
+	{
+		xCurrent = xmax+5;
+		xFinal = xCurrent;
+		yCurrent = (ymax/2)-(ydim/2)+45;
+		yFinal = yCurrent;
+		state = "wait";
+		cycles = 0;
+		feeder = -1;
+		info = i;
 	}
 	
 	//Updates the state when moving down conveyor, also updates x and y coordinates to move toward final
@@ -150,5 +165,10 @@ public class PartsBox implements Serializable
 			return true;
 		else 
 			return false;
+	}
+	
+	public PartInfo getPartInfo()
+	{
+		return info;
 	}
 }

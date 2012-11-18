@@ -12,7 +12,7 @@ public class Feeder implements Serializable{
 	private double x;
 	private double y;
 	private double partAmount;
-	
+	private boolean moving;
 	private boolean topLane;
 	private boolean empty;
 	private ArrayList<Part> parts;
@@ -25,6 +25,7 @@ public class Feeder implements Serializable{
 		
 		partAmount = 0;
 		empty = true;
+		moving = false;
 		topLane = true;
 	}
 	
@@ -107,5 +108,13 @@ public class Feeder implements Serializable{
 	
 	public Boolean getTopLane() {
 		return topLane;
+	}
+
+	public boolean isMoving() {
+		return moving;
+	}
+
+	public void setMoving(boolean moving) {
+		this.moving = moving;
 	}
 }

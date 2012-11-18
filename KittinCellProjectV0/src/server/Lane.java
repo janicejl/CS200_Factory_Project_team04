@@ -21,6 +21,8 @@ public class Lane implements ActionListener, Serializable{
     private boolean queueFull; 
     private boolean openGate;
     private Feeder feeder;
+    private boolean release = false;
+    private int releaseCount = 0;
     private Nest nest;
     private boolean atQueue = false;
     private int gateCounter;
@@ -179,22 +181,46 @@ public class Lane implements ActionListener, Serializable{
 		this.atQueue = atQueue;
 	}
 
+	public boolean isRelease() {
+		return release;
+	}
+
+	public void setRelease(boolean release) {
+		this.release = release;
+	}
+
 	//f = whether or not it should release part to top lane or bottom lane. 
-    public void releasePart(int f) {
-    	if ( (f % 2 == 0 && feeder.getTopLane() == true) || (f % 2 == 1 && feeder.getTopLane() == false) ) {
-    		if(importList.size() != 0) {
-    			Part temp = importList.remove(0);
-    			temp.setY(maxY/2 + verticalSpacing);
-    			itemList.add(temp);
-    			System.out.println("release!");
-    			feeder.removePart();
-    		}
-    	} else {
+    public void releasePart() {
+//    	if ( (f % 2 == 0 && feeder.getTopLane() == true) || (f % 2 == 1 && feeder.getTopLane() == false) ) {
+		if(importList.size() != 0) {
+			Part temp = importList.remove(0);
+			temp.setY(maxY/2 + verticalSpacing);
+			itemList.add(temp);
+			System.out.println("release!");
+			feeder.removePart();
+		}
+    	else {
     		feeder.setTopLane(!feeder.getTopLane());
     	}
     }
     
-    public void addPart(Part part) {
+    public Feeder getFeeder() {
+		return feeder;
+	}
+
+	public void setFeeder(Feeder feeder) {
+		this.feeder = feeder;
+	}
+
+	public int getReleaseCount() {
+		return releaseCount;
+	}
+
+	public void setReleaseCount(int releaseCount) {
+		this.releaseCount = releaseCount;
+	}
+
+	public void addPart(Part part) {
     	part.setX(maxX-80);
     	part.setY(maxY/2 + verticalSpacing);
     	importList.add(part);

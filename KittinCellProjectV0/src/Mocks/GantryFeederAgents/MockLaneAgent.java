@@ -1,6 +1,5 @@
 package Mocks.GantryFeederAgents;
-import data.Part;
-import data.Part.PartType;
+import data.PartInfo;
 import Interface.PartsRobotAgent.*;
 import Mocks.KitRobotAgents.MockAgent;
 import UnitTest.KitRobotAgents.*;
@@ -22,7 +21,7 @@ public class MockLaneAgent extends MockAgent implements Lane{
 	}
 
 	@Override
-	public void msgNeedThisPart(PartType type) {
+	public void msgNeedThisPart(PartInfo type) {
 		log.add(new LoggedEvent("Nest Wants Part"));
 		
 	}
@@ -34,7 +33,7 @@ public class MockLaneAgent extends MockAgent implements Lane{
 	}
 
 	@Override
-	public void msgHereIsAPart(Part p) {
+	public void msgHereIsAPart(PartInfo p) {
 		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("msgHereIsAPart received from Feeder."));
 	}

@@ -79,21 +79,33 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		while(i<manager.getPartsBoxes().size())
 		{
 			g2.drawImage(crate, manager.getPartsBoxes().get(i).getxCurrent(), manager.getPartsBoxes().get(i).getyCurrent(), null);
-			g2.drawImage(part, manager.getPartsBoxes().get(i).getxCurrent()+13, manager.getPartsBoxes().get(i).getyCurrent()+35,null);
+			try
+			{
+				g2.drawImage(ImageIO.read(new File(manager.getPartsBoxes().get(i).getPartInfo().getImagePath())), manager.getPartsBoxes().get(i).getxCurrent()+13, manager.getPartsBoxes().get(i).getyCurrent()+35,null);
+			}
+			catch(IOException e){}
 			i++;
 		}
 		i=0;
 		while(i<manager.getExiting().size())
 		{
 			g2.drawImage(crate,manager.getExiting().get(i).getxCurrent(),manager.getExiting().get(i).getyCurrent(),null);
-			g2.drawImage(part,manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
+			try
+			{
+				g2.drawImage(ImageIO.read(new File(manager.getPartsBoxes().get(i).getPartInfo().getImagePath())),manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
+			}
+			catch(IOException e){}
 			i++;
 		}
 		i=0;
 		while(i<manager.getPurged().size())
 		{
 			g2.drawImage(crate,manager.getPurged().get(i).getxCurrent(),manager.getPurged().get(i).getyCurrent(),null);
-			g2.drawImage(part, manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
+			try
+			{
+				g2.drawImage(ImageIO.read(new File(manager.getPartsBoxes().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
+			}
+			catch(IOException e){}
 			i++;
 		}
 		g2.drawImage(rail, manager.getGantry().getxCurrent()+10,0,null);

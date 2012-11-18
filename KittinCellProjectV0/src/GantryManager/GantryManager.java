@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.*;
 import java.util.Random;
 import java.awt.event.*;
+import Feeder.Feeder;
+import data.PartInfo;
 
 //Simulation class, handles the gantry as well as all of the parts boxes and logic of states
 public class GantryManager implements Serializable,ActionListener
@@ -13,6 +15,7 @@ public class GantryManager implements Serializable,ActionListener
 	Vector<Integer> feeders;
 	Vector<PartsBox> exiting; //Partsboxes that are leaving the factory
 	Vector<PartsBox> purged; //Partsboxes that have been purged
+	ArrayList<Feeder> feeder;
 	int speed;
 	Random rand;
 	
@@ -22,7 +25,7 @@ public class GantryManager implements Serializable,ActionListener
 		gantry = new Gantry();
 		
 		parts = new Vector<PartsBox>();
-		parts.add(new PartsBox(100)); //Initial box placed on conveyor, for testing only
+		parts.add(new PartsBox(new PartInfo("test","images/part.png"))); //Initial box placed on conveyor, for testing only
 		
 		//Populating the feeders
 		feeders = new Vector<Integer>();
@@ -93,7 +96,7 @@ public class GantryManager implements Serializable,ActionListener
 			}
 			if(go==false && parts.size()<9) //Up to 9 parts boxes visible in the factory at any one time
 			{
-				parts.add(new PartsBox((rand.nextInt(10)+1)*20));
+				parts.add(new PartsBox(new PartInfo("test","images/part.png")));
 			}
 		}
 		
@@ -266,5 +269,10 @@ public class GantryManager implements Serializable,ActionListener
 	public Vector<PartsBox> getPurged()
 	{
 		return purged;
+	}
+	
+	public void setFeeders(ArrayList<Feeder> f)
+	{
+		feeder = f;
 	}
 }

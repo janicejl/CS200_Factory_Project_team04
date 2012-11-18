@@ -327,7 +327,6 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		return true;
 	}*/
 		//print("Nothing to do, sleeping");
-		print("current"+animationstate);
 		return false;
 	}
 

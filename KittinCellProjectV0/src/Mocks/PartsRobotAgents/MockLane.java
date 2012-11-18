@@ -27,7 +27,7 @@ public class MockLane extends MockAgent implements Lane{
 	}
 
 	@Override
-	public void msgPartAtEndOfLane(Part p) {
+	public void msgPartAtEndOfLane() {
 		log.add(new LoggedEvent("Part at End of Lane"));
 		
 	}

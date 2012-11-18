@@ -18,6 +18,7 @@ import Agents.GantryFeederAgents.GantryControllerAgent;
 import Agents.KitRobotAgents.KitConveyorAgent;
 import Agents.KitRobotAgents.KitRobotAgent;
 import Agents.KitRobotAgents.KitStandAgent;
+import Agents.PartsRobotAgent.LaneAgent;
 import Agents.PartsRobotAgent.NestAgent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
 import Agents.VisionAgent.VisionAgent;
@@ -59,6 +60,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	PartsRobot partsRobot;
 	PartsRobotAgent partsRobotAgent;
+	ArrayList<LaneAgent> laneagents = new ArrayList<LaneAgent>();
 	ArrayList<NestAgent> nests = new ArrayList<NestAgent>();
 	VisionAgent nestvisionagent1;
 	VisionAgent nestvisionagent2;
@@ -215,6 +217,34 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	nests.add(nest6);
     	nests.add(nest7);
     	nests.add(nest8);
+    	LaneAgent lane1 = new LaneAgent(nest1,this,"laneagent1",0);
+    	LaneAgent lane2 = new LaneAgent(nest2,this,"laneagent2",1);
+    	LaneAgent lane3 = new LaneAgent(nest3,this,"laneagent3",2);
+    	LaneAgent lane4 = new LaneAgent(nest4,this,"laneagent4",3);
+    	LaneAgent lane5 = new LaneAgent(nest5,this,"laneagent5",4);
+    	LaneAgent lane6 = new LaneAgent(nest6,this,"laneagent6",5);
+    	LaneAgent lane7 = new LaneAgent(nest7,this,"laneagent7",6);
+    	LaneAgent lane8 = new LaneAgent(nest8,this,"laneagent8",7);
+    	laneagents.add(lane1);
+    	laneagents.add(lane2);
+    	laneagents.add(lane3);
+    	laneagents.add(lane4);
+    	laneagents.add(lane5);
+    	laneagents.add(lane6);
+    	laneagents.add(lane7);
+    	laneagents.add(lane8);
+    	nest1.setLane(lane1);
+    	nest2.setLane(lane2);
+    	nest3.setLane(lane3);
+    	nest4.setLane(lane4);
+    	nest5.setLane(lane5);
+    	nest6.setLane(lane6);
+    	nest7.setLane(lane7);
+    	nest8.setLane(lane8);
+
+
+    	
+
     	
 		kitRobotAgent = new KitRobotAgent(this);
 		kitStandAgent = new KitStandAgent(this); 
@@ -240,6 +270,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
         for(NestAgent nest : nests){
         	nest.setPartsRobotAgent(partsRobotAgent);
         	nest.startThread();
+        }
+        for(LaneAgent lane : laneagents){
+        	lane.startThread();
         }
         nestvisionagent1 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
         nestvisionagent2 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
@@ -532,7 +565,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		for(int i = 0; i < lanes.size(); i++){
 			lanes.get(i).actionPerformed(e);
 			if(lanes.get(i).isAtQueue()){
-				//send msg part at queue
+				laneagents.get(i).msgPartAtEndOfLane();
 			}
 		}
 		gantryManager.actionPerformed(e);

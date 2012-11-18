@@ -226,7 +226,7 @@ public class VisionAgent extends Agent implements Vision {
 		nest1 = null;
 		nest2 = null;
 		
-		state = State.IDLE;
+		//state = State.IDLE;
 		stateChanged();
 		
 	}

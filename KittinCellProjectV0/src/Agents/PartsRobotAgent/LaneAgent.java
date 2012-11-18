@@ -20,6 +20,8 @@ public class LaneAgent extends Agent implements Lane{
 	Nest nest;
 	Server server;
 	
+	int index = 0;
+	
 	List<Part> lanequeue = new ArrayList<Part>();
 	
 	PartType type = PartType.none;
@@ -35,16 +37,25 @@ public class LaneAgent extends Agent implements Lane{
 	private enum LaneStatus{noParts,hasParts,partsAtEndOfLane}
 	
 	
-	public LaneAgent(Nest mynest,FeederAgent feed,Server server,String name){
+	public LaneAgent(Nest mynest,FeederAgent feed,Server server,String name,int index){
 		this.server = server;
 		this.nest = mynest;
 		this.feeder = feed;
 		this.name = name;
+		this.index = index;
+	}
+	
+	public LaneAgent(Nest mynest, Server server,String name,int index){
+		this.server =server;
+		this.nest = mynest;
+		this.name = name;
+		this.index = index;
 	}
 	
 	@Override
 	public void msgReadyForPart() {
 		neststate = NestStatus.readyForPart;
+		print("Nest ready to give part");
 		stateChanged();
 	}
 
@@ -53,6 +64,7 @@ public class LaneAgent extends Agent implements Lane{
 		if(this.type != type)
 			orderstate = OrderStatus.partRequested;
 		this.type = type;
+		print("Received Part Order");
 		stateChanged();
 		
 	}
@@ -69,10 +81,15 @@ public class LaneAgent extends Agent implements Lane{
 	}
 	
 	@Override
-	public void msgPartAtEndOfLane(Part p) {
-		lanestate = LaneStatus.partsAtEndOfLane;
-		stateChanged();
-		
+	public void msgPartAtEndOfLane() {
+		if(lanestate!= LaneStatus.partsAtEndOfLane){
+			print("Part at end of lane");
+			if(lanequeue.isEmpty()){
+				lanequeue.add(new Part(type));
+			}
+			lanestate = LaneStatus.partsAtEndOfLane;
+			stateChanged();
+		}
 	}
 
 	@Override
@@ -81,12 +98,14 @@ public class LaneAgent extends Agent implements Lane{
 			askForPart();
 			return true;
 		}
-		if(lanestate == LaneStatus.partsAtEndOfLane && neststate != NestStatus.askedToTakePart){
-			askToGivePart();
-			return true;
-		}
+		
 		if(neststate ==  NestStatus.readyForPart){
 			givePart();
+			return true;
+		}
+		
+		if(lanestate == LaneStatus.partsAtEndOfLane && neststate != NestStatus.askedToTakePart){
+			askToGivePart();
 			return true;
 		}
 		
@@ -104,6 +123,7 @@ public class LaneAgent extends Agent implements Lane{
 		return false;
 	}
 	private void askForPart(){
+		if(feeder!=null)
 		feeder.msgNeedThisPart(type, name);
 		orderstate = OrderStatus.partOrdered;
 	}
@@ -116,6 +136,7 @@ public class LaneAgent extends Agent implements Lane{
 		neststate = NestStatus.askedToTakePart;		
 	}
 	private void givePart(){
+		print("Giving Part");
 		nest.msgHereIsPart(lanequeue.get(0));
 		lanequeue.remove(0);
 		neststate = NestStatus.noAction;
@@ -125,6 +146,7 @@ public class LaneAgent extends Agent implements Lane{
 		else{
 			lanestate = LaneStatus.noParts;
 		}
+		server.execute("Feed Nest",index);
 		
 	}
 	public boolean hasParts(){
@@ -135,6 +157,11 @@ public class LaneAgent extends Agent implements Lane{
 			return false;
 		}
 	}
-	
+	public void setFeeder(FeederAgent feeder){
+		this.feeder = feeder;
+	}
+	public String getName(){
+		return name;
+	}
 	
 }

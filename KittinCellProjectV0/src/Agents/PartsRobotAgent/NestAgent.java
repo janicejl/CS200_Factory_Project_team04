@@ -11,7 +11,7 @@ public class NestAgent extends Agent implements Nest{
 
 	//Data
 	Part.PartType parttype;
-	Part[] nestslots = new Part[9];
+	Part[] nestslots = new Part[8];
 	PartsRobotAgent partsrobot;
 	Lane lane;
 	VisionAgent camera;
@@ -36,7 +36,7 @@ public class NestAgent extends Agent implements Nest{
 		this.camera = camera;
 		this.index = index;
 		name = "NestAgent " + index;
-		for(int i = 0; i<9; i++){
+		for(int i = 0; i<8; i++){
 			nestslots[i]=null;
 		}
 	}
@@ -48,7 +48,7 @@ public class NestAgent extends Agent implements Nest{
 		this.index = index;
 		this.server = server;
 		name = "NestAgent " + index;
-		for(int i = 0; i<9; i++){
+		for(int i = 0; i<8; i++){
 			nestslots[i]=null;
 		}
 	}	
@@ -64,7 +64,7 @@ public class NestAgent extends Agent implements Nest{
 	}
 	public void msgHereIsPart(Part p)
 	{
-			for(int i = 0; i < 9; i++)
+			for(int i = 0; i < 8; i++)
 			{
 				if(nestslots[i]== null)
 				{
@@ -91,7 +91,7 @@ public class NestAgent extends Agent implements Nest{
 
 	public void msgNeedThisPart(Part.PartType type)
 	{
-			for(int i = 0; i<9; i++)
+			for(int i = 0; i<8; i++)
 			{
 				if(nestslots[i] != null){
 					if(nestslots[i].type != type)
@@ -143,7 +143,7 @@ public class NestAgent extends Agent implements Nest{
 		
 		if(lanestate == LaneStatus.hasPart)
 		{
-			for(int i = 0; i<9; i++)
+			for(int i = 0; i<8; i++)
 			{
 				if(nestslots[i] == null)
 				{
@@ -200,7 +200,7 @@ public class NestAgent extends Agent implements Nest{
 	{
 		//NestSettlingAnimation
 		//gui.DoSettleNest(); // Settle Nest so that the parts behind in the nest move to the front
-		for(int i = 0; i<8; i++){
+		for(int i = 0; i<7; i++){
 			if(nestslots[i] == null && nestslots[i+1]!= null){
 				print("settling");
 				nestslots[i] = nestslots[i+1];
@@ -245,6 +245,9 @@ public class NestAgent extends Agent implements Nest{
 	
 	public Integer getIndex() {
 		return index;
+	}
+	public void setLane(Lane newlane){
+		this.lane = newlane;
 	}
 	
 }

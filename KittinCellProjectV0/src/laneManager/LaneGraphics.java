@@ -168,12 +168,14 @@ public class LaneGraphics extends JPanel implements ActionListener {
 			gNests.get(i).paintNest(g2, 1);
 		}
 		
+		double x1, y1, x2, y2 = 0;
 		//Display gates
 		for(int i = 0; i < lanes.size(); i++) {		
-			double x1 = lanes.get(i).getGate().getBottomNodeX();
-			double y1 = lanes.get(i).getGate().getBottomNodeY();
-			double x2 = lanes.get(i).getGate().getTopNodeX();
-			double y2 = lanes.get(i).getGate().getTopNodeY();	
+			x1 = lanes.get(i).getGate().getBottomNodeX();
+			y1 = lanes.get(i).getGate().getBottomNodeY();
+			x2 = lanes.get(i).getGate().getTopNodeX();
+			y2 = lanes.get(i).getGate().getTopNodeY();	
+			//System.out.println("Positions: (" + x1 + ", " + y1 + "), (" + x2 + ", " + y2 + ").");
 			Shape l = new Line2D.Double(x1, y1, x2, y2);
 			g2.setColor(Color.WHITE);
             g2.draw(l);

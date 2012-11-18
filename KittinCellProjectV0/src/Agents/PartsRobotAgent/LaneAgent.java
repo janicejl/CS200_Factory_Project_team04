@@ -163,5 +163,8 @@ public class LaneAgent extends Agent implements Lane{
 	public String getName(){
 		return name;
 	}
+	public int getNumber(){
+		return index;
+	}
 	
 }

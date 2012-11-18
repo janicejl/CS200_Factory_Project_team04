@@ -6,31 +6,32 @@ import server.Server;
 import data.*;
 import data.Part.PartType;
 import Interface.PartsRobotAgent.*;
+import Interface.VisionAgent.Vision;
 
 public class NestAgent extends Agent implements Nest{
 
 	//Data
-	Part.PartType parttype;
-	Part[] nestslots = new Part[8];
-	PartsRobotAgent partsrobot;
+	public Part.PartType parttype;
+	public Part[] nestslots = new Part[8];
+	PartsRobot partsrobot;
 	Lane lane;
-	VisionAgent camera;
+	Vision camera;
 	String name;
 	Server server;
 		
 	public int index;
 
-	private enum LaneStatus {hasPart, gettingParts, noAction}
-	private enum PartsRobotStatus {wantsParts, waitingForParts, noAction,readyforpart}
-	private enum NestStatus {badParts, noParts, needCheck, noAction}
-	private enum AnimationStatus {purging, needPurge, needSettle, noAction}
+	public enum LaneStatus {hasPart, gettingParts, noAction}
+	public enum PartsRobotStatus {wantsParts, waitingForParts, noAction,readyforpart}
+	public enum NestStatus {badParts, noParts, needCheck, noAction}
+	public enum AnimationStatus {purging, needPurge, needSettle, noAction}
 	
-	LaneStatus lanestate = LaneStatus.noAction;
-	PartsRobotStatus partsrobotstate= PartsRobotStatus.noAction;
-	NestStatus neststate = NestStatus.noParts;
-	AnimationStatus animationstate = AnimationStatus.noAction;
+	public LaneStatus lanestate = LaneStatus.noAction;
+	public PartsRobotStatus partsrobotstate= PartsRobotStatus.noAction;
+	public NestStatus neststate = NestStatus.noParts;
+	public AnimationStatus animationstate = AnimationStatus.noAction;
 	
-	public NestAgent(Lane lane, VisionAgent camera, int index)
+	public NestAgent(Lane lane, Vision camera, int index)
 	{
 		this.lane = lane;
 		this.camera = camera;
@@ -53,7 +54,7 @@ public class NestAgent extends Agent implements Nest{
 		}
 	}	
 
-	public void setPartsRobotAgent(PartsRobotAgent robot){
+	public void setPartsRobotAgent(PartsRobot robot){
 		this.partsrobot = robot;
 	}
 	//Messages

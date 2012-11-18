@@ -22,7 +22,7 @@ public class MockLane extends MockAgent implements Lane{
 
 	@Override
 	public void msgNeedThisPart(PartType type) {
-		log.add(new LoggedEvent("Nest Ready for Part"));
+		log.add(new LoggedEvent("Nest Wants Part"));
 		
 	}
 

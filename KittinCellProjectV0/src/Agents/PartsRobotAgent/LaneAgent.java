@@ -1,6 +1,7 @@
 package Agents.PartsRobotAgent;
 
 
+import data.Part;
 import data.PartInfo;
 import Agent.Agent;
 import Agents.GantryFeederAgents.FeederAgent;
@@ -84,7 +85,7 @@ public class LaneAgent extends Agent implements Lane{
 		if(lanestate!= LaneStatus.partsAtEndOfLane){
 			print("Part at end of lane");
 			if(lanequeue.isEmpty()){
-				lanequeue.add(new PartInfo(type));
+				lanequeue.add(new PartInfo(type.getName(),type.getImagePath()));
 			}
 			lanestate = LaneStatus.partsAtEndOfLane;
 			stateChanged();

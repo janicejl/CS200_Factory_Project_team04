@@ -410,7 +410,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Feed Lane")){
     		if (feeders.get(num/2).getPartAmount() > 0){
     			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
-    			lanes.get(num).releasePart();
+    			//lanes.get(num).releasePart();
     		}
     		//feeders.get(num/2).removePart();
     	}

@@ -11,7 +11,7 @@ import Interface.VisionAgent.Vision;
 public class NestAgent extends Agent implements Nest{
 
 	//Data
-	public Part.PartType parttype;
+	public PartInfo partinfo;
 	public Part[] nestslots = new Part[8];
 	PartsRobot partsrobot;
 	Lane lane;
@@ -90,17 +90,17 @@ public class NestAgent extends Agent implements Nest{
 		stateChanged();
 	}
 
-	public void msgNeedThisPart(Part.PartType type)
+	public void msgNeedThisPart(PartInfo p)
 	{
 			for(int i = 0; i<8; i++)
 			{
 				if(nestslots[i] != null){
-					if(nestslots[i].type != type)
+					if(!nestslots[i].partinfo.equals(partinfo))
 						animationstate = AnimationStatus.needPurge;
 				}
 			}
 					
-			parttype = type;
+			partinfo = p;
 			partsrobotstate = PartsRobotStatus.wantsParts;
 			
 			stateChanged();
@@ -153,7 +153,7 @@ public class NestAgent extends Agent implements Nest{
 		
 		if(lanestate == LaneStatus.hasPart)
 		{
-			for(int i = 0; i<6; i++)
+			for(int i = 0; i<7; i++)
 			{
 				if(nestslots[i] == null)
 				{
@@ -195,6 +195,7 @@ public class NestAgent extends Agent implements Nest{
 
 	private void acceptPart()
 	{
+		
 		print("Ready to take the part");
 		lane.msgReadyForPart();
 		lanestate = LaneStatus.noAction;
@@ -237,7 +238,7 @@ public class NestAgent extends Agent implements Nest{
 	{
 		print("Please give me a part");
 		if(lane!= null)
-		lane.msgNeedThisPart (parttype);
+		lane.msgNeedThisPart (partinfo);
 		partsrobotstate = PartsRobotStatus.waitingForParts;
 	}
 	
@@ -249,8 +250,8 @@ public class NestAgent extends Agent implements Nest{
 		return index;
 	}
 
-	public PartType getPartType() {
-		return parttype;
+	public PartInfo getPartInfo() {
+		return partinfo;
 	}
 	
 	public void setVisionAgent(VisionAgent camera){

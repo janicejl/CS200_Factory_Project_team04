@@ -85,7 +85,12 @@ public class LaneAgent extends Agent implements Lane{
 		if(lanestate!= LaneStatus.partsAtEndOfLane){
 			print("Part at end of lane");
 			if(lanequeue.isEmpty()){
-				lanequeue.add(new Part(type));
+				if(type == null){
+					lanequeue.add(new Part(new PartInfo("test","image")));
+				}
+				else{
+					lanequeue.add(new Part(type));
+				}
 			}
 			lanestate = LaneStatus.partsAtEndOfLane;
 			stateChanged();

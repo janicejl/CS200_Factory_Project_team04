@@ -509,8 +509,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	}
     	else if(process.equals("Get Job")){
     	     if(jobsList.size() != 0){
-    	    	 getPartsRobotAgent().msgMakeThisKit(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
-    	    	 getKitRobotAgent().msgGetKits(jobsList.get(0).getAmount());
+    	    	 getFCSAgent().msgHereIsKitConfig(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
+//    	    	 getPartsRobotAgent().msgMakeThisKit(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
+//    	    	 getKitRobotAgent().msgGetKits(jobsList.get(0).getAmount());
     	     }
     	}
     }
@@ -799,6 +800,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public void setGantryController(GantryControllerAgent gantryController) {
 		this.gantryController = gantryController;
+	}
+
+	public FCSAgent getFCSAgent() {
+		return FCSAgent;
+	}
+
+	public void setFCSAgent(FCSAgent fCSAgent) {
+		FCSAgent = fCSAgent;
 	}
 
 	public void addGantryPart(PartInfo p)

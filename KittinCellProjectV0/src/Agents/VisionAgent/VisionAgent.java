@@ -6,8 +6,6 @@ import server.Server;
 import java.util.concurrent.*;
 
 import Agent.*;
-import Agents.PartsRobotAgent.*;
-import Interface.VisionAgent.*;
 import Interface.VisionAgent.Vision;
 import Interface.KitRobotAgent.*;
 import Interface.PartsRobotAgent.*;
@@ -28,13 +26,13 @@ public class VisionAgent extends Agent implements Vision {
 	Map<Integer, Nest> fullNestsMap = Collections.synchronizedMap( new TreeMap<Integer, Nest>() ); // list of all the nests that are full and ready to have their picture taken
 	List<PartInfo> fullNestsPartsList = Collections.synchronizedList( new ArrayList<PartInfo>() ); // parallel array that holds all parts that each nest is supposed to hold
 	
-	enum State {IDLE, SCHEMATIC_RECEIVED, READY_TO_TAKE_PICTURE, PICTURE_TAKEN};
-	enum Type {NESTS_INSPECTOR, KIT_INSPECTOR};
+	public enum State {IDLE, SCHEMATIC_RECEIVED, READY_TO_TAKE_PICTURE, PICTURE_TAKEN};
+	public enum Type {NESTS_INSPECTOR, KIT_INSPECTOR};
 	
 	Semaphore flashpermit;
 	
-	State state;
-	Type type;
+	public State state;
+	public Type type;
 	
 	Kit currentKit;
 

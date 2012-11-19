@@ -22,7 +22,7 @@ public class KitStandTesting {
 		KitStandAgent kit_agent = new KitStandAgent(server);
 		
 		MockKitRobot robot = new MockKitRobot("robot");
-		kit_agent.SetPartsRobotAgent((PartsRobot) robot);
+		kit_agent.SetRobotAgent(robot);
 		kit_agent.msgCanIPlaceKit();
 		
 		assertEquals("Mock robot should have no messages",0,robot.log.size());

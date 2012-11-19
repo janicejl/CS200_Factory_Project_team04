@@ -22,6 +22,7 @@ import Agents.PartsRobotAgent.LaneAgent;
 import Agents.PartsRobotAgent.NestAgent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
 import Agents.VisionAgent.VisionAgent;
+import Agents.FCSAgent.FCSAgent;
 import Interface.*;
 import Interface.VisionAgent.Vision;
 import Feeder.Feeder;
@@ -58,6 +59,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	String productionCommand = "Idle";
 	String partsCommand = "Idle";
 	
+	FCSAgent FCSAgent;
 	PartsRobot partsRobot;
 	PartsRobotAgent partsRobotAgent;
 	ArrayList<LaneAgent> laneagents = new ArrayList<LaneAgent>();
@@ -290,7 +292,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
         nestvisionagent2.startThread();
         nestvisionagent3.startThread();
         nestvisionagent4.startThread();
-
+        
+        FCSAgent = new FCSAgent(this, partsRobotAgent, kitRobotAgent, gantryController);
+        FCSAgent.startThread();
 
         
 		partsRobotAgent.startThread();

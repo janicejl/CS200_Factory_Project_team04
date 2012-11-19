@@ -10,29 +10,13 @@ public class PartsBox implements Serializable
 	int yFinal;
 	int xCurrent;
 	int yCurrent;
-	int count;
-	int index;
 	int feeder;
 	String state;
-	int cycles;
 	static int xdim = 50;
 	static int ydim = 100;
 	static int xmax = 325;
 	static int ymax = 600;
 	PartInfo info;
-	
-	
-	public PartsBox(int c)
-	{
-		count = c;
-		xCurrent = xmax+5;
-		xFinal = xCurrent;
-		yCurrent = 310;
-		yFinal = yCurrent;
-		state = "wait";
-		cycles = 0;
-		feeder = -1;
-	}
 	
 	public PartsBox(PartInfo i)
 	{
@@ -41,7 +25,6 @@ public class PartsBox implements Serializable
 		yCurrent = 310;
 		yFinal = yCurrent;
 		state = "wait";
-		cycles = 0;
 		feeder = -1;
 		info = i;
 	}
@@ -122,16 +105,6 @@ public class PartsBox implements Serializable
 	public void setyCurrent(int yCurrent) 
 	{
 		this.yCurrent = yCurrent;
-	}
-
-	public int getIndex() 
-	{
-		return index;
-	}
-
-	public void setIndex(int index) 
-	{
-		this.index = index;
 	}
 
 	public int getFeeder() 

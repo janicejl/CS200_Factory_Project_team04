@@ -25,6 +25,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
     boolean emptyConveyorOn;
     boolean badConveyorOn;
     boolean incompleteConveyorOn;
+    boolean kitStandMsg;
     Boolean msg;
     int idCounter;
     double conveyorSpeed = 1;
@@ -51,6 +52,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
         emptyKits = new ArrayList<Kit>();
         finishedKits = new ArrayList<Kit>();
         msg = new Boolean(false);
+        kitStandMsg = false;
     }
 
     public void run(){
@@ -94,12 +96,14 @@ public class KitAssemblyManager implements Runnable, Serializable{
             getStationKits().set(i,k);
             getStationKits().get(3).setPosition(80,490);
             System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
+            kitStandMsg = true;
         }
         else if(i == 4){
             System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
             getStationKits().set(i,k);
             getStationKits().get(4).setPosition(10,490);
             System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
+            kitStandMsg = true;
         }
         else if(i == 5){
         	getStationKits().set(i,k);
@@ -264,5 +268,13 @@ public class KitAssemblyManager implements Runnable, Serializable{
 
 	public void setChecked(boolean checked) {
 		this.checked = checked;
+	}
+
+	public boolean isKitStandMsg() {
+		return kitStandMsg;
+	}
+
+	public void setKitStandMsg(boolean kitStandMsg) {
+		this.kitStandMsg = kitStandMsg;
 	}
 }

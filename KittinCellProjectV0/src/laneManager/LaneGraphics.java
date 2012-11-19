@@ -131,8 +131,12 @@ public class LaneGraphics extends JPanel implements ActionListener {
         g2.setColor(Color.BLUE);		
         updateGUIFeeders();
 		for (int i = 0; i < lanes.size(); i++) {
-			if(i < 4) //only four nests
+			if(i < 4){ //only four nests
 				gFeeders.get(i).paintNest(g2);
+				if(managerNum == 1){
+					gFeeders.get(i).paintCrate(g2);
+				}
+			}
 			ArrayList<GUIPart> guiPart = new ArrayList<GUIPart>();
 			
 			for (int j = 0; j < lanes.get(i).getItemList().size(); j++){

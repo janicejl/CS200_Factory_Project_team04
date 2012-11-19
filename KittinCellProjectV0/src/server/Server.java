@@ -490,6 +490,23 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryFeedList.add(num);
     		}
     	}
+    	else if(process.equals("Kit Finished")){
+    	     if(jobsList.size() != 0){
+	    	     if(jobsList.get(0).getAmount() > 0){
+	    	    	 jobsList.get(0).setAmount(jobsList.get(0).getAmount() - 1);
+	    	     }
+	    	     else{
+	    	    	 jobsList.remove(0);
+	    	     }
+	    	     setProductionCommand("Update Jobs");
+    	     }
+    	}
+    	else if(process.equals("Get Job")){
+    	     if(jobsList.size() != 0){
+    	    	 getPartsRobotAgent().msgMakeThisKit(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
+    	    	 getKitRobotAgent().msgGetKits(jobsList.get(0).getAmount());
+    	     }
+    	}
     }
     
     public void execute(String process, Integer nest, Integer grip){
@@ -502,6 +519,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		if(getKitAssemblyManager().getMsg().equals(true)){
 			getKitAssemblyManager().setMsg(false);
 			getKitConveyorAgent().msgKitHasArrived();
+		}
+		if(getKitAssemblyManager().isKitStandMsg()){
+			getKitAssemblyManager().setMsg(false);
+			getKitStandAgent().msgKitAnimationOnStand();
 		}
 		if(getPartsRobot().getMsg().equals(true)){
 			getPartsRobotAgent().msgAnimationDone();

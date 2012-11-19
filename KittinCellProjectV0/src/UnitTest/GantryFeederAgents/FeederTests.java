@@ -78,6 +78,13 @@ public class FeederTests extends TestCase{
 		feeder1.pickAndExecuteAnAction();
 		assertTrue("Feeder should have 18 parts.", feeder1.getQuantity() == 18);
 		
+		feeder1.msgLaneIsFull("left");
+		assertTrue("Feeder 1 should have received msgLaneIsFull from left lane", feeder1.log.containsString("msgLaneIsFull"));
+		
+		feeder1.pickAndExecuteAnAction();
+		assertTrue("Feeder should have 18 parts.", feeder1.getQuantity() == 18);
+		
+		
 	}
 	
 	
@@ -86,12 +93,15 @@ public class FeederTests extends TestCase{
 
 		
 		feeder1.msgNeedThisPart(type1, "left");
-		assertTrue("Feeder should have received msgNeedThisPart.", feeder1.log.containsString("msgNeedThisPart") && feeder1.log.containsString("left"));
+		assertTrue("Feeder should have received msgNeedThisPart.", 
+				feeder1.log.containsString("msgNeedThisPart") && feeder1.log.containsString("left"));
 		feeder1.msgNeedThisPart(type2, "right");
-		assertTrue("Feeder should have received msgNeedThisPart.", feeder1.log.containsString("msgNeedThisPart") && feeder1.log.containsString("right"));
+		assertTrue("Feeder should have received msgNeedThisPart.", 
+				feeder1.log.containsString("msgNeedThisPart") && feeder1.log.containsString("right"));
 		
 		feeder1.pickAndExecuteAnAction();
-		assertTrue("Gantry Controller should have received msgNeedThisPart from Feeder 1", gc.log.containsString("msgNeedThisPart"));
+		assertTrue("Gantry Controller should have received msgNeedThisPart from Feeder 1",
+				gc.log.containsString("msgNeedThisPart") && gc.log.containsString("Part 1"));
 		assertTrue("Feeder 1 should have no parts.", feeder1.getQuantity() == 0);
 		
 		feeder1.msgHaveParts(gantry1);
@@ -117,6 +127,21 @@ public class FeederTests extends TestCase{
 		
 		feeder1.pickAndExecuteAnAction();
 		assertTrue("Feeder should have 18 parts.", feeder1.getQuantity() == 18);
+		
+		feeder1.msgLaneIsFull("left");
+		assertTrue("Feeder 1 should have received msgLaneIsFull from left lane", feeder1.log.containsString("msgLaneIsFull"));
+		
+		feeder1.msgLaneIsReadyForParts("right");
+		assertTrue("Feeder 1 should have received msgLaneIsReadyForParts from the right lane.", 
+				feeder1.log.containsString("msgLaneIsReadyForParts") && feeder1.log.containsString("right"));
+		
+		//System.out.println(feeder1.getState());
+		feeder1.pickAndExecuteAnAction();
+		//System.out.println(feeder1.getState());
+		assertTrue("Gantry Controller should have received msgNeedThisPart from Feeder 1 for part Part 2",
+				gc.log.containsString("msgNeedThisPart") && gc.log.containsString("Part 2"));
+		assertTrue("Feeder 1 should have no parts.", feeder1.getQuantity() == 0);
+		
 		
 	}
 

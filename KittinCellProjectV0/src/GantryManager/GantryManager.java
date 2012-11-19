@@ -23,8 +23,7 @@ public class GantryManager implements Serializable,ActionListener
 		feed = f;
 		gantry = new Gantry();
 		
-		parts = new Vector<PartsBox>();
-		parts.add(new PartsBox(new PartInfo("test","images/part.png"))); //Initial box placed on conveyor, for testing only
+		parts = new Vector<PartsBox>(); //Initial box placed on conveyor, for testing only
 		
 		//Populating the feeders
 		feeders = new Vector<PartInfo>();

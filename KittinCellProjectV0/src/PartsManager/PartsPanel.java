@@ -66,11 +66,13 @@ public class PartsPanel extends JPanel implements ActionListener{
 		app.updateEditPanel();
 	}
 	
+	// update the partList panel
 	public void updatePartList(){
 		partListPanel.updatePartList();
 		revalidate();
 	}
 	
+	//update the data
 	public void updateLoad(){
 		for(int i = 0; i < app.getPartsList().size(); i++){
 			partListPanel.addPart(app.getPartsList().get(i).getName(), new ImageIcon(app.getPartsList().get(i).getImagePath()));

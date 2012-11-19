@@ -14,4 +14,5 @@ public interface KitRobot {
 	
 	public void msgKitInspected(boolean bis_good);
 
+
 }

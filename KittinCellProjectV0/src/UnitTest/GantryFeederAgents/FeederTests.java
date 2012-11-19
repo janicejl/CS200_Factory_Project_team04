@@ -33,7 +33,7 @@ public class FeederTests extends TestCase{
 		super.setUp();
 		lane1 = new MockLaneAgent("left", 0);
 		lane2 = new MockLaneAgent("right", 1);
-		feeder1 = new FeederAgent("Feeder 1", 5, lane1, lane2, 0, new Server() );
+		feeder1 = new FeederAgent("Feeder 1", 5, lane1, lane2, 0, new Server());
 		gc = new MockGantryControllerAgent("gc");
 		gantry1 = new MockGantryAgent("Gantry 1");
 		type1 = new PartInfo("Part 1", "source 1");

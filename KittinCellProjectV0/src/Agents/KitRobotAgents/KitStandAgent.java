@@ -8,6 +8,7 @@ import java.util.List;
 import server.Server;
 
 import Agent.Agent;
+import Agents.KitRobotAgents.KitRobotAgent.KitRobotEvent;
 import Interface.PartsRobotAgent.*;
 import Interface.KitRobotAgent.KitRobot;
 import Interface.KitRobotAgent.KitStand;
@@ -45,6 +46,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	KitRobot kit_robot;
 	Vision vision;
 	Server server;
+	private boolean kit_animation_arrived;
 	
 	
 	public KitStandAgent(Server _server)
@@ -153,6 +155,13 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		stateChanged();
 	}
 	
+	public void msgKitAnimationOnStand()
+	{
+		System.out.println("KitStand: The kit has been placed");
+		kit_animation_arrived = true;
+		stateChanged();
+	}
+	
 	
 	@Override
 	public boolean pickAndExecuteAnAction() {
@@ -161,9 +170,10 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		{
 			for(KitStandEvent event:stand_events)
 			{
-				if(event == KitStandEvent.IsEmptyKit)
+				if(event == KitStandEvent.IsEmptyKit && kit_animation_arrived)
 				{
 					stand_events.remove(event);
+					kit_animation_arrived = false;
 					CheckForEmptyKit();
 					return true;
 				}

@@ -3,6 +3,8 @@ package Interface.KitRobotAgent;
 import data.Kit;
 
 public interface KitRobot {
+	
+	void msgGetKits(int count);
 
 	void msgHereIsAKit(Kit kit);
 

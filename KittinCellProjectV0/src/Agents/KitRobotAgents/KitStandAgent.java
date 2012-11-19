@@ -46,7 +46,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	KitRobot kit_robot;
 	Vision vision;
 	Server server;
-	private boolean kit_animation_arrived;
+	private boolean kit_animation_arrived = false;
 	
 	
 	public KitStandAgent(Server _server)
@@ -273,8 +273,9 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		{
 			for(KitHolder kit_h:kit_holder_list)
 			{
-				if(kit_h.state == KitState.Empty)
+				if(kit_h.state == KitState.Empty && kit_animation_arrived)
 				{
+					kit_animation_arrived = false;
 					CheckForEmptyKit();
 					return true;
 				}

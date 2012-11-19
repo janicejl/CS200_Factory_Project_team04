@@ -324,6 +324,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		System.out.println("KitStand: Removing kit");
 		msgInspectionSlotIsClear();
 		inpspection_list.remove(0);
+		server.execute("Kit Finished");
 	}
 	
 	private void AppPartsToKit(KitHolder kit_h)
@@ -350,10 +351,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 			}
 		}
 		
-		if(kit_holder_list.isEmpty())
-		{
-			//robot_waiting_for_kit.add(1);
-		}
 		
 	}
 	

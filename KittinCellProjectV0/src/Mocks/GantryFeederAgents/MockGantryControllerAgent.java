@@ -7,7 +7,7 @@ import Interface.GantryFeederAgent.Gantry;
 import Interface.GantryFeederAgent.GantryController;
 import Mocks.KitRobotAgents.MockAgent;
 import MoveableObjects.Bin;
-import data.Part.PartType;
+import data.PartInfo;
 import UnitTest.GantryFeederAgents.EventLog;
 import UnitTest.GantryFeederAgents.LoggedEvent;
 
@@ -31,8 +31,8 @@ public class MockGantryControllerAgent extends MockAgent implements
 	}
 
 	@Override
-	public void msgNeedThisPart(PartType p, Feeder f1) {
-		log.add(new LoggedEvent("msgNeedThisPart received from Feeder " + f1.getName() + " requesting part type " + p + "."));
+	public void msgNeedThisPart(PartInfo p, Feeder f1) {
+		log.add(new LoggedEvent("msgNeedThisPart received from Feeder " + f1.getName() + " requesting part type " + p.getName() + "."));
 	}
 
 	@Override

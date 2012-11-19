@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import data.GUIPart;
 import data.Part;
@@ -16,20 +17,14 @@ import data.Part;
 public class GUIFeeder {
 	
 	Feeder feeder;
-	BufferedImage image, diverter;
-	boolean previousPositiion;
-	boolean moving;
-	int diverterX, diverterY;
+	BufferedImage image, diverter, partbox, part;
 	
 	public GUIFeeder(Feeder f){
 		feeder = f;
-		diverterX = (int)feeder.getX() - 3;
-		diverterY = (int)feeder.getY();
-		moving = false;
-		previousPositiion = feeder.getLane();
 		try {
 			image = ImageIO.read(new File("images/feeder.png"));
 			diverter = ImageIO.read(new File("images/diverter.png"));
+			partbox = ImageIO.read(new File("images/crate.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -40,35 +35,30 @@ public class GUIFeeder {
 		double y = feeder.getY();
 		g2.drawImage(image, (int)x, (int)y, null);
 		
-		if (previousPositiion == feeder.getLane()){
-			if (previousPositiion){
-				g2.drawImage(diverter, diverterX, diverterY, null);
+		if (feeder.isPreviousPosition() == feeder.getLane()){
+			if (feeder.isPreviousPosition()){
+				g2.drawImage(diverter, feeder.getDiverterX(), feeder.getDiverterY(), null);
 			}
-			else if (!previousPositiion){
-				g2.drawImage(diverter, diverterX, (int)feeder.getY() + 70, null);
+			else if (!feeder.isPreviousPosition()){
+				g2.drawImage(diverter, feeder.getDiverterX(), (int)feeder.getY() + 70, null);
 			}
 		}
 		else{
-			if (previousPositiion){
-				if (diverterY != feeder.getY() + 70){
-					diverterY += 2;
-					g2.drawImage(diverter, diverterX, diverterY, null);
+			if (feeder.isPreviousPosition()){
+				if (feeder.getDiverterY() != feeder.getY() + 70){
+					g2.drawImage(diverter, feeder.getDiverterX(), feeder.getDiverterY(), null);
 				}
 				else{
-					g2.drawImage(diverter, diverterX, diverterY, null);
-					previousPositiion = feeder.getLane();
+					g2.drawImage(diverter, feeder.getDiverterX(), feeder.getDiverterY(), null);
 				}	
 			}
 			else {
-				if (diverterY != feeder.getY()){
-					diverterY -= 2;
-					g2.drawImage(diverter, diverterX, diverterY, null);
+				if (feeder.getDiverterY() != feeder.getY()){
+					g2.drawImage(diverter, feeder.getDiverterX(), feeder.getDiverterY(), null);
 				}
 				else{
-					g2.drawImage(diverter, diverterX, diverterY, null);
-					previousPositiion = feeder.getLane();
+					g2.drawImage(diverter, feeder.getDiverterX(), feeder.getDiverterY(), null);
 				}
-				
 			}
 		}
 		
@@ -78,10 +68,20 @@ public class GUIFeeder {
 			parts.add(new GUIPart(feeder.getParts().get(i)));
 			parts.get(i).paintPart(g2);
 		}
-		
-		
 	}
 
+	public void paintCrate(Graphics2D g2){
+		if(feeder.getHasCrate()){
+			g2.drawImage(partbox, (int)feeder.getX() + 130, (int)feeder.getY() + 12, null);
+			try{
+				part = ImageIO.read(new File(feeder.getInfo().getImagePath()));
+				g2.drawImage(part, (int)feeder.getX() + 143, (int)feeder.getY() + 47, null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public synchronized Feeder getFeeder() {
 		return feeder;
 	}
@@ -89,7 +89,4 @@ public class GUIFeeder {
 	public synchronized void setFeeder(Feeder feeder) {
 		this.feeder = feeder;
 	}
-
-	
-	
 }

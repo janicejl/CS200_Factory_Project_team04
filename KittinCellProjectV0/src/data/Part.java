@@ -5,9 +5,7 @@ import java.io.Serializable;
 
 public class Part implements Serializable{
 
-	public enum PartType{part1, part2, part3, part4, part5, part6, part7, part8, none};
-	
-	public PartType type;
+	public PartInfo info;
 	
 	private String id;
 	private String imagePath;
@@ -23,10 +21,13 @@ public class Part implements Serializable{
 		destination = p.getDestination();
 	}
 	
-
-	
-	public Part(Part.PartType type){
-		this.type = type;
+	public Part(PartInfo _info){
+		info = _info;
+		id = info.getName();
+		imagePath = info.getImagePath();
+		x = 0;
+		y = 0;
+		destination = false;
 	}
 	
 	public Part(String name, String _imagePath) {
@@ -77,20 +78,6 @@ public class Part implements Serializable{
 		this.destination = destination;
 	}
 
-
-
-	public PartType getType() {
-		return type;
-	}
-
-
-
-	public void setType(PartType type) {
-		this.type = type;
-	}
-
-
-
 	public String getImagePath() {
 		return imagePath;
 	}
@@ -99,5 +86,13 @@ public class Part implements Serializable{
 
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+
+	public PartInfo getInfo() {
+		return info;
+	}
+
+	public void setInfo(PartInfo info) {
+		this.info = info;
 	}
 }

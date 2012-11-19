@@ -21,7 +21,10 @@ public class Lane implements ActionListener, Serializable{
     private boolean queueFull; 
     private boolean openGate;
     private Feeder feeder;
-    private Nest n;
+    private boolean release = false;
+    private int releaseCount = 0;
+    private Nest nest;
+    private boolean atQueue = false;
     private int gateCounter;
     public class Gate implements Serializable{
     	public double topNodeX, topNodeY, bottomNodeX, bottomNodeY;
@@ -49,13 +52,13 @@ public class Lane implements ActionListener, Serializable{
 		}
 		
 		public void setDefaultPosition() {
-			this.setNodes(100, verticalSpacing + 50, 100, verticalSpacing + 10);
-		}
-    	
+			this.setNodes(105, verticalSpacing + 20, 105, verticalSpacing);
+		}	
     }
     
-    public Gate gate;
-
+    public Gate gate1;
+    public Gate gate2;
+    
     private Lane() {
     	this.gateCounter = 0;
     	this.maxX = 600;
@@ -71,7 +74,7 @@ public class Lane implements ActionListener, Serializable{
 	 }
     
     public Lane(int width, int verticalSpacing, Nest n) {
-    	this.n = n;
+    	this.nest = n;
 		maxX = width;
 		maxY = 30;
     	this.verticalSpacing = verticalSpacing;
@@ -80,23 +83,18 @@ public class Lane implements ActionListener, Serializable{
 	    importList = new ArrayList<Part> ();
 	    queueList = new ArrayList<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		//nestFull = false;
-		gate = new Gate();
-		//bottom, top
-		gate.setNodes(100, verticalSpacing + 50, 100, verticalSpacing + 10);
+		gate1 = new Gate();
+		gate1.setDefaultPosition();
+		gate2 = new Gate();
+		gate2.setNodes(105, verticalSpacing + 30, 105, verticalSpacing + 50);
 		queueFull = false;		
-		/*importList.add(new Part("1"));
-		importList.add(new Part("2"));
-	    importList.add(new Part("3"));*/
 	    for(int i = 0; i < importList.size(); i++) {
 	    	importList.get(i).setX(width-80);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
 	    }
     }
     
-    
-    public Lane(int width, int verticalSpacing, Feeder f) {
-
+    public Lane(int width, int verticalSpacing, Nest n, Feeder f) {
 		maxX = width;
 		maxY = 50;
     	this.verticalSpacing = verticalSpacing;
@@ -105,12 +103,16 @@ public class Lane implements ActionListener, Serializable{
 	    importList = new ArrayList<Part> ();
 	    queueList = new ArrayList<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
-		queueFull = false;		
+		gate1 = new Gate();
+		gate1.setDefaultPosition();
+		gate2 = new Gate();
+		gate2.setNodes(105, verticalSpacing + 30, 105, verticalSpacing + 50);
+		queueFull = false;			
 		for(int i = 0; i < importList.size(); i++) {
 	    	importList.get(i).setX(width-80);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
 	    }
-	    
+		nest = n;
 	    feeder = f;
     }
     
@@ -122,36 +124,40 @@ public class Lane implements ActionListener, Serializable{
 		    	}	    	
 		    	else {
 		    		itemList.get(i).setDestination(true);
+		    		atQueue = true;
 		    	}
 	    	}
 	    } 
 	    
-	    if(openGate == true && gateCounter < 41) {
-	    	if(gateCounter < 20) { //opengate
-	    		gate.setNodes(100, verticalSpacing + 50 - gateCounter);
-	    		//System.out.println("Opening (" +  (40 - gateCounter*0.25) + ", " + (verticalSpacing + 20 - gateCounter*0.25) + ")");
+	    if(openGate == true && gateCounter < 37) {
+	    	if(gateCounter < 18) { //opengate
+	    		gate1.setNodes(105, verticalSpacing + 20 - gateCounter);
+	    		gate2.setNodes(105,verticalSpacing + 30 + gateCounter);
 	    		gateCounter++;
+	    		//finishes at 100,vert + 31
 	    	}	
-	    	else if(gateCounter < 40 && gateCounter > 19) {
-	    		gate.setNodes(100, verticalSpacing + 30 + gateCounter);
-	    		
-//	    		gate.setNodes(40 + gateCounter*0.25, verticalSpacing + 20 + gateCounter*0.25);
-	//    		System.out.println("Closing (" +  (40 + gateCounter*0.25) + ", " + (verticalSpacing + 20 + gateCounter*0.25) + ")");
+	    	else if(gateCounter < 36 && gateCounter > 17) {
+	    		gate1.setNodes(105, verticalSpacing + gateCounter - 17);
+	    		gate2.setNodes(105,verticalSpacing + 65 - gateCounter);
 	    		gateCounter++;
 	    	}
 	    		
-	    	else if(gateCounter == 40) {
-	    		gate.setDefaultPosition();
-	    		//gate.setNodes(40 , verticalSpacing, 100, verticalSpacing + 5);
-	    		System.out.println("Gate done");
+	    	else if(gateCounter == 36) {
 	    		gateCounter = 0;
 	    		openGate = false;
 	    	}	
 	    }
+	    
+	    //update feeder
+	    feeder.updateDiverter();
     }
 	    
-    public Gate getGate() {
-    	return this.gate;
+    public Gate getGate1() {
+    	return this.gate1;
+    }
+    
+    public Gate getGate2() {
+    	return this.gate2;
     }
     
     public ArrayList<Part> getItemList() {
@@ -170,26 +176,65 @@ public class Lane implements ActionListener, Serializable{
     	return this.conveyerBeltSpeed;
     }
     
-    public void releasePart() {
-    	if(importList.size() != 0) {
-    		Part temp = importList.remove(0);
-    		temp.setY(maxY/2 + verticalSpacing);
-			itemList.add(temp);
-			System.out.println("release!");
-		}
-    }
+    public boolean isAtQueue() {
+		return atQueue;
+	}
+
+	public void setAtQueue(boolean atQueue) {
+		this.atQueue = atQueue;
+	}
+
+	public boolean isRelease() {
+		return release;
+	}
+
+	public void setRelease(boolean release) {
+		this.release = release;
+	}
     
-    public void addPart(Part part) {
+    public Feeder getFeeder() {
+		return feeder;
+	}
+
+	public void setFeeder(Feeder feeder) {
+		this.feeder = feeder;
+	}
+
+	public int getReleaseCount() {
+		return releaseCount;
+	}
+
+	public void setReleaseCount(int releaseCount) {
+		this.releaseCount = releaseCount;
+	}
+
+	public void addPart(Part part) {
     	part.setX(maxX-80);
-    	part.setY(maxY/2 + verticalSpacing);
+    	part.setY(maxY/2 + verticalSpacing - 10);
     	importList.add(part);
     }
     
+	//f = whether or not it should release part to top lane or bottom lane. 
+    public void releasePart() {
+//    	if ( (f % 2 == 0 && feeder.getTopLane() == true) || (f % 2 == 1 && feeder.getTopLane() == false) ) {
+		if(importList.size() != 0) {
+			Part temp = importList.remove(0);
+			temp.setY(maxY/2 + verticalSpacing - 10);
+			itemList.add(temp);
+			System.out.println("release!");
+			feeder.removePart();
+		}
+    	else {
+    		feeder.setTopLane(!feeder.getTopLane());
+    	}
+    }
+	
     public void releaseQueue(){
     	if(itemList.size() != 0){
     		if(itemList.get(0).getDestination() == true){
-    			n.addPart(itemList.remove(0));
-    			openGate = true;	
+    			nest.addPart(itemList.remove(0));
+    			openGate = true;
+    			atQueue = false;
     		}
     	}
     	System.out.println("Rawr!!!!");

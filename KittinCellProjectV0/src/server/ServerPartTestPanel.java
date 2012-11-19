@@ -86,9 +86,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 			KitInfo kit = new KitInfo("TestKit");
 			for(int i = 0; i<8; i++){
 				PartInfo p = new PartInfo("p" + i+1,""+i+1);
-				p.setType(i);
 				kit.add(p);
-				
 			}
 			
 			
@@ -105,11 +103,11 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+6);
 			server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex()+7);
 			*/
-			for(int i = 0; i<8; i++){
-				for(int j = 0; j<4; j++){
-				server.getNestAgent(i).msgHereIsPart(new Part(server.getNestAgent(i).getPartType()));
-				}
-			}
+//			for(int i = 0; i<8; i++){
+//				for(int j = 0; j<4; j++){
+//				server.getNestAgent(i).msgHereIsPart();
+//				}
+//			}
 
 
 			//server.getPartsRobotAgent().msgAnimationDone();

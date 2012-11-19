@@ -5,11 +5,12 @@ import Interface.VisionAgent.*;
 import Agents.PartsRobotAgent.*;
 import Agents.VisionAgent.*;
 import data.Part;
+import data.PartInfo;
 
 public interface PartsRobot {
 
 	// messages
-	public void msgMakeThisKit(List<Part.PartType> kitrecipe, int ct);
+	public void msgMakeThisKit(List<PartInfo> kitrecipe, int ct);
 	public void msgPartsApproved(int nestindex);
 	public void msgEmptyKit(int position);
 	public void msgAnimationDone();

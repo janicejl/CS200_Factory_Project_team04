@@ -26,7 +26,7 @@ public class VisionAgent extends Agent implements Vision {
 	List<Part> neededPartsList = Collections.synchronizedList( new ArrayList<Part>() ); // list of all the parts that should be in each kit
 	
 	Map<Integer, Nest> fullNestsMap = Collections.synchronizedMap( new TreeMap<Integer, Nest>() ); // list of all the nests that are full and ready to have their picture taken
-	List<Part.PartType> fullNestsPartsList = Collections.synchronizedList( new ArrayList<Part.PartType>() ); // parallel array that holds all parts that each nest is supposed to hold
+	List<PartInfo> fullNestsPartsList = Collections.synchronizedList( new ArrayList<PartInfo>() ); // parallel array that holds all parts that each nest is supposed to hold
 	
 	enum State {IDLE, SCHEMATIC_RECEIVED, READY_TO_TAKE_PICTURE, PICTURE_TAKEN};
 	enum Type {NESTS_INSPECTOR, KIT_INSPECTOR};
@@ -72,7 +72,7 @@ public class VisionAgent extends Agent implements Vision {
 		this.nestsList = nestsList;
 		this.neededPartsList = partsList;
 		for(Part p : partsList){
-			fullNestsPartsList.add(p.type);
+			fullNestsPartsList.add(p.info);
 		}
 		approved = false;
 		state = State.SCHEMATIC_RECEIVED;
@@ -129,9 +129,15 @@ public class VisionAgent extends Agent implements Vision {
 		}catch (InterruptedException e){
 			print("error with flashpermit");
 		}
-		server.execute("Take Picture", nest2.getIndex());
-
-		print ("taking a picture at " + nest2.getIndex());
+		
+		if (type==Type.NESTS_INSPECTOR) {
+			server.execute("Take Picture", nest2.getIndex());
+			print ("taking a picture at " + nest2.getIndex());
+		}
+		if (type==Type.KIT_INSPECTOR) {
+			server.execute("Take Picture");
+			print ("taking a picture at " + nest2.getIndex());
+		}
 		
 		state = State.PICTURE_TAKEN;
 
@@ -165,7 +171,8 @@ public class VisionAgent extends Agent implements Vision {
 		else {
 			print("kit not approved");
 			approved = false;
-		}		
+		}	
+		kitRobot.msgKitInspected(approved);
 	}
 	
 	private void inspectNests() {
@@ -173,7 +180,7 @@ public class VisionAgent extends Agent implements Vision {
 		boolean nest2Approved=false;
 		
 		// nest1.getPartType should return the string of the name that the nest should hold
-		if (nest1.getPartType() == fullNestsPartsList.get( nest1.getNumber()-1) ) {
+		if (nest1.getPartInfo() == fullNestsPartsList.get( nest1.getNumber()-1) ) {
 			nest1Approved=true;
 			print(nest1.getName() + " approved");
 		}
@@ -183,7 +190,7 @@ public class VisionAgent extends Agent implements Vision {
 			print(nest1.getName() + " not approved");
 		}
 				
-		if (nest2.getPartType() == fullNestsPartsList.get(nest2.getNumber()-1) ) { 
+		if (nest2.getPartInfo() == fullNestsPartsList.get(nest2.getNumber()-1) ) { 
 			nest2Approved=true;
 			print(nest2.getName() + " approved");
 		}
@@ -216,9 +223,6 @@ public class VisionAgent extends Agent implements Vision {
 			}
 */
 		}
-		else if (type==Type.KIT_INSPECTOR) {
-			kitRobot.msgKitInspected(approved);
-		}
 		
 		state=State.SCHEMATIC_RECEIVED;
 		fullNestsMap.remove(nest1.getNumber());
@@ -226,7 +230,7 @@ public class VisionAgent extends Agent implements Vision {
 		nest1 = null;
 		nest2 = null;
 		
-		state = State.IDLE;
+		//state = State.IDLE;
 		stateChanged();
 		
 	}

@@ -4,6 +4,7 @@ import java.util.*;
 
 import server.Server;
 import data.Part;
+import data.PartInfo;
 import Agent.Agent;
 
 import Agents.PartsRobotAgent.*;
@@ -23,7 +24,7 @@ public class FCSAgent extends Agent implements FCS {
 	GantryControllerAgent gantryControllerAgent;
 	
 	List<GantryAgent> gantriesList = Collections.synchronizedList( new ArrayList<GantryAgent>() );
-	List<Part.PartType> kitRecipe;
+	List<PartInfo> kitRecipe;
 	Vector<Bin> binsList = new Vector<Bin>();
 	
 	Server server; // not sure how to use this yet
@@ -48,7 +49,7 @@ public class FCSAgent extends Agent implements FCS {
 	}
 	
 	// receive a message to make X kits with what parts 
-	public void mgStartKitProduction(List<Part.PartType> kitRecipe, int numKits) {
+	public void msgStartKitProduction(List<PartInfo> kitRecipe, int numKits) {
 		this.numKits = numKits;
 		this.kitRecipe = kitRecipe;
 		
@@ -61,7 +62,7 @@ public class FCSAgent extends Agent implements FCS {
 	/** ACTIONS **/
 	
 	// send a message to the PartsRobotAgent telling it what kits to make
-	private void makeAKit(List<Part.PartType> kitRecipe) {
+	private void makeAKit(List<PartInfo> kitRecipe) {
 		this.kitRecipe = kitRecipe;
 		partsRobotAgent.msgMakeThisKit(kitRecipe, numKits);
 	}
@@ -84,6 +85,8 @@ public class FCSAgent extends Agent implements FCS {
 	protected boolean pickAndExecuteAnAction() {
 		return false;
 	}
+
+	
 	
 
 }

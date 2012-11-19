@@ -119,7 +119,7 @@ public class JobListPanel extends JPanel implements ActionListener{
 		nameTemp.setPreferredSize(new Dimension(size*10, 25));
 		nameTemp.setMaximumSize(new Dimension(size*10, 25));
 		nameTemp.setMinimumSize(new Dimension(size*10, 25));
-		nameTemp.setAlignmentX(CENTER_ALIGNMENT);
+//		nameTemp.setAlignmentX(CENTER_ALIGNMENT);
 		nameTemp.setAlignmentY(CENTER_ALIGNMENT);
 		nameLabels.add(nameTemp);
 		//check if new string needs to readjust max panel

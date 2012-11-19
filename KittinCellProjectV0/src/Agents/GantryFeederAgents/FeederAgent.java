@@ -3,26 +3,30 @@ package Agents.GantryFeederAgents;
 import server.Server;
 import Agent.Agent;
 import Interface.GantryFeederAgent.Feeder;
-import Interface.GantryFeederAgent.FeederLane;
+import Interface.PartsRobotAgent.Lane;
 import Interface.GantryFeederAgent.Gantry;
 import Interface.GantryFeederAgent.GantryController;
 import MoveableObjects.Bin;
-import data.Part.PartType;
+import UnitTest.GantryFeederAgents.EventLog;
+import UnitTest.GantryFeederAgents.LoggedEvent;
+import data.PartInfo;
 
 public class FeederAgent extends Agent implements Feeder {
 
 	//Data
 	String name;
-	PartType currentPart = PartType.none;
-	PartType requestedPart = PartType.none;
+	PartInfo currentPart;
+	PartInfo requestedPart;
 	int partsInFeeder = 0;
 	int lowParts;
 	int number;
 	Bin myBin;
+	public EventLog log;
 	
 	
-	enum FeederState{feeding, low, waitingLane, purging, waitingGantry, beingFed};
-	FeederState fstate = FeederState.waitingGantry;
+	enum FeederState{feeding, low, waitingLane, purging, waitingGantry};
+	//possible additional state: beingFed
+	FeederState fstate = FeederState.low;
 	
 	MyLane left;
 	MyLane right;
@@ -31,18 +35,18 @@ public class FeederAgent extends Agent implements Feeder {
 	Server app;
 	
 	private class MyLane{
-		FeederLane fLane1;
-		PartType partWanted;
+		Lane fLane1;
+		PartInfo partWanted;
 		boolean readyForParts;
 		
-		public MyLane(FeederLane f1){
+		public MyLane(Lane f1){
 			this.fLane1 = f1;
-			partWanted = PartType.none;
+			partWanted = null;
 			readyForParts = false;
 		}
 	}
 	
-	public FeederAgent(String name, int lowParts, FeederLane left, FeederLane right, int number, Server app){
+	public FeederAgent(String name, int lowParts, Lane left, Lane right, int number, Server app){
 		this.name = name;
 		this.lowParts = lowParts;
 		this.gantry = null;
@@ -50,13 +54,16 @@ public class FeederAgent extends Agent implements Feeder {
 		this.right = new MyLane(right);
 		this.number = number;
 		this.app = app;
+		this.currentPart = new PartInfo("blank", "source1");
+		this.requestedPart = new PartInfo("blank", "source2");
+		this.log = new EventLog();
 	}
 	
 	//Messages
 
 	@Override
-	public void msgNeedThisPart(PartType p, String laneName) {
-		if(requestedPart.equals(PartType.none)){
+	public void msgNeedThisPart(PartInfo p, String laneName) {
+		if(requestedPart.getName().equals("blank")){
 			requestedPart = p;
 		}
 		if(laneName.equals("left")){
@@ -66,29 +73,34 @@ public class FeederAgent extends Agent implements Feeder {
 			right.partWanted = p;
 		}
 		
+		log.add(new LoggedEvent("msgNeedThisPart received from "+laneName+" lane."));
+		
 		stateChanged();
 	}
 
 	@Override
 	public void msgHaveParts(Gantry g1) {
 		gantry = g1;
+		log.add(new LoggedEvent("msgHaveParts received from Gantry " + g1.getName() + "."));
 		stateChanged();
 	}
 
 	@Override
 	public void msgHereAreParts(Bin bin) {
-		currentPart = bin.getPartType();
+		currentPart = bin.getPartInfo();
 		partsInFeeder = bin.getQuantity();
 		myBin = bin;
-		fstate = FeederState.beingFed;	
+		fstate = FeederState.waitingLane;	
+		log.add(new LoggedEvent("msgHereAreParts received from gantry."));
 		stateChanged();
 	}
 	
 	//will be from GUI
-	public void msgHereAreParts(PartType part, int quantity){
+	public void msgHereAreParts(PartInfo part, int quantity){
 		currentPart = part;
 		partsInFeeder = quantity;
-		fstate = FeederState.beingFed;
+		//fstate = FeederState.beingFed;
+		log.add(new LoggedEvent("msgHereAreParts received from GUI."));
 		stateChanged();
 	}
 
@@ -101,7 +113,7 @@ public class FeederAgent extends Agent implements Feeder {
 			right.readyForParts = false;
 		}
 		fstate = FeederState.waitingLane;
-		
+		log.add(new LoggedEvent("msgLaneIsFull received from " + laneName + " lane."));
 		stateChanged();
 	}
 
@@ -113,26 +125,26 @@ public class FeederAgent extends Agent implements Feeder {
 		else{
 			right.readyForParts = true;
 		}
-		
+		log.add(new LoggedEvent("msgLaneIsReadyForParts received from " + laneName + " lane."));
 		stateChanged();
 	}
 	
 	//Scheduler
 	
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		
-		if(fstate == FeederState.low){
+		if(fstate == FeederState.low && currentPart != null){
 			RequestParts(currentPart);
 			return true;
 		}
 		
-		if(fstate == FeederState.beingFed){
+		/*if(fstate == FeederState.beingFed){
 			FeedFeeder();
 			return true;
-		}
+		}*/
 		
-		if(fstate == FeederState.waitingLane || fstate == FeederState.low){
+		else if(fstate == FeederState.waitingLane || fstate == FeederState.low){
 			if(currentPart == left.partWanted && left.readyForParts){
 				FeedParts(true);
 				return true;
@@ -149,7 +161,7 @@ public class FeederAgent extends Agent implements Feeder {
 			}
 		}
 		
-		if(fstate == FeederState.waitingGantry && gantry != null){
+		else if(fstate == FeederState.waitingGantry && gantry != null){
 			AcceptParts();
 			return true;
 		}
@@ -161,29 +173,32 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	private void FeedParts(boolean divertLeft){
 		if(divertLeft){
-			left.fLane1.msgHereIsAPart();
+			left.fLane1.msgHereIsAPart(currentPart);
 			partsInFeeder --;
 			//DoGiveLeftLaneAPart();
 			app.execute("Feed Lane", left.fLane1.getNumber());
 		}
 		else{
-			right.fLane1.msgHereIsAPart();
+			right.fLane1.msgHereIsAPart(currentPart);
 			partsInFeeder--;
 			//DoGiveRightLaneAPart();
 			app.execute("Feed Lane", right.fLane1.getNumber());
 		}
 	}
 	
-	private void RequestParts(PartType part){
+	private void RequestParts(PartInfo part){
 		gc.msgNeedThisPart(part, this);
 		fstate = FeederState.waitingGantry;
 	}
 	
 	private void PurgeFeeder(){
-		myBin.setQuantity(partsInFeeder);
-		myBin.setPartType(currentPart);
-		partsInFeeder = 0;
-		//DoPurgeFeeder();
+		if(partsInFeeder > 0){
+			myBin.setQuantity(partsInFeeder);
+			myBin.setPartInfo(currentPart);
+			partsInFeeder = 0;
+			//DoPurgeFeeder();
+		}
+		
 	}
 	
 	private void AcceptParts(){
@@ -192,11 +207,11 @@ public class FeederAgent extends Agent implements Feeder {
 		
 	}
 	
-	private void FeedFeeder(){
+	/*private void FeedFeeder(){
 		//DoFeedFeeder();
 		app.execute("Feed Feeder", number);
 		fstate = FeederState.waitingLane;
-	}
+	}*/
 	
 	
 	
@@ -224,6 +239,16 @@ public class FeederAgent extends Agent implements Feeder {
 		return this.name;
 	}
 	
+	public int getNumber(){
+		return this.number;
+	}
 	
+	public FeederState getState(){
+		return fstate;
+	}
+	
+	public int getQuantity(){
+		return this.partsInFeeder;
+	}
 
 }

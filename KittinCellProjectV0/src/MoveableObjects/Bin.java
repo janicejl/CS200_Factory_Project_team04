@@ -1,22 +1,22 @@
 package MoveableObjects;
 
-import data.Part.PartType;
+import data.PartInfo;
 
 
 public class Bin {
 
 	//Data
-	PartType part;
+	PartInfo part;
 	int quantity;
 	
 	//Constructor
-	public Bin(PartType part, int quantity){
+	public Bin(PartInfo part, int quantity){
 		this.part = part;
 		this.quantity = quantity;
 	}
 	
 	//Methods
-	public PartType getPartType(){
+	public PartInfo getPartInfo(){
 		return part;
 	}
 	
@@ -24,7 +24,7 @@ public class Bin {
 		return quantity;
 	}
 	
-	public void setPartType(PartType part){
+	public void setPartInfo(PartInfo part){
 		this.part = part;
 	}
 	

@@ -2,7 +2,6 @@ package Agents.PartsRobotAgent;
 import Agent.*;
 import Interface.VisionAgent.*;
 import data.*;
-import data.Part.PartType;
 import Interface.PartsRobotAgent.*;
 import Interface.KitRobotAgent.*;
 import data.*;
@@ -26,7 +25,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	boolean executed = false;
 	
 	public int count = 0;
-	public List <Part.PartType> recipe = new ArrayList<Part.PartType>();
+	public List <PartInfo> recipe = new ArrayList<PartInfo>();
 	public List <Part> camerarecipe = new ArrayList<Part>();
 	public List <MyNest> nests = new ArrayList<MyNest>();
 	public Gripper[] grippers = new Gripper[4];
@@ -43,7 +42,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	//Constructor must instantiate all the MyNests and have references to all the nests
 	public class MyNest
 	{
-		public Part.PartType type;
+		public PartInfo type;
 		int index;
 		public Nest nest;
 		public NestStatus state = NestStatus.noAction;
@@ -64,11 +63,11 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	public class MyKit
 	{
 		public int index;
-		public List <Part.PartType> partsneeded;
+		public List <PartInfo> partsneeded;
 		public KitStatus state = KitStatus.notAvailable;
 		public MyKit(int ind){
 			index = ind;
-			partsneeded = new ArrayList<Part.PartType>();
+			partsneeded = new ArrayList<PartInfo>();
 		}
 	}
 	public MyKit kit1;
@@ -170,16 +169,16 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		count = ct;
 		recipe.clear();
 		for(PartInfo p:kit.getParts()){
-			recipe.add(p.getType());
+			recipe.add(p);
 		}
 		camerahasrecipe = false;
 		kit1.partsneeded.clear();
 		kit2.partsneeded.clear();
-		for(Part.PartType type : recipe){
+		for(PartInfo type : recipe){
 			kit1.partsneeded.add(type);
 			kit2.partsneeded.add(type);
 		}
-		for(Part.PartType type: recipe){
+		for(PartInfo type: recipe){
 			camerarecipe.add(new Part(type)); //new Part(kitrecipe.get(i).getName(), kitrecipe.get(i).getImagePath())
 		}
 		kit1.state = KitStatus.notAvailable;
@@ -214,20 +213,19 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 			animationstate = AnimationStatus.atNest;
 			stateChanged();
 		}
-		else if(animationstate == AnimationStatus.movingToStand){
+		
+		
+	}
+	
+	public void msgMovementDone(){
+		if(animationstate == AnimationStatus.movingToStand){
 			print("Reached at Stand");
 			animationstate = AnimationStatus.atStand;
-			stateChanged();
-		}
-		else if (animationstate == AnimationStatus.placingParts){
-			print("Finished at Stand");
-			animationstate = AnimationStatus.movingHome;
 			stateChanged();
 		}
 		else if(animationstate == AnimationStatus.movingHome){
 			animationstate = AnimationStatus.atHome;
 		}
-		
 	}
 	
 	public void msgPartsDropped(){
@@ -327,7 +325,6 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		return true;
 	}*/
 		//print("Nothing to do, sleeping");
-		print("current"+animationstate);
 		return false;
 	}
 
@@ -379,12 +376,12 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	private void checkAvailableParts(MyNest nest)
 	{
 		print("Checking if I need part at nest " + nest.index);
-		Part.PartType type = nest.type;
-		Part.PartType parttoget = null;
+		PartInfo type = nest.type;
+		PartInfo parttoget = null;
 		boolean kit1needsthispart = false;
 		boolean kit2needsthispart = false;
 		if(currentkit == CurrentKit.kit1){
-			for(Part.PartType pt: kit1.partsneeded){
+			for(PartInfo pt: kit1.partsneeded){
 				if(type == pt){
 					kit1needsthispart = true;
 					parttoget = pt;
@@ -414,7 +411,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		}
 		if(currentkit == CurrentKit.kit2)
 		{
-			for(Part.PartType pt: kit2.partsneeded){
+			for(PartInfo pt: kit2.partsneeded){
 				if(type == pt){
 					kit2needsthispart = true;
 					parttoget = pt;
@@ -543,7 +540,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		if(kit1.partsneeded.isEmpty()){
 			print("Kit 1 finished");
 			kitstand.msgKitIsDone(0);
-			for(Part.PartType type : recipe){
+			for(PartInfo type : recipe){
 				kit1.partsneeded.add(type);
 			}
 			kit1.state = KitStatus.notAvailable;
@@ -552,7 +549,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		if(kit2.partsneeded.isEmpty()){
 			print("Kit 2 finished");
 			kitstand.msgKitIsDone(1);
-			for(Part.PartType type : recipe){
+			for(PartInfo type : recipe){
 				kit2.partsneeded.add(type);
 			}
 			kit2.state = KitStatus.notAvailable;
@@ -605,7 +602,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	}
 
 	@Override
-	public void msgMakeThisKit(List<PartType> kitrecipe, int ct) {
+	public void msgMakeThisKit(List<PartInfo> kitrecipe, int ct) {
 		// TODO Auto-generated method stub
 		
 	}

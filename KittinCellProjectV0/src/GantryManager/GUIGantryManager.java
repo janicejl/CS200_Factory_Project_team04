@@ -44,7 +44,6 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		}
 		catch(IOException e) {}
 		
-		manager = new GantryManager();
 		timer = new javax.swing.Timer(9,this);
 		timer.start();
 	}
@@ -63,14 +62,14 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			g2.drawImage(feeder, -110, 310,null);
 			g2.drawImage(feeder,  -35, 450, null);
 		}
-		g2.drawImage(station, 275,157, null);
-			g2.drawImage(station, 325, 157,null);
-		g2.drawImage(station, 275,207,null);
-			g2.drawImage(station, 325, 207,null);
-		g2.drawImage(station, 275,295,null);
-			g2.drawImage(station, 325, 295,null);
-		g2.drawImage(station, 275,345,null);
-			g2.drawImage(station, 325,345,null);
+		g2.drawImage(station, 275,192, null);
+			g2.drawImage(station, 325, 192,null);
+		g2.drawImage(station, 275,242,null);
+			g2.drawImage(station, 325, 242,null);
+		g2.drawImage(station, 275,310,null);
+			g2.drawImage(station, 325, 310,null);
+		g2.drawImage(station, 275,360,null);
+			g2.drawImage(station, 325,360,null);
 	
 		
 		
@@ -79,21 +78,33 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		while(i<manager.getPartsBoxes().size())
 		{
 			g2.drawImage(crate, manager.getPartsBoxes().get(i).getxCurrent(), manager.getPartsBoxes().get(i).getyCurrent(), null);
-			g2.drawImage(part, manager.getPartsBoxes().get(i).getxCurrent()+13, manager.getPartsBoxes().get(i).getyCurrent()+35,null);
+			try
+			{
+				g2.drawImage(ImageIO.read(new File(manager.getPartsBoxes().get(i).getPartInfo().getImagePath())), manager.getPartsBoxes().get(i).getxCurrent()+13, manager.getPartsBoxes().get(i).getyCurrent()+35,null);
+			}
+			catch(IOException e){}
 			i++;
 		}
 		i=0;
 		while(i<manager.getExiting().size())
 		{
 			g2.drawImage(crate,manager.getExiting().get(i).getxCurrent(),manager.getExiting().get(i).getyCurrent(),null);
-			g2.drawImage(part,manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
+			try
+			{
+				g2.drawImage(ImageIO.read(new File(manager.getExiting().get(i).getPartInfo().getImagePath())),manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
+			}
+			catch(IOException e){}
 			i++;
 		}
 		i=0;
 		while(i<manager.getPurged().size())
 		{
 			g2.drawImage(crate,manager.getPurged().get(i).getxCurrent(),manager.getPurged().get(i).getyCurrent(),null);
-			g2.drawImage(part, manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
+			try
+			{
+				g2.drawImage(ImageIO.read(new File(manager.getPurged().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
+			}
+			catch(IOException e){}
 			i++;
 		}
 		g2.drawImage(rail, manager.getGantry().getxCurrent()+10,0,null);

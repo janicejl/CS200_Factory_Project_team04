@@ -1,17 +1,17 @@
-package Mocks.PartsRobotAgents;
-import data.Part;
+package Mocks.GantryFeederAgents;
 import data.PartInfo;
 import Interface.PartsRobotAgent.*;
 import Mocks.KitRobotAgents.MockAgent;
 import UnitTest.KitRobotAgents.*;
 
-public class MockLane extends MockAgent implements Lane{
+public class MockLaneAgent extends MockAgent implements Lane{
 
 	public EventLog log = new EventLog();
-
+	int index;
 	
-	public MockLane(String name) {
+	public MockLaneAgent(String name, int index) {
 		super(name);
+		this.index = index;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -35,19 +35,20 @@ public class MockLane extends MockAgent implements Lane{
 	@Override
 	public void msgHereIsAPart(PartInfo p) {
 		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgHereIsAPart received from Feeder."));
 	}
 
 	@Override
 	public void msgCanIPlacePart() {
 		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("msgCanIPlacePart received from Feeder"));
 	}
 
 	@Override
 	public int getNumber() {
 		// TODO Auto-generated method stub
-		return 0;
+		log.add(new LoggedEvent("getNumber() called"));
+		return index;
 	}
 
 }

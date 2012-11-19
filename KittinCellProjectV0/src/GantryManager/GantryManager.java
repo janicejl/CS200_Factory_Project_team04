@@ -4,32 +4,39 @@ import java.io.*;
 import java.util.*;
 import java.util.Random;
 import java.awt.event.*;
+import data.PartInfo;
 
 //Simulation class, handles the gantry as well as all of the parts boxes and logic of states
 public class GantryManager implements Serializable,ActionListener
 {
 	Gantry gantry;
 	Vector<PartsBox> parts; //Partsboxes that are not purged or exiting
-	Vector<Integer> feeders;
 	Vector<PartsBox> exiting; //Partsboxes that are leaving the factory
 	Vector<PartsBox> purged; //Partsboxes that have been purged
+	ArrayList<Integer> feeder;
+	Vector<PartInfo> feeders;
+	ArrayList<Feeder.Feeder> feed; 
 	int speed;
 	Random rand;
 	
-	public GantryManager()
+	
+	public GantryManager(ArrayList<Feeder.Feeder> f)
 	{
+		feed = f;
 		rand = new Random();
 		gantry = new Gantry();
 		
 		parts = new Vector<PartsBox>();
-		parts.add(new PartsBox(100)); //Initial box placed on conveyor, for testing only
+		parts.add(new PartsBox(new PartInfo("test","images/part.png"))); //Initial box placed on conveyor, for testing only
 		
 		//Populating the feeders
-		feeders = new Vector<Integer>();
+		feeders = new Vector<PartInfo>();
+		feeder = new ArrayList<Integer>();
 		int i=0;
 		while(i<4)
 		{
-			feeders.add(0);
+			feeder.add(0);
+			feeders.add(null);
 			i++;
 		}
 	
@@ -43,7 +50,7 @@ public class GantryManager implements Serializable,ActionListener
 		String state = gantry.getState();
 		
 		gantry.update();
-		//Updating exiting parts boxes
+		//Updating exiting p)arts boxes
 		int i=0;
 		while(i<exiting.size())
 		{
@@ -93,7 +100,7 @@ public class GantryManager implements Serializable,ActionListener
 			}
 			if(go==false && parts.size()<9) //Up to 9 parts boxes visible in the factory at any one time
 			{
-				parts.add(new PartsBox((rand.nextInt(10)+1)*20));
+				parts.add(new PartsBox(new PartInfo("test","images/part.png")));
 			}
 		}
 		
@@ -165,7 +172,9 @@ public class GantryManager implements Serializable,ActionListener
 				state = "loading";
 			}
 			else if(state.equals("loading"))
-			{
+			{ 
+				feed.get(gantry.getFeed()).setHasCrate(true);
+				feed.get(gantry.getFeed()).setInfo(parts.get(gantry.getBox()).getPartInfo());
 				parts.get(gantry.getBox()).setState("feeding");
 				gantry.setState("free");
 				state = "free";
@@ -174,20 +183,20 @@ public class GantryManager implements Serializable,ActionListener
 			{
 				gantry.setState("dumpf");
 				state = "dumpf";
-				feeders.set(gantry.getFeed(), 0);
 				gantry.setFeed(-1);
 				purged.get(gantry.getBox()).setState("dumpf");
 				gantry.setxFinal(285);
-				gantry.setyFinal(172);
+				gantry.setyFinal(207);
 				purged.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
 				purged.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
 			}
 			else if(state.equals("dumpf"))
 			{
+				exiting.add(purged.get(gantry.getBox()));
+				exiting.get(exiting.size()-1).exit();
 				purged.remove(gantry.getBox());
 				gantry.setState("free");
 				state = "free";
-				exiting.add(new PartsBox(0));
 			}
 			else if(state.equals("purgei"))
 			{
@@ -219,7 +228,9 @@ public class GantryManager implements Serializable,ActionListener
 					state="purgi";
 					parts.get(gantry.getBox()).setState("purgef");
 				}
-				feeders.set(gantry.getFeed(), 0);
+				feeders.set(gantry.getFeed(),null);
+				feeder.set(gantry.getFeed(), 0);
+				feed.get(gantry.getFeed()).setHasCrate(false);
 				gantry.setFeed(-1);
 			}
 			else if(state.equals("purgef"))
@@ -266,5 +277,20 @@ public class GantryManager implements Serializable,ActionListener
 	public Vector<PartsBox> getPurged()
 	{
 		return purged;
+	}
+	
+	public void setFeeders(Vector<PartInfo> f)
+	{
+		feeders = f;
+	}
+	
+	public  Vector<PartInfo> getFeeders()
+	{
+		return feeders;
+	}
+	
+	public void addPartInfo(PartInfo p)
+	{
+		parts.add(new PartsBox(p));
 	}
 }

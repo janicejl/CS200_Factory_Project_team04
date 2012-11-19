@@ -2,7 +2,7 @@ package Agents.PartsRobotAgent;
 
 
 import data.Part;
-import data.Part.PartType;
+import data.PartInfo;
 import Agent.Agent;
 import Agents.GantryFeederAgents.FeederAgent;
 import Interface.PartsRobotAgent.Lane;
@@ -20,45 +20,59 @@ public class LaneAgent extends Agent implements Lane{
 	Nest nest;
 	Server server;
 	
-	List<Part> lanequeue = new ArrayList<Part>();
+	int index = 0;
 	
-	PartType type = PartType.none;
+	public List<Part> lanequeue = new ArrayList<Part>();
 	
-	NestStatus neststate = NestStatus.noAction;
-	OrderStatus orderstate = OrderStatus.noAction;
-	LaneStatus lanestate = LaneStatus.noParts;
-	FeederStatus feederstate = FeederStatus.noAction;
+	public PartInfo type = null;
 	
-	private enum OrderStatus{noAction,partRequested,partOrdered};
-	private enum NestStatus{noAction,readyForPart,askedToTakePart};
-	private enum FeederStatus{wantsToPlacePart,noAction};
-	private enum LaneStatus{noParts,hasParts,partsAtEndOfLane}
+	public LaneNestStatus neststate = LaneNestStatus.noAction;
+	public OrderStatus orderstate = OrderStatus.noAction;
+	public LaneStatus lanestate = LaneStatus.noParts;
+	public FeederStatus feederstate = FeederStatus.noAction;
+	public ReadyStatus readystate = ReadyStatus.ready;
+	
+	public enum OrderStatus{noAction,partRequested,partOrdered};
+	public enum LaneNestStatus{noAction,readyForPart,askedToTakePart};
+	public enum FeederStatus{wantsToPlacePart,noAction};
+	public enum LaneStatus{noParts,hasParts,partsAtEndOfLane};
+	public enum ReadyStatus{ready,notready}
 	
 	
-	public LaneAgent(Nest mynest,FeederAgent feed,Server server,String name){
+	public LaneAgent(Nest mynest,FeederAgent feed,Server server,String name,int index){
 		this.server = server;
 		this.nest = mynest;
 		this.feeder = feed;
 		this.name = name;
+		this.index = index;
+	}
+	
+	public LaneAgent(Nest mynest, Server server,String name,int index){
+		this.server =server;
+		this.nest = mynest;
+		this.name = name;
+		this.index = index;
 	}
 	
 	@Override
 	public void msgReadyForPart() {
-		neststate = NestStatus.readyForPart;
+		neststate = LaneNestStatus.readyForPart;
+		print("Nest ready to give part");
 		stateChanged();
 	}
 
 	@Override
-	public void msgNeedThisPart(PartType type) {
+	public void msgNeedThisPart(PartInfo type) {
 		if(this.type != type)
 			orderstate = OrderStatus.partRequested;
 		this.type = type;
+		print("Received Part Order");
 		stateChanged();
 		
 	}
 	
-	public void msgHereIsAPart(Part p){
-		lanequeue.add(p);
+	public void msgHereIsAPart(PartInfo p){
+		lanequeue.add(new Part(p));
 		lanestate = LaneStatus.hasParts;
 		stateChanged();
 	}
@@ -69,30 +83,72 @@ public class LaneAgent extends Agent implements Lane{
 	}
 	
 	@Override
-	public void msgPartAtEndOfLane(Part p) {
-		lanestate = LaneStatus.partsAtEndOfLane;
-		stateChanged();
-		
+	public void msgPartAtEndOfLane() {
+		if(lanestate!= LaneStatus.partsAtEndOfLane){
+			print("Part at end of lane");
+			if(lanequeue.isEmpty()){
+				if(type == null){
+					lanequeue.add(new Part(new PartInfo("test","image")));
+				}
+				else{
+					lanequeue.add(new Part(type));
+				}
+			}
+			lanestate = LaneStatus.partsAtEndOfLane;
+			stateChanged();
+		}
 	}
 
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		if(orderstate == OrderStatus.partRequested){
 			askForPart();
 			return true;
 		}
-		if(lanestate == LaneStatus.partsAtEndOfLane && neststate != NestStatus.askedToTakePart){
-			askToGivePart();
-			return true;
-		}
-		if(neststate ==  NestStatus.readyForPart){
+		
+		if(neststate ==  LaneNestStatus.readyForPart){
 			givePart();
 			return true;
 		}
 		
-		if(feederstate == FeederStatus.wantsToPlacePart){
-			if(lanequeue.size()>maxsize){
-				feeder.msgLaneIsFull(name);
+		if(lanestate == LaneStatus.partsAtEndOfLane && neststate != LaneNestStatus.askedToTakePart){
+			askToGivePart();
+			return true;
+		}
+		
+		if(lanequeue.size()>=maxsize){
+			if(index%2==0){
+				feeder.msgLaneIsFull("left");
+			}
+			else{
+				feeder.msgLaneIsFull("right");
+			}
+			readystate = ReadyStatus.notready;
+			return true;
+		}
+		if(readystate == ReadyStatus.notready){
+			if(lanequeue.size()<maxsize){
+				if(index%2==0){
+					feeder.msgLaneIsReadyForParts("left");
+				}
+				else{
+					feeder.msgLaneIsReadyForParts("right");
+				}
+				readystate = ReadyStatus.ready;
+			}
+			
+		}
+		
+		if(feederstate == FeederStatus.wantsToPlacePart)
+		{
+			if(lanequeue.size()>maxsize)
+			{
+				if(index%2==0){
+					feeder.msgLaneIsFull("left");
+				}
+				else{
+					feeder.msgLaneIsFull("right");
+				}	
 				return false;
 			}
 			else{
@@ -104,27 +160,41 @@ public class LaneAgent extends Agent implements Lane{
 		return false;
 	}
 	private void askForPart(){
-		feeder.msgNeedThisPart(type, name);
+		if(feeder!=null){
+			if(index%2==0){
+				feeder.msgNeedThisPart(type,"left");
+				feeder.msgLaneIsReadyForParts("left");
+			}
+			else{
+				feeder.msgNeedThisPart(type,"right");
+				feeder.msgLaneIsReadyForParts("right");
+			}
+		}
 		orderstate = OrderStatus.partOrdered;
+		readystate = ReadyStatus.ready;//Need to implement purge functionality in
+		
 	}
 	private void acceptPart(){
 		feeder.msgLaneIsReadyForParts(name);
 		feederstate = FeederStatus.noAction;
 	}
+	
 	private void askToGivePart(){
 		nest.msgCanIPlacePart(this);
-		neststate = NestStatus.askedToTakePart;		
+		neststate = LaneNestStatus.askedToTakePart;		
 	}
 	private void givePart(){
 		nest.msgHereIsPart(lanequeue.get(0));
 		lanequeue.remove(0);
-		neststate = NestStatus.noAction;
+		neststate = LaneNestStatus.noAction;
 		if(!lanequeue.isEmpty()){
 			lanestate = LaneStatus.hasParts;
 		}
 		else{
 			lanestate = LaneStatus.noParts;
 		}
+		print("Giving Part and calling server execute function");
+		server.execute("Feed Nest",index);
 		
 	}
 	public boolean hasParts(){
@@ -135,6 +205,14 @@ public class LaneAgent extends Agent implements Lane{
 			return false;
 		}
 	}
-	
+	public void setFeeder(FeederAgent feeder){
+		this.feeder = feeder;
+	}
+	public String getName(){
+		return name;
+	}
+	public int getNumber(){
+		return index;
+	}
 	
 }

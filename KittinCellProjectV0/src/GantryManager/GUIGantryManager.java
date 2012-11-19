@@ -62,14 +62,14 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			g2.drawImage(feeder, -110, 310,null);
 			g2.drawImage(feeder,  -35, 450, null);
 		}
-		g2.drawImage(station, 275,157, null);
-			g2.drawImage(station, 325, 157,null);
-		g2.drawImage(station, 275,207,null);
-			g2.drawImage(station, 325, 207,null);
-		g2.drawImage(station, 275,295,null);
-			g2.drawImage(station, 325, 295,null);
-		g2.drawImage(station, 275,345,null);
-			g2.drawImage(station, 325,345,null);
+		g2.drawImage(station, 275,192, null);
+			g2.drawImage(station, 325, 192,null);
+		g2.drawImage(station, 275,242,null);
+			g2.drawImage(station, 325, 242,null);
+		g2.drawImage(station, 275,310,null);
+			g2.drawImage(station, 325, 310,null);
+		g2.drawImage(station, 275,360,null);
+			g2.drawImage(station, 325,360,null);
 	
 		
 		

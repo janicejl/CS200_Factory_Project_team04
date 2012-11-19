@@ -116,6 +116,7 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 			Job temp = new Job(app.getApp().getKitsList().get(kitBox.getSelectedIndex()), amt);
 			app.getApp().getJobs().add(temp);
 			app.getListPanel().getJobs().create(temp.getKit().getName(), amt);
+			app.getApp().getClient().setCommandSent("Update");
 		}
 		else if (ae.getSource() == kitBox){
 			int index = kitBox.getSelectedIndex();

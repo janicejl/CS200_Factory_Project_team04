@@ -172,6 +172,7 @@ public class VisionAgent extends Agent implements Vision {
 			print("kit not approved");
 			approved = false;
 		}	
+		kitRobot.msgKitInspected(approved);
 	}
 	
 	private void inspectNests() {
@@ -221,9 +222,6 @@ public class VisionAgent extends Agent implements Vision {
 				// nestAgent.msgBadParts();
 			}
 */
-		}
-		else if (type==Type.KIT_INSPECTOR) {
-			kitRobot.msgKitInspected(approved);
 		}
 		
 		state=State.SCHEMATIC_RECEIVED;

@@ -27,9 +27,12 @@ public class GUIKitCreation implements ActionListener{
 	public GUIKitCreation(KitCreationApp _app){
 		app = _app;
 		bob=new JPanel();
-		bob.setSize(300,410);
+		bob.setSize(300,550);
 		base=new JPanel();
-		base.setSize(300,410);
+		base.setSize(300,500);
+		base.setPreferredSize(new Dimension(240,315));
+		base.setMinimumSize(new Dimension(240,315));
+		base.setMaximumSize(new Dimension(240,315));
 		back=new JPanel();
 		back.setSize(300,410);
 		partSelect=new JPanel();

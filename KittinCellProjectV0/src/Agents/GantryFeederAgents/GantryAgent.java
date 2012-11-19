@@ -55,7 +55,7 @@ public class GantryAgent extends Agent implements Gantry {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		
-		if(fstate == FeederState.ready){
+		if(currentFeeder != null && fstate == FeederState.ready){
 			GivePartsToFeeder();
 			return true;
 		}

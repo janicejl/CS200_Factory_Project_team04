@@ -20,11 +20,11 @@ public class VisionAgent extends Agent implements Vision {
 	/** DATA **/
 	
 	String name;
-	List<Nest> nestsList= Collections.synchronizedList( new ArrayList<Nest>() ); // list of all the nests that we need parts from
-	List<Part> neededPartsList = Collections.synchronizedList( new ArrayList<Part>() ); // list of all the parts that should be in each kit
+	public List<Nest> nestsList= Collections.synchronizedList( new ArrayList<Nest>() ); // list of all the nests that we need parts from
+	public List<Part> neededPartsList = Collections.synchronizedList( new ArrayList<Part>() ); // list of all the parts that should be in each kit
 	
-	Map<Integer, Nest> fullNestsMap = Collections.synchronizedMap( new TreeMap<Integer, Nest>() ); // list of all the nests that are full and ready to have their picture taken
-	List<PartInfo> fullNestsPartsList = Collections.synchronizedList( new ArrayList<PartInfo>() ); // parallel array that holds all parts that each nest is supposed to hold
+	public Map<Integer, Nest> fullNestsMap = Collections.synchronizedMap( new TreeMap<Integer, Nest>() ); // list of all the nests that are full and ready to have their picture taken
+	public List<PartInfo> fullNestsPartsList = Collections.synchronizedList( new ArrayList<PartInfo>() ); // parallel array that holds all parts that each nest is supposed to hold
 	
 	public enum State {IDLE, SCHEMATIC_RECEIVED, READY_TO_TAKE_PICTURE, PICTURE_TAKEN};
 	public enum Type {NESTS_INSPECTOR, KIT_INSPECTOR};
@@ -80,9 +80,6 @@ public class VisionAgent extends Agent implements Vision {
 	
 	// sent by NestAgent
 	public void msgImFull(Nest nest) {
-		// here i am assuming that we will name the nests with a number.
-		// i can do this differently if we later decide not to do this, but this makes it easier for me to organize parts
-		
 		fullNestsMap.put(nest.getNumber(), nest);
 		stateChanged();
 	}
@@ -146,18 +143,24 @@ public class VisionAgent extends Agent implements Vision {
 	}
 	
 	private void checkForConsecutiveNests() {
-		nest1 = fullNestsMap.get(0);
+/*		nest1 = fullNestsMap.get(0);
 		nest2 = fullNestsMap.get(1);
+		
 		state = State.READY_TO_TAKE_PICTURE;
 		print( "consecutive nests found; ready to take picture" );
-		stateChanged();
-	/*	for (int i=1; i<9; i++) {
+		stateChanged();*/
+	
+		for (int i=1; i<9; i++) {
 			if (fullNestsMap.containsKey(i) && fullNestsMap.containsKey(i+1) && i%2==1) {
 				nest1 = fullNestsMap.get(i);
 				nest2 = fullNestsMap.get(i+1);
+			
+				state = State.READY_TO_TAKE_PICTURE;
+				print( "consecutive nests found; ready to take picture" );
+				stateChanged();
 
 			}
-		}*/
+		}
 	}
 	
 	private void inspectKit() {

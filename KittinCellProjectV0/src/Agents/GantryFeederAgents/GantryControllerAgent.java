@@ -91,6 +91,7 @@ public class GantryControllerAgent extends Agent implements GantryController {
 				i = gantries.size();
 			}
 		}
+		gantries.get(0).gstate = GantryState.waiting;
 		log.add(new LoggedEvent("msgDoneDeliveringParts received from Gantry"));
 		print("msgDoneDeliveringParts received from Gantry" + gantry.getName());
 		stateChanged();		
@@ -103,11 +104,11 @@ public class GantryControllerAgent extends Agent implements GantryController {
 	public boolean pickAndExecuteAnAction() {
 		
 		for(MyFeeder f:requests){
-			print("MyFeeder found in requests in GC scheduler.");
+			//print("MyFeeder found in requests in GC scheduler.");
 			if(f.fstate == FeederState.requested){
-				print("MyFeeder state is requested in GC scheduler.");
+				//print("MyFeeder state is requested in GC scheduler.");
 				for(MyGantry g: gantries){
-					print("MyGantry found in gantries GC scheduler.");
+					//print("MyGantry found in gantries GC scheduler.");
 					if(g.gstate == GantryState.waiting){
 						print("MyGantry state is waiting in GC scheduler.");
 						print("SendGantry() called");

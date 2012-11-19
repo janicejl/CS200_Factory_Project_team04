@@ -161,7 +161,7 @@ public class LaneAgent extends Agent implements Lane{
 				return true;
 			}
 		}
-		
+		print("Lane going to sleep");
 		return false;
 	}
 	

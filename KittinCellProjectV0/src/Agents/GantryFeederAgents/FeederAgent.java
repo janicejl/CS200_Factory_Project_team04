@@ -142,7 +142,7 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		
+		print("Feeder running");
 		if(fstate == FeederState.low && !currentPart.getName().equals("blank") ){
 			print("fstate is low and current part is not blank, RequestParts(currentPart) called.");
 			RequestParts(currentPart);

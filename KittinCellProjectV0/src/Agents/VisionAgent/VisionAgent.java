@@ -245,15 +245,17 @@ public class VisionAgent extends Agent implements Vision {
 	public boolean pickAndExecuteAnAction() {
 		if (state==State.IDLE){
 			// do nothing
-			return true;
+			return false;
 		}
 		
 		if (state==State.SCHEMATIC_RECEIVED) {
+			print("Running");
+
 			approved = false;
 			if (type==Type.NESTS_INSPECTOR) {
 				checkForConsecutiveNests();
 			}
-			return true;
+			//return true;
 		}
 		
 		if (state==State.READY_TO_TAKE_PICTURE && waiting == false) {
@@ -270,7 +272,6 @@ public class VisionAgent extends Agent implements Vision {
 			}
 			return true;
 		}
-		
 		return false;
 	}
 

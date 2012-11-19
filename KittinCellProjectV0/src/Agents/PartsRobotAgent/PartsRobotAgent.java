@@ -4,7 +4,6 @@ import Interface.VisionAgent.*;
 import data.*;
 import Interface.PartsRobotAgent.*;
 import Interface.KitRobotAgent.*;
-import data.*;
 import Agents.VisionAgent.VisionAgent;
 
 import java.util.*;
@@ -324,7 +323,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		returnToStart();
 		return true;
 	}*/
-		//print("Nothing to do, sleeping");
+		print("Nothing to do, sleeping");
 		return false;
 	}
 

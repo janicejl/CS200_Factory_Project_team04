@@ -45,7 +45,7 @@ public class MockKitRobot extends MockAgent implements KitRobot{
 
 	@Override
 	public void msgGetKits(int count) {
-		// TODO Auto-generated method stub
+		log.add(new UnitTest.KitRobotAgents.LoggedEvent("Received message to get " + count + " kits"));
 		
 	}
 

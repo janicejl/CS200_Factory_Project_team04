@@ -25,10 +25,10 @@ public class FCSAgent extends Agent implements FCS {
 	KitRobot kitRobot;
 	GantryController gantryController;
 	
-	List<Gantry> gantriesList = Collections.synchronizedList( new ArrayList<Gantry>() );
-	List<PartInfo> kitRecipe;
-	Vector<Bin> binsList = new Vector<Bin>();
-	int numKitsNeeded;
+	// public List<Gantry> gantriesList = Collections.synchronizedList( new ArrayList<Gantry>() );
+	// public List<PartInfo> kitRecipe = Collections.synchronizedList( new ArrayList<PartInfo>() );
+	public Vector<Bin> binsList = new Vector<Bin>();
+	public int numKitsNeeded;
 	
 	
 	Server server; 

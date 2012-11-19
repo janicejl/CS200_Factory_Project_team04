@@ -302,6 +302,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
         partsRobot = new PartsRobot(kitAssemblyManager);
         new Thread(partsRobot).start();
 		
+        gantryController.startThread();
+        gantry1.startThread();
+        feeder1.startThread();
+        feeder2.startThread();
+        feeder3.startThread();
+        feeder4.startThread();
+        
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");
 		timer = new Timer(10, this);

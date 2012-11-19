@@ -2,6 +2,7 @@ package Mocks.PartsRobotAgents;
 
 import java.util.List;
 
+import data.KitInfo;
 import data.Part;
 import Agents.PartsRobotAgent.TestGUI;
 import Interface.PartsRobotAgent.*;
@@ -23,7 +24,7 @@ public class MockPartsRobot extends MockAgent implements PartsRobot{
 
 
 	@Override
-	public void msgMakeThisKit(List<PartInfo> kitrecipe, int ct) {
+	public void msgMakeThisKit(KitInfo kit, int ct) {
 		log.add(new LoggedEvent("Received Recipe"));
 		
 	}
@@ -82,5 +83,8 @@ public class MockPartsRobot extends MockAgent implements PartsRobot{
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	
 
 }

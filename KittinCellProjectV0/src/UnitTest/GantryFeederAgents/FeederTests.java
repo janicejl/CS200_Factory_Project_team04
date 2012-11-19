@@ -142,8 +142,55 @@ public class FeederTests extends TestCase{
 				gc.log.containsString("msgNeedThisPart") && gc.log.containsString("Part 2"));
 		assertTrue("Feeder 1 should have no parts.", feeder1.getQuantity() == 0);
 		
+		feeder1.log.clear();
+		gantry1.log.clear();
+		
+		feeder1.msgHaveParts(gantry1);
+		assertTrue("Feeder 1 should have received msgHaveParts from Gantry 1", feeder1.log.containsString("msgHaveParts"));
+		
+		feeder1.pickAndExecuteAnAction();
+		assertTrue("Gantry 1 should have received msgReadyForParts()", gantry1.log.containsString("msgReadyForParts"));
+		
+		feeder1.msgHereAreParts(bin2);
+		assertTrue("Feeder1 should have received msgHereAreParts from Gantry 1.", feeder1.log.containsString("msgHereAreParts"));
+		
+		feeder1.pickAndExecuteAnAction();
+		//System.out.println(feeder1.getState());
+		assertTrue("Right Lane should have received msgHereIsAPart.", lane2.log.containsString("msgHereIsAPart"));
+		assertTrue("Feeder should have 19 parts.", feeder1.getQuantity() == 19);
+		
+		feeder1.pickAndExecuteAnAction();
+		assertTrue("Feeder should have 18 parts.", feeder1.getQuantity() == 18);
+		
+		feeder1.msgLaneIsFull("right");
+		assertTrue("Feeder 1 should have received msgLaneIsFull from right lane", feeder1.log.containsString("msgLaneIsFull"));		
 		
 	}
+	
+	@Test
+	public void testGantryInteractions() {
+		
+		feeder1.msgNeedThisPart(type1, "left");
+		assertTrue("Feeder should have received msgNeedThisPart.", feeder1.log.containsString("msgNeedThisPart") && feeder1.log.containsString("left"));
+		
+		feeder1.pickAndExecuteAnAction();
+		assertTrue("Gantry Controller should have received msgNeedThisPart from Feeder 1", gc.log.containsString("msgNeedThisPart"));
+		assertTrue("Feeder 1 should have no parts.", feeder1.getQuantity() == 0);
+		
+		feeder1.msgHaveParts(gantry1);
+		assertTrue("Feeder 1 should have received msgHaveParts from Gantry 1", feeder1.log.containsString("msgHaveParts"));
+		
+		feeder1.pickAndExecuteAnAction();
+		assertTrue("Gantry 1 should have received msgReadyForParts()", gantry1.log.containsString("msgReadyForParts"));
+		
+		feeder1.msgHereAreParts(bin1);
+		assertTrue("Feeder 1 should have received msgHereAreParts from Gantry 1.", feeder1.log.containsString("msgHereAreParts"));
+		assertTrue("Feeder 1 should have 20 parts.", feeder1.getQuantity() == 20);
+	}
+	
+	
+	
+	
 
 
 }

@@ -17,7 +17,6 @@ public class GUIGantryManager extends JPanel implements ActionListener
 	protected BufferedImage feeder = null;
 	protected BufferedImage gantryImage = null;
 	protected BufferedImage crate = null;
-	protected BufferedImage part = null;
 	GantryManager manager;
 	GantryManagerClient client;
 	javax.swing.Timer timer;
@@ -39,8 +38,6 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			feeder = ImageIO.read(new File("images/Feeder.png"));
 			gantryImage = ImageIO.read(new File("images/gantryrobot.png"));
 			crate = ImageIO.read(new File("images/crate.png"));
-			//Dynamic image in final implementation
-			part = ImageIO.read(new File("images/part.png"));
 		}
 		catch(IOException e) {}
 		

@@ -177,6 +177,7 @@ public class FeederAgent extends Agent implements Feeder {
 			
 			else if (currentPart != left.partWanted && currentPart != right.partWanted){
 				System.out.println("currentPart is not left or right partWanted.RequestedParts(requestedPart) called.");
+				System.out.println("requestedPart:" + requestedPart.getName());
 				RequestParts(requestedPart);
 				PurgeFeeder();
 				return true;
@@ -195,6 +196,7 @@ public class FeederAgent extends Agent implements Feeder {
 		//System.out.println("currentPart:" + currentPart.getName());
 		//System.out.println("left part:" + left.partWanted.getName());
 		//System.out.println("right part:" + right.partWanted.getName());
+		
 		return false;
 	}
 	

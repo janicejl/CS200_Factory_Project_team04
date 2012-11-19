@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 public class Nest implements Serializable{
 	
-	private double x;
-	private double y;
+	private double x;				//The x position for the nest
+	private double y;				//The y position for the nest
 	
 	
-	ArrayList<Part> parts;
+	ArrayList<Part> parts;			//a list of parts that is currently in the nest. 
 	
 	public Nest(double nX, double nY) {
 		x = nX;
@@ -58,7 +58,7 @@ public class Nest implements Serializable{
 		return parts;
 	}
 	
-	public void purgeNest() {
+	public void purgeNest() {	//empties the array since the parts are just dumped onto the ground. 
 		parts.clear();
 	}
 }

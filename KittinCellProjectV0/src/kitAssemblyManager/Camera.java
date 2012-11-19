@@ -4,15 +4,15 @@ import java.io.Serializable;
 
 public class Camera implements Serializable{
 
-	private double x;
-	private double y;
+	private double x;					//the x position of the camera
+	private double y;					//the y position of the camera. 
 	
-	private boolean takePicture;
-	private boolean flashUp;
-	private boolean flashDown;
+	private boolean takePicture;		//Boolean for whether a picture should be taken
+	private boolean flashUp;			//Boolean for whether the flashup animation should be done. 
+	private boolean flashDown;			//Boolean for whether the flashdown animation should be done. 
 	
-	private float opacity;
-	private boolean animationDone;
+	private float opacity;				//float for controlling the opacity of the flash animation. s
+	private boolean animationDone;		//Boolean for whether or not the animation has finished drawing
 	
 	public Camera() {
 		x = 0;
@@ -83,28 +83,21 @@ public class Camera implements Serializable{
     }
     
     public boolean getTakePicture(){
-        /*if(takePicture){
-            takePicture = false;
-            return true;
-        }
-        else {
-            return false;
-        }*/
     	return takePicture;
     }
 	
 	public void update() {
         if(takePicture){
-            if(flashUp){
+            if(flashUp){					//increment the opacity 
                 opacity += 0.1;
-                if(opacity >= 1){
+                if(opacity >= 1){			//if reach full opacity, start flashDown. 
                 	flashUp = false;
                 	flashDown = true;
                 }
             }
-            else if(flashDown){
+            else if(flashDown){				//decrement the opacitys
             	opacity -= 0.1;
-            	if(opacity <= 0){
+            	if(opacity <= 0){			// if opacity becomes zero, finish flash animation
             		opacity = 0;
             		flashDown = false;
             		takePicture = false;

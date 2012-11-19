@@ -214,12 +214,14 @@ public class FeederAgent extends Agent implements Feeder {
 			left.fLane1.msgHereIsAPart(currentPart);
 			partsInFeeder --;
 			//DoGiveLeftLaneAPart();
+			print("left lane was fed 1 part");
 			app.execute("Feed Lane", left.fLane1.getNumber());
 		}
 		else{
 			right.fLane1.msgHereIsAPart(currentPart);
 			partsInFeeder--;
 			//DoGiveRightLaneAPart();
+			print("right lane was fed 1 part");
 			app.execute("Feed Lane", right.fLane1.getNumber());
 		}
 		stateChanged();

@@ -10,7 +10,5 @@ import MoveableObjects.*;
 public interface FCS {
 
 	public void msgHereIsKitConfig(KitInfo kitInfo, int amount);
-	public void msgAddBin(Bin bin);
-	
 	
 }

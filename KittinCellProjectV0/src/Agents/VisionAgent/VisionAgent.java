@@ -107,9 +107,12 @@ public class VisionAgent extends Agent implements Vision {
 		flashpermit.release();
 	}	
 	
+	
 	/////////////////////////////////////////////////////////////
 	/** ACTIONS**/
 	private void initializeVisionAgent(String type) {
+		state = State.IDLE;
+		
 		if (type=="kit") {
 			this.type = Type.KIT_INSPECTOR;
 			print ("initialized to kit inspecting vision agent");
@@ -143,15 +146,18 @@ public class VisionAgent extends Agent implements Vision {
 	}
 	
 	private void checkForConsecutiveNests() {
-		for (int i=1; i<9; i++) {
+		nest1 = fullNestsMap.get(0);
+		nest2 = fullNestsMap.get(1);
+		state = State.READY_TO_TAKE_PICTURE;
+		print( "consecutive nests found; ready to take picture" );
+		stateChanged();
+	/*	for (int i=1; i<9; i++) {
 			if (fullNestsMap.containsKey(i) && fullNestsMap.containsKey(i+1) && i%2==1) {
 				nest1 = fullNestsMap.get(i);
 				nest2 = fullNestsMap.get(i+1);
-				state = State.READY_TO_TAKE_PICTURE;
-				print( "consecutive nests found; ready to take picture" );
-				stateChanged();
+
 			}
-		}
+		}*/
 	}
 	
 	private void inspectKit() {
@@ -234,11 +240,10 @@ public class VisionAgent extends Agent implements Vision {
 	}
 	
 	
-	
 	/////////////////////////////////////////////////////////////
 	/** SCHEDULER **/
 	
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		if (state==State.IDLE){
 			// do nothing
 			return true;
@@ -269,6 +274,7 @@ public class VisionAgent extends Agent implements Vision {
 		return false;
 	}
 
+	
 	/////////////////////////////////////////////////////////////
 	/** OTHER **/
 	public void setFlashPermit(Semaphore flashpermit){

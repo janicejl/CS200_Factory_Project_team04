@@ -237,6 +237,7 @@ public class FeederAgent extends Agent implements Feeder {
 			myBin.setPartInfo(currentPart);
 			partsInFeeder = 0;
 			//DoPurgeFeeder();
+			app.execute("Idle Bin", this.getNumber());
 			stateChanged();
 		}
 		

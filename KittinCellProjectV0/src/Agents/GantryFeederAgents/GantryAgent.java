@@ -19,7 +19,9 @@ public class GantryAgent extends Agent implements Gantry {
 	GantryController gc;
 	Server app;
 	enum FeederState{ready, pending, notReady};
+	enum AnimationState{noAction, loadingFeeder, atFeeder};
 	FeederState fstate;
+	AnimationState astate;
 	public EventLog log;
 	
 	public GantryAgent(String name, Server app){
@@ -29,6 +31,7 @@ public class GantryAgent extends Agent implements Gantry {
 		fstate = FeederState.notReady;
 		this.app = app;
 		log = new EventLog();
+		astate = AnimationState.noAction;
 		
 	}
 	
@@ -51,13 +54,20 @@ public class GantryAgent extends Agent implements Gantry {
 		stateChanged();
 	}
 	
+	public void msgGantryAtFeeder(){
+		astate = AnimationState.atFeeder;
+		stateChanged();
+	}
+	
+	
+	
 	
 	//Scheduler
 	
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		
-		if(currentFeeder != null && fstate == FeederState.ready){
+		if(currentFeeder != null && fstate == FeederState.ready && astate == AnimationState.atFeeder){
 			print("in Gantry scheduler, feeder is ready");
 			GivePartsToFeeder();
 			return true;
@@ -77,7 +87,7 @@ public class GantryAgent extends Agent implements Gantry {
 		currentFeeder.msgHereAreParts(currentBin);
 		print("Gave parts to feeder " + currentFeeder.getName());
 		//DoFillFeeder()
-		app.execute("Load Feeder", currentFeeder.getNumber());
+		
 		while(currentBin.getQuantity() > 0){
 			app.execute("Feed Feeder", currentFeeder.getNumber(), currentBin.getPartInfo());
 			currentBin.setQuantity(currentBin.getQuantity()-1);
@@ -92,6 +102,8 @@ public class GantryAgent extends Agent implements Gantry {
 	private void PrepareToGiveParts(){
 		print("Preparing to give parts to feeder " + currentFeeder.getName());
 		app.execute("Make PartsBox", currentBin.getPartInfo());
+		app.execute("Load Feeder", currentFeeder.getNumber());
+		astate = AnimationState.noAction;
 		currentFeeder.msgHaveParts(this);
 		fstate = FeederState.pending;
 	}

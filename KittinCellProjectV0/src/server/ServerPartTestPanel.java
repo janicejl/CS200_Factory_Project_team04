@@ -89,7 +89,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 			KitInfo kit = new KitInfo("TestKit");
 			Vector<Bin> bins = new Vector<Bin>();
 			for(int i = 0; i<8; i++){
-				PartInfo p = new PartInfo("p" + i+1,""+i+1);
+				PartInfo p = new PartInfo("p" + i+1,"images/kt" + (i + 1) + ".png");
 				kit.add(p);
 				bins.add(new Bin(p, 1));
 			}

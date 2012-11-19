@@ -74,7 +74,7 @@ public class FeederAgent extends Agent implements Feeder {
 		}
 		
 		log.add(new LoggedEvent("msgNeedThisPart received from "+laneName+" lane."));
-		
+		print("msgNeedThisPart received from "+laneName+" lane.");
 		stateChanged();
 	}
 

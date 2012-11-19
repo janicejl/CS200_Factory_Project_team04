@@ -65,6 +65,7 @@ public class VisionAgent extends Agent implements Vision {
 	/////////////////////////////////////////////////////////////
 	/** MESSAGES **/
 	
+	// sent by kit robot
 	public void msgHereIsSchematic(List<Part> partsList, List<Nest> nestsList)  {
 		// receive a list of all the parts that a kit needs, and a list of all the nests
 		this.nestsList = nestsList;
@@ -74,6 +75,7 @@ public class VisionAgent extends Agent implements Vision {
 		}
 		approved = false;
 		state = State.SCHEMATIC_RECEIVED;
+		print("schematic received from KitRobot");
 		stateChanged();
 		
 	}
@@ -81,6 +83,7 @@ public class VisionAgent extends Agent implements Vision {
 	// sent by NestAgent
 	public void msgImFull(Nest nest) {
 		fullNestsMap.put(nest.getNumber(), nest);
+		print("received message msgImFull from nest "+ nest.getName());
 		// stateChanged();
 	}
 	
@@ -89,12 +92,14 @@ public class VisionAgent extends Agent implements Vision {
 		// completedKits.add(k);
 		this.currentKit = k;
 		state = State.READY_TO_TAKE_PICTURE;
+		print("received message to take picture of kit from kitStandAgent ");
 		stateChanged();
 	}
 	
 	// sent by GUI
 	public void msgCameraBusy() {
 		waiting = true;
+		print("received message that the camera is busy from the GUI");
 	}
 	
 	//sent by GUI
@@ -102,6 +107,7 @@ public class VisionAgent extends Agent implements Vision {
 		waiting = false;
 		flashpermit.drainPermits();
 		flashpermit.release();
+		print("received message that the camera is available again from the GUI");
 	}	
 	
 	
@@ -118,6 +124,7 @@ public class VisionAgent extends Agent implements Vision {
 			this.type = Type.NESTS_INSPECTOR;
 			print ("initialized to nest inspecting vision agent");
 		}
+		print("initialized to type" + type);
 	}
 	
 	private void takePicture() {

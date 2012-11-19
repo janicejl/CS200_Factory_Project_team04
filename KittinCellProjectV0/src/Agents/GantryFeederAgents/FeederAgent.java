@@ -197,7 +197,7 @@ public class FeederAgent extends Agent implements Feeder {
 			return true;
 		}
 		
-		print("Nothing chosen.");
+		print("Nothing chosen by feeder scheduler.");
 		//print("left ready: " + left.readyForParts);
 		//print("right ready: " + right.readyForParts);
 		//print("currentPart:" + currentPart.getName());

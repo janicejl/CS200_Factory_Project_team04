@@ -42,6 +42,7 @@ public class FCSAgent extends Agent implements FCS {
 		this.partsRobot = partsRobotAgent;
 		this.kitRobot = kitRobotAgent;
 		this.gantryController = gantryControllerAgent;
+		print("created");
 	}
 	
 	/////////////////////////////////////////////////////////////
@@ -51,10 +52,12 @@ public class FCSAgent extends Agent implements FCS {
 	public void msgHereIsKitConfig(KitInfo kitInfo, int amount) {
 		sendKitConfig(kitInfo, amount);
 		numKitsNeeded=amount;
+		print("kit config received. Build "+amount+" kits");
 	}
 	
 	public void msgKitCompleted() {
 		numKitsNeeded--;
+		print("one kit completed");
 	}
 		
 	/////////////////////////////////////////////////////////////
@@ -62,6 +65,7 @@ public class FCSAgent extends Agent implements FCS {
 	
 	// send kit configuration to parts robot and kit robot
 	private void sendKitConfig(KitInfo info, int amount) {
+		print("sending kit configuration data to "+partsRobot.getName()+", kitRobot, and gantry controller");
 		partsRobot.msgMakeThisKit(info, amount);
 		kitRobot.msgGetKits(amount);
 		
@@ -76,12 +80,12 @@ public class FCSAgent extends Agent implements FCS {
 	/** SCHEDULER **/
 
 	// doesn't really do much because all the FCS does is send and receive messages as it gets them
-	protected boolean pickAndExecuteAnAction() {
-		//if (server.isRunning() && numKitsNeeded==0) {
-			//server.execute("Get Job");
-			//return true;
-		//}
-		
+	public boolean pickAndExecuteAnAction() {
+		if (server.isRunning() && numKitsNeeded==0) {
+			print("sending out to get a job");
+			server.execute("Get Job");
+			return true;
+		}
 		
 		return false;
 	}

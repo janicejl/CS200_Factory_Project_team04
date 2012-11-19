@@ -42,7 +42,10 @@ public class FCSAgentTest extends TestCase {
 		assertTrue("check that the fcs has sent the recipe to the parts robot", partsRobot.log.containsString("Received Recipe"));
 		assertTrue("check that the fcs has sent kits request to the kit robot", kitRobot.log.containsString("Received message to get " + numKitsNeeded + " kits"));
 		
+		fcs.msgKitCompleted();
 		
+		fcs.pickAndExecuteAnAction();
+		assertTrue("check that the fcs has reduced the num of kits needed by 1", fcs.numKitsNeeded==9);
 		
 		
 		

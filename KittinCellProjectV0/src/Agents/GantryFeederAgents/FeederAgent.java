@@ -160,7 +160,7 @@ public class FeederAgent extends Agent implements Feeder {
 				return true;
 			}
 			
-			else if(!left.readyForParts && right.readyForParts && !currentPart.getName().equals(right.partWanted.getName())){
+			else if(!left.readyForParts && right.readyForParts && !currentPart.getName().equals(right.partWanted.getName()) && !requestedPart.equals("blank")){
 				System.out.println("Left is not ready for parts. Right is ready for parts. Current part is not equal to right.partWanted. RequestParts(requestedPart) called.");
 				RequestParts(requestedPart);
 				PurgeFeeder();
@@ -168,14 +168,14 @@ public class FeederAgent extends Agent implements Feeder {
 			}
 			
 
-			else if(!right.readyForParts && left.readyForParts && currentPart!= left.partWanted){
+			else if(!right.readyForParts && left.readyForParts && currentPart!= left.partWanted && !requestedPart.getName().equals("blank")){
 				System.out.println("Right is not ready for parts. Left is ready for parts. Current part is not equal to left.partWanted. RequestParts(requestedPart) called.)");
 				RequestParts(requestedPart);
 				PurgeFeeder();
 				return true;
 			}
 			
-			else if (currentPart != left.partWanted && currentPart != right.partWanted){
+			else if (currentPart != left.partWanted && currentPart != right.partWanted && !requestedPart.getName().equals("blank")){
 				System.out.println("currentPart is not left or right partWanted.RequestedParts(requestedPart) called.");
 				System.out.println("requestedPart:" + requestedPart.getName());
 				RequestParts(requestedPart);

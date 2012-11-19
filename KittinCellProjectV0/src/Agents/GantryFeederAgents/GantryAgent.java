@@ -84,6 +84,7 @@ public class GantryAgent extends Agent implements Gantry {
 	}
 	
 	private void PrepareToGiveParts(){
+		app.execute("Make PartsBox", currentBin.getPartInfo());
 		currentFeeder.msgHaveParts(this);
 		fstate = FeederState.pending;
 	}

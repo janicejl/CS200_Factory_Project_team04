@@ -15,10 +15,10 @@ public class GantryManager implements Serializable,ActionListener
 	Vector<PartsBox> purged; //Partsboxes that have been purged
 	ArrayList<Integer> feeder;
 	Vector<PartInfo> feeders;
-	ArrayList<Feeder.Feeder> feed; 
+	Vector<Feeder.Feeder> feed; 
 	
 	
-	public GantryManager(ArrayList<Feeder.Feeder> f)
+	public GantryManager(Vector<Feeder.Feeder> f)
 	{
 		feed = f;
 		gantry = new Gantry();

@@ -8,7 +8,7 @@ import java.util.List;
 import server.Server;
 
 import Agent.Agent;
-import Agents.PartsRobotAgent.PartsRobotAgent;
+import Interface.PartsRobotAgent.*;
 import Interface.KitRobotAgent.KitRobot;
 import Interface.KitRobotAgent.KitStand;
 import Interface.VisionAgent.Vision;
@@ -41,7 +41,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	enum KitState {BeingInspected,AddParts,Empty,None,KitFinished, NeedKit, WaitinForInspectionQueueToClear,BeingUsed}
 
 
-	PartsRobotAgent parts_robot;
+	PartsRobot parts_robot;
 	KitRobot kit_robot;
 	Vision vision;
 	Server server;
@@ -155,7 +155,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	
 	
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 
 		if(!stand_events.isEmpty())
 		{
@@ -314,7 +314,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	private void InspectKitByVision(KitHolder kit_h)
 	{
 		server.execute("Take Picture");
-		//vision.msgTakePicture(kit_h.kit);
+		vision.msgTakePicture(kit_h.kit);
 		kit_h.state = KitState.None;
 		System.out.println("KitStand: Inspect kit by vision");
 	}
@@ -408,7 +408,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		kit_robot = robot;
 	}
 
-	public void SetPartsRobotAgent(PartsRobotAgent robot)
+	public void SetPartsRobotAgent(PartsRobot robot)
 	{
 		parts_robot = robot;
 	}

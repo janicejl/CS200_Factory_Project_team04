@@ -32,4 +32,10 @@ public class MockKitRobot extends MockAgent implements KitRobot{
 		
 	}
 
+	@Override
+	public void msgKitInspected(boolean bis_good) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

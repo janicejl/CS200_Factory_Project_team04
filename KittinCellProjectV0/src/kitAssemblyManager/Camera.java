@@ -83,28 +83,21 @@ public class Camera implements Serializable{
     }
     
     public boolean getTakePicture(){
-        /*if(takePicture){
-            takePicture = false;
-            return true;
-        }
-        else {
-            return false;
-        }*/
     	return takePicture;
     }
 	
 	public void update() {
         if(takePicture){
-            if(flashUp){
+            if(flashUp){					//increment the opacity 
                 opacity += 0.1;
-                if(opacity >= 1){
+                if(opacity >= 1){			//if reach full opacity, start flashDown. 
                 	flashUp = false;
                 	flashDown = true;
                 }
             }
-            else if(flashDown){
+            else if(flashDown){				//decrement the opacitys
             	opacity -= 0.1;
-            	if(opacity <= 0){
+            	if(opacity <= 0){			// if opacity becomes zero, finish flash animation
             		opacity = 0;
             		flashDown = false;
             		takePicture = false;

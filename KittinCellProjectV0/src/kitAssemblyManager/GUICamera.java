@@ -54,7 +54,7 @@ public class GUICamera {
 	
 	public void paintCamera(Graphics2D g2) {
 		if(takePicture){
-            try {
+            try {		//Draw the camera flash at the appropriate flash opacity. 
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
                 g2.drawImage(flash,(int)x,(int)y,null);
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));

@@ -19,18 +19,15 @@ public class MockPartsRobot extends MockAgent implements PartsRobot{
 	
 	public MockPartsRobot(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 
-	@Override
 	public void msgMakeThisKit(KitInfo kit, int ct) {
 		log.add(new LoggedEvent("Received Recipe"));
 		
 	}
 
 
-	@Override
 	public void msgPartsApproved(int nestindex) {
 		log.add(new LoggedEvent("Nest Has Part"));
 		

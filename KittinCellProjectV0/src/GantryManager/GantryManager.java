@@ -16,7 +16,7 @@ public class GantryManager implements Serializable,ActionListener
 	ArrayList<Integer> feeder;
 	Vector<PartInfo> feeders;
 	Vector<Feeder.Feeder> feed; 
-	
+	boolean msg = false;
 	
 	public GantryManager(Vector<Feeder.Feeder> f)
 	{
@@ -178,6 +178,7 @@ public class GantryManager implements Serializable,ActionListener
 				feed.get(gantry.getFeed()).setInfo(parts.get(gantry.getBox()).getPartInfo());
 				parts.get(gantry.getBox()).setState("feeding");
 				gantry.setState("free");
+				msg = true;
 				state = "free";
 			}
 			else if(state.equals("dumpi"))
@@ -290,6 +291,14 @@ public class GantryManager implements Serializable,ActionListener
 		return feeders;
 	}
 	
+	public boolean isMsg() {
+		return msg;
+	}
+
+	public void setMsg(boolean msg) {
+		this.msg = msg;
+	}
+
 	public void addPartInfo(PartInfo p)
 	{
 		parts.add(new PartsBox(p));

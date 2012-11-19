@@ -93,6 +93,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	ArrayList<Lane> lanes;
 	ArrayList<Nest> nestList;
 
+	boolean running = false;
+	
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
 	
@@ -505,6 +507,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	    	    	 jobsList.remove(0);
 	    	     }
 	    	     setProductionCommand("Update Jobs");
+	    	     getFCSAgent().msgKitCompleted();
     	     }
     	}
     	else if(process.equals("Get Job")){
@@ -555,6 +558,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			}
 			getPartsRobot().getNestCamera().setAnimationDone(false);
 		}	
+		if(getGantryManager().isMsg()){
+			getGantryManager().setMsg(false);
+			gantry1.msgGantryAtFeeder();
+		}
 		for(int i = 0; i < lanes.size(); i++){
 			lanes.get(i).actionPerformed(e);
 			if(lanes.get(i).isAtQueue()){
@@ -808,6 +815,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public void setFCSAgent(FCSAgent fCSAgent) {
 		FCSAgent = fCSAgent;
+	}
+
+	public boolean isRunning() {
+		return running;
+	}
+
+	public void setRunning(boolean running) {
+		this.running = running;
 	}
 
 	public void addGantryPart(PartInfo p)

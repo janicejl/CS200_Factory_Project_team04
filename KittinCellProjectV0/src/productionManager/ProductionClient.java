@@ -131,6 +131,13 @@ public class ProductionClient implements Runnable{
 				out.writeObject(app.getJobs());
 				out.reset();
 			}
+			else if(commandSent.equals("Start")){
+				out.writeObject(commandSent);
+				out.reset();
+				commandSent = "Idle";
+				out.writeObject(app.getJobs());
+				out.reset();
+			}
 			else if(commandSent.equals("Idle")){
 				out.writeObject(commandSent);
 				out.reset();

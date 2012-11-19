@@ -18,38 +18,36 @@ import data.GUIKit;
 import data.Kit;
 
 public class KitRobot implements Runnable, Serializable{
-    boolean processing = false;
-    boolean hasKit = false;
-    boolean paused = false;
-    boolean emptyAvailable = false;
-    boolean spawnEmpty = true;
-    boolean emptyConveyorOn = true;
-    boolean doneConveyorOn = false;
-    double x;
-    double y;
-    double newX;
-    double newY;
-    Kit kit;
-    int[] stationX =  {105,185,185,105, 35,185, 35};
-    int[] stationY =  { 60,190,410,540,540,300, 60};
-    int[] waypointX = {105,105,105,105, 35,105, 35};
-    int[] waypointY = {190,190,410,410,410,300,190};
-    double speed = 4.0;
+    boolean processing = false;				//Boolean stating whether or not it is processing a command
+    boolean hasKit = false;					//whether or not it has a kit
+    boolean paused = false;					//to pause update if necessary. 
+    boolean emptyAvailable = false;			//Boolean of whether or not there is an available kit to pickup. 
+    boolean spawnEmpty = true;				//whether or not it should spawn a empty kit. 
+    boolean emptyConveyorOn = true;			//Whether or not the conveyer to move the empty kits should turn on. 
+    boolean doneConveyorOn = false;			//whether or not the conveyer to move the finished kits should turn on. 
+    double x;			//x position of the kit robot
+    double y;			//y position of the kit robot
+    double newX;		//new x position of the kit robot
+    double newY;		//new y position of the kit robot
+    Kit kit;			//A referece to the kit that it is holding. 
+    int[] stationX =  {105,185,185,105, 35,185, 35};		//an array of the x coordinates of the possible places to put kits. 
+    int[] stationY =  { 60,190,410,540,540,300, 60};		// an array of the y coordinates of the possible places to put kits. 
+    int[] waypointX = {105,105,105,105, 35,105, 35};		//An array of x coordinates to help guide the kit robot to move without hitting other objects. 
+    int[] waypointY = {190,190,410,410,410,300,190};		//An array of y coordinates to help guide the kit robot to move without hitting other objects. 
+    double speed = 4.0;			//speed of the kit robot. 
+	
+    ArrayList<String> commands;				//Arraylist of commands it has to proccess from the agents.
+    ArrayList<String> subCommands;			//Arraylist of commands to aid proccessing commands from agents
+    ArrayList<String> commandsSkipped;		//Arraylist of possible skipped commands. 
+    KitAssemblyManager kitAssemblyManager;		//A reference to kit assembly manager
 
-    ArrayList<String> stationRotations;
-    ArrayList<String> commands;
-    ArrayList<String> subCommands;
-    ArrayList<String> commandsSkipped;
-    KitAssemblyManager kitAssemblyManager;
-
-    Thread thread;
+    Thread thread;				//A separate thread for the kit robot to run in. 
 
     public KitRobot(KitAssemblyManager kam){
         kitAssemblyManager = kam;
         commands = new ArrayList<String>();
         subCommands = new ArrayList<String>();
         commandsSkipped = new ArrayList<String>();
-        stationRotations = new ArrayList<String>();
         x = 100;
         y = 300;
         newX = x;
@@ -57,6 +55,10 @@ public class KitRobot implements Runnable, Serializable{
         kit = new Kit();
     }
 
+    //method to proccess the commands into the subcommands. 
+    //m = move
+    //p = pick
+    //d = drop
     private void processCommand(String[] ss){
         int src = 0;
         int dst = 0;
@@ -90,15 +92,16 @@ public class KitRobot implements Runnable, Serializable{
         subCommands.add(i+5,"m," + waypointX[dst] + "," + waypointY[dst]);
     }
 
+    //process subcommands. 
     private void processSubCommand(String s){
         String[] ss = s.split("\\,");
-        if("m".equals(ss[0])){
+        if("m".equals(ss[0])){			//move
             System.out.println(s);
             newX = Double.parseDouble(ss[1]);
             newY = Double.parseDouble(ss[2]);
             processing = true;
         }
-        else if(ss[0].equals("p")){
+        else if(ss[0].equals("p")){		//pick
             int i = Integer.parseInt(ss[1]);
             try {
             	kit = new Kit();
@@ -111,7 +114,7 @@ public class KitRobot implements Runnable, Serializable{
             }
             hasKit = true;
         }
-        else if(ss[0].equals("d")){
+        else if(ss[0].equals("d")){		//drop
             int i = Integer.parseInt(ss[1]);
             kit.setGrabbed(false);
             kitAssemblyManager.setStationKit(i, kit);
@@ -170,6 +173,7 @@ public class KitRobot implements Runnable, Serializable{
         paused = !paused;
     }
 
+    //update position and objects. 
     public void update(){
         if(!paused){
             if(x != newX || y != newY){
@@ -272,14 +276,6 @@ public class KitRobot implements Runnable, Serializable{
 
     public void setKit(Kit kit) {
         this.kit = kit;
-    }
-
-    public ArrayList<String> getStationRotations() {
-        return stationRotations;
-    }
-
-    public void setStationRotations(ArrayList<String> stationRotations) {
-        this.stationRotations = stationRotations;
     }
 
     public ArrayList<String> getCommands() {

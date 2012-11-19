@@ -12,21 +12,23 @@ import data.Kit;
 import server.KitRobot;
 
 public class GUIKitRobot {
-    KitRobot kr;
-    double x, y, angle, extension, jointAngle;
+    KitRobot kr;				//A reference to kit robot. 
+    double x, y, angle, extension, jointAngle;		//variable to define the position of the robot. 
     double a, b, c, d, e, f; // robot joint positions
-    boolean hasKit;
-    double wid;
-    double end;
-    double len;
-    double hypA;
-    double hypB;
-    double phi;
-    double gripX;
-    double gripY;
-    GUIKit gKit;
-    Kit kit;
-    BufferedImage crateImage = null;
+    boolean hasKit;		//boolean for whether or not it is holding a kit. 
+    double wid;				//width of the kit robot arms
+    double end;				//distance from the pivot point to the end of the arm
+    double len;				//length of the kit robot arms
+    double hypA;			// used for arm extension movement. 
+    double hypB;			//used for arm extension movement
+    double phi;				//current vertical angle of the arm 
+    double gripX;			//current x position of the gripper
+    double gripY;			//current y position of the gripper. 
+    GUIKit gKit;			// graphical version of the kit held
+    Kit kit;				//reference to the kit being held. 
+    BufferedImage crateImage = null;	//image of an empty kit. 
+    
+    //images that make up the kit robot. 
     BufferedImage metal = null;
     BufferedImage grip = null;
     BufferedImage base = null;
@@ -35,7 +37,7 @@ public class GUIKitRobot {
     BufferedImage hinge = null;
     BufferedImage base2 = null;
 
-    GUIKitAssemblyManager app;
+    GUIKitAssemblyManager app;			// a reference to the kit assembly manager. 
 
     public GUIKitRobot(GUIKitAssemblyManager _app){
         app = _app;
@@ -64,6 +66,7 @@ public class GUIKitRobot {
         }
     }
 
+    //updates the position of the different parts. 
     public void update(){
         kr = app.getKitRobot();
         gripX = kr.getX();
@@ -90,6 +93,7 @@ public class GUIKitRobot {
         f = -(int)(extension + hypB * Math.cos(Math.PI/4 - jointAngle));
     }
 
+    //paints the kit robot. This is called in the guikitassembly
     public void paintKitRobot(Graphics2D g2){
     	if(hasKit){
         	gKit.paintKit(g2);

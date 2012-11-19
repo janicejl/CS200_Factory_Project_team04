@@ -9,23 +9,21 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class GUICamera {
-	Camera camera;
+	Camera camera;				//A reference to camera that will be passed in from the server through parts robot
 	
-    BufferedImage flash;
-    boolean takePicture;
-    boolean flashUp;
-    boolean flashDown;
+    BufferedImage flash;		//Image file for flash
+    boolean takePicture;		//Boolean for whether it is necessary to draw the animation for taking a picture. 
+    boolean flashUp;			//Boolean for whether the flashing up is done. 
+    boolean flashDown;			//Boolean for whether the flashing down is done.
     
-    float opacity;
-    float flashCounter;
-    double x;
-    double y;
+    float opacity;				//Number to set the opacity of the flash in the animation.
+    double x;					//x position to paint the flash animation
+    double y;					//y position to paint the flash animation.
 	
 	public GUICamera(Camera c) {
 		camera = c;
 		
 		opacity = 0.0f;
-        flashCounter = 1.0f;
         x = 350;
         y = 100;
         

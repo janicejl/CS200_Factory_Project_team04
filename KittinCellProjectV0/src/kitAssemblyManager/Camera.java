@@ -4,15 +4,15 @@ import java.io.Serializable;
 
 public class Camera implements Serializable{
 
-	private double x;
-	private double y;
+	private double x;					//the x position of the camera
+	private double y;					//the y position of the camera. 
 	
-	private boolean takePicture;
-	private boolean flashUp;
-	private boolean flashDown;
+	private boolean takePicture;		//Boolean for whether a picture should be taken
+	private boolean flashUp;			//Boolean for whether the flashup animation should be done. 
+	private boolean flashDown;			//Boolean for whether the flashdown animation should be done. 
 	
-	private float opacity;
-	private boolean animationDone;
+	private float opacity;				//float for controlling the opacity of the flash animation. s
+	private boolean animationDone;		//Boolean for whether or not the animation has finished drawing
 	
 	public Camera() {
 		x = 0;

@@ -68,7 +68,9 @@ public class GUIFeeder {
 			parts.add(new GUIPart(feeder.getParts().get(i)));
 			parts.get(i).paintPart(g2);
 		}
-		
+	}
+
+	public void paintCrate(Graphics2D g2){
 		if(feeder.getHasCrate()){
 			g2.drawImage(partbox, (int)feeder.getX() + 130, (int)feeder.getY() + 12, null);
 			try{
@@ -79,7 +81,7 @@ public class GUIFeeder {
 			}
 		}
 	}
-
+	
 	public synchronized Feeder getFeeder() {
 		return feeder;
 	}
@@ -87,7 +89,4 @@ public class GUIFeeder {
 	public synchronized void setFeeder(Feeder feeder) {
 		this.feeder = feeder;
 	}
-
-	
-	
 }

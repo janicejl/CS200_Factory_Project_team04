@@ -517,7 +517,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			getKitConveyorAgent().msgKitHasArrived();
 		}
 		if(getKitAssemblyManager().isKitStandMsg()){
-			getKitAssemblyManager().setMsg(false);
+			getKitAssemblyManager().setKitStandMsg(false);
 			getKitStandAgent().msgKitAnimationOnStand();
 		}
 		if(getPartsRobot().getMsg().equals(true)){

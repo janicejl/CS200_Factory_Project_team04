@@ -32,6 +32,17 @@ public class KitAssemblyManager implements Runnable, Serializable{
    
     boolean checked = false;
 
+    /*
+    id  name    corX  corY
+    0   empty   80    10
+    1   kit 1   160   140
+    2   kit 2   160   360
+    3   inc     80    490
+    4   bad     10    490
+    5   check   160   250
+    6   done    10    10
+    */
+    
     public KitAssemblyManager(ArrayList<Nest> n){
     	nests = n;
         stationOccupied = new ArrayList<Boolean>();
@@ -86,24 +97,24 @@ public class KitAssemblyManager implements Runnable, Serializable{
         if(i == 1){
         	stationKits.set(i,k);
             stationKits.get(1).setPosition(160,140);
+            kitStandMsg = true;
         }
         else if(i == 2){
         	getStationKits().set(i,k);
         	getStationKits().get(2).setPosition(160, 360);
+        	kitStandMsg = true;
         }
         else if(i == 3){
             System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
             getStationKits().set(i,k);
             getStationKits().get(3).setPosition(80,490);
             System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
-            kitStandMsg = true;
         }
         else if(i == 4){
             System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
             getStationKits().set(i,k);
             getStationKits().get(4).setPosition(10,490);
             System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
-            kitStandMsg = true;
         }
         else if(i == 5){
         	getStationKits().set(i,k);

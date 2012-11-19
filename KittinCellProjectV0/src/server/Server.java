@@ -793,6 +793,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return gantryFeedList;
 	}
 	
+	public GantryControllerAgent getGantryController() {
+		return gantryController;
+	}
+
+	public void setGantryController(GantryControllerAgent gantryController) {
+		this.gantryController = gantryController;
+	}
+
 	public void addGantryPart(PartInfo p)
 	{
 		gantryManager.addPartInfo(p);

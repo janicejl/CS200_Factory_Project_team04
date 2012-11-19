@@ -95,10 +95,12 @@ public class GantryManager implements Serializable,ActionListener
 				}
 				i++;	
 			}
+			/*
 			if(go==false && parts.size()<9) //Up to 9 parts boxes visible in the factory at any one time
 			{
-				parts.add(new PartsBox(new PartInfo("test","images/part.png")));
+				//parts.add(new PartsBox(new PartInfo("test","images/part.png")));
 			}
+			*/
 		}
 		
 		if(gantry.getState().equals("load")) //If gantry has been told to load a parts box

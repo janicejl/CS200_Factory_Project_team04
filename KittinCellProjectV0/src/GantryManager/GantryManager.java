@@ -42,6 +42,7 @@ public class GantryManager implements Serializable,ActionListener
 	
 	public void update()
 	{
+	
 		//Temporary variable to store the state
 		String state = gantry.getState();
 		
@@ -94,28 +95,30 @@ public class GantryManager implements Serializable,ActionListener
 				}
 				i++;	
 			}
-			/*
-			if(go==false && parts.size()<9) //Up to 9 parts boxes visible in the factory at any one time
-			{
-				//parts.add(new PartsBox(new PartInfo("test","images/part.png")));
-			}
-			*/
 		}
 		
 		if(gantry.getState().equals("load")) //If gantry has been told to load a parts box
 		{
 			int c=0;
+			boolean it = false;
 			while(c<parts.size())
 			{
-				if(parts.get(c).getState()=="load")
+				if(parts.get(c).getState().equals("load"))
 				{
 					gantry.setxFinal(parts.get(c).getxCurrent()+10);
 					gantry.setyFinal(parts.get(c).getyCurrent()+15);
 					gantry.setBox(c);
+					System.out.println("YES" + c);
+					it = true;
 				}
 				c++;
 			}
-			if(gantry.getBox()>parts.size())
+			if(it == false)
+			{
+				System.out.println(gantry.getState());
+				gantry.setxFinal(-99);
+			}
+			if(gantry.getBox()>parts.size()-1)
 			{
 				gantry.setState("free");
 			}	

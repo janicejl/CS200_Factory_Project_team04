@@ -29,19 +29,26 @@ public class Gantry implements Serializable
 	//Function to update position 
 	public void update()
 	{
-		if(xFinal!=xCurrent)
+		if(xFinal==-99)
 		{
-			if(xFinal<xCurrent)
-				xCurrent-=1;
-			else
-				xCurrent+=1;
+			
 		}
-		if(yFinal!=yCurrent)
+		else
 		{
-			if(yFinal<yCurrent)
-				yCurrent-=1;
-			else
-				yCurrent+=1;
+			if(xFinal!=xCurrent)
+			{
+				if(xFinal<xCurrent)
+					xCurrent-=1;
+				else	
+					xCurrent+=1;
+			}
+			if(yFinal!=yCurrent)
+			{
+				if(yFinal<yCurrent)
+					yCurrent-=1;
+				else
+					yCurrent+=1;
+			}
 		}
 		
 		//Depending on feeder information, will change final destination
@@ -152,7 +159,9 @@ public class Gantry implements Serializable
 	//Function for determining if the gantry has reached its destination
 	public boolean done()
 	{
-		if(xFinal==xCurrent && yFinal==yCurrent)
+		if(xFinal==-99)
+			return false;
+		else if(xFinal==xCurrent && yFinal==yCurrent)
 			return true;
 		else 
 			return false;

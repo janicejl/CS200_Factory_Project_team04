@@ -22,7 +22,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	enum KitState {BeingBuilt,WaitForKit, MoveKit , MoveToInspection, WaitingForInspection, FinishedKit, DestroyKit};
 	
 	enum KitRobotEvent {
-		CanPlaceKit};
+		CanPlaceKit, AnimationComplete};
 	
 	List<KitHolder> kit_list = Collections.synchronizedList( new ArrayList<KitHolder>());
 	List<KitHolder> inspection_list = Collections.synchronizedList( new ArrayList<KitHolder>());
@@ -126,6 +126,8 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 			}
 		}
 	}
+	
+	
 	
 	
 	@Override

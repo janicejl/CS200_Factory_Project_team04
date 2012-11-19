@@ -5,8 +5,11 @@ import java.awt.*;
 
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.*;
+
+import MoveableObjects.Bin;
 
 import data.*;
 
@@ -84,14 +87,16 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent ae){
 		if("Send Recipe".equals(ae.getActionCommand())){
 			KitInfo kit = new KitInfo("TestKit");
+			Vector<Bin> bins = new Vector<Bin>();
 			for(int i = 0; i<8; i++){
 				PartInfo p = new PartInfo("p" + i+1,""+i+1);
 				kit.add(p);
+				bins.add(new Bin(p, 1));
 			}
-			
 			
 			server.getPartsRobotAgent().msgMakeThisKit(kit, 4);
 			server.getKitRobotAgent().msgGetKits(4);
+			server.getGantryController().msgBinConfiguration(bins);
 		}
 		else if("Get Part".equals(ae.getActionCommand())) {
 			/*server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex());

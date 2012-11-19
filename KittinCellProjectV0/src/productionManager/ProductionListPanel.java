@@ -58,6 +58,7 @@ public class ProductionListPanel extends JPanel implements ActionListener{
 		if(e.getSource() == start){
 			app.getClient().setCommandSent("Update");
 			start.setText("Update Production");
+			jobs.update();
 		}
 	}
 
@@ -69,5 +70,15 @@ public class ProductionListPanel extends JPanel implements ActionListener{
 
 	public synchronized void setJobs(JobListPanel jobs) {
 		this.jobs = jobs;
+	}
+
+
+	public JButton getStart() {
+		return start;
+	}
+
+
+	public void setStart(JButton start) {
+		this.start = start;
 	}
 }

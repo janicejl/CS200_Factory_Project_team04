@@ -15,41 +15,43 @@ import data.Part;
 import kitAssemblyManager.Camera;
 
 public class PartsRobot implements Runnable, Serializable{
-    boolean processing;
-    boolean paused;
-    boolean hasCrate;
-    double x;
-    double y;
-    double newX;
-    double newY;
-    double angle;
-    double newAngle;
-    double moveSpeed = 10;
-    double rotationSpeed = 2;
-    double extensionSpeed = 2;
+    boolean processing;					// boolean on whether or not it is processing a command. 
+    boolean paused;						//boolean to prevent updating if not needed. 
+    	
+    double x;						//x position of the parts robot
+    double y;						//y position of the parts robot
+    double newX;					//final x position of the parts robot
+    double newY;					//final y position of the parts robot
+    double angle;					//rotation of the parts robot
+    double newAngle;				//final rotation of the parts robot
+    double moveSpeed = 10;			//speed of the movement of the parts robot
+    double rotationSpeed = 2;		//Speed of rotation of the parts robot. 
+    double extensionSpeed = 2;		//Speed of extension of the grippers of the parts robot. 
     
-    private Camera kitStandCamera;
-    private Camera nestCamera;
+    private Camera kitStandCamera;		//Camera for the kit stand
+    private Camera nestCamera;			//Camera for the nest
     
-    Boolean msg;
-    KitAssemblyManager app;
+    Boolean msg;							//boolean of whether or not there are msgs. 
+    KitAssemblyManager app;					//reference to the kit assembly
     
-    BufferedImage partsRobotImage;
+    //BufferedImage partsRobotImage;			
 
-    ArrayList<Boolean> gripperHolding;
-    ArrayList<Double> gripperExtensions;
-    ArrayList<Double> newGripperExtensions;
-    ArrayList<String> commands;
-    ArrayList<String> subCommands;
-    ArrayList<String> nestLocations;
-    ArrayList<String> kitLocations;
-    ArrayList<Integer> gripperPartIDs;
-    int[] nl = {55,125,195,265,335,405,475,545};
-    int[] kl = {190,410};
-    ArrayList<Part> partsHeld;
+    ArrayList<Boolean> gripperHolding;		//ArrayList of 4 that holds the boolean state of whether each of the four gripers are holding parts.
+    ArrayList<Double> gripperExtensions;	//ArrayList that holds how much each of the 4 gripers extends out	
+    ArrayList<Double> newGripperExtensions;	//Arraylist of the new gripper extensions. 
+    ArrayList<String> commands;				//Arraylist of the list of commands that it needs to process. 
+    ArrayList<String> subCommands;			//Arraylist to aid proccessing commands. 
+    ArrayList<String> nestLocations;		//Arraylist of the nest locations
+    ArrayList<String> kitLocations;			//Arraylist of the kit locations
+    ArrayList<Integer> gripperPartIDs;		//Arraylist of the ID of the parts it is holding. 
     
-    boolean movingMsg;
-    boolean dumped;
+    
+    int[] nl = {55,125,195,265,335,405,475,545};	//Array of the y coordinates of the nests
+    int[] kl = {190,410};							//Array of the y coordinates of the kits. 
+    ArrayList<Part> partsHeld;				//Arraylist of the parts held by the grippers. 
+    
+    boolean movingMsg;				//boolean on whether or not it is moving. 
+    boolean dumped;					//boolean on whether or not dumping. 
 
     public PartsRobot(KitAssemblyManager _app){
     	app = _app;
@@ -80,13 +82,19 @@ public class PartsRobot implements Runnable, Serializable{
         movingMsg = false;
         dumped = false;
         
-        try {
+/*        try {
             partsRobotImage = ImageIO.read(new File("crate.png"));
         }
         catch (IOException e) {
-        }
+        }*/
     }
 
+    //process the commands given by the agents and adds them to the subcommand list. 
+    //m = move
+    //r = rotate
+    //e = extend
+    //p = pickup
+    //d = drop
     private void processCommand(String[] ss){
         int src = 0;
         int dst = 0;
@@ -163,7 +171,7 @@ public class PartsRobot implements Runnable, Serializable{
         }
     }
 
-
+    //process the list of subcommands. 
     private void processSubCommand(String s){
     	try {
             String[] ss = s.split("\\,");
@@ -317,6 +325,7 @@ public class PartsRobot implements Runnable, Serializable{
 		this.movingMsg = movingMsg;
 	}
 
+	//update the position of everything. 
 	public void update(){
         if(!paused){
             processing = false;

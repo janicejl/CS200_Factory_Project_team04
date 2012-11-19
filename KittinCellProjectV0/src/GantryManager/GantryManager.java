@@ -45,6 +45,7 @@ public class GantryManager implements Serializable,ActionListener
 	
 		//Temporary variable to store the state
 		String state = gantry.getState();
+		System.out.println(state);
 		
 		gantry.update();
 		//Updating exiting p)arts boxes
@@ -118,7 +119,7 @@ public class GantryManager implements Serializable,ActionListener
 				System.out.println(gantry.getState());
 				gantry.setxFinal(-99);
 			}
-			if(gantry.getBox()>parts.size()-1)
+			if(gantry.getBox()>parts.size())
 			{
 				gantry.setState("free");
 			}	

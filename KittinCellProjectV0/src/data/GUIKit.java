@@ -10,8 +10,8 @@ import javax.imageio.*;
 
 public class GUIKit {
 
-	Kit kit;
-	BufferedImage image;
+	Kit kit;					//A reference to the kit from the server. 
+	BufferedImage image;		//image to paint for the graphics. 
 	
 	public GUIKit(Kit k) {
 		kit = k;
@@ -36,7 +36,7 @@ public class GUIKit {
 		g.drawImage(image, (int)x, (int)y, null);
 		
 		List<Part> parts = kit.getPartsList();
-		//Setting the position of each individual part. 
+		//Setting the position of each individual part relative to the top left corner of the kit. 
 		for (int i = 0, j = 0; i < parts.size(); i++) {
 			parts.get(i).setX(x + ((i % 2) * 25));		//25 = size of testing image parts. 
 			parts.get(i).setY(y + (j * 25));

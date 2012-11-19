@@ -8,17 +8,18 @@ import java.util.ArrayList;
 
 
 public class Kit implements Serializable {
-	private String id;
-	private double x;
-	private double y;
+	private String id;				//Name to identify the kit
+	private double x;				//x position of the kit
+	private double y;				//y position of the kit
 	
-	private double destinationX;
-	private double destinationY;
+	private double destinationX;	//x final position for movement. 
+	private double destinationY;	//y final position for moveent. 
 	
-	private boolean grabbed;
+	private boolean grabbed;		//Boolean stating whether or not the kit is being grabbed by the robot. 
 	
-	//ArrayList<Part> parts;
 	private ArrayList<Part> partsList = new ArrayList<Part>();
+	//Array of the list of parts in the nest. 
+	
 	public Kit(String name, double nX, double nY) {
 		id = name;
 		x = nX;
@@ -96,7 +97,7 @@ public class Kit implements Serializable {
 	}
 	
 	public void update() {
-		if (destinationX != x) {
+		if (destinationX != x) {			//move the kit x position. 
 			if (x < destinationX) {
 				x++;
 			} else {
@@ -104,7 +105,7 @@ public class Kit implements Serializable {
 			}
 		}
 		
-		if (destinationY != y) {
+		if (destinationY != y) {			//move the kit y position. 
 			if (y < destinationY) {
 				y++;
 			} else {

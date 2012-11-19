@@ -75,8 +75,14 @@ public class FCSAgent extends Agent implements FCS {
 	/////////////////////////////////////////////////////////////
 	/** SCHEDULER **/
 
-	// doesnt really need to do anything because all the FCS does is send and receive messages as it gets them
+	// doesn't really do much because all the FCS does is send and receive messages as it gets them
 	protected boolean pickAndExecuteAnAction() {
+		if (server.isRunning() && numKitsNeeded==0) {
+			server.execute("Get Job");
+			return true;
+		}
+		
+		
 		return false;
 	}
 

@@ -27,6 +27,7 @@ public class PartsManagerClient implements Runnable{
 		//thread.run();
 	}
 	
+	// set up connection with server
 	public Integer connect(){
 		try {
 			s = new Socket(serverName, 61337); //attempt to connect to servername
@@ -43,6 +44,7 @@ public class PartsManagerClient implements Runnable{
 		return 1; //successful connection
 	}
 	
+	// constantly send parts data to server
 	public void run(){
 		try{
 			out.writeObject(commandSent);
@@ -56,6 +58,7 @@ public class PartsManagerClient implements Runnable{
 		}
 	}
 	
+	// update the parts data
 	public synchronized void updateThread() {
 		try {
 			if(commandSent.equals("Update Parts")){

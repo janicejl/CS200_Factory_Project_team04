@@ -82,7 +82,7 @@ public class GantryAgent extends Agent implements Gantry {
 			app.execute("Feed Feeder", currentFeeder.getNumber(), currentBin.getPartInfo());
 			currentBin.setQuantity(currentBin.getQuantity()-1);
 		}
-		app.execute("Idle Bin", currentFeeder.getNumber());
+		
 		currentFeeder = null;
 		print("Feeder removed from gantry.");
 		fstate = FeederState.notReady;

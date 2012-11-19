@@ -4,13 +4,14 @@ import java.util.List;
 import Interface.VisionAgent.*;
 import Agents.PartsRobotAgent.*;
 import Agents.VisionAgent.*;
+import data.KitInfo;
 import data.Part;
 import data.PartInfo;
 
 public interface PartsRobot {
 
 	// messages
-	public void msgMakeThisKit(List<PartInfo> kitrecipe, int ct);
+	public void msgMakeThisKit(KitInfo kit, int ct);
 	public void msgPartsApproved(int nestindex);
 	public void msgEmptyKit(int position);
 	public void msgAnimationDone();

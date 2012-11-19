@@ -44,7 +44,45 @@ public class FeederTests extends TestCase{
 	}
 	
 	@Test
-	public void testLaneInteractions() {
+	public void testSingleLaneInteraction() {
+
+		
+		feeder1.msgNeedThisPart(type1, "left");
+		assertTrue("Feeder should have received msgNeedThisPart.", feeder1.log.containsString("msgNeedThisPart") && feeder1.log.containsString("left"));
+		
+		feeder1.pickAndExecuteAnAction();
+		assertTrue("Gantry Controller should have received msgNeedThisPart from Feeder 1", gc.log.containsString("msgNeedThisPart"));
+		assertTrue("Feeder 1 should have no parts.", feeder1.getQuantity() == 0);
+		
+		feeder1.msgHaveParts(gantry1);
+		assertTrue("Feeder 1 should have received msgHaveParts from Gantry 1", feeder1.log.containsString("msgHaveParts"));
+		
+		feeder1.pickAndExecuteAnAction();
+		assertTrue("Gantry 1 should have received msgReadyForParts()", gantry1.log.containsString("msgReadyForParts"));
+		
+		feeder1.msgHereAreParts(bin1);
+		assertTrue("Feeder1 should have received msgHereAreParts from Gantry 1.", feeder1.log.containsString("msgHereAreParts"));
+		
+		feeder1.pickAndExecuteAnAction();
+		assertFalse("Left Lane should not have received msgHereIsAPart.", lane1.log.containsString("msgHereIsAPart"));
+		
+		feeder1.msgLaneIsReadyForParts("left");
+		assertTrue("Feeder 1 should have received msgLaneIsReadyForParts from the left lane.", 
+				feeder1.log.containsString("msgLaneIsReadyForParts") && feeder1.log.containsString("left"));
+		
+		feeder1.pickAndExecuteAnAction();
+		//System.out.println(feeder1.getState());
+		assertTrue("Left Lane should have received msgHereIsAPart.", lane1.log.containsString("msgHereIsAPart"));
+		assertTrue("Feeder should have 19 parts.", feeder1.getQuantity() == 19);
+		
+		feeder1.pickAndExecuteAnAction();
+		assertTrue("Feeder should have 18 parts.", feeder1.getQuantity() == 18);
+		
+	}
+	
+	
+	@Test
+	public void testBothLaneInteraction() {
 
 		
 		feeder1.msgNeedThisPart(type1, "left");
@@ -72,7 +110,15 @@ public class FeederTests extends TestCase{
 		assertTrue("Feeder 1 should have received msgLaneIsReadyForParts from the left lane.", 
 				feeder1.log.containsString("msgLaneIsReadyForParts") && feeder1.log.containsString("left"));
 		
+		feeder1.pickAndExecuteAnAction();
+		//System.out.println(feeder1.getState());
+		assertTrue("Left Lane should have received msgHereIsAPart.", lane1.log.containsString("msgHereIsAPart"));
+		assertTrue("Feeder should have 19 parts.", feeder1.getQuantity() == 19);
+		
+		feeder1.pickAndExecuteAnAction();
+		assertTrue("Feeder should have 18 parts.", feeder1.getQuantity() == 18);
 		
 	}
+
 
 }

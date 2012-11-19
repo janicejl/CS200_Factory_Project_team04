@@ -90,7 +90,7 @@ public class FeederAgent extends Agent implements Feeder {
 		currentPart = bin.getPartInfo();
 		partsInFeeder = bin.getQuantity();
 		myBin = bin;
-		//fstate = FeederState.beingFed;	
+		fstate = FeederState.waitingLane;	
 		log.add(new LoggedEvent("msgHereAreParts received from gantry."));
 		stateChanged();
 	}
@@ -241,6 +241,10 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	public int getNumber(){
 		return this.number;
+	}
+	
+	public FeederState getState(){
+		return fstate;
 	}
 	
 	public int getQuantity(){

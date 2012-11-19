@@ -24,25 +24,14 @@ public class PartsBox implements Serializable
 	
 	public PartsBox(int c)
 	{
-		//If the parts box is an exiting parts box
-		if(c==0)
-		{
-			xCurrent = 275;
-			yCurrent = 157;
-			yFinal = 157;
-			xFinal = 350;
-		}
-		else
-		{
-			count = c;
-			xCurrent = xmax+5;
-			xFinal = xCurrent;
-			yCurrent = (ymax/2) - (ydim/2)+45;
-			yFinal = yCurrent;
-			state = "wait";
-			cycles = 0;
-			feeder = -1;
-		}
+		count = c;
+		xCurrent = xmax+5;
+		xFinal = xCurrent;
+		yCurrent = (ymax/2) - (ydim/2)+45;
+		yFinal = yCurrent;
+		state = "wait";
+		cycles = 0;
+		feeder = -1;
 	}
 	
 	public PartsBox(PartInfo i)
@@ -86,6 +75,14 @@ public class PartsBox implements Serializable
 			else
 				yCurrent+=1;
 		}
+	}
+	
+	public void exit()
+	{
+		xCurrent = 275;
+		yCurrent = 157;
+		yFinal = 157;
+		xFinal = 350;
 	}
 
 	public int getxFinal()

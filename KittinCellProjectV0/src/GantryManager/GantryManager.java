@@ -193,6 +193,7 @@ public class GantryManager implements Serializable,ActionListener
 			else if(state.equals("dumpf"))
 			{
 				exiting.add(purged.get(gantry.getBox()));
+				exiting.get(exiting.size()-1).exit();
 				purged.remove(gantry.getBox());
 				gantry.setState("free");
 				state = "free";

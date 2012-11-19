@@ -180,6 +180,14 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		this.client = client;
 	}
 
+	public ProductionManagerPanel getPanel() {
+		return panel;
+	}
+
+	public void setPanel(ProductionManagerPanel panel) {
+		this.panel = panel;
+	}
+
 	@Override
 	public void windowActivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub

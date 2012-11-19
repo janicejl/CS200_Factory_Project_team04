@@ -62,6 +62,7 @@ public class GantryControllerAgent extends Agent implements GantryController {
 			this.bins.add(thebins.get(i));
 		}
 		log.add(new LoggedEvent("msgBinConfiguration received from FCS"));
+		print("msgBinConfiguration received from FCS");
 		stateChanged();
 	}
 
@@ -77,6 +78,7 @@ public class GantryControllerAgent extends Agent implements GantryController {
 		MyFeeder temp = new MyFeeder(f1, p);
 		this.requests.add(temp);
 		log.add(new LoggedEvent("msgNeedThisPart received from Feeder"));
+		print("msgNeedThisPart received from Feeder " + f1.getName());
 		stateChanged();
 	}
 
@@ -90,6 +92,7 @@ public class GantryControllerAgent extends Agent implements GantryController {
 			}
 		}
 		log.add(new LoggedEvent("msgDoneDeliveringParts received from Gantry"));
+		print("msgDoneDeliveringParts received from Gantry" + gantry.getName());
 		stateChanged();		
 	}
 	

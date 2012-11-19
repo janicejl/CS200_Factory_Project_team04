@@ -137,7 +137,7 @@ public class FeederAgent extends Agent implements Feeder {
 	public boolean pickAndExecuteAnAction() {
 		
 		if(fstate == FeederState.low && !currentPart.getName().equals("blank") ){
-			System.out.println("fstate is low and current part is not blank, RequestParts(currentPart) called.");
+			print("fstate is low and current part is not blank, RequestParts(currentPart) called.");
 			RequestParts(currentPart);
 			return true;
 		}
@@ -148,20 +148,20 @@ public class FeederAgent extends Agent implements Feeder {
 		}*/
 		
 		else if(fstate == FeederState.waitingLane || fstate == FeederState.low){
-			System.out.println("fstate is waitingLane or low.");
+			print("fstate is waitingLane or low.");
 			if(currentPart == left.partWanted && left.readyForParts){
-				System.out.println("CurrentPart is left.partWanted and left is ready for parts. FeedParts(true) called.");
+				print("CurrentPart is left.partWanted and left is ready for parts. FeedParts(true) called.");
 				FeedParts(true);
 				return true;
 			}
 			else if (currentPart == right.partWanted && right.readyForParts){
-				System.out.println("CurrentPart is right.partWanted and right is ready for parts. FeedParts(false) called.");
+				print("CurrentPart is right.partWanted and right is ready for parts. FeedParts(false) called.");
 				FeedParts(false);
 				return true;
 			}
 			
 			else if(!left.readyForParts && right.readyForParts && !currentPart.getName().equals(right.partWanted.getName()) && !requestedPart.equals("blank")){
-				System.out.println("Left is not ready for parts. Right is ready for parts. Current part is not equal to right.partWanted. RequestParts(requestedPart) called.");
+				print("Left is not ready for parts. Right is ready for parts. Current part is not equal to right.partWanted. RequestParts(requestedPart) called.");
 				RequestParts(requestedPart);
 				PurgeFeeder();
 				return true;
@@ -169,15 +169,15 @@ public class FeederAgent extends Agent implements Feeder {
 			
 
 			else if(!right.readyForParts && left.readyForParts && currentPart!= left.partWanted && !requestedPart.getName().equals("blank")){
-				System.out.println("Right is not ready for parts. Left is ready for parts. Current part is not equal to left.partWanted. RequestParts(requestedPart) called.)");
+				print("Right is not ready for parts. Left is ready for parts. Current part is not equal to left.partWanted. RequestParts(requestedPart) called.)");
 				RequestParts(requestedPart);
 				PurgeFeeder();
 				return true;
 			}
 			
 			else if (currentPart != left.partWanted && currentPart != right.partWanted && !requestedPart.getName().equals("blank")){
-				System.out.println("currentPart is not left or right partWanted.RequestedParts(requestedPart) called.");
-				System.out.println("requestedPart:" + requestedPart.getName());
+				print("currentPart is not left or right partWanted.RequestedParts(requestedPart) called.");
+				print("requestedPart:" + requestedPart.getName());
 				RequestParts(requestedPart);
 				PurgeFeeder();
 				return true;
@@ -185,17 +185,17 @@ public class FeederAgent extends Agent implements Feeder {
 		}
 		
 		else if(fstate == FeederState.waitingGantry && gantry != null){
-			System.out.println("fstate is waitingGantry and gantry exists");
+			print("fstate is waitingGantry and gantry exists");
 			AcceptParts();
 			return true;
 		}
 		
-		System.out.println("Nothing chosen.");
-		//System.out.println("left ready: " + left.readyForParts);
-		//System.out.println("right ready: " + right.readyForParts);
-		//System.out.println("currentPart:" + currentPart.getName());
-		//System.out.println("left part:" + left.partWanted.getName());
-		//System.out.println("right part:" + right.partWanted.getName());
+		print("Nothing chosen.");
+		//print("left ready: " + left.readyForParts);
+		//print("right ready: " + right.readyForParts);
+		//print("currentPart:" + currentPart.getName());
+		//print("left part:" + left.partWanted.getName());
+		//print("right part:" + right.partWanted.getName());
 		
 		return false;
 	}

@@ -100,21 +100,21 @@ public class GantryControllerAgent extends Agent implements GantryController {
 	public boolean pickAndExecuteAnAction() {
 		
 		for(MyFeeder f:requests){
-			System.out.println("MyFeeder found in requests in GC scheduler.");
+			print("MyFeeder found in requests in GC scheduler.");
 			if(f.fstate == FeederState.requested){
-				System.out.println("MyFeeder state is requested in GC scheduler.");
+				print("MyFeeder state is requested in GC scheduler.");
 				for(MyGantry g: gantries){
-					System.out.println("MyGantry found in gantries GC scheduler.");
+					print("MyGantry found in gantries GC scheduler.");
 					if(g.gstate == GantryState.waiting){
-						System.out.println("MyGantry state is waiting in GC scheduler.");
-						System.out.println("SendGantry() called");
+						print("MyGantry state is waiting in GC scheduler.");
+						print("SendGantry() called");
 						SendGantry(g, f);
 						return true;
 					}
 				}
 			}
 		}
-		System.out.println("Nothing Chosen in GC scheduler");
+		print("Nothing Chosen in GC scheduler");
 		return false;
 	}
 	
@@ -122,9 +122,9 @@ public class GantryControllerAgent extends Agent implements GantryController {
 	//Actions
 	private void SendGantry(MyGantry g, MyFeeder f){
 		for(int i = 0; i<bins.size(); i++){
-			System.out.println("inside for loop in GC, SendGantry");
+			print("inside for loop in GC, SendGantry");
 			if(bins.get(i).getPartInfo().equals(f.type)){
-				System.out.println("found bin of correct type.");
+				print("found bin of correct type.");
 				g.g1.msgGiveFeederParts(f.f1, bins.get(i));
 				f.fstate = FeederState.sentGantry;
 				g.gstate = GantryState.delivering;

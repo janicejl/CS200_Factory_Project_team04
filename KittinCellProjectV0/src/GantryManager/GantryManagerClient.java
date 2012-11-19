@@ -67,7 +67,10 @@ public class GantryManagerClient implements Runnable
 			//Reads in the new gantry manager and sets it as the applications current one
 			gui.setGantryManager((GantryManager)in.readObject());
 		}
-		catch(Exception ignore){}
+		catch(Exception ignore){
+			ignore.printStackTrace();
+			System.exit(1);
+		}
 	}
 	
 	public synchronized void setThread(Thread t)

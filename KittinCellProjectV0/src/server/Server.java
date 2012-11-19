@@ -486,7 +486,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryFeedList.add(num);
     		}
     	}
-    	else if(process.equals("Job Finished")){
+    	else if(process.equals("Kit Finished")){
     	     if(jobsList.size() != 0){
 	    	     if(jobsList.get(0).getAmount() > 0){
 	    	    	 jobsList.get(0).setAmount(jobsList.get(0).getAmount() - 1);

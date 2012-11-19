@@ -27,7 +27,7 @@ public class PartsBox implements Serializable
 		count = c;
 		xCurrent = xmax+5;
 		xFinal = xCurrent;
-		yCurrent = (ymax/2) - (ydim/2)+45;
+		yCurrent = 310;
 		yFinal = yCurrent;
 		state = "wait";
 		cycles = 0;
@@ -38,7 +38,7 @@ public class PartsBox implements Serializable
 	{
 		xCurrent = xmax+5;
 		xFinal = xCurrent;
-		yCurrent = (ymax/2)-(ydim/2)+45;
+		yCurrent = 310;
 		yFinal = yCurrent;
 		state = "wait";
 		cycles = 0;
@@ -52,7 +52,6 @@ public class PartsBox implements Serializable
 		if(state == "ready")
 		{
 			xFinal = xmax - xdim;
-			yFinal = (ymax/2)-(ydim/2)+45;
 			state = "loading";
 		}
 		else if(state == "loading")
@@ -80,8 +79,8 @@ public class PartsBox implements Serializable
 	public void exit()
 	{
 		xCurrent = 275;
-		yCurrent = 157;
-		yFinal = 157;
+		yCurrent = 192;
+		yFinal = 192;
 		xFinal = 350;
 	}
 

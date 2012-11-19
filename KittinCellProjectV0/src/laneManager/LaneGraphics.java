@@ -23,7 +23,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
 	private BufferedImage conveyorImage; 
 	private BufferedImage background;
 	private ArrayList<GUIFeeder> gFeeders = new ArrayList<GUIFeeder>();
-	private ArrayList<Feeder> feeders = new ArrayList<Feeder>();
+	private Vector<Feeder> feeders = new Vector<Feeder>();
 	private ArrayList<GUINest> gNests = new ArrayList<GUINest>();
 	private ArrayList<Nest> nests = new ArrayList<Nest>();
 	private LaneManagerClient client;
@@ -210,11 +210,11 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		return lanes;
 	}
 
-	public synchronized ArrayList<Feeder> getFeeders() {
+	public synchronized Vector<Feeder> getFeeders() {
 		return feeders;
 	}
 
-	public synchronized void setFeeders(ArrayList<Feeder> feeders) {
+	public synchronized void setFeeders(Vector<Feeder> feeders) {
 		this.feeders = feeders;
 		updateGUIFeeders();
 	}

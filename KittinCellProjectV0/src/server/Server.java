@@ -89,7 +89,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	//GantryAgent gantry2;
 	GantryControllerAgent gantryController;
 
-	ArrayList<Feeder> feeders;
+	Vector<Feeder> feeders;
 	ArrayList<Lane> lanes;
 	ArrayList<Nest> nestList;
 
@@ -129,7 +129,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		//gantryController.msgGantryAdded(gantry2);
 		
 
-		feeders = new ArrayList<Feeder>();
+		feeders = new Vector<Feeder>();
 		for(int i = 0; i < 4; i++){
 			if(i == 0 || i == 3){
     			feeders.add(new Feeder(475,30 + i*140));
@@ -709,11 +709,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return this.visions;
 	}
 
-	public ArrayList<Feeder> getFeeders() {
+	public Vector<Feeder> getFeeders() {
 		return feeders;
 	}
 
-	public void setFeeders(ArrayList<Feeder> feeders) {
+	public void setFeeders(Vector<Feeder> feeders) {
 		this.feeders = feeders;
 	}
 	

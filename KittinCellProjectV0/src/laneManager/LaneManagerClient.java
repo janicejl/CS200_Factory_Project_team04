@@ -125,7 +125,7 @@ public class LaneManagerClient implements Runnable {
 	public synchronized void updateThread(){
 		try {
 			app.setLanes((ArrayList<Lane>)in.readObject());
-			app.setFeeders((ArrayList<Feeder>)in.readObject());
+			app.setFeeders((Vector<Feeder>)in.readObject());
 			app.setNests((ArrayList<Nest>)in.readObject());
 		} catch (Exception ignore){
 			ignore.printStackTrace();

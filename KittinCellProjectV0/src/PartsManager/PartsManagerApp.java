@@ -33,10 +33,12 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		setSize(400, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		// load data from file
 		load("partsList.sav");
 		partPanel.updateLoad();
 		editPanel.updateSelectionBox(0);
 		
+		//connect with server
 		client = new PartsManagerClient(this);
 		int j = client.connect();
 		if(j == -1){
@@ -97,16 +99,18 @@ public class PartsManagerApp extends JFrame implements ActionListener, Serializa
 		revalidate();
 	}
 	
+	//refresh all panel
 	public void revalidate(){
 		partPanel.revalidate();
 		editPanel.revalidate();
 		tabbedPane.revalidate();
 	}
 	
+	// update editpanel when new part is created
 	public void updateEditPanel(){
 		editPanel.updateSelectionBox(0);
 	}
-	
+	//update partListPanel when new part is created
 	public void updatePartsPanel(){
 		partPanel.updatePartList();
 	}

@@ -523,6 +523,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	} 		
     }
     
+    public void execute(String process,PartInfo p)
+    {
+    	if(process.equals("Make PartsBox"))
+    		gantryManager.addPartInfo(p);
+    }
+    
 	public void actionPerformed(ActionEvent e){
 		if(getKitAssemblyManager().getMsg().equals(true)){
 			getKitAssemblyManager().setMsg(false);

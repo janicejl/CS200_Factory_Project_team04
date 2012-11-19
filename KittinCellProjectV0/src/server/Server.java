@@ -86,7 +86,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	FeederAgent feeder3;
 	FeederAgent feeder4;
 	GantryAgent gantry1;
-	GantryAgent gantry2;
+	//GantryAgent gantry2;
 	GantryControllerAgent gantryController;
 
 	ArrayList<Feeder> feeders;
@@ -122,11 +122,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		
 		gantryController = new GantryControllerAgent(this);
 		gantry1 = new GantryAgent("gantry1", this);
-		gantry2 = new GantryAgent("gantry2", this);
+		//gantry2 = new GantryAgent("gantry2", this);
 		gantry1.setGantryController(gantryController);
-		gantry2.setGantryController(gantryController);
+		//gantry2.setGantryController(gantryController);
 		gantryController.msgGantryAdded(gantry1);
-		gantryController.msgGantryAdded(gantry2);
+		//gantryController.msgGantryAdded(gantry2);
 		
 
 		feeders = new ArrayList<Feeder>();
@@ -296,6 +296,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
         FCSAgent = new FCSAgent(this, partsRobotAgent, kitRobotAgent, gantryController);
         FCSAgent.startThread();
 
+        gantryController.setFCS(FCSAgent);
         
 		partsRobotAgent.startThread();
         partsRobot = new PartsRobot(kitAssemblyManager);

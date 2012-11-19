@@ -17,10 +17,4 @@ public class MockFCSAgent extends MockAgent implements FCS {
 
 	}
 
-	@Override
-	public void msgAddBin(Bin bin) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

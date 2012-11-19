@@ -89,6 +89,7 @@ public class GantryControllerAgent extends Agent implements GantryController {
 				i = gantries.size();
 			}
 		}
+		log.add(new LoggedEvent("msgDoneDeliveringParts received from Gantry"));
 		stateChanged();		
 	}
 	
@@ -135,7 +136,7 @@ public class GantryControllerAgent extends Agent implements GantryController {
 	
 	//Extras
 
-	private void setFCS(FCS fcs){
+	public void setFCS(FCS fcs){
 		this.fcs = fcs;
 	}
 }

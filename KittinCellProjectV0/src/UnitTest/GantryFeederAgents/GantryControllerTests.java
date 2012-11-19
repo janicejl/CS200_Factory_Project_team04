@@ -59,6 +59,9 @@ public class GantryControllerTests extends TestCase {
 		gc.pickAndExecuteAnAction();
 		assertTrue("Gantry1 should have received msgGiveFeederParts from GC", gantry1.log.containsString("msgGiveFeederParts"));
 		
+		gc.msgDoneDeliveringParts(gantry1);
+		assertTrue("Gantry Controller should have received msgDoneDeliveringParts from Gantry 1", gc.log.containsString("msgDoneDeliveringParts"));
+		
 		
 	}
 

@@ -14,7 +14,8 @@ public class GUIKitModification implements ActionListener{
 	KitCreationApp app;
 	JPanel base,partDisplay,up,back;
 	//JScrollPane displayKit;
-	JLabel p,k;
+	JLabel p,k,n;
+	JTextField changeName;
 	JButton confirm;
 	JButton delete;
 	JComboBox kitList,partsList;
@@ -30,6 +31,11 @@ public class GUIKitModification implements ActionListener{
 		base=new JPanel();
 		p= new JLabel("Select part type:");
 		k= new JLabel("Select kit type:");
+		n= new JLabel("Kit's name:");
+		changeName= new JTextField(10);
+		changeName.setPreferredSize(new Dimension(170,25));
+		changeName.setMaximumSize(new Dimension(170,25));
+		changeName.setMinimumSize(new Dimension(170,25));
 		base.setSize(300,410);
 		base.setBackground(Color.orange);
 		partDisplay=new JPanel();
@@ -76,6 +82,10 @@ public class GUIKitModification implements ActionListener{
 		
 		kitList=new JComboBox(kitNames);
 		kitList.addActionListener(this);
+		kitList.setPreferredSize(new Dimension(170,25));
+		kitList.setMaximumSize(new Dimension(170,25));
+		kitList.setMinimumSize(new Dimension(170,25));
+		
 		partsList=new JComboBox(partNames);
 		partsList.setPreferredSize(new Dimension(90, 25));
 		partsList.setMaximumSize(new Dimension(90, 25));
@@ -92,6 +102,7 @@ public class GUIKitModification implements ActionListener{
 		up.setLayout(new GridBagLayout());
 		up.setPreferredSize(new Dimension(300,120));
 		up.setMinimumSize(new Dimension(300,120));
+		//up.setBackground(Color.blue);
 		up.setOpaque(false);
 		GridBagConstraints a=new GridBagConstraints();
 		a.gridx=0;
@@ -99,11 +110,20 @@ public class GUIKitModification implements ActionListener{
 		
 		kitList.setPreferredSize(new Dimension(180,30));
 		kitList.setOpaque(false);
+		a.insets=new Insets(0,0,10,0);
 		a.anchor=GridBagConstraints.LINE_START;
 		up.add(k,a);
 		a.gridx+=8;
 		a.anchor = GridBagConstraints.LINE_END;
 		up.add(kitList,a);
+		a.gridx=0;
+		a.gridy+=8;
+		
+		a.anchor=GridBagConstraints.LINE_START;
+		up.add(n,a);
+		a.gridx+=8;
+		a.anchor = GridBagConstraints.LINE_END;
+		up.add(changeName,a);
 		a.gridx=0;
 		a.gridy+=8;
 		a.anchor=GridBagConstraints.LINE_START;
@@ -139,10 +159,12 @@ public class GUIKitModification implements ActionListener{
 	public void updateLabels(){
 		partDisplay.removeAll();
 			partList.clear();
+			changeName.setText("");
 			GridBagConstraints c=new GridBagConstraints();
 			c.gridx=0;
 			c.gridy=0;		
 			if(app.getKitsList().size() != 0){
+				changeName.setText(app.getKitsList().get(kitList.getSelectedIndex()).getName());
 				for(int i=0;i<8;i++){
 					JButton temp = new JButton(new ImageIcon(app.getKitsList().get(kitList.getSelectedIndex()).getParts().get(i).getImagePath()));
 					temp.setPreferredSize(new Dimension (170,30));
@@ -179,16 +201,20 @@ public class GUIKitModification implements ActionListener{
 			updateLabels();			
 		}
 		else if(ae.getSource().equals(confirm)){
-			for(int i = 0; i < tempDeleted.size(); i++){
-				if(tempDeleted.get(i) == true){
-					app.getKitsList().get(kitList.getSelectedIndex()).getParts().set(i, new PartInfo(null, "images/none.png"));
-					tempDeleted.put(i, false);
+			if(!changeName.getText().isEmpty()){
+				app.getKitsList().get(kitList.getSelectedIndex()).setName(changeName.getText());
+				for(int i = 0; i < tempDeleted.size(); i++){
+					if(tempDeleted.get(i) == true){
+						app.getKitsList().get(kitList.getSelectedIndex()).getParts().set(i, new PartInfo(null, "images/none.png"));
+						tempDeleted.put(i, false);
+					}
+					else{
+						app.getKitsList().get(kitList.getSelectedIndex()).getParts().set(i, tempKit.get(i));
+					}
 				}
-				else{
-					app.getKitsList().get(kitList.getSelectedIndex()).getParts().set(i, tempKit.get(i));
-				}
+				app.getClient().setCommandSent("Update Kits");
 			}
-			app.getClient().setCommandSent("Update Kits");
+			updateBox(kitList.getSelectedIndex());
 		}
 		else if(ae.getSource().equals(delete)){
 			int num = kitList.getSelectedIndex();

@@ -601,9 +601,4 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		}
 	}
 
-	@Override
-	public void msgMakeThisKit(List<PartInfo> kitrecipe, int ct) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -256,6 +256,7 @@ public class NestAgent extends Agent implements Nest{
 	public Integer getIndex() {
 		return index;
 	}
+	
 	public void setLane(Lane newlane){
 		this.lane = newlane;
 	}

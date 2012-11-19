@@ -16,14 +16,11 @@ public class GantryManager implements Serializable,ActionListener
 	ArrayList<Integer> feeder;
 	Vector<PartInfo> feeders;
 	ArrayList<Feeder.Feeder> feed; 
-	int speed;
-	Random rand;
 	
 	
 	public GantryManager(ArrayList<Feeder.Feeder> f)
 	{
 		feed = f;
-		rand = new Random();
 		gantry = new Gantry();
 		
 		parts = new Vector<PartsBox>();

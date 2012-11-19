@@ -49,22 +49,7 @@ public class FCSAgent extends Agent implements FCS {
 	public void msgHereIsKitConfig(KitInfo kitInfo, int amount) {
 		sendKitConfig(kitInfo, amount);
 	}
-	
-	// receive a message from GUI to add a new bin
-	public void msgAddBin(Bin bin) {
-		binsList.add(bin);
-	}
-	
-/*	// receive a message to make X kits with what parts 
-	public void msgStartKitProduction(List<PartInfo> kitRecipe, int numKits) {
-		this.numKits = numKits;
-		this.kitRecipe = kitRecipe;
 		
-		makeAKit(kitRecipe);
-		giveConfigurationToGantryController();
-		getKitsFromKitRobotAgent();
-	}*/
-	
 	/////////////////////////////////////////////////////////////
 	/** ACTIONS **/
 	
@@ -72,26 +57,13 @@ public class FCSAgent extends Agent implements FCS {
 	private void sendKitConfig(KitInfo info, int amount) {
 		partsRobot.msgMakeThisKit(info, amount);
 		kitRobot.msgGetKits(amount);
-	}
-	
-	
-/*	
-	// send a message to the PartsRobotAgent telling it what kits to make
-	private void makeAKit(List<PartInfo> kitRecipe) {
-		this.kitRecipe = kitRecipe;
-		partsRobotAgent.msgMakeThisKit(kitRecipe, numKits);
-	}
 		
-	// send a message to the GantryControllerAgent to give it the configurations
-	private void giveConfigurationToGantryController() {
-		gantryControllerAgent.msgBinConfiguration(binsList);
-	}
+		for (PartInfo p: info.getParts()) {
+			binsList.add(new Bin(p, amount));
+		}
 	
-	// send a message to the KitRobotAgent requesting kits
-	private void getKitsFromKitRobotAgent() {
-		kitRobotAgent.msgGetKits(numKits);
+		gantryController.msgBinConfiguration(binsList);
 	}
-	*/
 	
 	/////////////////////////////////////////////////////////////
 	/** SCHEDULER **/

@@ -20,11 +20,11 @@ public class VisionAgent extends Agent implements Vision {
 	/** DATA **/
 	
 	String name;
-	List<Nest> nestsList= Collections.synchronizedList( new ArrayList<Nest>() ); // list of all the nests that we need parts from
-	List<Part> neededPartsList = Collections.synchronizedList( new ArrayList<Part>() ); // list of all the parts that should be in each kit
+	public List<Nest> nestsList= Collections.synchronizedList( new ArrayList<Nest>() ); // list of all the nests that we need parts from
+	public List<Part> neededPartsList = Collections.synchronizedList( new ArrayList<Part>() ); // list of all the parts that should be in each kit
 	
-	Map<Integer, Nest> fullNestsMap = Collections.synchronizedMap( new TreeMap<Integer, Nest>() ); // list of all the nests that are full and ready to have their picture taken
-	List<PartInfo> fullNestsPartsList = Collections.synchronizedList( new ArrayList<PartInfo>() ); // parallel array that holds all parts that each nest is supposed to hold
+	public Map<Integer, Nest> fullNestsMap = Collections.synchronizedMap( new TreeMap<Integer, Nest>() ); // list of all the nests that are full and ready to have their picture taken
+	public List<PartInfo> fullNestsPartsList = Collections.synchronizedList( new ArrayList<PartInfo>() ); // parallel array that holds all parts that each nest is supposed to hold
 	
 	public enum State {IDLE, SCHEMATIC_RECEIVED, READY_TO_TAKE_PICTURE, PICTURE_TAKEN};
 	public enum Type {NESTS_INSPECTOR, KIT_INSPECTOR};
@@ -40,12 +40,12 @@ public class VisionAgent extends Agent implements Vision {
 	//KitRobotAgent kitRobotAgent;
 	KitRobot kitRobot;
 	PartsRobot partsRobot; // no interface for this yet
-	Nest nest1; // no interface for this yet
-	Nest nest2;
+	public Nest nest1; // no interface for this yet
+	public Nest nest2;
 	Server server;
 	
-	boolean approved;
-	boolean waiting;
+	public boolean approved;
+	public boolean waiting;
 	
 	/////////////////////////////////////////////////////////////
 	/** CONSTRUCTOR **/
@@ -80,11 +80,8 @@ public class VisionAgent extends Agent implements Vision {
 	
 	// sent by NestAgent
 	public void msgImFull(Nest nest) {
-		// here i am assuming that we will name the nests with a number.
-		// i can do this differently if we later decide not to do this, but this makes it easier for me to organize parts
-		
 		fullNestsMap.put(nest.getNumber(), nest);
-		stateChanged();
+		// stateChanged();
 	}
 	
 	// sent by KitStandAgent
@@ -137,7 +134,7 @@ public class VisionAgent extends Agent implements Vision {
 		}
 		if (type==Type.KIT_INSPECTOR) {
 			server.execute("Take Picture");
-			print ("taking a picture at " + nest2.getIndex());
+			print ("taking a picture at kit stand");
 		}
 		
 		state = State.PICTURE_TAKEN;
@@ -146,22 +143,24 @@ public class VisionAgent extends Agent implements Vision {
 	}
 	
 	private void checkForConsecutiveNests() {
-		nest1 = fullNestsMap.get(0);
-		nest2 = fullNestsMap.get(1);
-		state = State.READY_TO_TAKE_PICTURE;
-		print( "consecutive nests found; ready to take picture" );
-		stateChanged();
-	/*	for (int i=1; i<9; i++) {
+		
+		for (int i=1; i<9; i++) {
 			if (fullNestsMap.containsKey(i) && fullNestsMap.containsKey(i+1) && i%2==1) {
 				nest1 = fullNestsMap.get(i);
 				nest2 = fullNestsMap.get(i+1);
+			
+				state = State.READY_TO_TAKE_PICTURE;
+				print( "consecutive nests found; ready to take picture" );
+				stateChanged();
 
 			}
-		}*/
+		}
 	}
 	
 	private void inspectKit() {
 		// check that the kit has all the parts (this is in the partsList)
+		System.out.println("inspecting kit");
+		
 		for (Part p: neededPartsList) {
 			if (currentKit.peekParts().contains(p)) {
 				neededPartsList.remove(p);
@@ -177,6 +176,7 @@ public class VisionAgent extends Agent implements Vision {
 			approved = false;
 		}	
 		kitRobot.msgKitInspected(approved);
+		approveOrDenyParts();
 	}
 	
 	private void inspectNests() {
@@ -226,15 +226,14 @@ public class VisionAgent extends Agent implements Vision {
 				// nestAgent.msgBadParts();
 			}
 */
+			fullNestsMap.remove(nest1.getNumber());
+			fullNestsMap.remove(nest2.getNumber());
+			nest1 = null;
+			nest2 = null;
 		}
 		
 		state=State.SCHEMATIC_RECEIVED;
-		fullNestsMap.remove(nest1.getNumber());
-		fullNestsMap.remove(nest2.getNumber());
-		nest1 = null;
-		nest2 = null;
 		
-		//state = State.IDLE;
 		stateChanged();
 		
 	}
@@ -250,6 +249,7 @@ public class VisionAgent extends Agent implements Vision {
 		}
 		
 		if (state==State.SCHEMATIC_RECEIVED) {
+			approved = false;
 			if (type==Type.NESTS_INSPECTOR) {
 				checkForConsecutiveNests();
 			}

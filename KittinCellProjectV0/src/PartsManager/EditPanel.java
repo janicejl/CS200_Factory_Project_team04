@@ -94,6 +94,7 @@ public class EditPanel extends JPanel implements ActionListener{
 		resetButton.setMinimumSize(new Dimension(90, 40));
 		resetButton.setEnabled(false);
 		
+		// group one prompt label and input component into one panel
 		horizPanels.add(new JPanel());
 		horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
 		horizPanels.get(horizPanels.size()-1).setPreferredSize(new Dimension(500, 50));
@@ -152,7 +153,8 @@ public class EditPanel extends JPanel implements ActionListener{
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(Box.createRigidArea(new Dimension(400, 20)));
 		setAlignmentX(Component.CENTER_ALIGNMENT);
-
+		
+		//add all panels to base panel
 		for(int i=0;i<horizPanels.size();i++){
 			add(horizPanels.get(i));
 			add(Box.createRigidArea(new Dimension(500, 16)));
@@ -163,6 +165,7 @@ public class EditPanel extends JPanel implements ActionListener{
 		resetButton.addActionListener(this);
 	}
 	
+	//update the parts selection box when new part is created
 	public void updateSelectionBox(int num){
 //		parts = new String[partList.size()];
 		partNames.clear();
@@ -223,6 +226,7 @@ public class EditPanel extends JPanel implements ActionListener{
 		}
 	}
 	
+	// clear all text fields and text area
 	public void resetEditForm(){
 		imagesSelectBox.setSelectedIndex(0);
 		for(int i=0;i<infoFields.size();i++){

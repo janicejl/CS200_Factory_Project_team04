@@ -82,6 +82,7 @@ public class ManagePanel extends JPanel{
 		manageButtons.get(manageButtons.size()-1).setMaximumSize(new Dimension(90, 40));
 		manageButtons.get(manageButtons.size()-1).setMinimumSize(new Dimension(90, 40));
 		
+		// group components into panel 
 		horizPanels.add(new JPanel());
 		horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
 		horizPanels.get(horizPanels.size()-1).setPreferredSize(new Dimension(500, 30));
@@ -131,18 +132,18 @@ public class ManagePanel extends JPanel{
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setAlignmentX(Component.CENTER_ALIGNMENT);
-
+		
+		// add all panels to the base panel
 		for(int i=0;i<horizPanels.size();i++){
 			add(horizPanels.get(i));
 			//add(Box.createRigidArea(new Dimension(500, 10)));
 		}
 		
-		
-		
 		TitledBorder border = new TitledBorder("Part Creation");
 		setBorder(border);
 	}
 	
+	//clear all text fields and text area
 	public void resetForm(){
 		
 		imagesSelectBox.setSelectedIndex(0);
@@ -152,6 +153,7 @@ public class ManagePanel extends JPanel{
 		descriptionArea.setText("");
 	}
 	
+	//refresh
 	public void paintComponent(Graphics g){
 		revalidate();
 	}

@@ -34,7 +34,18 @@ public class MockKitRobot extends MockAgent implements KitRobot{
 
 	@Override
 	public void msgKitInspected(boolean bis_good) {
-		// TODO Auto-generated method stub
+		if (bis_good == true) {
+			log.add(new UnitTest.KitRobotAgents.LoggedEvent("Kit has been inspected and it was approved"));	
+		}
+		else {
+			log.add(new UnitTest.KitRobotAgents.LoggedEvent("Kit has been inspected and it was not approved"));
+		}
+		
+	}
+
+	@Override
+	public void msgGetKits(int count) {
+		log.add(new UnitTest.KitRobotAgents.LoggedEvent("Received message to get " + count + " kits"));
 		
 	}
 

@@ -35,7 +35,7 @@ public class LaneAgent extends Agent implements Lane{
 	public enum OrderStatus{noAction,partRequested,partOrdered};
 	public enum LaneNestStatus{noAction,readyForPart,askedToTakePart};
 	public enum FeederStatus{wantsToPlacePart,noAction};
-	public enum LaneStatus{noParts,hasParts,partsAtEndOfLane};
+	public enum LaneStatus{noParts,hasParts,partsAtEndOfLane, full};
 	public enum ReadyStatus{ready,notready}
 	
 	
@@ -116,7 +116,7 @@ public class LaneAgent extends Agent implements Lane{
 			return true;
 		}
 		
-		if(lanequeue.size()>=maxsize){
+		/*if(lanequeue.size()>=maxsize){
 			if(index%2==0){
 				feeder.msgLaneIsFull("left");
 			}
@@ -125,7 +125,12 @@ public class LaneAgent extends Agent implements Lane{
 			}
 			readystate = ReadyStatus.notready;
 			return true;
+		}*/
+		
+		if(lanequeue.size() >= maxsize && lanestate != LaneStatus.full){
+			laneFull();
 		}
+		
 		if(readystate == ReadyStatus.notready){
 			if(lanequeue.size()<maxsize){
 				if(index%2==0){
@@ -159,6 +164,19 @@ public class LaneAgent extends Agent implements Lane{
 		
 		return false;
 	}
+	
+	
+	private void laneFull(){
+		lanestate = LaneStatus.full;
+		if(index%2==0){
+			feeder.msgLaneIsFull("left");
+		}
+		else{
+			feeder.msgLaneIsFull("right");
+		}
+		readystate = ReadyStatus.notready;
+	}
+	
 	private void askForPart(){
 		if(feeder!=null){
 			if(index%2==0){

@@ -15,16 +15,15 @@ public class GantryManager implements Serializable,ActionListener
 	Vector<PartsBox> purged; //Partsboxes that have been purged
 	ArrayList<Integer> feeder;
 	Vector<PartInfo> feeders;
-	ArrayList<Feeder.Feeder> feed; 
+	Vector<Feeder.Feeder> feed; 
 	
 	
-	public GantryManager(ArrayList<Feeder.Feeder> f)
+	public GantryManager(Vector<Feeder.Feeder> f)
 	{
 		feed = f;
 		gantry = new Gantry();
 		
-		parts = new Vector<PartsBox>();
-		parts.add(new PartsBox(new PartInfo("test","images/part.png"))); //Initial box placed on conveyor, for testing only
+		parts = new Vector<PartsBox>(); //Initial box placed on conveyor, for testing only
 		
 		//Populating the feeders
 		feeders = new Vector<PartInfo>();
@@ -95,10 +94,12 @@ public class GantryManager implements Serializable,ActionListener
 				}
 				i++;	
 			}
+			/*
 			if(go==false && parts.size()<9) //Up to 9 parts boxes visible in the factory at any one time
 			{
-				parts.add(new PartsBox(new PartInfo("test","images/part.png")));
+				//parts.add(new PartsBox(new PartInfo("test","images/part.png")));
 			}
+			*/
 		}
 		
 		if(gantry.getState().equals("load")) //If gantry has been told to load a parts box

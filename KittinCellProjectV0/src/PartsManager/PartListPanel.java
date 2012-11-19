@@ -73,6 +73,7 @@ public class PartListPanel extends JPanel implements ActionListener{
 		
 	}
 	
+	//add a new part to the panel when new part is created
 	public void addPart(String name, ImageIcon image){
 		JLabel temp = new JLabel(name);
 		temp.setPreferredSize(new Dimension(70, 27));
@@ -92,6 +93,7 @@ public class PartListPanel extends JPanel implements ActionListener{
 		remove.setMinimumSize(new Dimension(100, 25));
 		removeButtons.add(remove);
 		
+		// create a panel to group the components of new part
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.setPreferredSize(new Dimension(400, 30));
@@ -117,6 +119,7 @@ public class PartListPanel extends JPanel implements ActionListener{
 		
 	}
 	
+	// remove all parts from the panel
 	public void removeAll(){		
 		for(int i = 0; i < horizPanel.size(); i++){
 			horizPanel.get(i).removeAll();
@@ -130,6 +133,7 @@ public class PartListPanel extends JPanel implements ActionListener{
 		revalidate();
 	}
 	
+	// refresh
 	public void paintComponent(Graphics g){
 		revalidate();
 	}
@@ -152,6 +156,7 @@ public class PartListPanel extends JPanel implements ActionListener{
 		app.updateEditPanel();
 	}
 	
+	// update parts list when parts data are changed
 	public void updatePartList(){
 		for(int i=0;i<partLabels.size();i++){
 			partLabels.get(i).setText(app.getPartsList().get(i).getName());

@@ -86,10 +86,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	FeederAgent feeder3;
 	FeederAgent feeder4;
 	GantryAgent gantry1;
-	GantryAgent gantry2;
+	//GantryAgent gantry2;
 	GantryControllerAgent gantryController;
 
-	ArrayList<Feeder> feeders;
+	Vector<Feeder> feeders;
 	ArrayList<Lane> lanes;
 	ArrayList<Nest> nestList;
 
@@ -122,14 +122,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		
 		gantryController = new GantryControllerAgent(this);
 		gantry1 = new GantryAgent("gantry1", this);
-		gantry2 = new GantryAgent("gantry2", this);
+		//gantry2 = new GantryAgent("gantry2", this);
 		gantry1.setGantryController(gantryController);
-		gantry2.setGantryController(gantryController);
+		//gantry2.setGantryController(gantryController);
 		gantryController.msgGantryAdded(gantry1);
-		gantryController.msgGantryAdded(gantry2);
+		//gantryController.msgGantryAdded(gantry2);
 		
 
-		feeders = new ArrayList<Feeder>();
+		feeders = new Vector<Feeder>();
 		for(int i = 0; i < 4; i++){
 			if(i == 0 || i == 3){
     			feeders.add(new Feeder(475,30 + i*140));
@@ -220,7 +220,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		feeder2.setGantryController(gantryController);
 		feeder3.setGantryController(gantryController);
 		feeder4.setGantryController(gantryController);
-		/*
 		lane1.setFeeder(feeder1);
 		lane2.setFeeder(feeder1);
 		lane3.setFeeder(feeder2);
@@ -229,7 +228,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		lane6.setFeeder(feeder3);
 		lane7.setFeeder(feeder4);
 		lane8.setFeeder(feeder4);
-		*/
 
     	
 
@@ -296,11 +294,19 @@ public class Server extends JFrame implements Runnable, ActionListener{
         FCSAgent = new FCSAgent(this, partsRobotAgent, kitRobotAgent, gantryController);
         FCSAgent.startThread();
 
+        gantryController.setFCS(FCSAgent);
         
 		partsRobotAgent.startThread();
         partsRobot = new PartsRobot(kitAssemblyManager);
         new Thread(partsRobot).start();
 		
+        gantryController.startThread();
+        gantry1.startThread();
+        feeder1.startThread();
+        feeder2.startThread();
+        feeder3.startThread();
+        feeder4.startThread();
+        
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");
 		timer = new Timer(10, this);
@@ -515,6 +521,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	} 		
     }
     
+    public void execute(String process,PartInfo p)
+    {
+    	if(process.equals("Make PartsBox"))
+    		gantryManager.addPartInfo(p);
+    }
+    
 	public void actionPerformed(ActionEvent e){
 		if(getKitAssemblyManager().getMsg().equals(true)){
 			getKitAssemblyManager().setMsg(false);
@@ -697,11 +709,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return this.visions;
 	}
 
-	public ArrayList<Feeder> getFeeders() {
+	public Vector<Feeder> getFeeders() {
 		return feeders;
 	}
 
-	public void setFeeders(ArrayList<Feeder> feeders) {
+	public void setFeeders(Vector<Feeder> feeders) {
 		this.feeders = feeders;
 	}
 	
@@ -781,6 +793,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return gantryFeedList;
 	}
 	
+	public GantryControllerAgent getGantryController() {
+		return gantryController;
+	}
+
+	public void setGantryController(GantryControllerAgent gantryController) {
+		this.gantryController = gantryController;
+	}
+
 	public void addGantryPart(PartInfo p)
 	{
 		gantryManager.addPartInfo(p);

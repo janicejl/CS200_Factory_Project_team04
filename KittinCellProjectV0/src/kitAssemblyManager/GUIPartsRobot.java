@@ -11,32 +11,34 @@ import javax.imageio.*;
 import server.PartsRobot;
 
 public class GUIPartsRobot{
-    BufferedImage partsRobotImage;
+	//a combination of pictures that makes up the different parts of the part robot. 
+    BufferedImage partsRobotImage;				
     BufferedImage partsRobotRailImage;
     BufferedImage partsRobotGripperImage;
     BufferedImage gripperArmImage;
     BufferedImage topImage;
     BufferedImage part;
 
-    ArrayList<Boolean> gripperHolding;
-    ArrayList<Double> gripperExtensions;
-    ArrayList<String> commands;
-    ArrayList<String> subCommands;
-    ArrayList<String> nestLocations;
-    ArrayList<String> kitLocations;
-    ArrayList<BufferedImage> partImages;
-    ArrayList<Integer> gripperPartIDs;
-
-    PartsRobot pr;
-
-    double x;
-    double y;
-    double angle;
-
-    GUIKitAssemblyManager app;
     
-    GUICamera gKitStandCamera;
-    GUICamera gNestCamera;
+    ArrayList<Boolean> gripperHolding;		//ArrayList of 4 that holds the boolean state of whether each of the four gripers are holding parts.
+    ArrayList<Double> gripperExtensions;	//ArrayList that holds how much each of the 4 gripers extends out	
+    ArrayList<String> commands;				//Arraylist of the list of commands that it needs to process. 
+    ArrayList<String> subCommands;			//Arraylist to aid proccessing commands. 
+    ArrayList<String> nestLocations;		//Arraylist of the nest locations
+    ArrayList<String> kitLocations;			//Arraylist of the kit locations
+    ArrayList<BufferedImage> partImages;	//Arraylist of the 4 picture parts that it is holding. 
+    ArrayList<Integer> gripperPartIDs;		//Arraylist of the ID of the parts it is holding. 
+
+    PartsRobot pr;			//A reference to the parts robot from the server. 
+
+    double x;				//X position of the parts robot. 
+    double y;				//Y position of the parts robot
+    double angle;			//Rotation of the parts robot. 
+
+    GUIKitAssemblyManager app;			//A reference to the graphical kit assembly manager. 
+    
+    GUICamera gKitStandCamera;			//Graphical version of the kit stand camera. 
+    GUICamera gNestCamera;				//Graphical version of the nest camera. 
 
     public GUIPartsRobot(GUIKitAssemblyManager s){
         app = s;
@@ -57,7 +59,9 @@ public class GUIPartsRobot{
         	gripperPartIDs.add(1);
             gripperExtensions.add(0.0);
         }
-
+        
+        
+        //loading the images. 
         try {
         	for(int i=0; i<9;i++){
         		partImages.add(ImageIO.read(new File("images/kt" + i + ".png")));
@@ -76,6 +80,8 @@ public class GUIPartsRobot{
         gNestCamera = new GUICamera(new Camera());
     }
 
+    //call the update function of the different parts referenced. 
+    //Also updates the position of the parts robot. 
     public void update(){
         pr = app.getPartsRobot();
         y = pr.getY();
@@ -92,7 +98,8 @@ public class GUIPartsRobot{
         gKitStandCamera.update();
         gNestCamera.update();
     }
-
+    
+    //paints the part robot. This will be called at the graphics kit assembly app. 
     public void paintPartsRobot(Graphics2D g2){
         AffineTransform at = new AffineTransform(); // transform object
 

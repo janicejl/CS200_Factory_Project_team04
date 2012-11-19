@@ -58,7 +58,6 @@ public class MockNest extends MockAgent implements Nest{
 
 	@Override
 	public Integer getNumber() {
-		// TODO Auto-generated method stub
 		return index;
 	}
 
@@ -76,8 +75,7 @@ public class MockNest extends MockAgent implements Nest{
 
 	@Override
 	public Integer getIndex() {
-		// TODO Auto-generated method stub
-		return null;
+		return index;
 	}
 
 	@Override

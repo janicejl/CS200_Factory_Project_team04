@@ -11,11 +11,17 @@ import Interface.PartsRobotAgent.*;
 public class MockNest extends MockAgent implements Nest{
 
 	public EventLog log = new EventLog();
+	public int index;
 	
 	public MockNest(String name) {
 		super(name);
 	}
 
+	public MockNest(String name, int num) {
+		super(name);
+		index = num;
+	}
+	
 	public void msgCanIPlacePart(Lane lane) {
 		log.add(new LoggedEvent("Received Request to Place Part"));
 	}

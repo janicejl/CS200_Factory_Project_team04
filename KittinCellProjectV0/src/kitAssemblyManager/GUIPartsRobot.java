@@ -17,8 +17,6 @@ public class GUIPartsRobot{
     BufferedImage gripperArmImage;
     BufferedImage topImage;
     BufferedImage part;
-    /*BufferedImage flash;
-    boolean takePicture, flashUp, flashDown;*/
 
     ArrayList<Boolean> gripperHolding;
     ArrayList<Double> gripperExtensions;
@@ -28,9 +26,6 @@ public class GUIPartsRobot{
     ArrayList<String> kitLocations;
     ArrayList<BufferedImage> partImages;
     ArrayList<Integer> gripperPartIDs;
-    /*float opacity, flashCounter;
-    double cameraX;
-    double cameraY;*/
 
     PartsRobot pr;
 
@@ -48,10 +43,7 @@ public class GUIPartsRobot{
         x = 265;
         y = 300;
         angle = 0;
-        /*opacity = 0.0f;
-        flashCounter = 1.0f;
-        cameraX = 350;
-        cameraY = 100;*/
+        
         gripperExtensions = new ArrayList<Double>();
         gripperHolding = new ArrayList<Boolean>();
         commands = new ArrayList<String>();
@@ -76,7 +68,6 @@ public class GUIPartsRobot{
             gripperArmImage = ImageIO.read(new File("images/grip_arm.png"));
             topImage = ImageIO.read(new File("images/top.png"));
             part = ImageIO.read(new File("images/part.png"));
-            //flash = ImageIO.read(new File("images/flash.png"));
         }
         catch (IOException e) {
         }
@@ -91,20 +82,12 @@ public class GUIPartsRobot{
         
         gKitStandCamera.setCamera(pr.getKitStandCamera());
         gNestCamera.setCamera(pr.getNestCamera());
+
+        angle = pr.getAngle();
         
-        /*cameraX = pr.getCameraX();
-        cameraY = pr.getCameraY();*/
-        angle = pr.getAngle(); 
-        /* opacity = pr.getOpacity();
-        
-        takePicture = pr.getTakePicture(); */        
         gripperExtensions = pr.getGripperExtensions();
         gripperHolding = pr.getGripperHolding();
         gripperPartIDs = pr.getGripperPartIDs();
-        /*if(takePicture){
-            takePicture = true;
-            flashUp = true;
-        }*/
         
         gKitStandCamera.update();
         gNestCamera.update();
@@ -140,25 +123,9 @@ public class GUIPartsRobot{
         at.translate(x-8,y-10);
         g2.drawImage(topImage,at,null);
 
-     
-        /*if(takePicture){
-            try {
-                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-                g2.drawImage(flash,(int)cameraX,(int)cameraY,null);
-                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-            }
-            catch (Exception ignore){}
-        }*/
         
         gKitStandCamera.paintCamera(g2);
         gNestCamera.paintCamera(g2);
     }
 
-	/*public boolean getTakePicture() {
-		return takePicture;
-	}
-
-	public void setTakePicture(boolean takePicture) {
-		this.takePicture = takePicture;
-	}*/
 }

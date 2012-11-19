@@ -5,6 +5,7 @@ import Agents.VisionAgent.VisionAgent;
 import data.*;
 
 public interface Nest {
+	public int index=0;
 	
 	// messages
 	public void msgCanIPlacePart(Lane lane);

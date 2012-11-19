@@ -184,6 +184,11 @@ public class JobListPanel extends JPanel implements ActionListener{
 			numPanelBase.add(numLabels.get(i));
 		}
 		
+		if(removeButtons.size() != 0 && app.getPanel().getListPanel().getStart().getText().equals("Update Production")){
+			removeButtons.get(0).setEnabled(false);
+		}
+		
+		
 		size = Math.max(size, 14);
 		numPanelBase.setPreferredSize(new Dimension(25,25));
 		numPanelBase.setMaximumSize(new Dimension(25,25));

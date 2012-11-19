@@ -22,6 +22,7 @@ import Agents.PartsRobotAgent.LaneAgent;
 import Agents.PartsRobotAgent.NestAgent;
 import Agents.PartsRobotAgent.PartsRobotAgent;
 import Agents.VisionAgent.VisionAgent;
+import Agents.FCSAgent.FCSAgent;
 import Interface.*;
 import Interface.VisionAgent.Vision;
 import Feeder.Feeder;
@@ -58,6 +59,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	String productionCommand = "Idle";
 	String partsCommand = "Idle";
 	
+	FCSAgent FCSAgent;
 	PartsRobot partsRobot;
 	PartsRobotAgent partsRobotAgent;
 	ArrayList<LaneAgent> laneagents = new ArrayList<LaneAgent>();
@@ -84,7 +86,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	FeederAgent feeder3;
 	FeederAgent feeder4;
 	GantryAgent gantry1;
-	GantryAgent gantry2;
+	//GantryAgent gantry2;
 	GantryControllerAgent gantryController;
 
 	ArrayList<Feeder> feeders;
@@ -120,17 +122,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		
 		gantryController = new GantryControllerAgent(this);
 		gantry1 = new GantryAgent("gantry1", this);
-		gantry2 = new GantryAgent("gantry2", this);
+		//gantry2 = new GantryAgent("gantry2", this);
 		gantry1.setGantryController(gantryController);
-		gantry2.setGantryController(gantryController);
+		//gantry2.setGantryController(gantryController);
 		gantryController.msgGantryAdded(gantry1);
-		gantryController.msgGantryAdded(gantry2);
+		//gantryController.msgGantryAdded(gantry2);
 		
-		gantryManager = new GantryManager();
-		gantryManager.getGantry().setState("free");
-		gantryManager.getGantry().setBox(1);
-		gantryFeedList = new ArrayList<Integer>();
-		gantryWaitList = new ArrayList<String>();
 
 		feeders = new ArrayList<Feeder>();
 		for(int i = 0; i < 4; i++){
@@ -141,9 +138,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			feeders.add(new Feeder(400,30 + i*140));    			
     		}
 		}
+		
+		gantryManager = new GantryManager(feeders);
+		gantryManager.getGantry().setState("free");
+		gantryManager.getGantry().setBox(1);
+		gantryFeedList = new ArrayList<Integer>();
+		gantryWaitList = new ArrayList<String>();
+		
 		nestList = new ArrayList<Nest>();
-    	
-    	
     	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 100));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 170));	//x coordinate is zero for laneManagerApp
@@ -210,15 +212,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	nest6.setLane(lane6);
     	nest7.setLane(lane7);
     	nest8.setLane(lane8);
-    	feeder1 = new FeederAgent("feeder1", 5, lane1, lane2, 1, this);		
-		feeder2 = new FeederAgent("feeder2", 5, lane3, lane4, 2, this);		
-		feeder3 = new FeederAgent("feeder3", 5, lane5, lane6, 3, this);		
-		feeder4 = new FeederAgent("feeder4", 5, lane7, lane8, 4, this);
+    	feeder1 = new FeederAgent("feeder1", 5, lane1, lane2, 0, this);		
+		feeder2 = new FeederAgent("feeder2", 5, lane3, lane4, 1, this);		
+		feeder3 = new FeederAgent("feeder3", 5, lane5, lane6, 2, this);		
+		feeder4 = new FeederAgent("feeder4", 5, lane7, lane8, 3, this);
 		feeder1.setGantryController(gantryController);
 		feeder2.setGantryController(gantryController);
 		feeder3.setGantryController(gantryController);
 		feeder4.setGantryController(gantryController);
-		/*
 		lane1.setFeeder(feeder1);
 		lane2.setFeeder(feeder1);
 		lane3.setFeeder(feeder2);
@@ -227,7 +228,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		lane6.setFeeder(feeder3);
 		lane7.setFeeder(feeder4);
 		lane8.setFeeder(feeder4);
-		*/
 
     	
 
@@ -290,13 +290,23 @@ public class Server extends JFrame implements Runnable, ActionListener{
         nestvisionagent2.startThread();
         nestvisionagent3.startThread();
         nestvisionagent4.startThread();
+        
+        FCSAgent = new FCSAgent(this, partsRobotAgent, kitRobotAgent, gantryController);
+        FCSAgent.startThread();
 
-
+        gantryController.setFCS(FCSAgent);
         
 		partsRobotAgent.startThread();
         partsRobot = new PartsRobot(kitAssemblyManager);
         new Thread(partsRobot).start();
 		
+        gantryController.startThread();
+        gantry1.startThread();
+        feeder1.startThread();
+        feeder2.startThread();
+        feeder3.startThread();
+        feeder4.startThread();
+        
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");
 		timer = new Timer(10, this);
@@ -486,6 +496,23 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryFeedList.add(num);
     		}
     	}
+    	else if(process.equals("Kit Finished")){
+    	     if(jobsList.size() != 0){
+	    	     if(jobsList.get(0).getAmount() > 0){
+	    	    	 jobsList.get(0).setAmount(jobsList.get(0).getAmount() - 1);
+	    	     }
+	    	     else{
+	    	    	 jobsList.remove(0);
+	    	     }
+	    	     setProductionCommand("Update Jobs");
+    	     }
+    	}
+    	else if(process.equals("Get Job")){
+    	     if(jobsList.size() != 0){
+    	    	 getPartsRobotAgent().msgMakeThisKit(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
+    	    	 getKitRobotAgent().msgGetKits(jobsList.get(0).getAmount());
+    	     }
+    	}
     }
     
     public void execute(String process, Integer nest, Integer grip){
@@ -494,10 +521,20 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	} 		
     }
     
+    public void execute(String process,PartInfo p)
+    {
+    	if(process.equals("Make PartsBox"))
+    		gantryManager.addPartInfo(p);
+    }
+    
 	public void actionPerformed(ActionEvent e){
 		if(getKitAssemblyManager().getMsg().equals(true)){
 			getKitAssemblyManager().setMsg(false);
 			getKitConveyorAgent().msgKitHasArrived();
+		}
+		if(getKitAssemblyManager().isKitStandMsg()){
+			getKitAssemblyManager().setKitStandMsg(false);
+			getKitStandAgent().msgKitAnimationOnStand();
 		}
 		if(getPartsRobot().getMsg().equals(true)){
 			getPartsRobotAgent().msgAnimationDone();
@@ -756,6 +793,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return gantryFeedList;
 	}
 	
+	public GantryControllerAgent getGantryController() {
+		return gantryController;
+	}
+
+	public void setGantryController(GantryControllerAgent gantryController) {
+		this.gantryController = gantryController;
+	}
+
 	public void addGantryPart(PartInfo p)
 	{
 		gantryManager.addPartInfo(p);

@@ -3,14 +3,16 @@ package Agents.FCSAgent;
 import java.util.*;
 
 import server.Server;
+import data.KitInfo;
 import data.Part;
 import data.PartInfo;
 import Agent.Agent;
 
-import Agents.PartsRobotAgent.*;
-import Agents.GantryFeederAgents.*;
-import Agents.KitRobotAgents.*;
+
 import Interface.FCSAgent.FCS;
+import Interface.GantryFeederAgent.*;
+import Interface.PartsRobotAgent.*;
+import Interface.KitRobotAgent.*;
 import MoveableObjects.*;
 
 
@@ -19,64 +21,56 @@ public class FCSAgent extends Agent implements FCS {
 	/** DATA **/
 	int numKits;
 
-	PartsRobotAgent partsRobotAgent;
-	KitRobotAgent kitRobotAgent;
-	GantryControllerAgent gantryControllerAgent;
+	PartsRobot partsRobot;
+	KitRobot kitRobot;
+	GantryController gantryController;
 	
-	List<GantryAgent> gantriesList = Collections.synchronizedList( new ArrayList<GantryAgent>() );
+	List<Gantry> gantriesList = Collections.synchronizedList( new ArrayList<Gantry>() );
 	List<PartInfo> kitRecipe;
 	Vector<Bin> binsList = new Vector<Bin>();
+	int numKitsNeeded;
 	
-	Server server; // not sure how to use this yet
+	
+	Server server; 
 
 	/////////////////////////////////////////////////////////////
 	/** CONSTRUCTOR **/
 	
-	public FCSAgent(Server server, PartsRobotAgent partsRobotAgent, KitRobotAgent kitRobotAgent, GantryControllerAgent gantryControllerAgent) {
-		
+	public FCSAgent(Server server, PartsRobot partsRobotAgent, KitRobot kitRobotAgent, GantryController gantryControllerAgent) {
+		numKitsNeeded=0;
 		this.server = server;
-		this.partsRobotAgent = partsRobotAgent;
-		this.kitRobotAgent = kitRobotAgent;
-		this.gantryControllerAgent = gantryControllerAgent;
+		this.partsRobot = partsRobotAgent;
+		this.kitRobot = kitRobotAgent;
+		this.gantryController = gantryControllerAgent;
 	}
 	
 	/////////////////////////////////////////////////////////////
 	/** MESSAGES **/ // receive messages from the GUI control panel
 	
 	// receive a message telling what the bins are
-	public void msgHereAreBins(Vector<Bin> binsList) {
-		this.binsList = binsList;
+	public void msgHereIsKitConfig(KitInfo kitInfo, int amount) {
+		sendKitConfig(kitInfo, amount);
+		numKitsNeeded=amount;
 	}
 	
-	// receive a message to make X kits with what parts 
-	public void msgStartKitProduction(List<PartInfo> kitRecipe, int numKits) {
-		this.numKits = numKits;
-		this.kitRecipe = kitRecipe;
+	public void msgKitCompleted() {
+		numKitsNeeded--;
+	}
 		
-		makeAKit(kitRecipe);
-		giveConfigurationToGantryController();
-		getKitsFromKitRobotAgent();
-	}
-	
 	/////////////////////////////////////////////////////////////
 	/** ACTIONS **/
 	
-	// send a message to the PartsRobotAgent telling it what kits to make
-	private void makeAKit(List<PartInfo> kitRecipe) {
-		this.kitRecipe = kitRecipe;
-		partsRobotAgent.msgMakeThisKit(kitRecipe, numKits);
-	}
+	// send kit configuration to parts robot and kit robot
+	private void sendKitConfig(KitInfo info, int amount) {
+		partsRobot.msgMakeThisKit(info, amount);
+		kitRobot.msgGetKits(amount);
 		
-	// send a message to the GantryControllerAgent to give it the configurations
-	private void giveConfigurationToGantryController() {
-		gantryControllerAgent.msgBinConfiguration(binsList);
-	}
+		for (PartInfo p: info.getParts()) {
+			binsList.add(new Bin(p, amount));
+		}
 	
-	// send a message to the KitRobotAgent requesting kits
-	private void getKitsFromKitRobotAgent() {
-		kitRobotAgent.msgGetKits(numKits);
+		gantryController.msgBinConfiguration(binsList);
 	}
-	
 	
 	/////////////////////////////////////////////////////////////
 	/** SCHEDULER **/
@@ -85,6 +79,7 @@ public class FCSAgent extends Agent implements FCS {
 	protected boolean pickAndExecuteAnAction() {
 		return false;
 	}
+
 
 	
 	

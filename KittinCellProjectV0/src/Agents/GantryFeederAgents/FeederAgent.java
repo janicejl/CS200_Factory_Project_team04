@@ -26,7 +26,7 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	enum FeederState{feeding, low, waitingLane, purging, waitingGantry};
 	//possible additional state: beingFed
-	FeederState fstate = FeederState.waitingGantry;
+	FeederState fstate = FeederState.low;
 	
 	MyLane left;
 	MyLane right;
@@ -41,7 +41,7 @@ public class FeederAgent extends Agent implements Feeder {
 		
 		public MyLane(Lane f1){
 			this.fLane1 = f1;
-			partWanted = null;
+			partWanted = new PartInfo("blank", "source");
 			readyForParts = false;
 		}
 	}
@@ -54,13 +54,16 @@ public class FeederAgent extends Agent implements Feeder {
 		this.right = new MyLane(right);
 		this.number = number;
 		this.app = app;
+		this.currentPart = new PartInfo("blank", "source1");
+		this.requestedPart = new PartInfo("blank", "source2");
+		this.log = new EventLog();
 	}
 	
 	//Messages
 
 	@Override
 	public void msgNeedThisPart(PartInfo p, String laneName) {
-		if(requestedPart.equals(null)){
+		if(requestedPart.getName().equals("blank")){
 			requestedPart = p;
 		}
 		if(laneName.equals("left")){
@@ -71,7 +74,7 @@ public class FeederAgent extends Agent implements Feeder {
 		}
 		
 		log.add(new LoggedEvent("msgNeedThisPart received from "+laneName+" lane."));
-		
+		print("msgNeedThisPart received from "+laneName+" lane.");
 		stateChanged();
 	}
 
@@ -87,7 +90,7 @@ public class FeederAgent extends Agent implements Feeder {
 		currentPart = bin.getPartInfo();
 		partsInFeeder = bin.getQuantity();
 		myBin = bin;
-		//fstate = FeederState.beingFed;	
+		fstate = FeederState.waitingLane;	
 		log.add(new LoggedEvent("msgHereAreParts received from gantry."));
 		stateChanged();
 	}
@@ -97,6 +100,7 @@ public class FeederAgent extends Agent implements Feeder {
 		currentPart = part;
 		partsInFeeder = quantity;
 		//fstate = FeederState.beingFed;
+		log.add(new LoggedEvent("msgHereAreParts received from GUI."));
 		stateChanged();
 	}
 
@@ -104,12 +108,14 @@ public class FeederAgent extends Agent implements Feeder {
 	public void msgLaneIsFull(String laneName) {
 		if(laneName.equals("left")){
 			left.readyForParts = false;
+			requestedPart = right.partWanted;
 		}
 		else{
 			right.readyForParts = false;
+			requestedPart = left.partWanted;
 		}
 		fstate = FeederState.waitingLane;
-		
+		log.add(new LoggedEvent("msgLaneIsFull received from " + laneName + " lane."));
 		stateChanged();
 	}
 
@@ -121,16 +127,17 @@ public class FeederAgent extends Agent implements Feeder {
 		else{
 			right.readyForParts = true;
 		}
-		
+		log.add(new LoggedEvent("msgLaneIsReadyForParts received from " + laneName + " lane."));
 		stateChanged();
 	}
 	
 	//Scheduler
 	
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		
-		if(fstate == FeederState.low){
+		if(fstate == FeederState.low && !currentPart.getName().equals("blank") ){
+			print("fstate is low and current part is not blank, RequestParts(currentPart) called.");
 			RequestParts(currentPart);
 			return true;
 		}
@@ -140,27 +147,55 @@ public class FeederAgent extends Agent implements Feeder {
 			return true;
 		}*/
 		
-		if(fstate == FeederState.waitingLane || fstate == FeederState.low){
+		else if(fstate == FeederState.waitingLane || fstate == FeederState.low){
+			print("fstate is waitingLane or low.");
 			if(currentPart == left.partWanted && left.readyForParts){
+				print("CurrentPart is left.partWanted and left is ready for parts. FeedParts(true) called.");
 				FeedParts(true);
 				return true;
 			}
 			else if (currentPart == right.partWanted && right.readyForParts){
+				print("CurrentPart is right.partWanted and right is ready for parts. FeedParts(false) called.");
 				FeedParts(false);
 				return true;
 			}
 			
-			else if (currentPart != left.partWanted && currentPart != right.partWanted){
+			else if(!left.readyForParts && right.readyForParts && !currentPart.getName().equals(right.partWanted.getName()) && !requestedPart.equals("blank")){
+				print("Left is not ready for parts. Right is ready for parts. Current part is not equal to right.partWanted. RequestParts(requestedPart) called.");
+				RequestParts(requestedPart);
+				PurgeFeeder();
+				return true;
+			}
+			
+
+			else if(!right.readyForParts && left.readyForParts && currentPart!= left.partWanted && !requestedPart.getName().equals("blank")){
+				print("Right is not ready for parts. Left is ready for parts. Current part is not equal to left.partWanted. RequestParts(requestedPart) called.)");
+				RequestParts(requestedPart);
+				PurgeFeeder();
+				return true;
+			}
+			
+			else if (currentPart != left.partWanted && currentPart != right.partWanted && !requestedPart.getName().equals("blank")){
+				print("currentPart is not left or right partWanted.RequestedParts(requestedPart) called.");
+				print("requestedPart:" + requestedPart.getName());
 				RequestParts(requestedPart);
 				PurgeFeeder();
 				return true;
 			}
 		}
 		
-		if(fstate == FeederState.waitingGantry && gantry != null){
+		else if(fstate == FeederState.waitingGantry && gantry != null){
+			print("fstate is waitingGantry and gantry exists");
 			AcceptParts();
 			return true;
 		}
+		
+		print("Nothing chosen.");
+		//print("left ready: " + left.readyForParts);
+		//print("right ready: " + right.readyForParts);
+		//print("currentPart:" + currentPart.getName());
+		//print("left part:" + left.partWanted.getName());
+		//print("right part:" + right.partWanted.getName());
 		
 		return false;
 	}
@@ -188,10 +223,12 @@ public class FeederAgent extends Agent implements Feeder {
 	}
 	
 	private void PurgeFeeder(){
-		myBin.setQuantity(partsInFeeder);
-		myBin.setPartInfo(currentPart);
-		partsInFeeder = 0;
-		//DoPurgeFeeder();
+		if(partsInFeeder > 0){
+			myBin.setQuantity(partsInFeeder);
+			myBin.setPartInfo(currentPart);
+			partsInFeeder = 0;
+			//DoPurgeFeeder();
+		}
 		
 	}
 	
@@ -235,6 +272,14 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	public int getNumber(){
 		return this.number;
+	}
+	
+	public FeederState getState(){
+		return fstate;
+	}
+	
+	public int getQuantity(){
+		return this.partsInFeeder;
 	}
 
 }

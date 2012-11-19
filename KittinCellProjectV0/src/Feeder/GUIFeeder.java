@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import data.GUIPart;
 import data.Part;
@@ -16,13 +17,14 @@ import data.Part;
 public class GUIFeeder {
 	
 	Feeder feeder;
-	BufferedImage image, diverter;
+	BufferedImage image, diverter, partbox, part;
 	
 	public GUIFeeder(Feeder f){
 		feeder = f;
 		try {
 			image = ImageIO.read(new File("images/feeder.png"));
 			diverter = ImageIO.read(new File("images/diverter.png"));
+			partbox = ImageIO.read(new File("images/crate.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -66,10 +68,20 @@ public class GUIFeeder {
 			parts.add(new GUIPart(feeder.getParts().get(i)));
 			parts.get(i).paintPart(g2);
 		}
-		
-		
 	}
 
+	public void paintCrate(Graphics2D g2){
+		if(feeder.getHasCrate()){
+			g2.drawImage(partbox, (int)feeder.getX() + 130, (int)feeder.getY() + 12, null);
+			try{
+				part = ImageIO.read(new File(feeder.getInfo().getImagePath()));
+				g2.drawImage(part, (int)feeder.getX() + 143, (int)feeder.getY() + 47, null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public synchronized Feeder getFeeder() {
 		return feeder;
 	}
@@ -77,7 +89,4 @@ public class GUIFeeder {
 	public synchronized void setFeeder(Feeder feeder) {
 		this.feeder = feeder;
 	}
-
-	
-	
 }

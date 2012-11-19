@@ -2,7 +2,7 @@ package Feeder;
 
 import java.io.Serializable;
 import java.util.*;
-
+import data.PartInfo;
 import data.Part;
 
 
@@ -15,6 +15,8 @@ public class Feeder implements Serializable{
 	private boolean empty;
 	private ArrayList<Part> parts;
 	private Random random;
+	private PartInfo info;
+	private boolean hasCrate;
 	
 	//diverter stuff
 	int diverterX, diverterY;
@@ -36,6 +38,8 @@ public class Feeder implements Serializable{
 		
 		diverterX = (int)(getX() - 3);
 		diverterY = (int)getY();
+		info = null;
+		hasCrate = false;
 	}
 	
 	public void updateDiverter(){
@@ -178,5 +182,25 @@ public class Feeder implements Serializable{
 
 	public void setTopLane(boolean topLane) {
 		this.topLane = topLane;
+	}
+	
+	public void setHasCrate(boolean b)
+	{
+		hasCrate = b;
+	}
+	
+	public void setInfo(PartInfo p)
+	{
+		info = p;
+	}
+	
+	public boolean getHasCrate()
+	{
+		return hasCrate;
+	}
+	
+	public PartInfo getInfo()
+	{
+		return info;
 	}
 }

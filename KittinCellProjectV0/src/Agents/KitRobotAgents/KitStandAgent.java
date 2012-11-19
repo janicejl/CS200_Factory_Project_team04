@@ -8,7 +8,8 @@ import java.util.List;
 import server.Server;
 
 import Agent.Agent;
-import Agents.PartsRobotAgent.PartsRobotAgent;
+import Agents.KitRobotAgents.KitRobotAgent.KitRobotEvent;
+import Interface.PartsRobotAgent.*;
 import Interface.KitRobotAgent.KitRobot;
 import Interface.KitRobotAgent.KitStand;
 import Interface.VisionAgent.Vision;
@@ -41,10 +42,11 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	enum KitState {BeingInspected,AddParts,Empty,None,KitFinished, NeedKit, WaitinForInspectionQueueToClear,BeingUsed}
 
 
-	PartsRobotAgent parts_robot;
+	PartsRobot parts_robot;
 	KitRobot kit_robot;
 	Vision vision;
 	Server server;
+	private boolean kit_animation_arrived = false;
 	
 	
 	public KitStandAgent(Server _server)
@@ -153,17 +155,25 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		stateChanged();
 	}
 	
+	public void msgKitAnimationOnStand()
+	{
+		System.out.println("KitStand: The kit has been placed");
+		kit_animation_arrived = true;
+		stateChanged();
+	}
+	
 	
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 
 		if(!stand_events.isEmpty())
 		{
 			for(KitStandEvent event:stand_events)
 			{
-				if(event == KitStandEvent.IsEmptyKit)
+				if(event == KitStandEvent.IsEmptyKit && kit_animation_arrived)
 				{
 					stand_events.remove(event);
+					kit_animation_arrived = false;
 					CheckForEmptyKit();
 					return true;
 				}
@@ -263,8 +273,9 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		{
 			for(KitHolder kit_h:kit_holder_list)
 			{
-				if(kit_h.state == KitState.Empty)
+				if(kit_h.state == KitState.Empty && kit_animation_arrived)
 				{
+					kit_animation_arrived = false;
 					CheckForEmptyKit();
 					return true;
 				}
@@ -314,7 +325,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	private void InspectKitByVision(KitHolder kit_h)
 	{
 		server.execute("Take Picture");
-		//vision.msgTakePicture(kit_h.kit);
+		vision.msgTakePicture(kit_h.kit);
 		kit_h.state = KitState.None;
 		System.out.println("KitStand: Inspect kit by vision");
 	}
@@ -324,6 +335,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		System.out.println("KitStand: Removing kit");
 		msgInspectionSlotIsClear();
 		inpspection_list.remove(0);
+		server.execute("Kit Finished");
 	}
 	
 	private void AppPartsToKit(KitHolder kit_h)
@@ -350,10 +362,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 			}
 		}
 		
-		if(kit_holder_list.isEmpty())
-		{
-			//robot_waiting_for_kit.add(1);
-		}
 		
 	}
 	
@@ -408,7 +416,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		kit_robot = robot;
 	}
 
-	public void SetPartsRobotAgent(PartsRobotAgent robot)
+	public void SetPartsRobotAgent(PartsRobot robot)
 	{
 		parts_robot = robot;
 	}

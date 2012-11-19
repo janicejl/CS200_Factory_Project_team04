@@ -25,12 +25,24 @@ public class KitAssemblyManager implements Runnable, Serializable{
     boolean emptyConveyorOn;
     boolean badConveyorOn;
     boolean incompleteConveyorOn;
+    boolean kitStandMsg;
     Boolean msg;
     int idCounter;
     double conveyorSpeed = 1;
    
     boolean checked = false;
 
+    /*
+    id  name    corX  corY
+    0   empty   80    10
+    1   kit 1   160   140
+    2   kit 2   160   360
+    3   inc     80    490
+    4   bad     10    490
+    5   check   160   250
+    6   done    10    10
+    */
+    
     public KitAssemblyManager(ArrayList<Nest> n){
     	nests = n;
         stationOccupied = new ArrayList<Boolean>();
@@ -51,6 +63,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
         emptyKits = new ArrayList<Kit>();
         finishedKits = new ArrayList<Kit>();
         msg = new Boolean(false);
+        kitStandMsg = false;
     }
 
     public void run(){
@@ -84,10 +97,12 @@ public class KitAssemblyManager implements Runnable, Serializable{
         if(i == 1){
         	stationKits.set(i,k);
             stationKits.get(1).setPosition(160,140);
+            kitStandMsg = true;
         }
         else if(i == 2){
         	getStationKits().set(i,k);
         	getStationKits().get(2).setPosition(160, 360);
+        	kitStandMsg = true;
         }
         else if(i == 3){
             System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
@@ -264,5 +279,13 @@ public class KitAssemblyManager implements Runnable, Serializable{
 
 	public void setChecked(boolean checked) {
 		this.checked = checked;
+	}
+
+	public boolean isKitStandMsg() {
+		return kitStandMsg;
+	}
+
+	public void setKitStandMsg(boolean kitStandMsg) {
+		this.kitStandMsg = kitStandMsg;
 	}
 }

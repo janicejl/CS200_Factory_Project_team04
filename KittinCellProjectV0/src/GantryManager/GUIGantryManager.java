@@ -17,7 +17,6 @@ public class GUIGantryManager extends JPanel implements ActionListener
 	protected BufferedImage feeder = null;
 	protected BufferedImage gantryImage = null;
 	protected BufferedImage crate = null;
-	protected BufferedImage part = null;
 	GantryManager manager;
 	GantryManagerClient client;
 	javax.swing.Timer timer;
@@ -39,12 +38,9 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			feeder = ImageIO.read(new File("images/Feeder.png"));
 			gantryImage = ImageIO.read(new File("images/gantryrobot.png"));
 			crate = ImageIO.read(new File("images/crate.png"));
-			//Dynamic image in final implementation
-			part = ImageIO.read(new File("images/part.png"));
 		}
 		catch(IOException e) {}
 		
-		manager = new GantryManager();
 		timer = new javax.swing.Timer(9,this);
 		timer.start();
 	}
@@ -63,14 +59,14 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			g2.drawImage(feeder, -110, 310,null);
 			g2.drawImage(feeder,  -35, 450, null);
 		}
-		g2.drawImage(station, 275,157, null);
-			g2.drawImage(station, 325, 157,null);
-		g2.drawImage(station, 275,207,null);
-			g2.drawImage(station, 325, 207,null);
-		g2.drawImage(station, 275,295,null);
-			g2.drawImage(station, 325, 295,null);
-		g2.drawImage(station, 275,345,null);
-			g2.drawImage(station, 325,345,null);
+		g2.drawImage(station, 275,192, null);
+			g2.drawImage(station, 325, 192,null);
+		g2.drawImage(station, 275,242,null);
+			g2.drawImage(station, 325, 242,null);
+		g2.drawImage(station, 275,310,null);
+			g2.drawImage(station, 325, 310,null);
+		g2.drawImage(station, 275,360,null);
+			g2.drawImage(station, 325,360,null);
 	
 		
 		
@@ -92,7 +88,7 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			g2.drawImage(crate,manager.getExiting().get(i).getxCurrent(),manager.getExiting().get(i).getyCurrent(),null);
 			try
 			{
-				g2.drawImage(ImageIO.read(new File(manager.getPartsBoxes().get(i).getPartInfo().getImagePath())),manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
+				g2.drawImage(ImageIO.read(new File(manager.getExiting().get(i).getPartInfo().getImagePath())),manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
 			}
 			catch(IOException e){}
 			i++;
@@ -103,7 +99,7 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			g2.drawImage(crate,manager.getPurged().get(i).getxCurrent(),manager.getPurged().get(i).getyCurrent(),null);
 			try
 			{
-				g2.drawImage(ImageIO.read(new File(manager.getPartsBoxes().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
+				g2.drawImage(ImageIO.read(new File(manager.getPurged().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
 			}
 			catch(IOException e){}
 			i++;

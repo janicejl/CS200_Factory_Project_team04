@@ -13,10 +13,10 @@ import javax.imageio.ImageIO;
 
 public class GUINest {
 	
-	Nest nest;
-	BufferedImage image;
-	ArrayList<Part> parts;
-	ArrayList<GUIPart> gParts;
+	Nest nest;						//A reference to Nest from server
+	BufferedImage image;			//Image to paint for animation. 
+	ArrayList<Part> parts;			//Array of the parts inside the nest 
+	ArrayList<GUIPart> gParts;		//Array of the graphic parts class to paint the parts. 
 	
 	public GUINest(Nest n) {
 		nest = n;
@@ -46,7 +46,7 @@ public class GUINest {
 		
 		gParts.clear();
 		for (int i = 0, j = 0; i < parts.size(); i++) {
-			parts.get(i).setX(x + ((i % 4) * 25));		//25 = size of testing image parts. 
+			parts.get(i).setX(x + ((i % 4) * 25));		//25 = size of image parts. 
 			parts.get(i).setY(y + (j * 25));
 			
 			if (i % 4 == 3) {

@@ -6,6 +6,8 @@ import Interface.GantryFeederAgent.Feeder;
 import Interface.GantryFeederAgent.Gantry;
 import Interface.GantryFeederAgent.GantryController;
 import MoveableObjects.Bin;
+import UnitTest.GantryFeederAgents.EventLog;
+import UnitTest.GantryFeederAgents.LoggedEvent;
 
 public class GantryAgent extends Agent implements Gantry {
 
@@ -18,7 +20,7 @@ public class GantryAgent extends Agent implements Gantry {
 	Server app;
 	enum FeederState{ready, pending, notReady};
 	FeederState fstate;
-	
+	public EventLog log;
 	
 	public GantryAgent(String name, Server app){
 		this.name = name;
@@ -26,6 +28,7 @@ public class GantryAgent extends Agent implements Gantry {
 		currentBin = null;
 		fstate = FeederState.notReady;
 		this.app = app;
+		log = new EventLog();
 		
 	}
 	
@@ -35,21 +38,24 @@ public class GantryAgent extends Agent implements Gantry {
 	public void msgGiveFeederParts(Feeder f1, Bin b) {
 		this.currentFeeder = f1;
 		this.currentBin = b;
+		log.add(new LoggedEvent("msgGiveFeederParts received from GantryController"));
 		stateChanged();
 	}
 
 	@Override
 	public void msgReadyForParts() {
 		fstate = FeederState.ready;
+		log.add(new LoggedEvent("msgReadyForParts received from Feeder"));
+		stateChanged();
 	}
 	
 	
 	//Scheduler
 	
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		
-		if(fstate == FeederState.ready){
+		if(currentFeeder != null && fstate == FeederState.ready){
 			GivePartsToFeeder();
 			return true;
 		}
@@ -78,6 +84,7 @@ public class GantryAgent extends Agent implements Gantry {
 	}
 	
 	private void PrepareToGiveParts(){
+		app.execute("Make PartsBox", currentBin.getPartInfo());
 		currentFeeder.msgHaveParts(this);
 		fstate = FeederState.pending;
 	}
@@ -89,7 +96,7 @@ public class GantryAgent extends Agent implements Gantry {
 	}
 	
 	public String getName(){
-		return this.getName();
+		return this.name;
 	}
 	
 	public void setGantryController(GantryController gc){

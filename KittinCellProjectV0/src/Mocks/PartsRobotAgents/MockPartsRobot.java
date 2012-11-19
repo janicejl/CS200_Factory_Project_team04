@@ -2,6 +2,7 @@ package Mocks.PartsRobotAgents;
 
 import java.util.List;
 
+import data.KitInfo;
 import data.Part;
 import Agents.PartsRobotAgent.TestGUI;
 import Interface.PartsRobotAgent.*;
@@ -18,18 +19,15 @@ public class MockPartsRobot extends MockAgent implements PartsRobot{
 	
 	public MockPartsRobot(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 
-	@Override
-	public void msgMakeThisKit(List<PartInfo> kitrecipe, int ct) {
+	public void msgMakeThisKit(KitInfo kit, int ct) {
 		log.add(new LoggedEvent("Received Recipe"));
 		
 	}
 
 
-	@Override
 	public void msgPartsApproved(int nestindex) {
 		log.add(new LoggedEvent("Nest Has Part"));
 		
@@ -82,5 +80,8 @@ public class MockPartsRobot extends MockAgent implements PartsRobot{
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	
 
 }

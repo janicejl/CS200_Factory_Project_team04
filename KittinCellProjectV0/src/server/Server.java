@@ -68,6 +68,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	VisionAgent nestvisionagent2;
 	VisionAgent nestvisionagent3;
 	VisionAgent nestvisionagent4;
+	VisionAgent kitvisionagent;
 	ArrayList<VisionAgent> visions = new ArrayList<VisionAgent>();
 	Semaphore flashpermit;
 	
@@ -86,7 +87,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	FeederAgent feeder3;
 	FeederAgent feeder4;
 	GantryAgent gantry1;
-	//GantryAgent gantry2;
+	GantryAgent gantry2;
 	GantryControllerAgent gantryController;
 
 	Vector<Feeder> feeders;
@@ -142,8 +143,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		
 		gantryManager = new GantryManager(feeders);
-		gantryManager.getGantry().setState("free");
-		gantryManager.getGantry().setBox(1);
+	//	gantryManager.getGantry().setState("free");
+	//	gantryManager.getGantry().setBox(1);
 		gantryFeedList = new ArrayList<Integer>();
 		gantryWaitList = new ArrayList<String>();
 		
@@ -262,10 +263,15 @@ public class Server extends JFrame implements Runnable, ActionListener{
         for(LaneAgent lane : laneagents){
         	lane.startThread();
         }
+		
+	
         nestvisionagent1 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
         nestvisionagent2 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
         nestvisionagent3 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
         nestvisionagent4 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
+        kitvisionagent = new VisionAgent("kit",kitRobotAgent,partsRobotAgent,this);
+        
+        kitStandAgent.SetVisionAgent(kitvisionagent);
         
         flashpermit = new Semaphore(1);
         nestvisionagent1.setFlashPermit(flashpermit);
@@ -290,8 +296,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
         
         nestvisionagent1.startThread();
         nestvisionagent2.startThread();
-        nestvisionagent3.startThread();
-        nestvisionagent4.startThread();
+       nestvisionagent3.startThread();
+       nestvisionagent4.startThread();
         
         FCSAgent = new FCSAgent(this, partsRobotAgent, kitRobotAgent, gantryController);
         FCSAgent.startThread();
@@ -302,12 +308,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
         partsRobot = new PartsRobot(kitAssemblyManager);
         new Thread(partsRobot).start();
 		
-        gantryController.startThread();
-        gantry1.startThread();
-        feeder1.startThread();
-        feeder2.startThread();
-        feeder3.startThread();
-        feeder4.startThread();
+        //gantryController.startThread();
+        //gantry1.startThread();
+        //feeder1.startThread();
+        //feeder2.startThread();
+        //feeder3.startThread();
+       // feeder4.startThread();
         
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");

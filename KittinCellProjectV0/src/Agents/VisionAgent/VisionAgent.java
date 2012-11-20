@@ -75,7 +75,7 @@ public class VisionAgent extends Agent implements Vision {
 		}
 		approved = false;
 		state = State.SCHEMATIC_RECEIVED;
-		print("schematic received from KitRobot");
+		print("schematic received from PartsRobot");
 		stateChanged();
 		
 	}
@@ -84,7 +84,7 @@ public class VisionAgent extends Agent implements Vision {
 	public void msgImFull(Nest nest) {
 		fullNestsMap.put(nest.getNumber(), nest);
 		print("received message msgImFull from nest "+ nest.getName());
-		// stateChanged();
+		 stateChanged();
 	}
 	
 	// sent by KitStandAgent
@@ -121,10 +121,12 @@ public class VisionAgent extends Agent implements Vision {
 		if (type=="kit") {
 			this.type = Type.KIT_INSPECTOR;
 			print ("initialized to kit inspecting vision agent");
+			name = "Kit Vision Agent";
 		}
 		else if (type=="nests") {
 			this.type = Type.NESTS_INSPECTOR;
 			print ("initialized to nest inspecting vision agent");
+			name = "Nest Vision Agent";
 		}
 		print("initialized to type" + type);
 	}
@@ -168,8 +170,7 @@ public class VisionAgent extends Agent implements Vision {
 	
 	private void inspectKit() {
 		// check that the kit has all the parts (this is in the partsList)
-		System.out.println("inspecting kit");
-		
+		print("inspecting kit");
 		for (Part p: neededPartsList) {
 			if (currentKit.peekParts().contains(p)) {
 				neededPartsList.remove(p);
@@ -252,6 +253,9 @@ public class VisionAgent extends Agent implements Vision {
 	/** SCHEDULER **/
 	
 	public boolean pickAndExecuteAnAction() {
+	
+		print("running");
+	
 		if (state==State.IDLE){
 			// do nothing
 			return false;
@@ -265,7 +269,6 @@ public class VisionAgent extends Agent implements Vision {
 			if (type==Type.NESTS_INSPECTOR) {
 				checkForConsecutiveNests();
 			}
-			return true;
 		}
 		
 		if (state==State.READY_TO_TAKE_PICTURE && waiting == false) {
@@ -292,7 +295,9 @@ public class VisionAgent extends Agent implements Vision {
 		this.flashpermit = flashpermit;
 	}
 
-
+	public String getName(){
+		return name;
+	}
 
 	
 }

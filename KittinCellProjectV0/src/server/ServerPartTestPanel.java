@@ -88,15 +88,14 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 		if("Send Recipe".equals(ae.getActionCommand())){
 			KitInfo kit = new KitInfo("TestKit");
 			Vector<Bin> bins = new Vector<Bin>();
-			for(int i = 0; i<8; i++){
+			for(int i = 0; i<2; i++){
 				PartInfo p = new PartInfo("p" + i+1,"images/kt" + (i + 1) + ".png");
 				kit.add(p);
-				bins.add(new Bin(p, 1));
+				bins.add(new Bin(p, 3));
 			}
-			
+			server.getGantryController().msgBinConfiguration(bins);
 			server.getPartsRobotAgent().msgMakeThisKit(kit, 4);
 			server.getKitRobotAgent().msgGetKits(4);
-			server.getGantryController().msgBinConfiguration(bins);
 		}
 		else if("Get Part".equals(ae.getActionCommand())) {
 			/*server.getPartsRobotAgent().msgPartsApproved((int)nestList.getSelectedIndex());

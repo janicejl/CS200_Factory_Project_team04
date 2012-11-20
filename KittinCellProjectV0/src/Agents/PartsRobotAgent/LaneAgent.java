@@ -104,7 +104,8 @@ public class LaneAgent extends Agent implements Lane{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-
+		print("running");
+		
 		if(orderstate == OrderStatus.partRequested){
 			askForPart();
 			return true;

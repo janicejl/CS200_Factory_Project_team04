@@ -171,7 +171,6 @@ public class NestAgent extends Agent implements Nest{
 			settleNest();
 			return true;
 		}
-		print("current" + lanestate);
 		return false;
 	}
 

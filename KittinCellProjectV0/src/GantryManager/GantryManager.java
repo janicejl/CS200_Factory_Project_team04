@@ -2,7 +2,7 @@ package GantryManager;
 
 import java.io.*;
 import java.util.*;
-import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.awt.event.*;
 import data.PartInfo;
 
@@ -10,12 +10,21 @@ import data.PartInfo;
 public class GantryManager implements Serializable,ActionListener
 {
 	Gantry gantry;
-	Vector<PartsBox> parts; //Partsboxes that are not purged or exiting
+	/*Vector<PartsBox> parts; //Partsboxes that are not purged or exiting
 	Vector<PartsBox> exiting; //Partsboxes that are leaving the factory
 	Vector<PartsBox> purged; //Partsboxes that have been purged
 	Vector<Integer> feeder;
 	Vector<PartInfo> feeders;
-	Vector<Feeder.Feeder> feed; 
+	*/
+	CopyOnWriteArrayList<PartsBox> parts;
+	CopyOnWriteArrayList<PartsBox> exiting;
+	CopyOnWriteArrayList<PartsBox> purged;
+	CopyOnWriteArrayList<Integer> feeder;
+	CopyOnWriteArrayList<PartInfo> feeders;
+	Vector<Feeder.Feeder> feed;
+
+
+	
 	boolean msg = false;
 	
 	public GantryManager(Vector<Feeder.Feeder> f)
@@ -23,11 +32,11 @@ public class GantryManager implements Serializable,ActionListener
 		feed = f;
 		gantry = new Gantry();
 		
-		parts = new Vector<PartsBox>(); //Initial box placed on conveyor, for testing only
+		parts = new CopyOnWriteArrayList<PartsBox>(); //Initial box placed on conveyor, for testing only
 		
 		//Populating the feeders
-		feeders = new Vector<PartInfo>();
-		feeder = new Vector<Integer>();
+		feeders = new CopyOnWriteArrayList<PartInfo>();
+		feeder = new CopyOnWriteArrayList<Integer>();
 		int i=0;
 		while(i<4)
 		{
@@ -36,8 +45,8 @@ public class GantryManager implements Serializable,ActionListener
 			i++;
 		}
 	
-		exiting = new Vector<PartsBox>();
-		purged = new Vector<PartsBox>();
+		exiting = new CopyOnWriteArrayList<PartsBox>();
+		purged = new CopyOnWriteArrayList<PartsBox>();
 	}
 	
 	public void update()
@@ -253,7 +262,7 @@ public class GantryManager implements Serializable,ActionListener
 		return gantry;
 	}
 	
-	public Vector<PartsBox> getPartsBoxes()
+	public CopyOnWriteArrayList<PartsBox> getPartsBoxes()
 	{
 		return parts;
 	}
@@ -263,27 +272,27 @@ public class GantryManager implements Serializable,ActionListener
 		gantry = g;
 	}
 	
-	public synchronized void setParts(Vector<PartsBox> p)
+	public synchronized void setParts(CopyOnWriteArrayList<PartsBox> p)
 	{
 		parts = p;
 	}
 	
-	public Vector<PartsBox> getExiting()
+	public CopyOnWriteArrayList<PartsBox> getExiting()
 	{
 		return exiting;
 	}
 	
-	public Vector<PartsBox> getPurged()
+	public CopyOnWriteArrayList<PartsBox> getPurged()
 	{
 		return purged;
 	}
 	
-	public void setFeeders(Vector<PartInfo> f)
+	public void setFeeders(CopyOnWriteArrayList<PartInfo> f)
 	{
 		feeders = f;
 	}
 	
-	public  Vector<PartInfo> getFeeders()
+	public  CopyOnWriteArrayList<PartInfo> getFeeders()
 	{
 		return feeders;
 	}

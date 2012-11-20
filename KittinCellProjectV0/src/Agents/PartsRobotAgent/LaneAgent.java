@@ -129,12 +129,13 @@ public class LaneAgent extends Agent implements Lane{
 		
 		if(readystate == ReadyStatus.notready){
 			if(lanequeue.size()<maxsize){
-				
+				if(feeder!=null){
 				if(index%2==0){
 					feeder.msgLaneIsReadyForParts("left");
 				}
 				else{
 					feeder.msgLaneIsReadyForParts("right");
+				}
 				}
 				readystate = ReadyStatus.ready;
 				return true;

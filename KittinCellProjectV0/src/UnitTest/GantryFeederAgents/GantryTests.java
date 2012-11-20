@@ -46,7 +46,7 @@ public class GantryTests extends TestCase {
 		gantry.msgReadyForParts();
 		assertTrue("Gantry should have received msgReadyForParts from feeder.", gantry.log.containsString("msgReadyForParts"));
 		
-		gantry.pickAndExecuteAnAction();
+		while(gantry.pickAndExecuteAnAction());
 		assertTrue("Feeder should have received msgHereAreParts from gantry.", feeder1.log.containsString("msgHereAreParts"));
 		assertTrue("Gantry Controller should have received msgDoneDeliveringParts", gc.log.containsString("msgDoneDeliveringParts"));
 		

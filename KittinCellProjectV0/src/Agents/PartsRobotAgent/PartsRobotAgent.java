@@ -334,8 +334,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		print("Requesting Parts from Nests");
 		for(int i = 0; i < recipe.size(); i++)
 		{	
-			print("" + recipe.size());
-			print("Assigning Part " + recipe.get(i) + " to nest " + nests.get(i).index);
+			print("Assigning Part " + recipe.get(i).getName() + " to nest " + nests.get(i).index);
 			nests.get(i).nest.msgNeedThisPart(recipe.get(i));
 			nests.get(i).state = NestStatus.assigned;
 			nests.get(i).type = recipe.get(i);

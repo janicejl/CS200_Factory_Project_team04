@@ -143,8 +143,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		
 		gantryManager = new GantryManager(feeders);
-	//	gantryManager.getGantry().setState("free");
-	//	gantryManager.getGantry().setBox(1);
+		gantryManager.getGantry().setState("free");
+		gantryManager.getGantry().setBox(1);
 		gantryFeedList = new ArrayList<Integer>();
 		gantryWaitList = new ArrayList<String>();
 		
@@ -308,12 +308,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
         partsRobot = new PartsRobot(kitAssemblyManager);
         new Thread(partsRobot).start();
 		
-        //gantryController.startThread();
-        //gantry1.startThread();
-        //feeder1.startThread();
-        //feeder2.startThread();
-        //feeder3.startThread();
-       // feeder4.startThread();
+        gantryController.startThread();
+        gantry1.startThread();
+        feeder1.startThread();
+        feeder2.startThread();
+        feeder3.startThread();
+        feeder4.startThread();
         
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");

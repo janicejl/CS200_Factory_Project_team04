@@ -70,8 +70,10 @@ public class VisionAgent extends Agent implements Vision {
 		// receive a list of all the parts that a kit needs, and a list of all the nests
 		this.nestsList = nestsList;
 		this.neededPartsList = partsList;
-		for(Part p : partsList){
-			fullNestsPartsList.add(p.info);
+		if(partsList.size()>0){
+			for(Part p : partsList){
+				fullNestsPartsList.add(p.info);
+			}
 		}
 		approved = false;
 		state = State.SCHEMATIC_RECEIVED;
@@ -120,24 +122,25 @@ public class VisionAgent extends Agent implements Vision {
 		
 		if (type=="kit") {
 			this.type = Type.KIT_INSPECTOR;
-			print ("initialized to kit inspecting vision agent");
 			name = "Kit Vision Agent";
+
+			print ("initialized to kit inspecting vision agent");
 		}
 		else if (type=="nests") {
 			this.type = Type.NESTS_INSPECTOR;
-			print ("initialized to nest inspecting vision agent");
 			name = "Nest Vision Agent";
+
+			print ("initialized to nest inspecting vision agent");
 		}
-		print("initialized to type" + type);
 	}
 	
 	private void takePicture() {
 		
-		try{
-		flashpermit.acquire();
-		}catch (InterruptedException e){
-			print("error with flashpermit");
-		}
+		//try{
+		//flashpermit.acquire();
+		//}catch (InterruptedException e){
+		//	print("error with flashpermit");
+		//}
 		
 		if (type==Type.NESTS_INSPECTOR) {
 			server.execute("Take Picture", nest2.getIndex());
@@ -149,9 +152,9 @@ public class VisionAgent extends Agent implements Vision {
 		}
 		
 		state = State.PICTURE_TAKEN;
-
+		print("Picture Taken");
 		stateChanged();
-	}
+	}	
 	
 	private void checkForConsecutiveNests() {
 		

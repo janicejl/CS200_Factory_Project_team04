@@ -37,7 +37,9 @@ public class GUIProductionManager extends JPanel{
 		 try {
             background = ImageIO.read(new File("images/background1.png"));
 
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }
 		
 //		timer = new Timer(10, this);
 //		timer.start();

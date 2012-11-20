@@ -50,9 +50,13 @@ public class GantryManagerClient implements Runnable
 			out.reset();		
 		}
 		catch(IOException e)
-		{}
+		{
+			e.printStackTrace();
+		}
 		catch(Exception i)
-		{}
+		{
+			i.printStackTrace();
+		}
 	}
 	
 	public synchronized Thread getThread()

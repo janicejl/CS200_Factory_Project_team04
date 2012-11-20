@@ -13,7 +13,7 @@ public class GantryManager implements Serializable,ActionListener
 	Vector<PartsBox> parts; //Partsboxes that are not purged or exiting
 	Vector<PartsBox> exiting; //Partsboxes that are leaving the factory
 	Vector<PartsBox> purged; //Partsboxes that have been purged
-	ArrayList<Integer> feeder;
+	Vector<Integer> feeder;
 	Vector<PartInfo> feeders;
 	Vector<Feeder.Feeder> feed; 
 	boolean msg = false;
@@ -27,7 +27,7 @@ public class GantryManager implements Serializable,ActionListener
 		
 		//Populating the feeders
 		feeders = new Vector<PartInfo>();
-		feeder = new ArrayList<Integer>();
+		feeder = new Vector<Integer>();
 		int i=0;
 		while(i<4)
 		{

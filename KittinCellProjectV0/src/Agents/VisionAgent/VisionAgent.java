@@ -258,7 +258,8 @@ public class VisionAgent extends Agent implements Vision {
 		}
 		
 		if (state==State.SCHEMATIC_RECEIVED) {
-			print("Running");
+//			print("Running");
+			
 
 			approved = false;
 			if (type==Type.NESTS_INSPECTOR) {

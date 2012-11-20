@@ -733,7 +733,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.nestList = nests;
 	}
 	
-	public GantryManager getGantryManager()
+	public synchronized GantryManager getGantryManager()
 	{
 		return gantryManager;
 	}

@@ -142,7 +142,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 			panel.repaint();
 			graphics.repaint();
 		} catch(Exception e){
-			
+			e.printStackTrace();
 		}
 		revalidate();
 	}
@@ -153,7 +153,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 			graphics.revalidate();
 			menuBar.revalidate();
 		} catch(Exception e){
-			
+			e.printStackTrace();
 		}
 	}
 	

@@ -103,7 +103,7 @@ public class GantryControllerAgent extends Agent implements GantryController {
 	
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		
+		print("running");
 		for(MyFeeder f:requests){
 			//print("MyFeeder found in requests in GC scheduler.");
 			if(f.fstate == FeederState.requested){

@@ -123,6 +123,7 @@ public class NestAgent extends Agent implements Nest{
 	
 	public boolean pickAndExecuteAnAction()
 	{
+		print("running");
 		
 		
 		if(partsrobotstate == PartsRobotStatus.readyforpart)

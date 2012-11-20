@@ -250,18 +250,24 @@ public class Server extends JFrame implements Runnable, ActionListener{
         
         partsRobotAgent = new PartsRobotAgent(nests, kitStandAgent, this);
         kitStandAgent.SetPartsRobotAgent(partsRobotAgent);
-        kitRobotAgent.startThread();
-		kitStandAgent.startThread();
-		kitConveyorAgent.startThread();
+       // kitRobotAgent.startThread();
+	//	kitStandAgent.startThread();
+	//	kitConveyorAgent.startThread();
 		
 		
-        for(NestAgent nest : nests){
+       /* for(NestAgent nest : nests){
         	nest.setPartsRobotAgent(partsRobotAgent);
         	nest.startThread();
         }
         for(LaneAgent lane : laneagents){
         	lane.startThread();
-        }
+        }*/
+		
+	//	nest1.startThread();
+	//nest2.startThread();
+	//	lane1.startThread();
+		//lane2.startThread();
+		
         nestvisionagent1 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
         nestvisionagent2 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
         nestvisionagent3 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
@@ -288,26 +294,26 @@ public class Server extends JFrame implements Runnable, ActionListener{
         partsRobotAgent.setVisionAgents(visions);
 
         
-        nestvisionagent1.startThread();
-        nestvisionagent2.startThread();
-        nestvisionagent3.startThread();
-        nestvisionagent4.startThread();
+      //  nestvisionagent1.startThread();
+       // nestvisionagent2.startThread();
+        //nestvisionagent3.startThread();
+        //nestvisionagent4.startThread();
         
         FCSAgent = new FCSAgent(this, partsRobotAgent, kitRobotAgent, gantryController);
-        FCSAgent.startThread();
+       // FCSAgent.startThread();
 
         gantryController.setFCS(FCSAgent);
         
-		partsRobotAgent.startThread();
+//		partsRobotAgent.startThread();
         partsRobot = new PartsRobot(kitAssemblyManager);
         new Thread(partsRobot).start();
 		
-        gantryController.startThread();
-        gantry1.startThread();
-        feeder1.startThread();
-        feeder2.startThread();
-        feeder3.startThread();
-        feeder4.startThread();
+        //gantryController.startThread();
+        //gantry1.startThread();
+        //feeder1.startThread();
+        //feeder2.startThread();
+        //feeder3.startThread();
+        //feeder4.startThread();
         
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");

@@ -67,6 +67,7 @@ public class GantryAgent extends Agent implements Gantry {
 	
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		print("running");
 		if(currentFeeder != null && fstate == FeederState.ready && astate == AnimationState.atFeeder){
 			print("in Gantry scheduler, feeder is ready");
 			GivePartsToFeeder();

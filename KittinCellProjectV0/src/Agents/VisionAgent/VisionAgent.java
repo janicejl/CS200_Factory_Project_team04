@@ -250,6 +250,7 @@ public class VisionAgent extends Agent implements Vision {
 	/** SCHEDULER **/
 	
 	public boolean pickAndExecuteAnAction() {
+	
 		if (state==State.IDLE){
 			// do nothing
 			return false;

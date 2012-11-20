@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.*;
 
+import PartsManager.PartsManagerClient;
+
 import data.Job;
 import data.KitInfo;
 import data.PartInfo;
@@ -73,6 +75,18 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		menuBar.add(menu);
 		
 		setJMenuBar(menuBar);
+		
+		
+		
+		//connect with server
+		client = new ProductionClient(this);
+		int j = client.connect();
+		if(j == -1){
+			System.exit(1);
+		}
+		else if(j == 1){
+			client.getThread().start();
+		}
 		
 		timer = new javax.swing.Timer(10, this);
 	}
@@ -149,6 +163,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		}
 		graphics.update();
 		repaint();
+		client.updateThread();
 	}
 
 	public static void main(String[] args){

@@ -58,6 +58,7 @@ public class ProductionListPanel extends JPanel implements ActionListener{
 		if(e.getSource() == start){
 			if(start.getText().equals("Start Production")){
 				app.getClient().setCommandSent("Start");
+				start.setText("Update Production");
 			}
 			else{
 				app.getClient().setCommandSent("Update");

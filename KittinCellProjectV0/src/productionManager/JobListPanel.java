@@ -229,6 +229,7 @@ public class JobListPanel extends JPanel implements ActionListener{
 		for(int i = 0; i < removeButtons.size(); i++){
 			if(e.getSource() == removeButtons.get(i)){
 				removeJob(i);
+				app.getClient().setCommandSent("Update");
 				break;
 			}
 		}

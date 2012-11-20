@@ -411,6 +411,25 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if (process.equals("Take Picture")) {
     		partsRobot.getKitStandCamera().takePicture();
     	}
+    	else if(process.equals("Kit Finished")){
+    		if(jobsList.size() != 0){
+    			if(jobsList.get(0).getAmount() > 0){
+	    	    	 jobsList.get(0).setAmount(jobsList.get(0).getAmount() - 1);
+	    	     }
+	    	     else{
+	    	    	 jobsList.remove(0);
+	    	     }
+	    	     setProductionCommand("Update Jobs");
+	    	     getFCSAgent().msgKitCompleted();
+   	     	}
+	   	}
+	   	else if(process.equals("Get Job")){
+	   		if(jobsList.size() != 0){
+	   			getFCSAgent().msgHereIsKitConfig(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
+	//   	    getPartsRobotAgent().msgMakeThisKit(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
+	//   	    getKitRobotAgent().msgGetKits(jobsList.get(0).getAmount());
+	   		}
+	   	}
     }
 	 
 	public void execute(String process, Integer num, PartInfo info){
@@ -497,25 +516,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryWaitList.add("purgei");
     			gantryFeedList.add(num);
     		}
-    	}
-    	else if(process.equals("Kit Finished")){
-    	     if(jobsList.size() != 0){
-	    	     if(jobsList.get(0).getAmount() > 0){
-	    	    	 jobsList.get(0).setAmount(jobsList.get(0).getAmount() - 1);
-	    	     }
-	    	     else{
-	    	    	 jobsList.remove(0);
-	    	     }
-	    	     setProductionCommand("Update Jobs");
-	    	     getFCSAgent().msgKitCompleted();
-    	     }
-    	}
-    	else if(process.equals("Get Job")){
-    	     if(jobsList.size() != 0){
-    	    	 getFCSAgent().msgHereIsKitConfig(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
-//    	    	 getPartsRobotAgent().msgMakeThisKit(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
-//    	    	 getKitRobotAgent().msgGetKits(jobsList.get(0).getAmount());
-    	     }
     	}
     }
     

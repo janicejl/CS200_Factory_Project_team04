@@ -50,7 +50,7 @@ public class ProductionClient implements Runnable{
 		try {
 			out.writeObject(commandSent); //send to server identifying what client this is
 			out.reset();
-			commandSent = "Idle";
+			commandSent = "Update";
 			/*
 			command = (String)in.readObject();
 			if(command.equals("Confirmed")){

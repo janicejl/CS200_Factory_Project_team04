@@ -66,14 +66,16 @@ public class FCSAgent extends Agent implements FCS {
 	// send kit configuration to parts robot and kit robot
 	private void sendKitConfig(KitInfo info, int amount) {
 		print("sending kit configuration data to "+partsRobot.getName()+", kitRobot, and gantry controller");
-		partsRobot.msgMakeThisKit(info, amount);
-		kitRobot.msgGetKits(amount);
-		
 		for (PartInfo p: info.getParts()) {
 			binsList.add(new Bin(p, amount));
 		}
 	
 		gantryController.msgBinConfiguration(binsList);
+		
+		partsRobot.msgMakeThisKit(info, amount);
+		kitRobot.msgGetKits(amount);
+		
+		
 	}
 	
 	/////////////////////////////////////////////////////////////

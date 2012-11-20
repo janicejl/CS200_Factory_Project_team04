@@ -88,7 +88,7 @@ public class GantryAgent extends Agent implements Gantry {
 		//DoFillFeeder()
 		
 		while(currentBin.getQuantity() > 0){
-	//		app.execute("Feed Feeder", currentFeeder.getNumber(), currentBin.getPartInfo());
+			app.execute("Feed Feeder", currentFeeder.getNumber(), currentBin.getPartInfo());
 			currentBin.setQuantity(currentBin.getQuantity()-1);
 		}
 		
@@ -100,8 +100,8 @@ public class GantryAgent extends Agent implements Gantry {
 	
 	private void PrepareToGiveParts(){
 		print("Preparing to give parts to feeder " + currentFeeder.getName());
-	//	app.execute("Make PartsBox", currentBin.getPartInfo());
-	//	app.execute("Load Feeder", currentFeeder.getNumber());
+		app.execute("Make PartsBox", currentBin.getPartInfo());
+		app.execute("Load Feeder", currentFeeder.getNumber());
 		currentFeeder.msgHaveParts(this);
 		fstate = FeederState.pending;
 		print("setting state to loading feeder");

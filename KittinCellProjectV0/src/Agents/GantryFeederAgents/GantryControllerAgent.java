@@ -17,6 +17,7 @@ import data.PartInfo;
 public class GantryControllerAgent extends Agent implements GantryController {
 
 	//Data
+	String name = "GantryController";
 	Vector<Bin> bins = new Vector<Bin>();
 	Vector<MyGantry> gantries = new Vector<MyGantry>();
 	Vector<MyFeeder> requests = new Vector<MyFeeder>();
@@ -109,33 +110,34 @@ public class GantryControllerAgent extends Agent implements GantryController {
 				//print("MyFeeder state is requested in GC scheduler.");
 				for(MyGantry g: gantries){
 					//print("MyGantry found in gantries GC scheduler.");
-					if(g.gstate == GantryState.waiting){
-						print("MyGantry state is waiting in GC scheduler.");
-						print("SendGantry() called");
-						SendGantry(g, f);
-						return true;
+					if(g.gstate == GantryState.waiting && !bins.isEmpty() ){
+						print("Will Try to Send Gantry");
+						return SendGantry(g, f);
+						
 					}
 				}
 			}
 		}
-		print("Nothing Chosen in GC scheduler");
 		return false;
 	}
 	
 	
 	//Actions
-	private void SendGantry(MyGantry g, MyFeeder f){
-		for(int i = 0; i<bins.size(); i++){
-			print("inside for loop in GC, SendGantry");
-			if(bins.get(i).getPartInfo().equals(f.type)){
-				print("found bin of correct type.");
-				g.g1.msgGiveFeederParts(f.f1, bins.get(i));
+	private boolean SendGantry(MyGantry g, MyFeeder f){
+		for(int i = 0; i<bins.size(); i++)
+		{
+			if(bins.get(i).getPartInfo().equals(f.type))
+			{
+				print("Sending Gantry Successfully.");
+				Bin b = new Bin(bins.get(i).getPartInfo(),bins.get(i).getQuantity());
+				g.g1.msgGiveFeederParts(f.f1, b);
 				f.fstate = FeederState.sentGantry;
 				g.gstate = GantryState.delivering;
 				requests.remove(f);
-				i = bins.size();
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	//Extras
@@ -143,4 +145,11 @@ public class GantryControllerAgent extends Agent implements GantryController {
 	public void setFCS(FCS fcs){
 		this.fcs = fcs;
 	}
+	public String getName(){
+		return name;
+	}
+	public void setName(String nm){
+		this.name = nm;
+	}
+	
 }

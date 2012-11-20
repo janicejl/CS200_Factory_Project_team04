@@ -59,20 +59,20 @@ public class VisionAgentTest extends TestCase {
 		
 		vision.pickAndExecuteAnAction();
 		assertTrue("full nests map should be filled", vision.fullNestsMap.size()==4);
-		assertTrue("state should have changed to ready to take pic", vision.state==State.READY_TO_TAKE_PICTURE);
 		assertTrue("should not be waiting for any other cameras", vision.waiting==false);
+		assertTrue("state should have changed to ready to take pic", vision.state==State.READY_TO_TAKE_PICTURE);
 		
 		vision.pickAndExecuteAnAction();
-		assertTrue("should have taken the picture", vision.state==State.PICTURE_TAKEN);
+		assertTrue("camera should have taken the picture", vision.state==State.PICTURE_TAKEN);
 		assertTrue("parts should not have been approved yet", vision.approved==false);
 		
 		vision.pickAndExecuteAnAction();
-		assertTrue("parts should have been approved", vision.approved==true);
 		assertTrue("full nests map should remove inspected nests", vision.fullNestsMap.size()==2);
-		assertTrue("status should have changed back to schematic received", vision.state==State.SCHEMATIC_RECEIVED);
+		assertTrue("parts should be approved", vision.approved==true);
+		assertTrue("state should have changed back to schematic received", vision.state==State.SCHEMATIC_RECEIVED);
 		
 		vision.pickAndExecuteAnAction();
-		assertTrue("parts should no longer be approved", vision.approved==false);		
+		assertTrue("parts should no longer be approved", vision.approved==false);
 		
 	}
 	
@@ -148,7 +148,7 @@ public class VisionAgentTest extends TestCase {
 		
 		vision.pickAndExecuteAnAction();
 		assertTrue("full nests map should be filled", vision.fullNestsMap.size()==2);
-		assertTrue("state should have changed to ready t take pic", vision.state==State.READY_TO_TAKE_PICTURE);
+		assertTrue("state should have changed to ready to take pic", vision.state==State.READY_TO_TAKE_PICTURE);
 		assertTrue("should not be waiting for any other cameras", vision.waiting==false);
 		
 		vision.pickAndExecuteAnAction();

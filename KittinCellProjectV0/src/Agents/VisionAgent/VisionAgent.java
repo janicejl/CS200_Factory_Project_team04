@@ -100,6 +100,7 @@ public class VisionAgent extends Agent implements Vision {
 	public void msgCameraBusy() {
 		waiting = true;
 		print("received message that the camera is busy from the GUI");
+		stateChanged();
 	}
 	
 	//sent by GUI
@@ -108,6 +109,7 @@ public class VisionAgent extends Agent implements Vision {
 		flashpermit.drainPermits();
 		flashpermit.release();
 		print("received message that the camera is available again from the GUI");
+		stateChanged();
 	}	
 	
 	
@@ -250,6 +252,7 @@ public class VisionAgent extends Agent implements Vision {
 	/** SCHEDULER **/
 	
 	public boolean pickAndExecuteAnAction() {
+	
 		print("running");
 	
 		if (state==State.IDLE){
@@ -264,7 +267,7 @@ public class VisionAgent extends Agent implements Vision {
 			if (type==Type.NESTS_INSPECTOR) {
 				checkForConsecutiveNests();
 			}
-			//return true;
+			return true;
 		}
 		
 		if (state==State.READY_TO_TAKE_PICTURE && waiting == false) {

@@ -39,8 +39,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	ServerKitTestPanel kitTest; //panel for kit assembly commands
 	ServerPartTestPanel partsTest; //panel for parts robot commands
 	ServerLaneTestPanel laneTest; //panel for lane commands
-	ServerGantryTestPanel gantryTest;
-	Integer phase;
+	ServerGantryTestPanel gantryTest; //panel for gantry commands
+	Integer phase; //phase to determine which panel to display (old)
 	
 	String clientType; //type of client to connect to
 	
@@ -52,18 +52,33 @@ public class Server extends JFrame implements Runnable, ActionListener{
 //	PartsRobotProtocol partsPro;
 //	GantryManagerProtocol gantryPro;
 	
-	ArrayList<PartInfo> partsList;
-	ArrayList<KitInfo> kitsList;
-	ArrayList<Job> jobsList;
-	String kitCreateCommand = "Idle";
-	String productionCommand = "Idle";
-	String partsCommand = "Idle";
+	ArrayList<PartInfo> partsList; //available parts to make
+	ArrayList<KitInfo> kitsList; //available kit configurations
+	ArrayList<Job> jobsList; //current jobs
+	String kitCreateCommand = "Idle"; //Kit Creation Client Commands
+	String productionCommand = "Idle"; //Production Client Commands
+	String partsCommand = "Idle"; //Parts Creation Client Commands
 	
-	FCSAgent FCSAgent;
-	PartsRobot partsRobot;
-	PartsRobotAgent partsRobotAgent;
-	ArrayList<LaneAgent> laneagents = new ArrayList<LaneAgent>();
-	ArrayList<NestAgent> nests = new ArrayList<NestAgent>();
+	//200 Hardware
+	Vector<Feeder> feeders; //Feeders
+	ArrayList<Lane> lanes; //Lanes
+	ArrayList<Nest> nestList; //Nests
+	
+	GantryManager gantryManager; //Gantry Manager
+	//Gantry queued commands
+	ArrayList<String> gantryWaitList; //command 
+	ArrayList<Integer> gantryFeedList; //cooresponding feeder for the command
+	
+	KitAssemblyManager kitAssemblyManager; //kit assembly manager
+	KitRobot kitRobot; //kit assembly robot
+	PartsRobot partsRobot; //parts robot
+	
+	//201 Agents
+	FCSAgent FCSAgent; //Factory Control System
+	PartsRobotAgent partsRobotAgent; // Parts Robot Agent
+	ArrayList<LaneAgent> laneagents = new ArrayList<LaneAgent>(); //Lanes
+	ArrayList<NestAgent> nests = new ArrayList<NestAgent>(); //Nests
+	//Vision Agents
 	VisionAgent nestvisionagent1;
 	VisionAgent nestvisionagent2;
 	VisionAgent nestvisionagent3;
@@ -72,16 +87,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	ArrayList<VisionAgent> visions = new ArrayList<VisionAgent>();
 	Semaphore flashpermit;
 	
-	GantryManager gantryManager;
-	ArrayList<String> gantryWaitList;
-	ArrayList<Integer> gantryFeedList;
-	
+	//Kit Assembly Agents
 	KitRobotAgent kitRobotAgent; 
 	KitStandAgent kitStandAgent;
 	KitConveyorAgent kitConveyorAgent;
-	KitAssemblyManager kitAssemblyManager;
-	KitRobot kitRobot; //kit assembly robot
 
+	//Gantry and Feeder Agents
 	FeederAgent feeder1;
 	FeederAgent feeder2;
 	FeederAgent feeder3;
@@ -90,15 +101,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	GantryAgent gantry2;
 	GantryControllerAgent gantryController;
 
-	Vector<Feeder> feeders;
-	ArrayList<Lane> lanes;
-	ArrayList<Nest> nestList;
-
 	boolean running; //state to see if production has started
 	
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
 	
+	//Constructor
 	public Server(){
 
 		//setup layout
@@ -344,12 +352,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
         
         //Server Threads
         
-		//start threads and timer
+		//setup thread and timer
 		thread = new Thread(this, "ServerThread");
 		timer = new Timer(10, this);
+		//start timer
 		timer.start();
 	}
 	
+	//Start serversocket
 	public Integer start(){
 		removeCenter();
 		GridBagConstraints c = new GridBagConstraints();
@@ -378,6 +388,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return 1;
 	}
 	
+	//Run function that constantly waits for clients to connect
 	public void run(){
 		
 		while(true){
@@ -419,33 +430,50 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}		
 	}
 	
+	//Server Execute Functions (DoXXX API's)
 	public void execute(String process){
+		
+		//Kit Robot Commands
+		
+		//load empty kit into stand 1
     	if(process.equals("Load Stand 1")){
     		getKitRobot().addCommand("load,0,1");
     	}
+    	//load empty kit into stand 2
     	else if(process.equals("Load Stand 2")){
     		getKitRobot().addCommand("load,0,2");
     	}
+    	//move kit in stand 1 to inspection
     	else if(process.equals("Check Kit 1")){
     		getKitRobot().addCommand("load,1,5");
     	}
+    	//move kit in stand 2 to inspection
     	else if(process.equals("Check Kit 2")){
     		getKitRobot().addCommand("load,2,5");
     	}
-    	
+    	//move kit in inspection to finished conveyer
     	else if(process.equals("Remove Finished")){
     		getKitRobot().addCommand("load,5,6");
     	}
+    	
+    	//Parts Robot Commands (Partial)
+    	
+    	//Place all parts in gripper to kit 1
     	else if(process.equals("Load Kit 1")){
     		getPartsRobot().addCommand("dump,0");
     	}
+    	//Place all parts in gripper to kit 2
     	else if(process.equals("Load Kit 2")){
     		getPartsRobot().addCommand("dump,1");
     	}     	
-    	
+    	//Take picture for kit inspection stand
     	else if (process.equals("Take Picture")) {
     		partsRobot.getKitStandCamera().takePicture();
     	}
+    	
+    	//FCS Commands
+    	
+    	//Kit Complete, adjust server joblist
     	else if(process.equals("Kit Finished")){
     		if(jobsList.size() != 0){
     			if(jobsList.get(0).getAmount() > 0){
@@ -458,6 +486,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	    	     getFCSAgent().msgKitCompleted();
    	     	}
 	   	}
+    	//Give FCS Agent next job
 	   	else if(process.equals("Get Job")){
 	   		if(jobsList.size() != 0){
 	   			getFCSAgent().msgHereIsKitConfig(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
@@ -466,53 +495,56 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	   		}
 	   	}
     }
-	 
+	//Overloaded execute functions
 	public void execute(String process, Integer num, PartInfo info){
+		//Dump part in feeder (one part)
 		if(process.equals("Feed Feeder")){
+			//create new part based on passed partinfo
     		Part temp = new Part(info);
-    		if (num % 2 == 0) {
-    			feeders.get(num/2).setTopLane(true);
-    		} else {
-    			feeders.get(num/2).setTopLane(false);
-    		}
     		System.out.println("TOPLANE: " + feeders.get(num/2).getTopLane());
     		feeders.get(num/2).addParts(temp);
     	}
 	}
     public void execute(String process, Integer num){
+    	//Spawn an empty kit for the kit conveyer
     	if(process.equals("Spawn Kit")){
     		for(int i = 0; i < num; i++){
     			getKitAssemblyManager().processCommand("spawn");
     		}
     	}
+    	//Take picture for specified nest number
     	else if(process.equals("Take Picture")){
     		partsRobot.getNestCamera().takePicture(320, 40 + 140*((num-1)/2));
     	}
-    	else if(process.equals("Feed Feeder")){
-    		Part temp = new Part("" + num, "images/kt" + num + ".png");
-    		temp.setImagePath("images/kt" + temp.getId() + ".png");
-    		
-    		System.out.println("TOPLANE: " + feeders.get(num/2).getTopLane());
-    		feeders.get(num/2).addParts(temp);
-    	}
+//    	else if(process.equals("Feed Feeder")){
+//    		Part temp = new Part("" + num, "images/kt" + num + ".png");
+//    		temp.setImagePath("images/kt" + temp.getId() + ".png");
+//    		
+//    		System.out.println("TOPLANE: " + feeders.get(num/2).getTopLane());
+//    		feeders.get(num/2).addParts(temp);
+//    	}
+    	//Release one part from lane
     	else if(process.equals("Feed Lane")){
+    		//add part to lane if feeder has parts, else this function improperly called
     		if (feeders.get(num/2).getPartAmount() > 0){
     			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
     			lanes.get(num).setRelease(true);
     			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
     		}
-    		feeders.get(num/2).setMoving(true);
+    		feeders.get(num/2).setMoving(true); //diverter state is moving so part isn't immediately released
+    		
+    		//Determine what state the feeder's diverter should be in
     		if (num % 2 == 0) {
     			feeders.get(num/2).setTopLane(true);
     		} else {
     			feeders.get(num/2).setTopLane(false);
     		}
-    		
-    		//feeders.get(num/2).removePart();
     	}
+    	//Move part from lane queue to nest
     	else if(process.equals("Feed Nest")){
     		lanes.get(num).releaseQueue();
     	}
+    	//Move parts box to designated feeder
     	else if(process.equals("Load Feeder"))
     	{
     		if(gantryManager.getGantry().getState().equals("free"))
@@ -520,25 +552,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryManager.getGantry().setState("load");
     			gantryManager.getGantry().setFeed(num);
     		}
+    		//command queue
        		else
     		{
     			gantryWaitList.add("load");
     			gantryFeedList.add(num);
     		}
     	}
-    	else if(process.equals("Dump Feeder"))
-    	{
-    		if(gantryManager.getGantry().getState().equals("free"))
-    		{
-    			gantryManager.getGantry().setState("dumpi");
-    			gantryManager.getGantry().setFeed(num);
-    		}
-       		else
-    		{
-    			gantryWaitList.add("dumpi");
-    			gantryFeedList.add(num);
-    		}
-    	}
+    	//Move bin to purge state
     	else if(process.equals("Idle Bin"))
     	{
     		if(gantryManager.getGantry().getState().equals("free"))
@@ -552,57 +573,92 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryFeedList.add(num);
     		}
     	}
+    	//Move purged bin from factory
+    	else if(process.equals("Dump Feeder"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("dumpi");
+    			gantryManager.getGantry().setFeed(num);
+    		}
+       		else
+    		{
+    			gantryWaitList.add("dumpi");
+    			gantryFeedList.add(num);
+    		}
+    	}
     }
-    
     public void execute(String process, Integer nest, Integer grip){
+    	//Tell parts robot to grab part at designated nest with designated gripper
     	if(process.equals("Get Part")){
     		getPartsRobot().addCommand("grab," + (nest) + "," + (grip) + "," + nest);
     	} 		
     }
-    
     public void execute(String process,PartInfo p)
     {
+    	//spawn new parts box with designated partinfo
     	if(process.equals("Make PartsBox"))
     		gantryManager.addPartInfo(p);
     }
     
+    //Add a new part to gantry manager
+  	public void addGantryPart(PartInfo p)
+  	{
+  		gantryManager.addPartInfo(p);
+  	}
+    
 	public void actionPerformed(ActionEvent e){
+		//Check animation states to see if message should be sent
+		
+		//Empty Kit Ready for Pickup
 		if(getKitAssemblyManager().getMsg().equals(true)){
 			getKitAssemblyManager().setMsg(false);
 			getKitConveyorAgent().msgKitHasArrived();
 		}
+		//Kit has been placed on stand by kit robot
 		if(getKitAssemblyManager().isKitStandMsg()){
 			getKitAssemblyManager().setKitStandMsg(false);
 			getKitStandAgent().msgKitAnimationOnStand();
 		}
+		//Parts Robot has finished moving
 		if(getPartsRobot().getMsg().equals(true)){
 			getPartsRobotAgent().msgAnimationDone();
 			getPartsRobot().setMsg(false);
 		}
+		//Parts Robot has finished moving
 		if(getPartsRobot().isMovingMsg()){
 			getPartsRobotAgent().msgMovementDone();
 			getPartsRobot().setMovingMsg(false);
 		}
+		//Parts Robot has finished putting parts in kit
 		if(getPartsRobot().isDumped()){
 			getPartsRobotAgent().msgPartsDropped();
 			getPartsRobot().setDumped(false);
 		}
+		//Camera has finished flashing
 		if(getPartsRobot().getNestCamera().getAnimationDone()){
 			for(int i = 0; i<4; i++){
 				getVisions().get(i).msgCameraAvailable();
 			}
 			getPartsRobot().getNestCamera().setAnimationDone(false);
-		}	
+		}
+		//Gantry has placed parts box on feeder
 		if(getGantryManager().isMsg()){
 			getGantryManager().setMsg(false);
 			gantry1.msgGantryAtFeeder();
 		}
+		
+		//Lane's Action Performed
 		for(int i = 0; i < lanes.size(); i++){
 			lanes.get(i).actionPerformed(e);
+			
+			//lane has parts queued
 			if(lanes.get(i).isAtQueue()){
 				laneagents.get(i).msgPartAtEndOfLane();
 			}
-			//check feeder movement
+			
+			//Release part into lane
+			//check feeder movement, prevent movement release if diverter still moving
 			if(lanes.get(i).isRelease()){
 				if(!lanes.get(i).getFeeder().isMoving()){
 					lanes.get(i).releasePart();
@@ -614,10 +670,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
 				}
 			}
 		}
+		
+		//Gantry Manager's Action Performed
 		gantryManager.actionPerformed(e);
 		repaint();
 	}
 	
+	//Old GUI removal function
 	public void removeCenter(){
 		if(phase.equals(0)){
 			remove(gui);
@@ -627,6 +686,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 	}
 	
+	//Paint Function for Test Panels
 	public void paint(Graphics g){
 		if(phase.equals(0)){
 			gui.repaint();
@@ -646,6 +706,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		revalidate();
 	}
 	
+	//Revalidate functions for certain IDE's that don't support it for JFrames
 	public void revalidate(){
 		gui.revalidate();
 		kitTest.revalidate();
@@ -654,6 +715,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryTest.revalidate();
 	}
 	
+	//Main Function
 	public static void main(String[] args) {
 		Server factory = new Server();
 		factory.setSize(1100, 400);
@@ -662,12 +724,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		factory.start();
 	}
 
+	//Getters and setters
 	public KitAssemblyManager getKitAssemblyManager() {
 		return kitAssemblyManager;
 	}
 
-	public void setKitAssemblyManager(
-			KitAssemblyManager kitAssemblyManager) {
+	public void setKitAssemblyManager(KitAssemblyManager kitAssemblyManager) {
 		this.kitAssemblyManager = kitAssemblyManager;
 	}
 
@@ -734,8 +796,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public void setPartsRobotAgent(PartsRobotAgent partsRobotAgent) {
 		this.partsRobotAgent = partsRobotAgent;
 	}
-
-
+	
 	public NestAgent getNestAgent(int index)
 	{
 		return nests.get(index);
@@ -860,8 +921,4 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.running = running;
 	}
 
-	public void addGantryPart(PartInfo p)
-	{
-		gantryManager.addPartInfo(p);
-	}
 }

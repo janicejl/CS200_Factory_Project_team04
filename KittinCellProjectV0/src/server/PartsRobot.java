@@ -62,6 +62,7 @@ public class PartsRobot implements Runnable, Serializable{
         kitStandCamera = new Camera(140, 230); 		 
         nestCamera = new Camera(350, 100);
         
+        //Initialization
         gripperHolding = new ArrayList<Boolean>();
         gripperExtensions = new ArrayList<Double>();
         newGripperExtensions = new ArrayList<Double>();
@@ -70,6 +71,7 @@ public class PartsRobot implements Runnable, Serializable{
         gripperPartIDs = new ArrayList<Integer>();
         partsHeld = new ArrayList<Part>();
         
+        //Setup Grippers
         for(int i = 0; i < 4; i++){
         	gripperPartIDs.add(2);
             gripperHolding.add(false);
@@ -261,6 +263,69 @@ public class PartsRobot implements Runnable, Serializable{
         commands.add(s);
     }
 
+	//update the position of everything. 
+	public void update(){
+        if(!paused){
+            processing = false;
+ 
+            kitStandCamera.update();
+            nestCamera.update();
+            
+            if(y != newY){
+                processing = true;
+                if(y < newY){
+                    y+=moveSpeed;
+                }
+                else {
+                    y -=moveSpeed;
+                }
+                if(Math.abs(y - newY) < moveSpeed){
+                    y = newY;
+                }
+            }
+            if (angle != newAngle){
+                processing = true;
+                if(angle <= newAngle && newAngle - angle <= 180.0){
+                    angle += rotationSpeed;
+                }
+                else if(angle <= newAngle && newAngle - angle > 180.0){
+                    angle -= rotationSpeed;
+                }
+                else if(angle > newAngle && angle - newAngle <= 180.0){
+                    angle -= rotationSpeed;
+                }
+                else if(angle > newAngle && angle - newAngle > 180.0){
+                    angle += rotationSpeed;
+                }
+                if(Math.abs(angle - newAngle) < rotationSpeed){
+                    angle = newAngle;
+                }
+                if(angle >= 360.0){
+                    angle = 0.0;
+                }
+                if(angle < 0.0){
+                    angle = 360.0;
+                }
+            }
+            for (int i = 0 ;i<4 ; i++) {
+                if(newGripperExtensions.get(i) != gripperExtensions.get(i)){
+                    processing = true;
+                    if(newGripperExtensions.get(i) > gripperExtensions.get(i)){
+                        gripperExtensions.set(i,gripperExtensions.get(i) + extensionSpeed);
+                    }
+                    else {
+                        gripperExtensions.set(i,gripperExtensions.get(i) - extensionSpeed);
+                    }
+                    if(Math.abs(newGripperExtensions.get(i) - gripperExtensions.get(i)) < extensionSpeed) {
+                        gripperExtensions.set(i,newGripperExtensions.get(i));
+                    }
+                }
+            }
+        }
+    }
+	
+	
+	//Getters and Setters
     public double getY(){
         return y;
     }
@@ -324,65 +389,4 @@ public class PartsRobot implements Runnable, Serializable{
 	public void setMovingMsg(boolean movingMsg) {
 		this.movingMsg = movingMsg;
 	}
-
-	//update the position of everything. 
-	public void update(){
-        if(!paused){
-            processing = false;
- 
-            kitStandCamera.update();
-            nestCamera.update();
-            
-            if(y != newY){
-                processing = true;
-                if(y < newY){
-                    y+=moveSpeed;
-                }
-                else {
-                    y -=moveSpeed;
-                }
-                if(Math.abs(y - newY) < moveSpeed){
-                    y = newY;
-                }
-            }
-            if (angle != newAngle){
-                processing = true;
-                if(angle <= newAngle && newAngle - angle <= 180.0){
-                    angle += rotationSpeed;
-                }
-                else if(angle <= newAngle && newAngle - angle > 180.0){
-                    angle -= rotationSpeed;
-                }
-                else if(angle > newAngle && angle - newAngle <= 180.0){
-                    angle -= rotationSpeed;
-                }
-                else if(angle > newAngle && angle - newAngle > 180.0){
-                    angle += rotationSpeed;
-                }
-                if(Math.abs(angle - newAngle) < rotationSpeed){
-                    angle = newAngle;
-                }
-                if(angle >= 360.0){
-                    angle = 0.0;
-                }
-                if(angle < 0.0){
-                    angle = 360.0;
-                }
-            }
-            for (int i = 0 ;i<4 ; i++) {
-                if(newGripperExtensions.get(i) != gripperExtensions.get(i)){
-                    processing = true;
-                    if(newGripperExtensions.get(i) > gripperExtensions.get(i)){
-                        gripperExtensions.set(i,gripperExtensions.get(i) + extensionSpeed);
-                    }
-                    else {
-                        gripperExtensions.set(i,gripperExtensions.get(i) - extensionSpeed);
-                    }
-                    if(Math.abs(newGripperExtensions.get(i) - gripperExtensions.get(i)) < extensionSpeed) {
-                        gripperExtensions.set(i,newGripperExtensions.get(i));
-                    }
-                }
-            }
-        }
-    }
 }

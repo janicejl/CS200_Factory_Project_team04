@@ -94,7 +94,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	ArrayList<Lane> lanes;
 	ArrayList<Nest> nestList;
 
-	boolean running = false;
+	boolean running; //state to see if production has started
 	
 	Timer timer; //timer for server
 	Thread thread; //thread for the server
@@ -109,6 +109,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		c.gridx = 0;	
 		c.gridy = 0;
 		add(gui, c);
+		//Testing buttons
 		kitTest = new ServerKitTestPanel(this);
 		kitTest.setPreferredSize(new Dimension(300, 400));
 		kitTest.setMaximumSize(new Dimension(300, 400));
@@ -122,16 +123,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		laneTest.setMaximumSize(new Dimension(300, 400));
 		laneTest.setMinimumSize(new Dimension(300, 400));
 		gantryTest = new ServerGantryTestPanel(this);
+		running = false; //set running state to false
 		
-		gantryController = new GantryControllerAgent(this);
-		gantry1 = new GantryAgent("gantry1", this);
-		//gantry2 = new GantryAgent("gantry2", this);
-		gantry1.setGantryController(gantryController);
-		//gantry2.setGantryController(gantryController);
-		gantryController.msgGantryAdded(gantry1);
-		//gantryController.msgGantryAdded(gantry2);
+		//200 Hardware Setup
 		
-
+		//Feeders
 		feeders = new Vector<Feeder>();
 		for(int i = 0; i < 4; i++){
 			if(i == 0 || i == 3){
@@ -142,12 +138,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		}
 		}
 		
-		gantryManager = new GantryManager(feeders);
-		gantryManager.getGantry().setState("free");
-		gantryManager.getGantry().setBox(1);
-		gantryFeedList = new ArrayList<Integer>();
-		gantryWaitList = new ArrayList<String>();
-		
+		//Nests
 		nestList = new ArrayList<Nest>();
     	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 100));	//x coordinate is zero for laneManagerApp
@@ -158,7 +149,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	nestList.add(new Nest(0, 450));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 520));	//x coordinate is zero for laneManagerApp
     	
-    	
+    	//Lanes
 		lanes = new ArrayList<Lane>();
 		lanes.add(new Lane(600,30, nestList.get(0), feeders.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(600,100, nestList.get(1), feeders.get(0))); 
@@ -170,11 +161,40 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	lanes.add(new Lane(600,520, nestList.get(7), feeders.get(3)));
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
-    	
+    	//Set Lane Speeds
     	for (int i = 0; i < 8; i ++) {
     		lanes.get(i).setConveyerBeltSpeed(15);
     	}
+		
+    	//Gantry
+		gantryManager = new GantryManager(feeders);
+		gantryManager.getGantry().setState("free");
+		gantryManager.getGantry().setBox(1);
+		gantryFeedList = new ArrayList<Integer>();
+		gantryWaitList = new ArrayList<String>();
+			
+    	//Kit Assembly and Robots
+    	kitAssemblyManager = new KitAssemblyManager(nestList);
+		kitRobot = new KitRobot(kitAssemblyManager);
+		partsRobot = new PartsRobot(kitAssemblyManager);
+        new Thread(partsRobot).start();
+		new Thread(kitAssemblyManager).start();
+        new Thread(kitRobot).start();
+		
+
+		
+    	//201 Agents Setup
     	
+        //Gantry Controller and Agent
+		gantryController = new GantryControllerAgent(this);
+		gantry1 = new GantryAgent("gantry1", this);
+		gantry1.setGantryController(gantryController);
+		gantryController.msgGantryAdded(gantry1);
+		//gantry2 = new GantryAgent("gantry2", this);
+		//gantry2.setGantryController(gantryController);
+		//gantryController.msgGantryAdded(gantry2);
+		
+		//Nest Agents
     	NestAgent nest1 = new NestAgent(1,this);
     	NestAgent nest2 = new NestAgent(2,this);
     	NestAgent nest3 = new NestAgent(3,this);
@@ -191,6 +211,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	nests.add(nest6);
     	nests.add(nest7);
     	nests.add(nest8);
+    	
+    	//Lane Agents
     	LaneAgent lane1 = new LaneAgent(nest1,this,"laneagent1",0);
     	LaneAgent lane2 = new LaneAgent(nest2,this,"laneagent2",1);
     	LaneAgent lane3 = new LaneAgent(nest3,this,"laneagent3",2);
@@ -215,6 +237,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	nest6.setLane(lane6);
     	nest7.setLane(lane7);
     	nest8.setLane(lane8);
+    	
+    	//Feeders
     	feeder1 = new FeederAgent("feeder1", 5, lane1, lane2, 0, this);		
 		feeder2 = new FeederAgent("feeder2", 5, lane3, lane4, 1, this);		
 		feeder3 = new FeederAgent("feeder3", 5, lane5, lane6, 2, this);		
@@ -232,53 +256,26 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		lane7.setFeeder(feeder4);
 		lane8.setFeeder(feeder4);
 
-    	
-
-    	
+    	//KitAssembly Agents
 		kitRobotAgent = new KitRobotAgent(this);
 		kitStandAgent = new KitStandAgent(this); 
 		kitConveyorAgent = new KitConveyorAgent(this);
-		kitAssemblyManager = new KitAssemblyManager(nestList);
-		kitRobot = new KitRobot(kitAssemblyManager);
 		kitStandAgent.SetRobotAgent(kitRobotAgent);
 		kitRobotAgent.SetConveyorAgent(kitConveyorAgent);
 		kitRobotAgent.SetStandAgent(kitStandAgent);
 		kitConveyorAgent.SetKitRobot(kitRobotAgent);
 		
-		
-		new Thread(kitAssemblyManager).start();
-        new Thread(kitRobot).start();
-        
+		//Parts Robot Agent
         partsRobotAgent = new PartsRobotAgent(nests, kitStandAgent, this);
         kitStandAgent.SetPartsRobotAgent(partsRobotAgent);
-        kitRobotAgent.startThread();
-		kitStandAgent.startThread();
-		kitConveyorAgent.startThread();
 		
-		
-        for(NestAgent nest : nests){
-        	nest.setPartsRobotAgent(partsRobotAgent);
-        	nest.startThread();
-        }
-        for(LaneAgent lane : laneagents){
-        	lane.startThread();
-        }
-		
-	
+        //Vision Agents
         nestvisionagent1 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
         nestvisionagent2 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
         nestvisionagent3 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
         nestvisionagent4 = new VisionAgent("nests",kitRobotAgent,partsRobotAgent,this);
         kitvisionagent = new VisionAgent("kit",kitRobotAgent,partsRobotAgent,this);
-        
-        kitStandAgent.SetVisionAgent(kitvisionagent);
-        
-        flashpermit = new Semaphore(1);
-        nestvisionagent1.setFlashPermit(flashpermit);
-        nestvisionagent2.setFlashPermit(flashpermit);
-        nestvisionagent3.setFlashPermit(flashpermit);
-        nestvisionagent4.setFlashPermit(flashpermit);
-        
+        //vision connections
         nests.get(0).setVisionAgent(nestvisionagent1);
         nests.get(1).setVisionAgent(nestvisionagent1);
         nests.get(2).setVisionAgent(nestvisionagent2);
@@ -292,28 +289,60 @@ public class Server extends JFrame implements Runnable, ActionListener{
         visions.add(nestvisionagent3);
         visions.add(nestvisionagent4);
         partsRobotAgent.setVisionAgents(visions);
-
+        kitStandAgent.SetVisionAgent(kitvisionagent);
+        //limit camera use to only one flash at a time
+        flashpermit = new Semaphore(1);
+        nestvisionagent1.setFlashPermit(flashpermit);
+        nestvisionagent2.setFlashPermit(flashpermit);
+        nestvisionagent3.setFlashPermit(flashpermit);
+        nestvisionagent4.setFlashPermit(flashpermit);
         
-        nestvisionagent1.startThread();
-        nestvisionagent2.startThread();
-       nestvisionagent3.startThread();
-       nestvisionagent4.startThread();
-        
+        //Factory Control System Agent
         FCSAgent = new FCSAgent(this, partsRobotAgent, kitRobotAgent, gantryController);
-        FCSAgent.startThread();
-
         gantryController.setFCS(FCSAgent);
         
+        
+        
+        //Start Agent Threads
+        
+        //Nest Threads
+        for(NestAgent nest : nests){
+        	nest.setPartsRobotAgent(partsRobotAgent);
+        	nest.startThread();
+        }
+        
+        //Lane Threads
+        for(LaneAgent lane : laneagents){
+        	lane.startThread();
+        }
+        
+        //Nest Vision Agent Threads
+        nestvisionagent1.startThread();
+        nestvisionagent2.startThread();
+        nestvisionagent3.startThread();
+        nestvisionagent4.startThread();
+        
+        //Parts Robot Thread
 		partsRobotAgent.startThread();
-        partsRobot = new PartsRobot(kitAssemblyManager);
-        new Thread(partsRobot).start();
 		
+		//Kit Assembly Threads
+		kitRobotAgent.startThread();
+		kitStandAgent.startThread();
+		kitConveyorAgent.startThread();
+        
+		//Gantry and Feeder Threads
         gantryController.startThread();
         gantry1.startThread();
         feeder1.startThread();
         feeder2.startThread();
         feeder3.startThread();
         feeder4.startThread();
+        
+        //FCS Agent Thread
+        FCSAgent.startThread();
+        
+        
+        //Server Threads
         
 		//start threads and timer
 		thread = new Thread(this, "ServerThread");

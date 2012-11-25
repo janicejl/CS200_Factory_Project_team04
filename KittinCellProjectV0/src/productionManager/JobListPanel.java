@@ -9,28 +9,35 @@ import javax.swing.border.Border;
 
 public class JobListPanel extends JPanel implements ActionListener{
 
-	ProductionManagerApp app;
+	ProductionManagerApp app; //reference to app
+	
+	//Job number labels and panels
 	ArrayList<JLabel> numLabels;
 	JPanel numPanelBase;
 	JScrollPane numScroll;
 	
+	//Kit name labels and panels
 	ArrayList<JLabel> nameLabels;
 	Integer nameMax;
 	JPanel namePanelBase;
 	JScrollPane nameScroll;
 	
+	//Production amount labels and panels
 	ArrayList<JLabel> amtLabels;
 	Integer amtMax;
 	JPanel amtPanelBase;
 	JScrollPane amtScroll;
 	
+	//remove buttons
 	ArrayList<JButton> removeButtons;
 	JPanel removePanelBase;
 	JScrollPane removeScroll;
 	
+	//overall panel and scrollpane
 	JPanel scrollPanel;
 	JScrollPane scrollPane;
 	
+	//Top Label panel
 	JPanel heading;
 	JLabel jobNum;
 	JLabel kitName;
@@ -40,6 +47,7 @@ public class JobListPanel extends JPanel implements ActionListener{
 		app = _app;
 		setSize(400, 400);
 		
+		//Initialize and setup all panels and scroll panes
 		numLabels = new ArrayList<JLabel>();
 		numPanelBase = new JPanel();
 		numPanelBase.setLayout(new BoxLayout(numPanelBase, BoxLayout.Y_AXIS));
@@ -66,6 +74,7 @@ public class JobListPanel extends JPanel implements ActionListener{
 		removeScroll = new JScrollPane();
 		removeScroll.getViewport().add(removePanelBase);
 		
+		//add components to overall scroll pane
 		scrollPanel = new JPanel();
 		scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.X_AXIS));
 		scrollPanel.add(numScroll);
@@ -83,6 +92,7 @@ public class JobListPanel extends JPanel implements ActionListener{
 		setLayout(new BorderLayout());
 		add(scrollPane, BorderLayout.CENTER);
 		
+		//Setup headings
 		heading = new JPanel();
 		heading.setLayout(new BoxLayout(heading, BoxLayout.X_AXIS));
 		heading.setPreferredSize(new Dimension(350, 25));
@@ -104,6 +114,7 @@ public class JobListPanel extends JPanel implements ActionListener{
 		amt.setMaximumSize(new Dimension(80, 25));
 		amt.setMinimumSize(new Dimension(80, 25));
 		amt.setAlignmentX(CENTER_ALIGNMENT);
+		//add components to headings
 		heading.add(jobNum);
 		heading.add(kitName);
 		heading.add(amt);
@@ -114,12 +125,12 @@ public class JobListPanel extends JPanel implements ActionListener{
 	}
 	
 	public void create(String s, Integer num){
+		//New name label
 		JLabel nameTemp = new JLabel(s);
 		int size = s.length();
 		nameTemp.setPreferredSize(new Dimension(size*10, 25));
 		nameTemp.setMaximumSize(new Dimension(size*10, 25));
 		nameTemp.setMinimumSize(new Dimension(size*10, 25));
-//		nameTemp.setAlignmentX(CENTER_ALIGNMENT);
 		nameTemp.setAlignmentY(CENTER_ALIGNMENT);
 		nameLabels.add(nameTemp);
 		//check if new string needs to readjust max panel
@@ -128,6 +139,7 @@ public class JobListPanel extends JPanel implements ActionListener{
 		}
 		namePanelBase.add(nameTemp);
 		
+		//New amount label
 		JLabel amtTemp = new JLabel(num.toString());
 	    size = Integer.toString(num).length();
 		amtTemp.setPreferredSize(new Dimension(size*10, 25));
@@ -141,6 +153,7 @@ public class JobListPanel extends JPanel implements ActionListener{
 		}
 		amtPanelBase.add(amtTemp);
 		
+		//New remove button
 		JButton removeTemp = new JButton("Remove");
 		removeTemp.setPreferredSize(new Dimension(80,21));
 		removeTemp.setMaximumSize(new Dimension(80,21));
@@ -156,6 +169,7 @@ public class JobListPanel extends JPanel implements ActionListener{
 		update();
 	}
 	
+	//remove job from panel
 	public void removeJob(Integer num){
 		nameLabels.remove((int)num);
 		namePanelBase.remove((int)num);
@@ -168,6 +182,7 @@ public class JobListPanel extends JPanel implements ActionListener{
 		update();
 	}
 	
+	//update all panels and components
 	public void update(){
 		
 		int size = nameLabels.size();
@@ -184,11 +199,12 @@ public class JobListPanel extends JPanel implements ActionListener{
 			numPanelBase.add(numLabels.get(i));
 		}
 		
+		//make first job unremovable
 		if(removeButtons.size() != 0 && app.getPanel().getListPanel().getStart().getText().equals("Update Production")){
 			removeButtons.get(0).setEnabled(false);
 		}
 		
-		
+		//resize all panels
 		size = Math.max(size, 14);
 		numPanelBase.setPreferredSize(new Dimension(25,25));
 		numPanelBase.setMaximumSize(new Dimension(25,25));
@@ -226,10 +242,16 @@ public class JobListPanel extends JPanel implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e){
+		//Check for remove buttons being pressed
 		for(int i = 0; i < removeButtons.size(); i++){
 			if(e.getSource() == removeButtons.get(i)){
+				//remove job from panel
 				removeJob(i);
+				//update jobs
+				app.getJobs().remove(i);
+				//update server jobs
 				app.getClient().setCommandSent("Update");
+				app.getClient().updateThread();
 				break;
 			}
 		}

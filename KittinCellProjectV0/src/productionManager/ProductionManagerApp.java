@@ -163,7 +163,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		}
 		graphics.update();
 		repaint();
-		client.updateThread();
+//		client.updateThread();
 	}
 
 	public static void main(String[] args){

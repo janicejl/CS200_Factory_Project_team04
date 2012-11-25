@@ -11,11 +11,11 @@ import data.KitInfo;
 
 public class ProductionClient implements Runnable{
 	Socket s;
-	ProductionManagerApp app;
-	ObjectOutputStream out;
-	ObjectInputStream in;
-	String command;
-	String commandSent;
+	ProductionManagerApp app; //reference to production manager
+	ObjectOutputStream out; //output stream
+	ObjectInputStream in; //input stream
+	String command; //command received from server
+	String commandSent; //comand sent to server
 	String serverName; //keep track of what server to connect to...default localhost
 	Thread thread;
 	
@@ -27,7 +27,6 @@ public class ProductionClient implements Runnable{
 		commandSent = "Production Manager";
 		app = _app;
 		thread = new Thread(this, "ProductionClient_Thread");
-		
 	}
 
 	public Integer connect(){
@@ -50,86 +49,26 @@ public class ProductionClient implements Runnable{
 		try {
 			out.writeObject(commandSent); //send to server identifying what client this is
 			out.reset();
+			//update server with jobs
 			commandSent = "Update";
-			/*
-			command = (String)in.readObject();
-			if(command.equals("Confirmed")){
-				//start
-				out.writeObject("Confirmed");
-				out.reset();
-			}
-			else{
-				//error connection
-				System.out.println(command);
-				System.exit(1);
-			}
-			
-//**************START CODE***************************
-			
-			
-			commandSent = "Received";*/
-			/*while(true){
-				app.setLanes((ArrayList<Lane>)in.readObject());
-				app.setFeeders((ArrayList<Feeder>)in.readObject());
-				app.setNests((ArrayList<Nest>)in.readObject());
-				out.writeObject(commandSent);
-				out.reset();
-			}*/
-			
-			/*commandSent = "idle";
-			while(true){
-				
-				out.writeObject(commandSent);
-				out.reset();
-				command = (String)in.readObject();
-				if(command.equals("idle")){
-					commandSent = "idle";
-					continue;
-				}
-				else if(command.equals("start")){
-					break;
-				}
-			}
-			commandSent = "idle";
-			
-			while(true){
-				out.writeObject(commandSent);
-				out.reset();
-				command = (String)in.readObject();
-				if(command.equals("idle")){
-					continue;
-				}
-				else if(command.equals("work")){
-					
-					//***** code for pass the data to graphics
-					
-					//***** code for graphics to update feederData
-					commandSent = "working";
-					
-					
-					
-				}
-			}
-			*/
+			updateThread();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 	}
-
-	public synchronized Thread getThread() {
-		return thread;
-	}	
 	
+	//update the thread, called only by certain changes in production manager
 	public synchronized void updateThread(){
 		try {
-			
+			//send client command
 			if(commandSent.equals("Update")){
 				out.writeObject(commandSent);
 				out.reset();
 				commandSent = "Idle";
 				out.writeObject(app.getJobs());
 				out.reset();
+				System.out.println("Update");
 			}
 			else if(commandSent.equals("Start")){
 				out.writeObject(commandSent);
@@ -137,20 +76,24 @@ public class ProductionClient implements Runnable{
 				commandSent = "Idle";
 				out.writeObject(app.getJobs());
 				out.reset();
+				System.out.println("Start");
 			}
 			else if(commandSent.equals("Idle")){
 				out.writeObject(commandSent);
 				out.reset();
 			}
+			//receive command
 			command = (String)in.readObject();
 			if(command.equals("Idle")){
 			}
 			else if(command.equals("Update Kits")){
+				//update kits
 				app.setkitsList((ArrayList<KitInfo>)in.readObject());
 				out.writeObject("Received");
 				out.reset();
 			}
 			else if(command.equals("Update Jobs")){
+				//update jobs
 				app.setJobs((ArrayList<Job>)in.readObject());
 				out.writeObject("Received");
 				out.reset();
@@ -161,6 +104,10 @@ public class ProductionClient implements Runnable{
 		}
 	}
 
+	public synchronized Thread getThread() {
+		return thread;
+	}	
+	
 	public synchronized void setThread(Thread thread) {
 		this.thread = thread;
 	}

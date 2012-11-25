@@ -22,8 +22,6 @@ public class GantryManager implements Serializable,ActionListener
 	CopyOnWriteArrayList<Integer> feeder;
 	CopyOnWriteArrayList<PartInfo> feeders;
 	Vector<Feeder.Feeder> feed;
-
-
 	
 	boolean msg = false;
 	

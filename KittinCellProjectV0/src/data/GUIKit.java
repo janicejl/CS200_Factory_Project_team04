@@ -46,7 +46,7 @@ public class GUIKit {
 			}
 			BufferedImage p;
 			try {
-				p = ImageIO.read(new File("images/kt" + parts.get(i).getID() + ".png"));
+				p = ImageIO.read(new File(parts.get(i).getImagePath()));
 				if(kit.isGrabbed()){
 					g.drawImage(p, -300, -300, null);
 				}

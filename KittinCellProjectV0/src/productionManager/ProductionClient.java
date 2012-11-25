@@ -41,7 +41,7 @@ public class ProductionClient implements Runnable{
 			System.err.println("Can't find server " + serverName);
             return -1;
 		}
-		System.out.println("Connected to "+ serverName);
+		System.out.println("Production Manager connected to "+ serverName);
 		return 1; //successful connection
 	}
 

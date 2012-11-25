@@ -44,7 +44,7 @@ public class KitAssemblyClient implements Runnable {
 			System.err.println("Can't find server " + serverName);
             return -1;
 		}
-		System.out.println("Connected to "+ serverName);
+		System.out.println("Kit Assembly Client connected to "+ serverName);
 		return 1; //successful connection
 	}
 	

@@ -66,8 +66,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	GantryManager gantryManager; //Gantry Manager
 	//Gantry queued commands
-	ArrayList<String> gantryWaitList; //command 
-	ArrayList<Integer> gantryFeedList; //cooresponding feeder for the command
+	Vector<String> gantryWaitList; //command 
+	Vector<Integer> gantryFeedList; //cooresponding feeder for the command
 	
 	KitAssemblyManager kitAssemblyManager; //kit assembly manager
 	KitRobot kitRobot; //kit assembly robot
@@ -178,8 +178,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryManager = new GantryManager(feeders);
 		gantryManager.getGantry().setState("free");
 		gantryManager.getGantry().setBox(1);
-		gantryFeedList = new ArrayList<Integer>();
-		gantryWaitList = new ArrayList<String>();
+		gantryFeedList = new Vector<Integer>();
+		gantryWaitList = new Vector<String>();
 			
     	//Kit Assembly and Robots
     	kitAssemblyManager = new KitAssemblyManager(nestList);
@@ -516,13 +516,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Take Picture")){
     		partsRobot.getNestCamera().takePicture(320, 40 + 140*((num-1)/2));
     	}
-//    	else if(process.equals("Feed Feeder")){
-//    		Part temp = new Part("" + num, "images/kt" + num + ".png");
-//    		temp.setImagePath("images/kt" + temp.getId() + ".png");
-//    		
-//    		System.out.println("TOPLANE: " + feeders.get(num/2).getTopLane());
-//    		feeders.get(num/2).addParts(temp);
-//    	}
+    	else if(process.equals("Feed Feeder")){
+    		Part temp = new Part("" + num, "images/kt" + num + ".png");
+    		temp.setImagePath("images/kt" + temp.getId() + ".png");
+    		
+    		System.out.println("TOPLANE: " + feeders.get(num/2).getTopLane());
+    		feeders.get(num/2).addParts(temp);
+    	}
     	//Release one part from lane
     	else if(process.equals("Feed Lane")){
     		//add part to lane if feeder has parts, else this function improperly called
@@ -646,6 +646,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		if(getGantryManager().isMsg()){
 			getGantryManager().setMsg(false);
 			gantry1.msgGantryAtFeeder();
+			System.out.println("**********************************************************************************************");
 		}
 		
 		//Lane's Action Performed
@@ -887,12 +888,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.partsCommand = partsCommand;
 	}
 	
-	public ArrayList<String> getGantryWaitList()
+	public Vector<String> getGantryWaitList()
 	{
 		return gantryWaitList;
 	}
 	
-	public ArrayList<Integer> getGantryFeedList()
+	public Vector<Integer> getGantryFeedList()
 	{
 		return gantryFeedList;
 	}

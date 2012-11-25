@@ -63,9 +63,9 @@ public class GUIPartsRobot{
         
         //loading the images. 
         try {
-        	for(int i=0; i<9;i++){
-        		partImages.add(ImageIO.read(new File("images/kt" + i + ".png")));
-        	}
+//        	for(int i=0; i<9;i++){
+//        		partImages.add(ImageIO.read(new File("images/kt" + i + ".png")));
+//        	}
             partsRobotImage = ImageIO.read(new File("images/partsrobot.png"));
             partsRobotRailImage = ImageIO.read(new File("images/rail.png"));
             partsRobotGripperImage = ImageIO.read(new File("images/gripper.png"));
@@ -85,6 +85,15 @@ public class GUIPartsRobot{
     public void update(){
         pr = app.getPartsRobot();
         y = pr.getY();
+        
+        try{
+	        for(int i = 0; i < app.getPartsRobot().getPartsHeld().size(); i++){
+	        	partImages.add(ImageIO.read(new File(app.getPartsRobot().getPartsHeld().get(i).getImagePath())));
+	        }
+        }
+        catch(IOException e){
+        	e.printStackTrace();
+        }
         
         gKitStandCamera.setCamera(pr.getKitStandCamera());
         gNestCamera.setCamera(pr.getNestCamera());

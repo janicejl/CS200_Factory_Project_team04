@@ -37,7 +37,7 @@ public class GantryManagerClient implements Runnable
 		{return -1;}
 		catch(IOException e)
 		{return -1;}
-		System.out.println("Connected to " + serverName);
+		System.out.println("Gantry Manager connected to " + serverName);
 		return 1;
 	}
 	

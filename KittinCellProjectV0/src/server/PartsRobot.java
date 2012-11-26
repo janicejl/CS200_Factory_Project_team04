@@ -36,19 +36,19 @@ public class PartsRobot implements Runnable, Serializable{
     
     //BufferedImage partsRobotImage;			
 
-    ArrayList<Boolean> gripperHolding;		//ArrayList of 4 that holds the boolean state of whether each of the four gripers are holding parts.
-    ArrayList<Double> gripperExtensions;	//ArrayList that holds how much each of the 4 gripers extends out	
-    ArrayList<Double> newGripperExtensions;	//Arraylist of the new gripper extensions. 
-    ArrayList<String> commands;				//Arraylist of the list of commands that it needs to process. 
-    ArrayList<String> subCommands;			//Arraylist to aid proccessing commands. 
-    ArrayList<String> nestLocations;		//Arraylist of the nest locations
-    ArrayList<String> kitLocations;			//Arraylist of the kit locations
-    ArrayList<Integer> gripperPartIDs;		//Arraylist of the ID of the parts it is holding. 
+    CopyOnWriteArrayList<Boolean> gripperHolding;		//CopyOnWriteArrayList of 4 that holds the boolean state of whether each of the four gripers are holding parts.
+    CopyOnWriteArrayList<Double> gripperExtensions;	//ArrayList that holds how much each of the 4 gripers extends out	
+    CopyOnWriteArrayList<Double> newGripperExtensions;	//Arraylist of the new gripper extensions. 
+    CopyOnWriteArrayList<String> commands;				//Arraylist of the list of commands that it needs to process. 
+    CopyOnWriteArrayList<String> subCommands;			//Arraylist to aid proccessing commands. 
+    CopyOnWriteArrayList<String> nestLocations;		//Arraylist of the nest locations
+    CopyOnWriteArrayList<String> kitLocations;			//Arraylist of the kit locations
+    CopyOnWriteArrayList<Integer> gripperPartIDs;		//Arraylist of the ID of the parts it is holding. 
     
     
     int[] nl = {55,125,195,265,335,405,475,545};	//Array of the y coordinates of the nests
     int[] kl = {190,410};							//Array of the y coordinates of the kits. 
-    ArrayList<Part> partsHeld;				//Arraylist of the parts held by the grippers. 
+    CopyOnWriteArrayList<Part> partsHeld;				//Arraylist of the parts held by the grippers. 
     
     boolean movingMsg;				//boolean on whether or not it is moving. 
     boolean dumped;					//boolean on whether or not dumping. 
@@ -63,13 +63,13 @@ public class PartsRobot implements Runnable, Serializable{
         nestCamera = new Camera(350, 100);
         
         //Initialization
-        gripperHolding = new ArrayList<Boolean>();
-        gripperExtensions = new ArrayList<Double>();
-        newGripperExtensions = new ArrayList<Double>();
-        nestLocations = new ArrayList<String>();
-        kitLocations = new ArrayList<String>();
-        gripperPartIDs = new ArrayList<Integer>();
-        partsHeld = new ArrayList<Part>();
+        gripperHolding = new CopyOnWriteArrayList<Boolean>();
+        gripperExtensions = new CopyOnWriteArrayList<Double>();
+        newGripperExtensions = new CopyOnWriteArrayList<Double>();
+        nestLocations = new CopyOnWriteArrayList<String>();
+        kitLocations = new CopyOnWriteArrayList<String>();
+        gripperPartIDs = new CopyOnWriteArrayList<Integer>();
+        partsHeld = new CopyOnWriteArrayList<Part>();
         
         //Setup Grippers
         for(int i = 0; i < 4; i++){
@@ -78,8 +78,8 @@ public class PartsRobot implements Runnable, Serializable{
             gripperExtensions.add(0.0);
             newGripperExtensions.add(0.0);
         }
-        commands = new ArrayList<String>();
-        subCommands = new ArrayList<String>();
+        commands = new CopyOnWriteArrayList<String>();
+        subCommands = new CopyOnWriteArrayList<String>();
         msg = new Boolean(false);
         movingMsg = false;
         dumped = false;
@@ -350,11 +350,11 @@ public class PartsRobot implements Runnable, Serializable{
         return angle;
     }
 
-    public ArrayList<Boolean> getGripperHolding(){
+    public CopyOnWriteArrayList<Boolean> getGripperHolding(){
         return gripperHolding;
     }
 
-    public ArrayList<Double> getGripperExtensions(){
+    public CopyOnWriteArrayList<Double> getGripperExtensions(){
         return gripperExtensions;
     }
 
@@ -362,11 +362,11 @@ public class PartsRobot implements Runnable, Serializable{
 		return msg;
 	}
     
-    public ArrayList<Integer> getGripperPartIDs(){
+    public CopyOnWriteArrayList<Integer> getGripperPartIDs(){
     	return gripperPartIDs;
     }
 
-    public ArrayList<Part> getPartsHeld(){
+    public CopyOnWriteArrayList<Part> getPartsHeld(){
     	return partsHeld;
     }
     

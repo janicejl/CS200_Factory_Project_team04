@@ -20,14 +20,14 @@ public class GUIPartsRobot{
     BufferedImage part;
 
     
-    ArrayList<Boolean> gripperHolding;		//ArrayList of 4 that holds the boolean state of whether each of the four gripers are holding parts.
-    ArrayList<Double> gripperExtensions;	//ArrayList that holds how much each of the 4 gripers extends out	
-    ArrayList<String> commands;				//Arraylist of the list of commands that it needs to process. 
-    ArrayList<String> subCommands;			//Arraylist to aid proccessing commands. 
-    ArrayList<String> nestLocations;		//Arraylist of the nest locations
-    ArrayList<String> kitLocations;			//Arraylist of the kit locations
-    ArrayList<BufferedImage> partImages;	//Arraylist of the 4 picture parts that it is holding. 
-    ArrayList<Integer> gripperPartIDs;		//Arraylist of the ID of the parts it is holding. 
+    CopyOnWriteArrayList<Boolean> gripperHolding;		//ArrayList of 4 that holds the boolean state of whether each of the four gripers are holding parts.
+    CopyOnWriteArrayList<Double> gripperExtensions;	//ArrayList that holds how much each of the 4 gripers extends out	
+    CopyOnWriteArrayList<String> commands;				//Arraylist of the list of commands that it needs to process. 
+    CopyOnWriteArrayList<String> subCommands;			//Arraylist to aid proccessing commands. 
+    CopyOnWriteArrayList<String> nestLocations;		//Arraylist of the nest locations
+    CopyOnWriteArrayList<String> kitLocations;			//Arraylist of the kit locations
+    CopyOnWriteArrayList<BufferedImage> partImages;	//Arraylist of the 4 picture parts that it is holding. 
+    CopyOnWriteArrayList<Integer> gripperPartIDs;		//Arraylist of the ID of the parts it is holding. 
 
     PartsRobot pr;			//A reference to the parts robot from the server. 
 
@@ -46,14 +46,14 @@ public class GUIPartsRobot{
         y = 300;
         angle = 0;
         
-        gripperExtensions = new ArrayList<Double>();
-        gripperHolding = new ArrayList<Boolean>();
-        commands = new ArrayList<String>();
-        subCommands = new ArrayList<String>();
-        nestLocations = new ArrayList<String>();
-        kitLocations = new ArrayList<String>();
-        partImages = new ArrayList<BufferedImage>();
-        gripperPartIDs = new ArrayList<Integer>();
+        gripperExtensions = new CopyOnWriteArrayList<Double>();
+        gripperHolding = new CopyOnWriteArrayList<Boolean>();
+        commands = new CopyOnWriteArrayList<String>();
+        subCommands = new CopyOnWriteArrayList<String>();
+        nestLocations = new CopyOnWriteArrayList<String>();
+        kitLocations = new CopyOnWriteArrayList<String>();
+        partImages = new CopyOnWriteArrayList<BufferedImage>();
+        gripperPartIDs = new CopyOnWriteArrayList<Integer>();
 
         for (int i = 0; i < 4; i++) {
         	gripperPartIDs.add(1);

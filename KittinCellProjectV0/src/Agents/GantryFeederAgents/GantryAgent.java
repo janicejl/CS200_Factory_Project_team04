@@ -78,7 +78,7 @@ public class GantryAgent extends Agent implements Gantry {
 		}
 		
 		else if(astate == AnimationState.loadingFeeder){
-			astate = AnimationState.atFeeder;
+//			astate = AnimationState.atFeeder;
 			return true;
 		}
 		

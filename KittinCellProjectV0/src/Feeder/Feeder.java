@@ -13,7 +13,7 @@ public class Feeder implements Serializable{
 	private double y;
 	private double partAmount;
 	private boolean empty;
-	private ArrayList<Part> parts;
+	private Vector<Part> parts;
 	private Random random;
 	private PartInfo info;
 	private boolean hasCrate;
@@ -27,7 +27,7 @@ public class Feeder implements Serializable{
 	public Feeder(double nX, double nY){
 		x = nX;
 		y = nY;
-		parts = new ArrayList<Part> ();
+		parts = new Vector<Part> ();
 		random = new Random();
 		
 		partAmount = 0;
@@ -102,7 +102,7 @@ public class Feeder implements Serializable{
 		}
 	}
 	
-	public void setParts(ArrayList<Part> parts) {
+	public void setParts(Vector<Part> parts) {
 		this.parts = parts;
 	}
 	
@@ -132,7 +132,7 @@ public class Feeder implements Serializable{
 		return topLane;
 	}
 	
-	public ArrayList<Part> getParts() {
+	public Vector<Part> getParts() {
 		return parts;
 	}
 

@@ -70,6 +70,7 @@ public class GantryAgent extends Agent implements Gantry {
 		if(currentFeeder != null && fstate == FeederState.ready && astate == AnimationState.atFeeder){
 			print("in Gantry scheduler, feeder is ready");
 			GivePartsToFeeder();
+			astate = AnimationState.noAction;
 			return true;
 		}
 		else if(currentFeeder != null && fstate == FeederState.notReady){

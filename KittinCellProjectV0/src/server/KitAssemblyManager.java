@@ -20,7 +20,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
     ArrayList<Kit> emptyKits;
     ArrayList<Kit> finishedKits;
     ArrayList<Kit> stationKits;
-    ArrayList<Nest> nests;
+    Vector<Nest> nests;
     boolean finishedConveyorOn;
     boolean emptyConveyorOn;
     boolean badConveyorOn;
@@ -43,7 +43,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
     6   done    10    10
     */
     
-    public KitAssemblyManager(ArrayList<Nest> n){
+    public KitAssemblyManager(Vector<Nest> n){
     	nests = n;
         stationOccupied = new ArrayList<Boolean>();
         stationKits = new ArrayList<Kit>();
@@ -213,7 +213,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
         return stationOccupied;
     }
     
-    public ArrayList<Nest> getNests() {
+    public Vector<Nest> getNests() {
     	return nests;
     }
     

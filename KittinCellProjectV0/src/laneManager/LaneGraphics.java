@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LaneGraphics extends JPanel implements ActionListener {
-	private ArrayList<Lane> lanes = new ArrayList<Lane> ();
+	private Vector<Lane> lanes = new Vector<Lane> ();
 	private int maxX;
 	private int maxY;
 	private ArrayList<Boolean> emptyConveyorOnList;
@@ -25,7 +25,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
 	private ArrayList<GUIFeeder> gFeeders = new ArrayList<GUIFeeder>();
 	private Vector<Feeder> feeders = new Vector<Feeder>();
 	private ArrayList<GUINest> gNests = new ArrayList<GUINest>();
-	private ArrayList<Nest> nests = new ArrayList<Nest>();
+	private Vector<Nest> nests = new Vector<Nest>();
 	private LaneManagerClient client;
 	private javax.swing.Timer timer;
 	int managerNum;
@@ -202,11 +202,11 @@ public class LaneGraphics extends JPanel implements ActionListener {
     	lanes.get(lane).releaseQueue();
     }
     
-    public synchronized void setLanes(ArrayList<Lane> _lanes) {
+    public synchronized void setLanes(Vector<Lane> _lanes) {
 		this.lanes = _lanes;
 	}
     
-	public synchronized ArrayList<Lane> getLanes() {
+	public synchronized Vector<Lane> getLanes() {
 		return lanes;
 	}
 
@@ -219,11 +219,11 @@ public class LaneGraphics extends JPanel implements ActionListener {
 		updateGUIFeeders();
 	}
 	
-	public synchronized ArrayList<Nest> getNests() {
+	public synchronized Vector<Nest> getNests() {
 		return nests;
 	}
 	
-	public synchronized void setNests(ArrayList<Nest> nests) {
+	public synchronized void setNests(Vector<Nest> nests) {
 		this.nests = nests;
 		updateGUINests();
 	}

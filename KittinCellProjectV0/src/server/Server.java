@@ -61,8 +61,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	//200 Hardware
 	Vector<Feeder> feeders; //Feeders
-	ArrayList<Lane> lanes; //Lanes
-	ArrayList<Nest> nestList; //Nests
+	Vector<Lane> lanes; //Lanes
+	Vector<Nest> nestList; //Nests
 	
 	GantryManager gantryManager; //Gantry Manager
 	//Gantry queued commands
@@ -147,7 +147,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		
 		//Nests
-		nestList = new ArrayList<Nest>();
+		nestList = new Vector<Nest>();
     	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 100));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 170));	//x coordinate is zero for laneManagerApp
@@ -158,7 +158,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	nestList.add(new Nest(0, 520));	//x coordinate is zero for laneManagerApp
     	
     	//Lanes
-		lanes = new ArrayList<Lane>();
+		lanes = new Vector<Lane>();
 		lanes.add(new Lane(600,30, nestList.get(0), feeders.get(0))); //MUST SPACE EACH LANE BY 100 PIXELS OR ELSE!
     	lanes.add(new Lane(600,100, nestList.get(1), feeders.get(0))); 
     	lanes.add(new Lane(600,170, nestList.get(2),feeders.get(1))); 
@@ -494,6 +494,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	//   	    getKitRobotAgent().msgGetKits(jobsList.get(0).getAmount());
 	   		}
 	   	}
+    	
+    	System.err.println(process);
     }
 	//Overloaded execute functions
 	public void execute(String process, Integer num, PartInfo info){
@@ -501,9 +503,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		if(process.equals("Feed Feeder")){
 			//create new part based on passed partinfo
     		Part temp = new Part(info);
-    		System.out.println("TOPLANE: " + feeders.get(num/2).getTopLane());
-    		feeders.get(num/2).addParts(temp);
+    		System.out.println("TOPLANE: " + feeders.get(num).getTopLane());
+    		feeders.get(num).addParts(temp);
     	}
+		System.err.println(process + num);
 	}
     public void execute(String process, Integer num){
     	//Spawn an empty kit for the kit conveyer
@@ -587,18 +590,21 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			gantryFeedList.add(num);
     		}
     	}
+    	System.err.println(process + num);
     }
     public void execute(String process, Integer nest, Integer grip){
     	//Tell parts robot to grab part at designated nest with designated gripper
     	if(process.equals("Get Part")){
     		getPartsRobot().addCommand("grab," + (nest) + "," + (grip) + "," + nest);
     	} 		
+    	System.err.println(process);
     }
     public void execute(String process,PartInfo p)
     {
     	//spawn new parts box with designated partinfo
     	if(process.equals("Make PartsBox"))
     		gantryManager.addPartInfo(p);
+    	System.err.println(process);
     }
     
     //Add a new part to gantry manager
@@ -803,11 +809,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return nests.get(index);
 	}
 		
-	public ArrayList<Lane> getLanes() {
+	public Vector<Lane> getLanes() {
 		return lanes;
 	}
 
-	public void setLanes(ArrayList<Lane> lanes) {
+	public void setLanes(Vector<Lane> lanes) {
 		this.lanes = lanes;
 	}
 	public ArrayList<VisionAgent> getVisions(){
@@ -822,11 +828,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.feeders = feeders;
 	}
 	
-	public ArrayList<Nest> getNests() {
+	public Vector<Nest> getNests() {
 		return nestList;
 	}
 	
-	public void setNests(ArrayList<Nest> nests) {
+	public void setNests(Vector<Nest> nests) {
 		this.nestList = nests;
 	}
 	

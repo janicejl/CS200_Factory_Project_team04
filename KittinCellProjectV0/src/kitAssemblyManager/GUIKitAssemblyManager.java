@@ -47,7 +47,7 @@ public class GUIKitAssemblyManager extends JPanel{
     ArrayList<Kit> baseStationKits;
 
     ArrayList<GUINest> gNests;
-    ArrayList<Nest> nests;
+    Vector<Nest> nests;
     
     int[] stationPositions = {160, 140, 160, 360, 80, 490, 10, 490, 160, 250}; // stations 1 - 2 - 3 - 4 - 5 (image corner coords)
     boolean emptyConveyorOn;
@@ -72,7 +72,7 @@ public class GUIKitAssemblyManager extends JPanel{
 //    	partsClient = new PartsManagerClient(this);
     	
     	gNests = new ArrayList<GUINest>();
-    	nests = new ArrayList<Nest>();
+    	nests = new Vector<Nest>();
     	
     	kam = new KitAssemblyManager(nests);
     	kitRobot = new KitRobot(kam);

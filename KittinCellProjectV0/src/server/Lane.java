@@ -3,6 +3,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Vector;
 import data.Part;
 import Feeder.Feeder;
@@ -20,12 +21,15 @@ public class Lane implements ActionListener, Serializable{
     private int queueBorder = 120;
     private boolean queueFull; 
     private boolean openGate;
+    private boolean isVibrating;
+    private int vibrationCounter;
     private Feeder feeder;
     private boolean release = false;
     private int releaseCount = 0;
     private Nest nest;
     private boolean atQueue = false;
     private int gateCounter;
+    
     public class Gate implements Serializable{
     	public double topNodeX, topNodeY, bottomNodeX, bottomNodeY;
     	public void setNodes(double bottomNodeX, double bottomNodeY, double topNodeX, double topNodeY) {
@@ -82,12 +86,18 @@ public class Lane implements ActionListener, Serializable{
 	    itemList = new Vector<Part> ();
 	    importList = new Vector<Part> ();
 	    queueList = new Vector<Part> ();
+		backgroundRectangle = new Rectangle2D.Double(0, 0, maxX, maxY );
+	    itemList = new Vector<Part> ();
+	    importList = new Vector<Part> ();
+	    queueList = new Vector<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		gate1 = new Gate();
 		gate1.setDefaultPosition();
 		gate2 = new Gate();
 		gate2.setNodes(105, verticalSpacing + 30, 105, verticalSpacing + 50);
-		queueFull = false;		
+		queueFull = false;	
+		isVibrating = false;
+		this.vibrationCounter = 0;
 	    for(int i = 0; i < importList.size(); i++) {
 	    	importList.get(i).setX(width-80);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
@@ -148,6 +158,24 @@ public class Lane implements ActionListener, Serializable{
 	    	}	
 	    }
 	    
+	    //Vibrates all parts in Lane along Y axis using Sine Function with Amplitude of 10 pixels.
+	    if(isVibrating == true && vibrationCounter < 50) {
+		    vibrationCounter++;
+			if(vibrationCounter < 49) {    
+		    	if(itemList.size() > 0) {
+			    	for(int i = 0; i < itemList.size(); i++) { 
+				    	if(itemList.get(i).getX() > queueBorder + i*20) { //Moves parts down the line
+				    		itemList.get(i).setY(itemList.get(i).getY() - 10 * Math.sin(50*Math.PI*vibrationCounter));
+				    	}
+			    	}	
+		    	}
+			}	
+			else {
+				vibrationCounter = 0;
+				isVibrating = false;	
+			}
+	    	
+	    }
 	    //update feeder
 	    feeder.updateDiverter();
     }
@@ -237,5 +265,13 @@ public class Lane implements ActionListener, Serializable{
 	public void setReleaseCount(int releaseCount) {
 		this.releaseCount = releaseCount;
 	}
+    
+    
+    public void vibrateLane() {
+    	if(itemList.size() > 0) {
+    		isVibrating = true;
+    	}
+    	
+    }
     
 }  

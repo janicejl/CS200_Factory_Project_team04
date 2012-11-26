@@ -78,10 +78,10 @@ public class GantryAgent extends Agent implements Gantry {
 			return true;
 		}
 		
-		else if(astate == AnimationState.loadingFeeder){
+//		else if(astate == AnimationState.loadingFeeder){
 //			astate = AnimationState.atFeeder;
-			return true;
-		}
+//			return true;
+//		}
 		
 		return false;
 	}
@@ -98,6 +98,7 @@ public class GantryAgent extends Agent implements Gantry {
 			currentBin.setQuantity(currentBin.getQuantity()-1);
 		}
 		
+		app.execute("Idle Bin", currentFeeder.getNumber());
 		currentFeeder = null;
 		print("Feeder removed from gantry.");
 		fstate = FeederState.notReady;

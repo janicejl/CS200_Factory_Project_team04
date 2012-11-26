@@ -246,8 +246,10 @@ public class Protocols implements Runnable{
 			//if update
 			if(command.equals("Update")){
 				app.setJobsList((ArrayList<Job>)in.readObject());
-				for(int i = 0; i < app.getJobsList().get(0).getKit().getParts().size(); i++){
-					System.out.println(app.getJobsList().get(0).getKit().getParts().get(i).getName());
+				if(app.getJobsList().size() != 0){
+					for(int i = 0; i < app.getJobsList().get(0).getKit().getParts().size(); i++){
+						System.out.println(app.getJobsList().get(0).getKit().getParts().get(i).getName());
+					}
 				}
 			}
 			//if start production

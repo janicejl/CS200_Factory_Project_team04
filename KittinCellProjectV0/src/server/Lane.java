@@ -3,15 +3,15 @@ import java.awt.geom.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Vector;
 import data.Part;
 import Feeder.Feeder;
 import laneManager.Nest;
 
 public class Lane implements ActionListener, Serializable{
-    private ArrayList<Part> importList;  //Item Collection that is imported
-	private ArrayList<Part> itemList;  //items moving down 
-    private ArrayList<Part> queueList; 
+    private Vector<Part> importList;  //Item Collection that is imported
+	private Vector<Part> itemList;  //items moving down 
+    private Vector<Part> queueList; 
     private Rectangle2D.Double backgroundRectangle;
     private int conveyerBeltSpeed;
     private int maxX;
@@ -68,9 +68,9 @@ public class Lane implements ActionListener, Serializable{
 		this.maxY = 30;
     	this.verticalSpacing = 0;
 	    this.conveyerBeltSpeed = 1;
-	    this.itemList = new ArrayList<Part> ();
-	    this.importList = new ArrayList<Part> ();
-	    this.queueList = new ArrayList<Part> ();
+	    this.itemList = new Vector<Part> ();
+	    this.importList = new Vector<Part> ();
+	    this.queueList = new Vector<Part> ();
 		this.backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		this.queueFull = false;
 		this.openGate = false;
@@ -82,10 +82,17 @@ public class Lane implements ActionListener, Serializable{
 		maxY = 30;
     	this.verticalSpacing = verticalSpacing;
 	    conveyerBeltSpeed = 1;
+<<<<<<< HEAD
 	    itemList = new ArrayList<Part> ();
 	    importList = new ArrayList<Part> ();
 	    queueList = new ArrayList<Part> ();
 		backgroundRectangle = new Rectangle2D.Double(0, 0, maxX, maxY );
+=======
+	    itemList = new Vector<Part> ();
+	    importList = new Vector<Part> ();
+	    queueList = new Vector<Part> ();
+		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
+>>>>>>> e73c65228eeb14be073215366882d40c6061aaa9
 		gate1 = new Gate();
 		gate1.setDefaultPosition();
 		gate2 = new Gate();
@@ -104,9 +111,9 @@ public class Lane implements ActionListener, Serializable{
 		maxY = 50;
     	this.verticalSpacing = verticalSpacing;
 	    conveyerBeltSpeed = 1;
-	    itemList = new ArrayList<Part> ();
-	    importList = new ArrayList<Part> ();
-	    queueList = new ArrayList<Part> ();
+	    itemList = new Vector<Part> ();
+	    importList = new Vector<Part> ();
+	    queueList = new Vector<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
 		gate1 = new Gate();
 		gate1.setDefaultPosition();
@@ -183,11 +190,11 @@ public class Lane implements ActionListener, Serializable{
     	return this.gate2;
     }
     
-    public ArrayList<Part> getItemList() {
+    public Vector<Part> getItemList() {
     	return this.itemList;
     }
     
-    public ArrayList<Part> getQueueList() {
+    public Vector<Part> getQueueList() {
     	return this.queueList;
     }
     
@@ -239,17 +246,13 @@ public class Lane implements ActionListener, Serializable{
     
 	//f = whether or not it should release part to top lane or bottom lane. 
     public void releasePart() {
-//    	if ( (f % 2 == 0 && feeder.getTopLane() == true) || (f % 2 == 1 && feeder.getTopLane() == false) ) {
-		if(importList.size() != 0) {
-			Part temp = importList.remove(0);
+//		if(importList.size() != 0) {
+//			Part temp = importList.remove(0);
+			Part temp = feeder.removePart();
 			temp.setY(maxY/2 + verticalSpacing - 10);
 			itemList.add(temp);
 			System.out.println("release!");
-			feeder.removePart();
-		}
-    	else {
-    		feeder.setTopLane(!feeder.getTopLane());
-    	}
+//		}
     }
 	
     public void releaseQueue(){

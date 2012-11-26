@@ -11,6 +11,8 @@ public interface Feeder {
 	void msgHereAreParts(PartInfo p, int quantity);
 	void msgLaneIsFull(String laneName);
 	void msgLaneIsReadyForParts(String laneName);
+	//void msgLaneAnimationDone();
+	//void msgFeederAnimationDone();
 	
 	
 	void setGantry(Gantry g1);

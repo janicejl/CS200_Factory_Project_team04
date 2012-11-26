@@ -24,7 +24,7 @@ public class FeederAgent extends Agent implements Feeder {
 	public EventLog log;
 	
 	
-	enum FeederState{feeding, low, waitingLane, purging, waitingGantry, fed};
+	enum FeederState{feeding, low, waitingLane, purging, waitingGantry, fed, waitAnimLane, waitAnimFeeder};
 	//possible additional state: beingFed
 	FeederState fstate = FeederState.low;
 	
@@ -142,6 +142,8 @@ public class FeederAgent extends Agent implements Feeder {
 		stateChanged();
 	}
 	
+	
+	
 	//Scheduler
 	
 	@Override
@@ -150,6 +152,12 @@ public class FeederAgent extends Agent implements Feeder {
 		if(fstate == FeederState.low && !currentPart.getName().equals("blank") ){
 			print("fstate is low and current part is not blank, RequestParts(currentPart) called.");
 			RequestParts(currentPart);
+			return true;
+		}
+		
+		else if(fstate == FeederState.waitingGantry && gantry != null){
+			print("fstate is waitingGantry and gantry exists. AcceptParts() should be called.");
+			AcceptParts();
 			return true;
 		}
 		
@@ -194,11 +202,7 @@ public class FeederAgent extends Agent implements Feeder {
 			}
 		}
 		
-		else if(fstate == FeederState.waitingGantry && gantry != null){
-			print("fstate is waitingGantry and gantry exists. AcceptParts() should be called.");
-			AcceptParts();
-			return true;
-		}
+		
 		
 		print("Nothing chosen by feeder scheduler.");
 		//print("left ready: " + left.readyForParts);

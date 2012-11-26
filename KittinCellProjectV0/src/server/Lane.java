@@ -151,7 +151,37 @@ public class Lane implements ActionListener, Serializable{
 	    //update feeder
 	    feeder.updateDiverter();
     }
-	    
+
+	public void addPart(Part part) {
+    	part.setX(maxX-80);
+    	part.setY(maxY/2 + verticalSpacing - 10);
+    	importList.add(part);
+    }
+    
+	//f = whether or not it should release part to top lane or bottom lane. 
+    public void releasePart() {
+//		if(importList.size() != 0) {
+//			Part temp = importList.remove(0);
+			Part temp = feeder.removePart();
+			temp.setX(maxX-80);
+			temp.setY(maxY/2 + verticalSpacing - 10);
+			itemList.add(temp);
+			System.out.println("release!");
+//		}
+    }
+	
+    public void releaseQueue(){
+    	if(itemList.size() != 0){
+    		if(itemList.get(0).getDestination() == true){
+    			nest.addPart(itemList.remove(0));
+    			openGate = true;
+    			atQueue = false;
+    			System.out.println("Rawr!!!!");
+    		}
+    	}
+    	return;
+    }
+    
     public Gate getGate1() {
     	return this.gate1;
     }
@@ -207,34 +237,5 @@ public class Lane implements ActionListener, Serializable{
 	public void setReleaseCount(int releaseCount) {
 		this.releaseCount = releaseCount;
 	}
-
-	public void addPart(Part part) {
-    	part.setX(maxX-80);
-    	part.setY(maxY/2 + verticalSpacing - 10);
-    	importList.add(part);
-    }
-    
-	//f = whether or not it should release part to top lane or bottom lane. 
-    public void releasePart() {
-//		if(importList.size() != 0) {
-//			Part temp = importList.remove(0);
-			Part temp = feeder.removePart();
-			temp.setY(maxY/2 + verticalSpacing - 10);
-			itemList.add(temp);
-			System.out.println("release!");
-//		}
-    }
-	
-    public void releaseQueue(){
-    	if(itemList.size() != 0){
-    		if(itemList.get(0).getDestination() == true){
-    			nest.addPart(itemList.remove(0));
-    			openGate = true;
-    			atQueue = false;
-    		}
-    	}
-    	System.out.println("Rawr!!!!");
-    	return;
-    }
     
 }  

@@ -64,7 +64,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	Vector<Lane> lanes; //Lanes
 	Vector<Nest> nestList; //Nests
 	
-	Vector<Integer> laneCounter;
+	Vector<Integer> laneCounter; //counter for delaying lane release
+	Vector<Integer> laneQueue; //counter for holding feed lane commands
+	
 	GantryManager gantryManager; //Gantry Manager
 	Integer gantryDelay; //counter to delay message sent
 	//Gantry queued commands
@@ -172,12 +174,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
     	laneCounter = new Vector<Integer>();
+    	laneQueue = new Vector<Integer>();
     	//Set Lane Speeds
     	for (int i = 0; i < 8; i ++) {
     		lanes.get(i).setConveyerBeltSpeed(1);
     		laneCounter.add(0);
+    		laneQueue.add(0);
     	}
-    	
     	
     	//Gantry
 		gantryManager = new GantryManager(feeders);
@@ -547,6 +550,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			lanes.get(num).setRelease(true);
     			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
     		}
+    		//if feederagent calls too quickly
+    		else{
+    			laneQueue.set(num, laneQueue.get(num) + 1);
+    		}
     	}
     	//Move part from lane queue to nest
     	else if(process.equals("Feed Nest")){
@@ -673,6 +680,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			//lane has parts queued
 			if(lanes.get(i).isAtQueue()){
 				laneagents.get(i).msgPartAtEndOfLane();
+			}
+			
+			//deal with queued commands
+			if(laneQueue.get(i) > 0){
+				if(feeders.get(i/2).getParts().size() > 0){
+					execute("Feed Lane", i);
+					laneQueue.set(i, laneQueue.get(i)-1);
+				}
 			}
 			
 			//Release part into lane

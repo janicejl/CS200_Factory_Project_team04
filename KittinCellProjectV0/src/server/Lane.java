@@ -3,6 +3,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Vector;
 import data.Part;
 import Feeder.Feeder;
@@ -82,17 +83,14 @@ public class Lane implements ActionListener, Serializable{
 		maxY = 30;
     	this.verticalSpacing = verticalSpacing;
 	    conveyerBeltSpeed = 1;
-<<<<<<< HEAD
-	    itemList = new ArrayList<Part> ();
-	    importList = new ArrayList<Part> ();
-	    queueList = new ArrayList<Part> ();
+	    itemList = new Vector<Part> ();
+	    importList = new Vector<Part> ();
+	    queueList = new Vector<Part> ();
 		backgroundRectangle = new Rectangle2D.Double(0, 0, maxX, maxY );
-=======
 	    itemList = new Vector<Part> ();
 	    importList = new Vector<Part> ();
 	    queueList = new Vector<Part> ();
 		backgroundRectangle = new Rectangle2D.Double( 0, 0, maxX, maxY );
->>>>>>> e73c65228eeb14be073215366882d40c6061aaa9
 		gate1 = new Gate();
 		gate1.setDefaultPosition();
 		gate2 = new Gate();

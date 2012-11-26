@@ -172,7 +172,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	lanes.get(2).setConveyerBeltSpeed(3);
     	//Set Lane Speeds
     	for (int i = 0; i < 8; i ++) {
-    		lanes.get(i).setConveyerBeltSpeed(15);
+    		lanes.get(i).setConveyerBeltSpeed(1);
     	}
 		
     	//Gantry

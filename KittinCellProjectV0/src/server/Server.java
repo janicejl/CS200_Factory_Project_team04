@@ -65,6 +65,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	Vector<Nest> nestList; //Nests
 	
 	GantryManager gantryManager; //Gantry Manager
+	Integer gantryDelay; //counter to delay message sent
 	//Gantry queued commands
 	Vector<String> gantryWaitList; //command 
 	Vector<Integer> gantryFeedList; //cooresponding feeder for the command
@@ -180,6 +181,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		gantryManager.getGantry().setBox(1);
 		gantryFeedList = new Vector<Integer>();
 		gantryWaitList = new Vector<String>();
+		gantryDelay = new Integer(0);
 			
     	//Kit Assembly and Robots
     	kitAssemblyManager = new KitAssemblyManager(nestList);
@@ -650,9 +652,16 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		//Gantry has placed parts box on feeder
 		if(getGantryManager().isMsg()){
-			getGantryManager().setMsg(false);
-			gantry1.msgGantryAtFeeder();
-			System.out.println("**********************************************************************************************");
+			if(gantryDelay < 100){
+				gantryDelay++;
+			}
+			else{
+				getGantryManager().setMsg(false);
+				gantry1.msgGantryAtFeeder();
+				System.out.println("**********************************************************************************************");
+				gantryDelay = 0;
+			}
+			
 		}
 		
 		//Lane's Action Performed

@@ -102,7 +102,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		
 	}
 	
-	
+	// this will have to change to an enum or something
 	public void msgKitInspected(boolean bis_good)
 	{
 		System.out.println("KitRobot: kit has been inspected");
@@ -111,6 +111,17 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 			System.out.println(kit_h.state);
 			if(kit_h.state == KitState.WaitingForInspection)
 			{
+				// have to decided what scernario we want to do
+				/*if(is_good == )
+				{
+				
+				
+				}
+				else if(is_good == )
+				
+				
+				
+				*/
 				if(bis_good)
 				{
 					kit_h.state = KitState.FinishedKit;
@@ -134,7 +145,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	public boolean pickAndExecuteAnAction() {
 
 			
-			if(kit_list.size() < 2 && kits_needed.size() > 0 && b_ask_for_kit)
+			if(kit_list.size() + inspection_list.size()  < 2 && kits_needed.size() > 0 && b_ask_for_kit)
 			{
 				CanIPlaceKit();
 				return true;

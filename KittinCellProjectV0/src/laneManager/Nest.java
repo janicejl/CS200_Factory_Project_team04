@@ -13,22 +13,18 @@ public class Nest implements Serializable{
 	
 	ArrayList<Part> parts;			//a list of parts that is currently in the nest. 
 	
+	int[] partsCount;
+	
 	public Nest(double nX, double nY) {
 		x = nX;
 		y = nY;
 		parts = new ArrayList<Part>();
+		partsCount = new int[8];
+		for (int i = 0; i < 8; i++) {
+			partsCount[i] = 0;
+		}
 	}
-
-	public Nest(double nX, double nY, int n) {
-		x = nX;
-		y = nY;
-		parts = new ArrayList<Part>();
-		
-		//for v0
-			Part p = new Part(""+n, "images/kt" + n + ".png");
-			addPart(p);
-		
-	}
+	
 	public double getX() {
 		return x;
 	}

@@ -64,6 +64,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	Vector<Lane> lanes; //Lanes
 	Vector<Nest> nestList; //Nests
 	
+	Vector<Integer> laneCounter; //counter for delaying lane release
+	Vector<Integer> laneQueue; //counter for holding feed lane commands
+	
 	GantryManager gantryManager; //Gantry Manager
 	Integer gantryDelay; //counter to delay message sent
 	//Gantry queued commands
@@ -170,11 +173,15 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	lanes.add(new Lane(600,520, nestList.get(7), feeders.get(3)));
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
+    	laneCounter = new Vector<Integer>();
+    	laneQueue = new Vector<Integer>();
     	//Set Lane Speeds
     	for (int i = 0; i < 8; i ++) {
-    		lanes.get(i).setConveyerBeltSpeed(15);
+    		lanes.get(i).setConveyerBeltSpeed(1);
+    		laneCounter.add(0);
+    		laneQueue.add(0);
     	}
-		
+    	
     	//Gantry
 		gantryManager = new GantryManager(feeders);
 		gantryManager.getGantry().setState("free");
@@ -522,7 +529,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		partsRobot.getNestCamera().takePicture(320, 40 + 140*((num-1)/2));
     	}
     	else if(process.equals("Feed Feeder")){
-    		Part temp = new Part("" + num, "images/kt" + num + ".png");
+    		Part temp = new Part(new PartInfo("" + num, "images/kt" + num + ".png"));
     		temp.setImagePath("images/kt" + temp.getId() + ".png");
     		
     		System.out.println("TOPLANE: " + feeders.get(num/2).getTopLane());
@@ -530,19 +537,22 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	}
     	//Release one part from lane
     	else if(process.equals("Feed Lane")){
-    		//add part to lane if feeder has parts, else this function improperly called
-    		if (feeders.get(num/2).getPartAmount() > 0){
-    			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
-    			lanes.get(num).setRelease(true);
-    			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
-    		}
     		feeders.get(num/2).setMoving(true); //diverter state is moving so part isn't immediately released
-    		
     		//Determine what state the feeder's diverter should be in
     		if (num % 2 == 0) {
     			feeders.get(num/2).setTopLane(true);
     		} else {
     			feeders.get(num/2).setTopLane(false);
+    		}
+    		//add part to lane if feeder has parts, else this function improperly called
+    		if (feeders.get(num/2).getPartAmount() > 0){
+//    			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
+    			lanes.get(num).setRelease(true);
+    			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
+    		}
+    		//if feederagent calls too quickly
+    		else{
+    			laneQueue.set(num, laneQueue.get(num) + 1);
     		}
     	}
     	//Move part from lane queue to nest
@@ -652,13 +662,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		//Gantry has placed parts box on feeder
 		if(getGantryManager().isMsg()){
-			if(gantryDelay < 100){
+			if(gantryDelay < 50){
 				gantryDelay++;
 			}
 			else{
 				getGantryManager().setMsg(false);
 				gantry1.msgGantryAtFeeder();
-				System.out.println("**********************************************************************************************");
 				gantryDelay = 0;
 			}
 			
@@ -673,12 +682,26 @@ public class Server extends JFrame implements Runnable, ActionListener{
 				laneagents.get(i).msgPartAtEndOfLane();
 			}
 			
+			//deal with queued commands
+			if(laneQueue.get(i) > 0){
+				if(feeders.get(i/2).getParts().size() > 0){
+					execute("Feed Lane", i);
+					laneQueue.set(i, laneQueue.get(i)-1);
+				}
+			}
+			
 			//Release part into lane
 			//check feeder movement, prevent movement release if diverter still moving
 			if(lanes.get(i).isRelease()){
 				if(!lanes.get(i).getFeeder().isMoving()){
-					lanes.get(i).releasePart();
-					lanes.get(i).setReleaseCount(lanes.get(i).getReleaseCount() - 1);
+					if(laneCounter.get(i) < 20){
+						laneCounter.set(i, laneCounter.get(i)+1);
+					}
+					else{
+						laneCounter.set(i, 0);
+						lanes.get(i).releasePart();
+						lanes.get(i).setReleaseCount(lanes.get(i).getReleaseCount() - 1);
+					}
 				}
 				//determine if it can stop releasing
 				if(lanes.get(i).getReleaseCount() == 0){
@@ -818,7 +841,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return nests.get(index);
 	}
 		
-	public Vector<Lane> getLanes() {
+	public synchronized Vector<Lane> getLanes() {
 		return lanes;
 	}
 
@@ -829,7 +852,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return this.visions;
 	}
 
-	public Vector<Feeder> getFeeders() {
+	public synchronized Vector<Feeder> getFeeders() {
 		return feeders;
 	}
 
@@ -837,7 +860,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.feeders = feeders;
 	}
 	
-	public Vector<Nest> getNests() {
+	public synchronized Vector<Nest> getNests() {
 		return nestList;
 	}
 	

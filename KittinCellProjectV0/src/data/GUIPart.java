@@ -30,4 +30,8 @@ public class GUIPart {
 		
 		g.drawImage(image, (int)x, (int)y, null);
 	}
+	
+	public BufferedImage getImage() {
+		return image;
+	}
 }

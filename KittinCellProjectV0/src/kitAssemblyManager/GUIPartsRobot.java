@@ -8,6 +8,8 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.io.*;
 import javax.imageio.*;
+
+import data.GUIPart;
 import server.PartsRobot;
 
 public class GUIPartsRobot{
@@ -28,6 +30,8 @@ public class GUIPartsRobot{
     CopyOnWriteArrayList<String> kitLocations;			//Arraylist of the kit locations
     CopyOnWriteArrayList<BufferedImage> partImages;	//Arraylist of the 4 picture parts that it is holding. 
     CopyOnWriteArrayList<Integer> gripperPartIDs;		//Arraylist of the ID of the parts it is holding. 
+    
+    CopyOnWriteArrayList<GUIPart> gParts; 		//Arraylist of the gui versions of the parts. 
 
     PartsRobot pr;			//A reference to the parts robot from the server. 
 
@@ -54,6 +58,8 @@ public class GUIPartsRobot{
         kitLocations = new CopyOnWriteArrayList<String>();
         partImages = new CopyOnWriteArrayList<BufferedImage>();
         gripperPartIDs = new CopyOnWriteArrayList<Integer>();
+        
+        gParts = new CopyOnWriteArrayList<GUIPart>();
 
         for (int i = 0; i < 4; i++) {
         	gripperPartIDs.add(1);
@@ -85,15 +91,17 @@ public class GUIPartsRobot{
     public void update(){
         pr = app.getPartsRobot();
         y = pr.getY();
-        
-        try{
-	        for(int i = 0; i < app.getPartsRobot().getPartsHeld().size(); i++){
-	        	partImages.add(ImageIO.read(new File(app.getPartsRobot().getPartsHeld().get(i).getImagePath())));
+//        
+//        try{
+        	gParts.clear();
+	        for(int i = 0; i < pr.getPartsHeld().size(); i++){
+	        	//partImages.add(ImageIO.read(new File(app.getPartsRobot().getPartsHeld().get(i).getImagePath())));
+	        	gParts.add(new GUIPart(pr.getPartsHeld().get(i)));
 	        }
-        }
-        catch(IOException e){
-        	e.printStackTrace();
-        }
+//        }
+//        catch(IOException e){
+//        	e.printStackTrace();
+//        }
         
         gKitStandCamera.setCamera(pr.getKitStandCamera());
         gNestCamera.setCamera(pr.getNestCamera());
@@ -121,6 +129,8 @@ public class GUIPartsRobot{
             if(gripperHolding.get(i)){
                 at.translate(5,0);
                 //g2.drawImage(partImages.get(gripperPartIDs.get(i)),at,null);
+                //g2.drawImage(partImages.get(i),at,null);
+                g2.drawImage(gParts.get(i).getImage(), at, null);
                 at.translate(-5,0);
             }
             at.translate(13,26);

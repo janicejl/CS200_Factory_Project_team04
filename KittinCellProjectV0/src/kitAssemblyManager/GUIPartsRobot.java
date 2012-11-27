@@ -120,7 +120,7 @@ public class GUIPartsRobot{
             g2.drawImage(partsRobotGripperImage,at,null);
             if(gripperHolding.get(i)){
                 at.translate(5,0);
-                g2.drawImage(partImages.get(gripperPartIDs.get(i)),at,null);
+                //g2.drawImage(partImages.get(gripperPartIDs.get(i)),at,null);
                 at.translate(-5,0);
             }
             at.translate(13,26);

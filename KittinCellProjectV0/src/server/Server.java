@@ -662,7 +662,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		//Gantry has placed parts box on feeder
 		if(getGantryManager().isMsg()){
-			if(gantryDelay < 50){
+			if(gantryDelay < 100){
 				gantryDelay++;
 			}
 			else{

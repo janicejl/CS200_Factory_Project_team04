@@ -58,6 +58,8 @@ public class GantryAgent extends Agent implements Gantry {
 		print("At Feeder, ready to dump parts");
 		astate = AnimationState.atFeeder;
 		stateChanged();
+		System.out.println(currentFeeder);
+		System.out.println(fstate);
 	}
 	
 	
@@ -67,6 +69,7 @@ public class GantryAgent extends Agent implements Gantry {
 	
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		System.out.println("RUNNING");
 		if(currentFeeder != null && fstate == FeederState.ready && astate == AnimationState.atFeeder){
 			print("in Gantry scheduler, feeder is ready");
 			GivePartsToFeeder();

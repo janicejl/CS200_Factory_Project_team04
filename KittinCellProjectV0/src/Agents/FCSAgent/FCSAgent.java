@@ -59,6 +59,7 @@ public class FCSAgent extends Agent implements FCS {
 		numKitsNeeded--;
 		print("one kit completed");
 	}
+	//public void msgNewConfig
 		
 	/////////////////////////////////////////////////////////////
 	/** ACTIONS **/

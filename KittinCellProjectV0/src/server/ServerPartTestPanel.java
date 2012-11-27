@@ -93,7 +93,7 @@ public class ServerPartTestPanel extends JPanel implements ActionListener{
 				kit.add(p);
 				bins.add(new Bin(p, 3));
 			}
-			server.getGantryController().msgBinConfiguration(bins);
+		//	server.getGantryController().msgBinConfiguration(bins);
 			server.getPartsRobotAgent().msgMakeThisKit(kit, 4);
 			server.getKitRobotAgent().msgGetKits(4);
 		}

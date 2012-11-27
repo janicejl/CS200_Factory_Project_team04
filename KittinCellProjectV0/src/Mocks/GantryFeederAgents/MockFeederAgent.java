@@ -26,7 +26,7 @@ public class MockFeederAgent extends MockAgent implements Feeder {
 
 	@Override
 	public void msgHaveParts(Gantry g1) {
-		log.add(new LoggedEvent("msgHaveParts received from gantry " + g1.getName() + "."));
+		log.add(new LoggedEvent("msgHaveParts received from gantry " +  "."));
 		
 	}
 

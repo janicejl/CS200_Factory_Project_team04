@@ -17,7 +17,6 @@ public interface Feeder {
 	
 	void setGantry(Gantry g1);
 	void removeGantry();
-	void setGantryController(GantryController gc);
 	String getName();
 	int getNumber();
 }

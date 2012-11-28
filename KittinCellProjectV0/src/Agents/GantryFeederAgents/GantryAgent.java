@@ -23,6 +23,7 @@ public class GantryAgent extends Agent implements Gantry{
 	GantryState gantry_state;
 	Server server;
 	MyFeeder current_feeder_servicing;
+	int count;
 	
 	class MyFeeder
 	{
@@ -42,7 +43,6 @@ public class GantryAgent extends Agent implements Gantry{
 	
 	public void msgNeedThisPart(PartInfo p, Feeder feeder)
 	{
-		print("Gantry: Got a request for a part");
 		MyFeeder new_feeder = new MyFeeder();
 		new_feeder.part_type = p;
 		new_feeder.feeder = feeder;
@@ -127,7 +127,6 @@ public class GantryAgent extends Agent implements Gantry{
 				{
 					if(feeder.state == FeederState.NeedParts)
 					{
-						print("BOOOM");
 						GoGetBin(feeder);
 						return true;
 					}
@@ -152,8 +151,12 @@ public class GantryAgent extends Agent implements Gantry{
 	private void GivePartsToFeeder()
 	{
 		print("Gantry: Giving parts to feeder");
-		// call animation to give parts to feeder if there is one
+		
 		Bin bin = new Bin(current_feeder_servicing.part_type, 10);
+		for(int i=0;i<10;i++)
+		{
+			server.execute("Feed Feeer",current_feeder_servicing.feeder.getNumber(),current_feeder_servicing.part_type);
+		}
 		current_feeder_servicing.feeder.msgHereAreParts(bin);
 		gantry_state = GantryState.None;
 	}

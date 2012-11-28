@@ -62,7 +62,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	Vector<Feeder> feeders; //Feeders
 	Vector<Lane> lanes; //Lanes
 	Vector<Nest> nestList; //Nests
-	
+	TreeMap<Integer, PartInfo> feederPartInfo; //Map the partinfo that the feeder should make
+	TreeMap<Integer, Integer> feederPartNum; //Map the amount of parts to make
+	TreeMap<Integer, Integer> feederDelay; //Map to delay feeder dumping speed
 	Vector<Integer> laneCounter; //counter for delaying lane release
 	Vector<Integer> laneQueue; //counter for holding feed lane commands
 	
@@ -139,6 +141,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		
 		//Feeders
 		feeders = new Vector<Feeder>();
+		feederPartInfo = new TreeMap<Integer, PartInfo>();
+		feederPartNum = new TreeMap<Integer, Integer>();
+		feederDelay = new TreeMap<Integer, Integer>();
 		for(int i = 0; i < 4; i++){
 			if(i == 0 || i == 3){
     			feeders.add(new Feeder(475,30 + i*140));
@@ -146,7 +151,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		else {
     			feeders.add(new Feeder(400,30 + i*140));    			
     		}
+			
+			feederPartInfo.put(i, null);
+			feederPartNum.put(i, 0);
+			feederDelay.put(i, 0);
 		}
+		
+		
 		
 		//Nests
 		nestList = new Vector<Nest>();
@@ -533,15 +544,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	System.err.println(process);
     }
 	//Overloaded execute functions
-	public void execute(String process, Integer num, PartInfo info){
+	public void execute(String process, Integer feederNum, PartInfo info, Integer partNum){
 		//Dump part in feeder (one part)
 		if(process.equals("Feed Feeder")){
-			//create new part based on passed partinfo
-    		Part temp = new Part(info);
-    		System.out.println("TOPLANE: " + feeders.get(num).getTopLane());
-    		feeders.get(num).addParts(temp);
+			//add dump parts to feeder queue
+    		feederPartInfo.put(feederNum, info);
+    		feederPartNum.put(feederNum, partNum);
     	}
-		System.err.println(process + num);
+		System.err.println(process + feederNum);
 	}
     public void execute(String process, Integer num){
     	//Spawn an empty kit for the kit conveyer
@@ -697,6 +707,27 @@ public class Server extends JFrame implements Runnable, ActionListener{
 				gantryDelay = 0;
 			}
 			
+		}
+		
+		//Feeder dump parts
+		for(int i = 0; i < 4; i++){
+			if(feederPartInfo.get(i) != null){ //if there is a part to create
+				if(feederPartNum.get(i) != 0){ //if there is more than 0 parts to create
+					if(feederDelay.get(i) < 80){ //if not delayed
+						Part temp = new Part(feederPartInfo.get(i)); //create part
+						feeders.get(i).addParts(temp); //add part to feeder
+						feederPartNum.put(i, feederPartNum.get(i)-1); //decrement count
+						feederDelay.put(i, 0); //reset delay
+					}
+					else{
+						feederDelay.put(i, feederDelay.get(i)+1);
+					}
+				}
+				else{ //no more parts to create
+					feederPartInfo.put(i, null); //remove partinfo
+					gantry1.msgGantryAtFeeder(); //tell gantry parts dumped
+				}
+			}
 		}
 		
 		//Lane's Action Performed

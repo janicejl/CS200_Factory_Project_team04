@@ -8,6 +8,7 @@ import java.util.Vector;
 import data.Part;
 import Feeder.Feeder;
 import laneManager.Nest;
+import java.util.*;
 
 public class Lane implements ActionListener, Serializable{
     private Vector<Part> importList;  //Item Collection that is imported
@@ -30,6 +31,9 @@ public class Lane implements ActionListener, Serializable{
     private boolean atQueue = false;
     private int gateCounter;
     private int vibrationAmplitude; 
+    private int jamProbability;
+    private boolean isJammed;
+    private Random random;
     
     public class Gate implements Serializable{
     	public double topNodeX, topNodeY, bottomNodeX, bottomNodeY;
@@ -104,6 +108,9 @@ public class Lane implements ActionListener, Serializable{
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
 	    }
 	    vibrationAmplitude = 0;
+	    jamProbability = 10; //Initialized to 10
+	    isJammed = false;
+	    random = new Random();
     }
     
     public Lane(int width, int verticalSpacing, Nest n, Feeder f) {
@@ -130,10 +137,24 @@ public class Lane implements ActionListener, Serializable{
     
     public void actionPerformed( ActionEvent ae ) {	
 	    if(itemList.size() > 0) {
+//	    	random = new Random();
+//	    	System.out.println( random.nextInt(jamProbability) +  " out of: " + 10);
+	    	
+//	    	if(random.nextInt(jamProbability) == 0) {
+//	    		System.out.println("Lane jammed. Vibrate to release");
+//	    		this.isJammed = true;
+//	    	}
+	    	
 	    	for(int i = 0; i < itemList.size(); i++) { 
-		    	if(itemList.get(i).getX() > queueBorder + i*20) { //Moves parts down the line
+		    	if(itemList.get(i).getX() > queueBorder + i*20 && isJammed == false) { //Moves parts down the line
 		    		itemList.get(i).setX(itemList.get(i).getX() - conveyerBeltSpeed);
-		    	}	    	
+		    	}
+		    	else if(isJammed == true) {
+		    		itemList.get(i).setDestination(true);
+		    		atQueue = true;
+		    		
+		    	}
+		    	
 		    	else {
 		    		itemList.get(i).setDestination(true);
 		    		atQueue = true;
@@ -274,13 +295,22 @@ public class Lane implements ActionListener, Serializable{
 		this.releaseCount = releaseCount;
 	}
     
-    
     public void vibrateLane(int amplitude) {
     	if(itemList.size() > 0) {
     		isVibrating = true;
     		vibrationAmplitude = amplitude;
     	}
     	
+    }
+    
+    public void setJamProbability(int probability) {
+    	if(probability <= 100 && probability >= 0)
+    		this.jamProbability = probability;
+    	else System.out.println("Insert probability value between 0-100");
+    }
+    
+    public int getJamProbability() {
+    	return this.jamProbability;
     }
     
 }  

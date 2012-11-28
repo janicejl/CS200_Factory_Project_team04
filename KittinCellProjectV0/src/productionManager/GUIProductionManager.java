@@ -29,11 +29,11 @@ public class GUIProductionManager extends JPanel{
 		kamGraphics.setOpaque(false);
 		laneGraphics = new LaneGraphics(2);
 		laneGraphics.setOpaque(false);
-		gantryGraphics = new GUIGantryManager(2);
-		gantryGraphics.setOpaque(false);
+//		gantryGraphics = new GUIGantryManager(2);
+//		gantryGraphics.setOpaque(false);
 		add(kamGraphics);
 		add(laneGraphics);
-		add(gantryGraphics);
+//		add(gantryGraphics);
 		 try {
             background = ImageIO.read(new File("images/background1.png"));
 
@@ -56,7 +56,7 @@ public class GUIProductionManager extends JPanel{
 		g.translate(-320, 0);
 		kamGraphics.paintComponent(g);
 		g.translate(830, 0);
-		gantryGraphics.paintComponent(g);
+//		gantryGraphics.paintComponent(g);
 		g.dispose();
 		
 	}

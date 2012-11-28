@@ -29,6 +29,7 @@ public class Lane implements ActionListener, Serializable{
     private Nest nest;
     private boolean atQueue = false;
     private int gateCounter;
+    private int vibrationAmplitude; 
     
     public class Gate implements Serializable{
     	public double topNodeX, topNodeY, bottomNodeX, bottomNodeY;
@@ -102,6 +103,7 @@ public class Lane implements ActionListener, Serializable{
 	    	importList.get(i).setX(width-80);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
 	    }
+	    vibrationAmplitude = 0;
     }
     
     public Lane(int width, int verticalSpacing, Nest n, Feeder f) {
@@ -146,7 +148,13 @@ public class Lane implements ActionListener, Serializable{
 	    		gateCounter++;
 	    		//finishes at 100,vert + 31
 	    	}	
-	    	else if(gateCounter < 36 && gateCounter > 17) {
+	    	else if(itemList.size() > 0) {
+	    		gate1.setNodes(105, verticalSpacing + 19 - gateCounter);
+	    		gate2.setNodes(105,verticalSpacing + 29 + gateCounter);
+	    		
+	    		
+	    	}
+	    	else if(gateCounter < 36 && gateCounter > 17) { //close gate
 	    		gate1.setNodes(105, verticalSpacing + gateCounter - 17);
 	    		gate2.setNodes(105,verticalSpacing + 65 - gateCounter);
 	    		gateCounter++;
@@ -165,7 +173,7 @@ public class Lane implements ActionListener, Serializable{
 		    	if(itemList.size() > 0) {
 			    	for(int i = 0; i < itemList.size(); i++) { 
 				    	if(itemList.get(i).getX() > queueBorder + i*20) { //Moves parts down the line
-				    		itemList.get(i).setY(itemList.get(i).getY() - 10 * Math.sin(50*Math.PI*vibrationCounter));
+				    		itemList.get(i).setY(itemList.get(i).getY() - vibrationAmplitude * Math.sin(50*Math.PI*vibrationCounter));
 				    	}
 			    	}	
 		    	}
@@ -267,9 +275,10 @@ public class Lane implements ActionListener, Serializable{
 	}
     
     
-    public void vibrateLane() {
+    public void vibrateLane(int amplitude) {
     	if(itemList.size() > 0) {
     		isVibrating = true;
+    		vibrationAmplitude = amplitude;
     	}
     	
     }

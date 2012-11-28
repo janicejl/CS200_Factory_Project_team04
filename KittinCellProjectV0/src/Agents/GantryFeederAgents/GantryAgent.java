@@ -155,7 +155,7 @@ public class GantryAgent extends Agent implements Gantry{
 		Bin bin = new Bin(current_feeder_servicing.part_type, 10);
 		for(int i=0;i<10;i++)
 		{
-			server.execute("Feed Feeer",current_feeder_servicing.feeder.getNumber(),current_feeder_servicing.part_type);
+			server.execute("Feed Feeder",current_feeder_servicing.feeder.getNumber(),current_feeder_servicing.part_type);
 		}
 		current_feeder_servicing.feeder.msgHereAreParts(bin);
 		gantry_state = GantryState.None;

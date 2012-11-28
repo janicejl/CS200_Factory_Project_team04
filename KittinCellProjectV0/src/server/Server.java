@@ -112,7 +112,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	//Constructor
 	public Server(){
-
+		
 		//setup layout
 		setLayout(new GridBagLayout());
 		gui = new ServerPanel(this);
@@ -323,13 +323,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
         //Start Agent Threads
         
         //Nest Threads
-        for(NestAgent nest : nests){
+        for(NestAgent nest: nests){
         	nest.setPartsRobotAgent(partsRobotAgent);
         	nest.startThread();
         }
         
         //Lane Threads
-        for(LaneAgent lane : laneagents){
+        for(LaneAgent lane: laneagents){
         	lane.startThread();
         }
         
@@ -366,6 +366,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		timer = new Timer(10, this);
 		//start timer
 		timer.start();
+		this.setSize(1100, 400);
+		this.setVisible(true);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 	}
 	
 	//Start serversocket
@@ -757,9 +761,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	//Main Function
 	public static void main(String[] args) {
 		Server factory = new Server();
-		factory.setSize(1100, 400);
-		factory.setVisible(true);
-		factory.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		factory.start();
 	}
 

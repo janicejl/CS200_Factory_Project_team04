@@ -249,6 +249,23 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		animationstate = AnimationStatus.movingHome;
 		stateChanged();
 	}
+	
+	public void msgBadKit(int standindex, List<PartInfo> missingparts){
+		if(standindex == 0){
+			kit1.partsneeded.clear();
+			for(PartInfo p:missingparts){
+				kit1.partsneeded.add(p);
+			}
+			kit1.state = KitStatus.available;
+		}
+		else{
+			kit2.partsneeded.clear();
+			for(PartInfo p:missingparts){
+				kit2.partsneeded.add(p);
+			}
+			kit2.state = KitStatus.available;
+		}
+	}
 
 	//Scheduler:
 

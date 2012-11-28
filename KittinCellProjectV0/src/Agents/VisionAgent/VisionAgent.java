@@ -141,7 +141,7 @@ public class VisionAgent extends Agent implements Vision {
 		//}catch (InterruptedException e){
 		//	print("error with flashpermit");
 		//}
-		
+		print("BOOOM");
 		if (type==Type.NESTS_INSPECTOR) {
 			server.execute("Take Picture", nest2.getIndex());
 			print ("taking a picture at " + nest2.getIndex());
@@ -183,12 +183,12 @@ public class VisionAgent extends Agent implements Vision {
 		if (neededPartsList.size()==0) {
 			print("kit approved");
 			approved = true;
+
 		}
 		else {
 			print("kit not approved");
 			approved = false;
 		}	
-		//kitRobot.msgKitInspected(approved);
 		approveOrDenyParts();
 	}
 	
@@ -243,6 +243,10 @@ public class VisionAgent extends Agent implements Vision {
 			fullNestsMap.remove(nest2.getNumber());
 			nest1 = null;
 			nest2 = null;
+		}
+		else if(type == Type.KIT_INSPECTOR)
+		{
+			kitRobot.msgKitInspected(true);
 		}
 		
 		state=State.SCHEMATIC_RECEIVED;

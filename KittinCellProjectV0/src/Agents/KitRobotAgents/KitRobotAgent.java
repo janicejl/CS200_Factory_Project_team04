@@ -104,7 +104,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	}
 	
 	// this will have to change to an enum or something
-	public void msgKitInspected(KitConfig kit_config)
+	public void msgKitInspected(/*KitConfig kit_config*/ boolean bis_good)
 	{
 		System.out.println("KitRobot: kit has been inspected");
 		for(KitHolder kit_h:inspection_list)
@@ -112,8 +112,8 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 			if(kit_h.state == KitState.WaitingForInspection)
 			{
 				
-				
-				if(kit_config.kit_state == KitConfig.KitState.GOOD)
+				System.out.println("booooom");
+			/*	if(kit_config.kit_state == KitConfig.KitState.GOOD)
 				{
 					kit_h.state = KitState.FinishedKit;
 					stateChanged();
@@ -135,10 +135,10 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 				{
 					System.out.println("Error at KitRobot msgInspected");
 					return;
-				}
+				}*/
 				
 			
-				/*if(bis_good)
+				if(bis_good)
 				{
 					kit_h.state = KitState.FinishedKit;
 					stateChanged();
@@ -149,7 +149,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 					kit_h.state = KitState.DestroyKit;
 					stateChanged();
 					return;
-				}*/
+				}
 			}
 		}
 	}

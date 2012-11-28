@@ -66,6 +66,7 @@ public class ProductionListPanel extends JPanel implements ActionListener{
 				start.setText("Update Production"); //set text to update production
 				start.setEnabled(false); //turn off button when started
 				app.getClient().updateThread();
+				app.next();
 			}
 			else{
 //				app.getClient().setCommandSent("Update");

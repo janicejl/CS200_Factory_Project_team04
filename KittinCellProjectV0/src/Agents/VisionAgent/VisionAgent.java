@@ -188,7 +188,7 @@ public class VisionAgent extends Agent implements Vision {
 			print("kit not approved");
 			approved = false;
 		}	
-		kitRobot.msgKitInspected(approved);
+		//kitRobot.msgKitInspected(approved);
 		approveOrDenyParts();
 	}
 	

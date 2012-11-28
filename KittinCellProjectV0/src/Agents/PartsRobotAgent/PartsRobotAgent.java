@@ -332,12 +332,24 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	private void orderParts()
 	{
 		print("Requesting Parts from Nests");
+		int k = 0;
+		List <PartInfo> typesrequested = new ArrayList<PartInfo>();
 		for(int i = 0; i < recipe.size(); i++)
 		{	
-			print("Assigning Part " + recipe.get(i).getName() + " to nest " + nests.get(i).index);
-			nests.get(i).nest.msgNeedThisPart(recipe.get(i));
-			nests.get(i).state = NestStatus.assigned;
-			nests.get(i).type = recipe.get(i);
+			boolean alreadyordered = false;
+			for(PartInfo p:typesrequested){
+				if(p.getName().equals(recipe.get(i).getName())){
+					alreadyordered = true;
+				}
+			}
+			if(!alreadyordered){
+				print("Assigning Part " + recipe.get(i).getName() + " to nest " + nests.get(k).index);
+				nests.get(k).nest.msgNeedThisPart(recipe.get(i));
+				nests.get(k).state = NestStatus.assigned;
+				nests.get(k).type = recipe.get(i);
+				typesrequested.add(recipe.get(i));
+				k++;
+			}
 		}
 		state = RobotState.PartsOrdered;
 	}

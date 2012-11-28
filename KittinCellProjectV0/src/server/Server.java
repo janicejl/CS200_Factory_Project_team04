@@ -14,7 +14,6 @@ import javax.swing.Timer;
 import Agents.GantryFeederAgents.FeederAgent;
 import Agents.GantryFeederAgents.FeederLaneAgent;
 import Agents.GantryFeederAgents.GantryAgent;
-import Agents.GantryFeederAgents.GantryControllerAgent;
 import Agents.KitRobotAgents.KitConveyorAgent;
 import Agents.KitRobotAgents.KitRobotAgent;
 import Agents.KitRobotAgents.KitStandAgent;
@@ -102,8 +101,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	FeederAgent feeder3;
 	FeederAgent feeder4;
 	GantryAgent gantry1;
-	GantryAgent gantry2;
-	GantryControllerAgent gantryController;
+	//GantryControllerAgent gantryController;
 
 	boolean running; //state to see if production has started
 	
@@ -203,10 +201,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	//201 Agents Setup
     	
         //Gantry Controller and Agent
-		gantryController = new GantryControllerAgent(this);
+		//gantryController = new GantryControllerAgent(this);
 		gantry1 = new GantryAgent("gantry1", this);
-		gantry1.setGantryController(gantryController);
-		gantryController.msgGantryAdded(gantry1);
+		//gantry1.setGantryController(gantryController);
+	//	gantryController.msgGantryAdded(gantry1);
 		//gantry2 = new GantryAgent("gantry2", this);
 		//gantry2.setGantryController(gantryController);
 		//gantryController.msgGantryAdded(gantry2);
@@ -260,10 +258,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		feeder2 = new FeederAgent("feeder2", 5, lane3, lane4, 1, this);		
 		feeder3 = new FeederAgent("feeder3", 5, lane5, lane6, 2, this);		
 		feeder4 = new FeederAgent("feeder4", 5, lane7, lane8, 3, this);
-		feeder1.setGantryController(gantryController);
-		feeder2.setGantryController(gantryController);
-		feeder3.setGantryController(gantryController);
-		feeder4.setGantryController(gantryController);
+		feeder1.setGantry(gantry1);
+		feeder2.setGantry(gantry1);
+		feeder3.setGantry(gantry1);
+		feeder4.setGantry(gantry1);
+	//	feeder1.setGantryController(gantryController);
+		//feeder2.setGantryController(gantryController);
+	//	feeder3.setGantryController(gantryController);
+		//feeder4.setGantryController(gantryController);
 		lane1.setFeeder(feeder1);
 		lane2.setFeeder(feeder1);
 		lane3.setFeeder(feeder2);
@@ -315,8 +317,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
         nestvisionagent4.setFlashPermit(flashpermit);
         
         //Factory Control System Agent
-        FCSAgent = new FCSAgent(this, partsRobotAgent, kitRobotAgent, gantryController);
-        gantryController.setFCS(FCSAgent);
+        FCSAgent = new FCSAgent(this, partsRobotAgent, kitRobotAgent);
+       // gantryController.setFCS(FCSAgent);
         
         
         
@@ -348,7 +350,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		kitConveyorAgent.startThread();
         
 		//Gantry and Feeder Threads
-        gantryController.startThread();
+        
         gantry1.startThread();
         feeder1.startThread();
         feeder2.startThread();
@@ -666,7 +668,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		}
 		//Gantry has placed parts box on feeder
 		if(getGantryManager().isMsg()){
-			if(gantryDelay < 50){
+			if(gantryDelay < 100){
 				gantryDelay++;
 			}
 			else{
@@ -937,14 +939,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		return gantryFeedList;
 	}
 	
-	public GantryControllerAgent getGantryController() {
-		return gantryController;
-	}
-
-	public void setGantryController(GantryControllerAgent gantryController) {
-		this.gantryController = gantryController;
-	}
-
+	
 	public FCSAgent getFCSAgent() {
 		return FCSAgent;
 	}

@@ -1,12 +1,10 @@
 package Interface.GantryFeederAgent;
 
-import MoveableObjects.Bin;
+import data.PartInfo;
 
 public interface Gantry {
 	
-	void msgGiveFeederParts(Feeder f1, Bin b);
-	void msgReadyForParts();
-	
-	String getName();
-	void setGantryController(GantryController gc);
+	public void msgNeedThisPart(PartInfo p, Feeder feeder);
+	public void msgAnimationHasBin();
+	public void msgReadyForParts();
 }

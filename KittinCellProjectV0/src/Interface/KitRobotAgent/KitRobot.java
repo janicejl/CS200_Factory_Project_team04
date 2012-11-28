@@ -1,6 +1,7 @@
 package Interface.KitRobotAgent;
 
 import data.Kit;
+import data.KitConfig;
 
 public interface KitRobot {
 	
@@ -12,7 +13,7 @@ public interface KitRobot {
 
 	void msgPlaceKitAtPosition(int i);
 	
-	public void msgKitInspected(boolean bis_good);
+	public void msgKitInspected(KitConfig kit_config);
 
 
 }

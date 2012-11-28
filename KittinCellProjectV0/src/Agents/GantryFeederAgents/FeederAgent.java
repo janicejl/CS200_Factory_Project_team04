@@ -31,7 +31,7 @@ public class FeederAgent extends Agent implements Feeder {
 	MyLane left;
 	MyLane right;
 	Gantry gantry;
-	GantryController gc;
+	//Gantry gc;
 	Server app;
 	
 	private class MyLane{
@@ -65,6 +65,8 @@ public class FeederAgent extends Agent implements Feeder {
 
 	@Override
 	public void msgNeedThisPart(PartInfo p, String laneName) {
+		
+		
 		if(requestedPart.getName().equals("blank")){
 			requestedPart = p;
 		}
@@ -85,8 +87,8 @@ public class FeederAgent extends Agent implements Feeder {
 	@Override
 	public void msgHaveParts(Gantry g1) {
 		gantry = g1;
-		log.add(new LoggedEvent("msgHaveParts received from Gantry " + g1.getName() + "."));
-		print("msgHaveParts received from Gantry " + g1.getName() + ".");
+		log.add(new LoggedEvent("msgHaveParts received from Gantry " + "."));
+		print("msgHaveParts received from Gantry " + ".");
 		stateChanged();
 	}
 
@@ -148,7 +150,7 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		print("running");
+
 		if(fstate == FeederState.low && !currentPart.getName().equals("blank") ){
 			print("fstate is low and current part is not blank, RequestParts(currentPart) called.");
 			RequestParts(currentPart);
@@ -254,7 +256,7 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	private void RequestParts(PartInfo part){
 		print("Requesting part of type " + part.getName() + " from gantry");
-		gc.msgNeedThisPart(part, this);
+		gantry.msgNeedThisPart(part, this);
 		fstate = FeederState.waitingGantry;
 	}
 	
@@ -299,11 +301,7 @@ public class FeederAgent extends Agent implements Feeder {
 		this.gantry = null;
 	}
 	
-	@Override
-	public void setGantryController(GantryController gc) {
-		this.gc = gc;
-		
-	}
+
 	
 	public String getName(){
 		return this.name;

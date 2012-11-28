@@ -15,11 +15,12 @@ import Interface.KitRobotAgent.KitConveyor;
 import Interface.KitRobotAgent.KitRobot;
 import Interface.KitRobotAgent.KitStand;
 import data.Kit;
+import data.KitConfig;
 
 public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 
 
-	enum KitState {BeingBuilt,WaitForKit, MoveKit , MoveToInspection, WaitingForInspection, FinishedKit, DestroyKit};
+	enum KitState {BeingBuilt,WaitForKit, MoveKit , MoveToInspection, WaitingForInspection, FinishedKit, DestroyKit, MissingParts, BadParts, KitBeingFixed};
 	
 	enum KitRobotEvent {
 		CanPlaceKit, AnimationComplete};
@@ -102,16 +103,42 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		
 	}
 	
-	
-	public void msgKitInspected(boolean bis_good)
+	// this will have to change to an enum or something
+	public void msgKitInspected(KitConfig kit_config)
 	{
 		System.out.println("KitRobot: kit has been inspected");
 		for(KitHolder kit_h:inspection_list)
 		{
-			System.out.println(kit_h.state);
 			if(kit_h.state == KitState.WaitingForInspection)
 			{
-				if(bis_good)
+				
+				
+				if(kit_config.kit_state == KitConfig.KitState.GOOD)
+				{
+					kit_h.state = KitState.FinishedKit;
+					stateChanged();
+					return;
+				}
+				else if(kit_config.kit_state == KitConfig.KitState.MISSING_PARTS)
+				{
+					kit_h.state = KitState.MissingParts;
+					stateChanged();
+					return;
+				}
+				else if(kit_config.kit_state == KitConfig.KitState.BAD_PARTS)
+				{
+					kit_h.state = KitState.BadParts;
+					stateChanged();
+					return;
+				}
+				else if(kit_config.kit_state == KitConfig.KitState.NOT_SET)
+				{
+					System.out.println("Error at KitRobot msgInspected");
+					return;
+				}
+				
+			
+				/*if(bis_good)
 				{
 					kit_h.state = KitState.FinishedKit;
 					stateChanged();
@@ -122,7 +149,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 					kit_h.state = KitState.DestroyKit;
 					stateChanged();
 					return;
-				}
+				}*/
 			}
 		}
 	}
@@ -134,7 +161,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	public boolean pickAndExecuteAnAction() {
 
 			
-			if(kit_list.size() < 2 && kits_needed.size() > 0 && b_ask_for_kit)
+			if(kit_list.size() + inspection_list.size()  < 2 && kits_needed.size() > 0 && b_ask_for_kit)
 			{
 				CanIPlaceKit();
 				return true;
@@ -179,7 +206,31 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 				}
 			}
 			
-			if(!inspection_list.isEmpty())
+			if(!kit_list.isEmpty())
+			{
+				for(KitHolder kit:kit_list)
+				{
+					if(kit.state == KitState.MissingParts)
+					{
+						MoveKitBackToStand(kit);
+						return true;
+					}
+				}
+			}
+			
+			if(!kit_list.isEmpty())
+			{
+				for(KitHolder kit:kit_list)
+				{
+					if(kit.state == KitState.BadParts)
+					{
+						MoveKitBackToStand(kit);
+						return true;
+					}
+				}
+			}
+			
+			if(!inspection_list.isEmpty())	
 			{
 				for(KitHolder kit:inspection_list)
 				{
@@ -200,7 +251,14 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	
 	//ACTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	
+	private void MoveKitBackToStand(KitHolder kit)
+	{
+		//send message to animation here to move kit back to the stand.
+		//robot_agent.msgKitNeedsFixing(kit.position_on_stand, kit.state);
+		kit.state = KitState.KitBeingFixed;
+
+		
+	}
 	
 	private void FinishedKit(KitHolder kit)
 	{

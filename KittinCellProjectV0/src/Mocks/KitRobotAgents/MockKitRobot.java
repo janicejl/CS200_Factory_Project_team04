@@ -2,6 +2,7 @@ package Mocks.KitRobotAgents;
 
 import Interface.KitRobotAgent.KitRobot;
 import data.Kit;
+import data.KitConfig;
 import UnitTest.KitRobotAgents.EventLog;
 
 public class MockKitRobot extends MockAgent implements KitRobot{
@@ -33,8 +34,8 @@ public class MockKitRobot extends MockAgent implements KitRobot{
 	}
 
 	@Override
-	public void msgKitInspected(boolean bis_good) {
-		if (bis_good == true) {
+	public void msgKitInspected(KitConfig kit_config) {
+		if (kit_config.kit_state == KitConfig.KitState.GOOD) {
 			log.add(new UnitTest.KitRobotAgents.LoggedEvent("Kit has been inspected and it was approved"));	
 		}
 		else {

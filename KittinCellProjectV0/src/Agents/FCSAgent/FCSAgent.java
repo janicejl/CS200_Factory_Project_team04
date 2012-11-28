@@ -23,7 +23,6 @@ public class FCSAgent extends Agent implements FCS {
 
 	PartsRobot partsRobot;
 	KitRobot kitRobot;
-	GantryController gantryController;
 	
 	// public List<Gantry> gantriesList = Collections.synchronizedList( new ArrayList<Gantry>() );
 	// public List<PartInfo> kitRecipe = Collections.synchronizedList( new ArrayList<PartInfo>() );
@@ -36,12 +35,11 @@ public class FCSAgent extends Agent implements FCS {
 	/////////////////////////////////////////////////////////////
 	/** CONSTRUCTOR **/
 	
-	public FCSAgent(Server server, PartsRobot partsRobotAgent, KitRobot kitRobotAgent, GantryController gantryControllerAgent) {
+	public FCSAgent(Server server, PartsRobot partsRobotAgent, KitRobot kitRobotAgent) {
 		numKitsNeeded=0;
 		this.server = server;
 		this.partsRobot = partsRobotAgent;
 		this.kitRobot = kitRobotAgent;
-		this.gantryController = gantryControllerAgent;
 		print("created");
 	}
 	
@@ -59,6 +57,7 @@ public class FCSAgent extends Agent implements FCS {
 		numKitsNeeded--;
 		print("one kit completed");
 	}
+	//public void msgNewConfig
 		
 	/////////////////////////////////////////////////////////////
 	/** ACTIONS **/
@@ -70,7 +69,7 @@ public class FCSAgent extends Agent implements FCS {
 			binsList.add(new Bin(p, amount));
 		}
 	
-		gantryController.msgBinConfiguration(binsList);
+	
 		
 		partsRobot.msgMakeThisKit(info, amount);
 		kitRobot.msgGetKits(amount);

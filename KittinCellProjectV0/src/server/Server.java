@@ -458,6 +458,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Load Stand 2")){
     		getKitRobot().addCommand("load,0,2");
     	}
+    	else if(process.equals("Redo 1")){
+    		getKitRobot().addCommand("load,5,1");
+    	}
+    	else if(process.equals("Redo 2")){
+    		getKitRobot().addCommand("load,5,2");
+    	}
     	//move kit in stand 1 to inspection
     	else if(process.equals("Check Kit 1")){
     		getKitRobot().addCommand("load,1,5");
@@ -484,6 +490,20 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	//Take picture for kit inspection stand
     	else if (process.equals("Take Picture")) {
     		partsRobot.getKitStandCamera().takePicture();
+    	}
+    	
+    	//Gantry Command (Just for Partsbox Pickup)
+    	else if(process.equals("Pickup Box"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("load");
+    		}
+       		else
+    		{
+    			gantryWaitList.add("load");
+    			gantryFeedList.add(-1);
+    		}
     	}
     	
     	//FCS Commands
@@ -570,13 +590,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	{
     		if(gantryManager.getGantry().getState().equals("free"))
     		{
-    			gantryManager.getGantry().setState("load");
+    			gantryManager.getGantry().setState("loading");
     			gantryManager.getGantry().setFeed(num);
     		}
     		//command queue
        		else
     		{
-    			gantryWaitList.add("load");
+    			gantryWaitList.add("loading");
     			gantryFeedList.add(num);
     		}
     	}

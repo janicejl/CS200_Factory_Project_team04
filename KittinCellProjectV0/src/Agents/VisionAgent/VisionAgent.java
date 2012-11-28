@@ -47,6 +47,8 @@ public class VisionAgent extends Agent implements Vision {
 	public boolean approved;
 	public boolean waiting;
 	
+	int numberofnestsneeded = 8;
+	
 	/////////////////////////////////////////////////////////////
 	/** CONSTRUCTOR **/
 	
@@ -72,9 +74,14 @@ public class VisionAgent extends Agent implements Vision {
 		this.neededPartsList = partsList;
 		if(partsList.size()>0){
 			for(Part p : partsList){
-				fullNestsPartsList.add(p.info);
+				fullNestsPartsList.add(p.info);				
+				
 			}
 		}
+		numberofnestsneeded = nestsList.size();
+		
+		
+		
 		approved = false;
 		state = State.SCHEMATIC_RECEIVED;
 		print("schematic received from PartsRobot");
@@ -86,6 +93,8 @@ public class VisionAgent extends Agent implements Vision {
 	public void msgImFull(Nest nest) {
 		fullNestsMap.put(nest.getNumber(), nest);
 		print("received message msgImFull from nest "+ nest.getName());
+		print("Nest Number: " +nest.getNumber());
+		print("Numberofnestsneeded: " + numberofnestsneeded);
 		 stateChanged();
 	}
 	
@@ -141,10 +150,18 @@ public class VisionAgent extends Agent implements Vision {
 		//}catch (InterruptedException e){
 		//	print("error with flashpermit");
 		//}
-		
+		print("BOOOM");
 		if (type==Type.NESTS_INSPECTOR) {
-			server.execute("Take Picture", nest2.getIndex());
-			print ("taking a picture at " + nest2.getIndex());
+			if(nest1.getIndex()==numberofnestsneeded){
+				server.execute("Take Picture", nest1.getIndex()+1);
+				print ("taking a picture at " + (nest1.getIndex()+1));
+
+			}
+			else{
+				server.execute("Take Picture", nest2.getIndex());
+				print ("taking a picture at " + nest2.getIndex());
+
+			}
 		}
 		if (type==Type.KIT_INSPECTOR) {
 			server.execute("Take Picture");
@@ -169,6 +186,13 @@ public class VisionAgent extends Agent implements Vision {
 
 			}
 		}
+		if(fullNestsMap.containsKey(numberofnestsneeded) && numberofnestsneeded%2 == 1){
+			nest1 = fullNestsMap.get(numberofnestsneeded);
+			nest2 = fullNestsMap.get(numberofnestsneeded+1);
+			state = State.READY_TO_TAKE_PICTURE;
+			print( "Nest found; ready to take picture" );
+			stateChanged();	
+		}
 	}
 	
 	private void inspectKit() {
@@ -183,18 +207,24 @@ public class VisionAgent extends Agent implements Vision {
 		if (neededPartsList.size()==0) {
 			print("kit approved");
 			approved = true;
+
 		}
 		else {
 			print("kit not approved");
 			approved = false;
 		}	
-		//kitRobot.msgKitInspected(approved);
 		approveOrDenyParts();
 	}
 	
 	private void inspectNests() {
+	if(nest1.getIndex() == numberofnestsneeded){
+		inspectSoloNest();
+	}
+	else{
+		
 		boolean nest1Approved=false;
 		boolean nest2Approved=false;
+	
 		
 		// nest1.getPartType should return the string of the name that the nest should hold
 		if (nest1.getPartInfo() == fullNestsPartsList.get( nest1.getNumber()-1) ) {
@@ -202,7 +232,7 @@ public class VisionAgent extends Agent implements Vision {
 			print(nest1.getName() + " approved");
 		}
 		else {
-			nest2Approved=false;
+			nest1Approved=false;
 			nest1.msgBadParts();
 			print(nest1.getName() + " not approved");
 		}
@@ -226,14 +256,39 @@ public class VisionAgent extends Agent implements Vision {
 			print("consecutive not approved");
 		}
 		approveOrDenyParts();
-		
+	}	
 	}
+	
+	private void inspectSoloNest(){
+		boolean nest1Approved = false;
+		if (nest1.getPartInfo() == fullNestsPartsList.get( nest1.getNumber()-1) ) {
+			nest1Approved=true;
+			print(nest1.getName() + " approved");
+		}
+		else {
+			nest1Approved=false;
+			nest1.msgBadParts();
+			print(nest1.getName() + " not approved");
+		}
+		if(nest1Approved){
+			partsRobot.msgPartsApproved(nest1.getNumber());
+		}
+		else{
+			nest1.msgBadParts();
+		}
+		fullNestsMap.remove(nest1.getNumber());
+		nest1 = null;
+		nest2 = null;
+		state=State.SCHEMATIC_RECEIVED;
+
+	}
+	
 	
 	private void approveOrDenyParts() {
 		if (type==Type.NESTS_INSPECTOR) {
 			if (approved) {
 				partsRobot.msgPartsApproved(nest1.getNumber());
-				partsRobot.msgPartsApproved(nest2.getNumber());
+				partsRobot.msgPartsApproved(nest2.getNumber());				
 			}
 /*			else {
 				// nestAgent.msgBadParts();
@@ -241,8 +296,13 @@ public class VisionAgent extends Agent implements Vision {
 */
 			fullNestsMap.remove(nest1.getNumber());
 			fullNestsMap.remove(nest2.getNumber());
+			
 			nest1 = null;
 			nest2 = null;
+		}
+		else if(type == Type.KIT_INSPECTOR)
+		{
+			kitRobot.msgKitInspected(true);
 		}
 		
 		state=State.SCHEMATIC_RECEIVED;

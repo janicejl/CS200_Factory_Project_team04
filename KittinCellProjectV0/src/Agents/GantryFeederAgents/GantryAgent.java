@@ -145,7 +145,7 @@ public class GantryAgent extends Agent implements Gantry{
 	
 	private void MoveGantryToFeeder()
 	{
-		//play animation to move gantry to feeder
+		server.execute("Load Feeder", current_feeder_servicing.feeder.getNumber());
 	}
 	
 	private void GivePartsToFeeder()
@@ -159,6 +159,8 @@ public class GantryAgent extends Agent implements Gantry{
 		}
 		current_feeder_servicing.feeder.msgHereAreParts(bin);
 		gantry_state = GantryState.None;
+		server.execute("Idle Bin",current_feeder_servicing.feeder.getNumber());
+		current_feeder_servicing = null;
 	}
 	
 	private void GoGetBin(MyFeeder feeder)
@@ -168,8 +170,8 @@ public class GantryAgent extends Agent implements Gantry{
 		feeder.state = FeederState.GettingBin;
 		current_feeder_servicing = feeder;
 		server.execute("Make PartsBox", feeder.part_type);
-		server.execute("Load Feeder", feeder.feeder.getNumber());
-		server.execute("Idle Bin",feeder.feeder.getNumber());
+		server.execute("Pickup Box");
+		//server.execute("Idle Bin",feeder.feeder.getNumber());
 		
 	}
 	

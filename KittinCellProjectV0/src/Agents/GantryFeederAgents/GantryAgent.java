@@ -14,7 +14,7 @@ import MoveableObjects.Bin;
 
 public class GantryAgent extends Agent implements Gantry{
 
-	enum FeederState {NeedParts, GettingBin};
+	enum FeederState {NeedParts, GettingBin, NeedPurge};
 	enum GantryEvents {
 		GotBin, FeederReadyForBin, GantryAtFeeder}
 	enum GantryState {GettingBin,None};
@@ -51,6 +51,15 @@ public class GantryAgent extends Agent implements Gantry{
 		stateChanged();
 		
 	}
+	
+	public void msgNeedBinPurged(Feeder feeder)
+	{
+		MyFeeder new_feeder = new MyFeeder();
+		new_feeder.feeder = feeder;
+		new_feeder.state = FeederState.NeedPurge;
+		feeder_list.add(new_feeder);
+		stateChanged();
+	}
 
 	public void msgAnimationHasBin()
 	{
@@ -72,7 +81,7 @@ public class GantryAgent extends Agent implements Gantry{
 		gantry_events.add(GantryEvents.GantryAtFeeder);
 		stateChanged();
 	}
-
+	
 	@Override
 	protected boolean pickAndExecuteAnAction() {
 
@@ -125,6 +134,17 @@ public class GantryAgent extends Agent implements Gantry{
 			{
 				for(MyFeeder feeder:feeder_list)
 				{
+					if(feeder.state == FeederState.NeedPurge)
+					{
+						MoveBinToPurge(feeder);
+						return true;
+					}
+				}
+			}
+			if(!feeder_list.isEmpty())
+			{
+				for(MyFeeder feeder:feeder_list)
+				{
 					if(feeder.state == FeederState.NeedParts)
 					{
 						GoGetBin(feeder);
@@ -132,6 +152,7 @@ public class GantryAgent extends Agent implements Gantry{
 					}
 				}
 			}
+			
 		}
 		
 		
@@ -153,14 +174,18 @@ public class GantryAgent extends Agent implements Gantry{
 		print("Gantry: Giving parts to feeder");
 		
 		Bin bin = new Bin(current_feeder_servicing.part_type, 10);
-		for(int i=0;i<10;i++)
-		{
-			server.execute("Feed Feeder",current_feeder_servicing.feeder.getNumber(),current_feeder_servicing.part_type);
-		}
+		//need to change how many parts to feed
+		server.execute("Feed Feeder",current_feeder_servicing.feeder.getNumber(),current_feeder_servicing.part_type, 10);
 		current_feeder_servicing.feeder.msgHereAreParts(bin);
 		gantry_state = GantryState.None;
-		server.execute("Idle Bin",current_feeder_servicing.feeder.getNumber());
-		current_feeder_servicing = null;
+	}
+	
+	private void MoveBinToPurge(MyFeeder feeder)
+	{
+		print("Gantry: Moving bin to purge phase");
+		server.execute("Idle Bin",feeder.feeder.getNumber());
+		gantry_state = GantryState.None;
+		feeder_list.remove(feeder);
 	}
 	
 	private void GoGetBin(MyFeeder feeder)

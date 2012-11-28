@@ -174,8 +174,7 @@ public class GantryManager implements Serializable,ActionListener
 		{
 			if(state.equals("load"))
 			{
-				gantry.setState("loading");
-				state = "loading";
+				gantry.setState("free");
 			}
 			else if(state.equals("loading"))
 			{ 

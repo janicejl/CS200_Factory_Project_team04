@@ -492,6 +492,20 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		partsRobot.getKitStandCamera().takePicture();
     	}
     	
+    	//Gantry Command (Just for Partsbox Pickup)
+    	else if(process.equals("Pickup Box"))
+    	{
+    		if(gantryManager.getGantry().getState().equals("free"))
+    		{
+    			gantryManager.getGantry().setState("load");
+    		}
+       		else
+    		{
+    			gantryWaitList.add("load");
+    			gantryFeedList.add(-1);
+    		}
+    	}
+    	
     	//FCS Commands
     	
     	//Kit Complete, adjust server joblist
@@ -576,13 +590,13 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	{
     		if(gantryManager.getGantry().getState().equals("free"))
     		{
-    			gantryManager.getGantry().setState("load");
+    			gantryManager.getGantry().setState("loading");
     			gantryManager.getGantry().setFeed(num);
     		}
     		//command queue
        		else
     		{
-    			gantryWaitList.add("load");
+    			gantryWaitList.add("loading");
     			gantryFeedList.add(num);
     		}
     	}

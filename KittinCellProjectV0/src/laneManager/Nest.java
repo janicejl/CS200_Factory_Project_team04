@@ -57,4 +57,9 @@ public class Nest implements Serializable{
 	public void purgeNest() {	//empties the array since the parts are just dumped onto the ground. 
 		parts.clear();
 	}
+
+	public int getSize() {
+		return this.parts.size();
+	}
+
 }

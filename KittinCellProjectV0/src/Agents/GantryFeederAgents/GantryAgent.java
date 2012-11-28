@@ -169,6 +169,7 @@ public class GantryAgent extends Agent implements Gantry{
 		current_feeder_servicing = feeder;
 		server.execute("Make PartsBox", feeder.part_type);
 		server.execute("Load Feeder", feeder.feeder.getNumber());
+		server.execute("Idle Bin",feeder.feeder.getNumber());
 		
 	}
 	

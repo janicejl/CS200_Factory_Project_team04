@@ -290,7 +290,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		}
 		else
 		{
-			System.out.println("hello");
+			
 		}
 	}
 	

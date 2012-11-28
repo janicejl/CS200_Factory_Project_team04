@@ -146,7 +146,13 @@ public class Lane implements ActionListener, Serializable{
 	    		gateCounter++;
 	    		//finishes at 100,vert + 31
 	    	}	
-	    	else if(gateCounter < 36 && gateCounter > 17) {
+	    	else if(itemList.size() > 0) {
+	    		gate1.setNodes(105, verticalSpacing + 19 - gateCounter);
+	    		gate2.setNodes(105,verticalSpacing + 29 + gateCounter);
+	    		
+	    		
+	    	}
+	    	else if(gateCounter < 36 && gateCounter > 17) { //close gate
 	    		gate1.setNodes(105, verticalSpacing + gateCounter - 17);
 	    		gate2.setNodes(105,verticalSpacing + 65 - gateCounter);
 	    		gateCounter++;

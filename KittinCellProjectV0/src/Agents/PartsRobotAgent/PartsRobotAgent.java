@@ -41,7 +41,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	//Constructor must instantiate all the MyNests and have references to all the nests
 	public class MyNest
 	{
-		public PartInfo type;
+		public PartInfo type = null;
 		int index;
 		public Nest nest;
 		public NestStatus state = NestStatus.noAction;
@@ -334,6 +334,9 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		print("Requesting Parts from Nests");
 		int k = 0;
 		List <PartInfo> typesrequested = new ArrayList<PartInfo>();
+		for(MyNest mn: nests){
+			mn.type = null;
+		}
 		for(int i = 0; i < recipe.size(); i++)
 		{	
 			boolean alreadyordered = false;
@@ -361,7 +364,10 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		List<Nest> nestassignments = new ArrayList<Nest>();
 		for(MyNest mn : nests)
 		{
-			nestassignments.add(mn.nest);
+			if(mn.type!= null)
+			{
+				nestassignments.add(mn.nest);
+			}
 		}
 		if(!cameras.isEmpty())
 		{

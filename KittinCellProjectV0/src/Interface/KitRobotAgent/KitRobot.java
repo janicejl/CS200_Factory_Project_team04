@@ -13,7 +13,9 @@ public interface KitRobot {
 
 	void msgPlaceKitAtPosition(int i);
 	
-	public void msgKitInspected(/*KitConfig kit_config*/ boolean isgoood);
+	public void msgKitInspected(KitConfig kit_config);
+	
+	
 
 
 }

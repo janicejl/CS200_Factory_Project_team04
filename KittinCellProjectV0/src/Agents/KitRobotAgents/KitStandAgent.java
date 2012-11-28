@@ -25,6 +25,11 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		public KitState state;
 		public List<Part> parts_to_add;
 		public int position;
+		
+		public KitHolder()
+		{
+			
+		}
 		public KitHolder(Kit _kit, List<Part> _parts)
 		{
 			kit = _kit;
@@ -39,7 +44,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	List<KitHolder> inpspection_list = Collections.synchronizedList( new ArrayList<KitHolder>());
 	List<Integer> robot_waiting_for_kit = Collections.synchronizedList( new ArrayList<Integer>());
 	//List<Integer> robot_waiting_for_kit = Collections.synchronizedList( new ArrayList<Integer>());
-	enum KitState {BeingInspected,AddParts,Empty,None,KitFinished, NeedKit, WaitinForInspectionQueueToClear,BeingUsed}
+	enum KitState {BeingInspected,AddParts,Empty,None,KitFinished, NeedKit, WaitinForInspectionQueueToClear,BeingUsed, WaitingToBeFixed}
 
 
 	PartsRobot parts_robot;
@@ -84,6 +89,17 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 				return;
 			}
 		}
+	}
+	
+	public void msgPlacingBadKit(Kit k,int position)
+	{
+		System.out.println("KitStand: bad kit being placed");
+		KitHolder kit_h = new KitHolder();
+		kit_h.kit = k;
+		kit_h.state = KitState.WaitingToBeFixed;
+		kit_h.position = position;
+		kit_holder_list.add(kit_h);
+		stateChanged();
 	}
 	
 	public void msgKitIsDone(int position)

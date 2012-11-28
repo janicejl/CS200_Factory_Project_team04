@@ -347,6 +347,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 				nests.get(k).nest.msgNeedThisPart(recipe.get(i));
 				nests.get(k).state = NestStatus.assigned;
 				nests.get(k).type = recipe.get(i);
+				typesrequested.add(recipe.get(i));
 				k++;
 			}
 		}

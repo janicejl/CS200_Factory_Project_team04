@@ -458,6 +458,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Load Stand 2")){
     		getKitRobot().addCommand("load,0,2");
     	}
+    	else if(process.equals("Redo 1")){
+    		getKitRobot().addCommand("load,5,1");
+    	}
+    	else if(process.equals("Redo 2")){
+    		getKitRobot().addCommand("load,5,2");
+    	}
     	//move kit in stand 1 to inspection
     	else if(process.equals("Check Kit 1")){
     		getKitRobot().addCommand("load,1,5");

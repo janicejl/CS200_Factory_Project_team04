@@ -719,13 +719,31 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			}
 			getPartsRobot().getNestCamera().setAnimationDone(false);
 		}
-		//Gantry has placed parts box on feeder
-		if(getGantryManager().isMsg()){
-			if(gantryDelay < 100){
+		
+		//Gantry has picked up parts box from station
+		if(getGantryManager().isStationMsg())
+		{
+			if(gantryDelay<50)
+			{
 				gantryDelay++;
 			}
-			else{
-				getGantryManager().setMsg(false);
+			else
+			{
+				getGantryManager().setStationMsg(false);
+				gantry1.msgReadyForParts();
+				gantryDelay =0;
+			}
+		}
+		//Gantry has placed parts box on feeder
+		if(getGantryManager().isFeederMsg())
+		{
+			if(gantryDelay < 100)
+			{
+				gantryDelay++;
+			}
+			else
+			{
+				getGantryManager().setFeederMsg(false);
 				gantry1.msgGantryAtFeeder();
 				gantryDelay = 0;
 			}

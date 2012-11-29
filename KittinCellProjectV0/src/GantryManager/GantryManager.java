@@ -10,20 +10,15 @@ import data.PartInfo;
 public class GantryManager implements Serializable,ActionListener
 {
 	Gantry gantry;
-	/*Vector<PartsBox> parts; //Partsboxes that are not purged or exiting
-	Vector<PartsBox> exiting; //Partsboxes that are leaving the factory
-	Vector<PartsBox> purged; //Partsboxes that have been purged
-	Vector<Integer> feeder;
-	Vector<PartInfo> feeders;
-	*/
-	CopyOnWriteArrayList<PartsBox> parts;
-	CopyOnWriteArrayList<PartsBox> exiting;
-	CopyOnWriteArrayList<PartsBox> purged;
+	CopyOnWriteArrayList<PartsBox> parts;  //Partsboxes that are not purged or exiting
+	CopyOnWriteArrayList<PartsBox> exiting;  //Partsboxes that are leaving the factory
+	CopyOnWriteArrayList<PartsBox> purged;  //Partsboxes that have been purged
 	CopyOnWriteArrayList<Integer> feeder;
 	CopyOnWriteArrayList<PartInfo> feeders;
 	Vector<Feeder.Feeder> feed;
 	
-	boolean msg = false;
+	boolean feederMsg = false;
+	boolean stationMsg = false;
 	
 	public GantryManager(Vector<Feeder.Feeder> f)
 	{
@@ -174,6 +169,7 @@ public class GantryManager implements Serializable,ActionListener
 		{
 			if(state.equals("load"))
 			{
+				stationMsg = true;
 				gantry.setState("free");
 			}
 			else if(state.equals("loading"))
@@ -182,7 +178,7 @@ public class GantryManager implements Serializable,ActionListener
 				feed.get(gantry.getFeed()).setInfo(parts.get(gantry.getBox()).getPartInfo());
 				parts.get(gantry.getBox()).setState("feeding");
 				gantry.setState("free");
-				msg = true;
+				feederMsg = true;
 				state = "free";
 			}
 			else if(state.equals("dumpi"))
@@ -294,14 +290,25 @@ public class GantryManager implements Serializable,ActionListener
 		return feeders;
 	}
 	
-	public boolean isMsg() {
-		return msg;
+	public boolean isFeederMsg() 
+	{
+		return feederMsg;
 	}
 
-	public void setMsg(boolean msg) {
-		this.msg = msg;
+	public void setFeederMsg(boolean msg)
+	{
+		feederMsg = msg;
 	}
 
+	public boolean isStationMsg()
+	{
+		return stationMsg;
+	}
+	
+	public void setStationMsg(boolean msg)
+	{
+		stationMsg = msg;
+	}
 	public void addPartInfo(PartInfo p)
 	{
 		parts.add(new PartsBox(p));

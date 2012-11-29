@@ -24,9 +24,9 @@ public class PartsRobot implements Runnable, Serializable{
     double newY;					//final y position of the parts robot
     double angle;					//rotation of the parts robot
     double newAngle;				//final rotation of the parts robot
-    double moveSpeed = 10;			//speed of the movement of the parts robot
-    double rotationSpeed = 2;		//Speed of rotation of the parts robot. 
-    double extensionSpeed = 2;		//Speed of extension of the grippers of the parts robot. 
+    double moveSpeed = 15;			//speed of the movement of the parts robot
+    double rotationSpeed = 4;		//Speed of rotation of the parts robot. 
+    double extensionSpeed = 4;		//Speed of extension of the grippers of the parts robot. 
     
     private Camera kitStandCamera;		//Camera for the kit stand
     private Camera nestCamera;			//Camera for the nest
@@ -307,19 +307,21 @@ public class PartsRobot implements Runnable, Serializable{
                     angle = 360.0;
                 }
             }
-            for (int i = 0 ;i<4 ; i++) {
-                if(newGripperExtensions.get(i) != gripperExtensions.get(i)){
-                    processing = true;
-                    if(newGripperExtensions.get(i) > gripperExtensions.get(i)){
-                        gripperExtensions.set(i,gripperExtensions.get(i) + extensionSpeed);
-                    }
-                    else {
-                        gripperExtensions.set(i,gripperExtensions.get(i) - extensionSpeed);
-                    }
-                    if(Math.abs(newGripperExtensions.get(i) - gripperExtensions.get(i)) < extensionSpeed) {
-                        gripperExtensions.set(i,newGripperExtensions.get(i));
-                    }
-                }
+            else {
+	            for (int i = 0 ;i<4 ; i++) {
+	                if(newGripperExtensions.get(i) != gripperExtensions.get(i)){
+	                    processing = true;
+	                    if(newGripperExtensions.get(i) > gripperExtensions.get(i)){
+	                        gripperExtensions.set(i,gripperExtensions.get(i) + extensionSpeed);
+	                    }
+	                    else {
+	                        gripperExtensions.set(i,gripperExtensions.get(i) - extensionSpeed);
+	                    }
+	                    if(Math.abs(newGripperExtensions.get(i) - gripperExtensions.get(i)) < extensionSpeed) {
+	                        gripperExtensions.set(i,newGripperExtensions.get(i));
+	                    }
+	                }
+	            }
             }
         }
     }

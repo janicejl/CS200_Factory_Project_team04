@@ -47,12 +47,12 @@ public class GUIKit {
 			BufferedImage p;
 			try {
 				p = ImageIO.read(new File(parts.get(i).getImagePath()));
-				if(kit.isGrabbed()){
-					g.drawImage(p, -300, -300, null);
-				}
-				else if(!kit.isGrabbed()){
+//				if(kit.isGrabbed()){
+//					g.drawImage(p, -300, -300, null);
+//				}
+//				else if(!kit.isGrabbed()){
 					g.drawImage(p, (int)parts.get(i).getX(), (int)parts.get(i).getY(), null);
-				}
+//				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

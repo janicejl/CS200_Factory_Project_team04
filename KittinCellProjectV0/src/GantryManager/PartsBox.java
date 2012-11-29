@@ -11,6 +11,7 @@ public class PartsBox implements Serializable
 	int xCurrent;
 	int yCurrent;
 	int feeder;
+	int speed = 2;
 	String state;
 	static int xdim = 50;
 	static int ydim = 100;
@@ -46,16 +47,20 @@ public class PartsBox implements Serializable
 		if(xFinal!=xCurrent)
 		{
 			if(xFinal<xCurrent)
-				xCurrent-=1;
-			else
-				xCurrent+=1;
+				xCurrent-=speed;
+			else	
+				xCurrent+=speed;
+			if(Math.abs(xFinal-xCurrent) < speed)
+				xCurrent = xFinal;
 		}
 		if(yFinal!=yCurrent)
 		{
 			if(yFinal<yCurrent)
-				yCurrent-=1;
+				yCurrent-=speed;
 			else
-				yCurrent+=1;
+				yCurrent+=speed;
+			if(Math.abs(yFinal-yCurrent) < speed)
+				yCurrent = yFinal;
 		}
 	}
 	

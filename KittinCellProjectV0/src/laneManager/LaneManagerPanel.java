@@ -16,11 +16,11 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 	JComboBox laneSelectBox;
 	JButton jamButton;
 	JLabel laneLabel;
-	JSlider laneSpeedSlider;
+	JSlider vibrationSlider;
 	String[] lanes;
 	
-	public LaneManagerPanel(LaneManagerApp _app){
-		app = _app;
+	public LaneManagerPanel(){
+		//app = _app;
 		lanes = new String[]{"Lane 1", "Lane 2", "Lane 3", "Lane 4", "Lane 5", "Lane 6", "Lane 7", "Lane 8"};
 		horizPanels  = new ArrayList<JPanel>();
 		
@@ -34,12 +34,17 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		laneSelectBox.setMinimumSize(new Dimension(550, 27));
 		laneSelectBox.setMaximumSize(new Dimension(550, 27));
 		
-		laneSpeedSlider = new JSlider(0, 10);
-		laneSpeedSlider.addChangeListener(this);
-		laneSpeedSlider.setPreferredSize(new Dimension(700, 40));
-		laneSpeedSlider.setMinimumSize(new Dimension(700, 40));
-		laneSpeedSlider.setMaximumSize(new Dimension(700, 40));
-		laneSpeedSlider.setValue(0);
+		vibrationSlider = new JSlider(0, 10);
+		vibrationSlider.addChangeListener(this);
+		vibrationSlider.setPreferredSize(new Dimension(690, 40));
+		vibrationSlider.setMinimumSize(new Dimension(690, 40));
+		vibrationSlider.setMaximumSize(new Dimension(690, 40));
+		vibrationSlider.setMajorTickSpacing(10);
+		vibrationSlider.setMinorTickSpacing(1);
+		vibrationSlider.setPaintTicks(true);
+		vibrationSlider.setPaintLabels(true);
+		vibrationSlider.setSnapToTicks(true);
+		vibrationSlider.setValue(0);
 		
 		laneLabel = new JLabel("Vibration:");
 		laneLabel.setPreferredSize(new Dimension(70, 27));
@@ -69,7 +74,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		horizPanels.get(horizPanels.size()-1).setPreferredSize(new Dimension(700, 50));
 		horizPanels.get(horizPanels.size()-1).setMaximumSize(new Dimension(700, 50));
 		horizPanels.get(horizPanels.size()-1).setMinimumSize(new Dimension(700, 50));
-		horizPanels.get(horizPanels.size()-1).add(laneSpeedSlider);
+		horizPanels.get(horizPanels.size()-1).add(vibrationSlider);
 		
 		for(int i=0;i<horizPanels.size();i++){
 			this.add(horizPanels.get(i));
@@ -86,14 +91,14 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 	}
 	
 	//this main is for testing the panel
-	/*public static void main(String[] args){
+	public static void main(String[] args){
 		JFrame test = new JFrame();
 		LaneManagerPanel p1 = new LaneManagerPanel();
 		test.add(p1);
-		test.setSize(500, 400);
+		test.setSize(700, 400);
 		test.setVisible(true);
 		test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}*/
+	}
 
 	@Override
 	public void stateChanged(ChangeEvent e) {

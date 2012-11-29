@@ -8,7 +8,7 @@ import java.util.*;
 public class GantryManagerClient implements Runnable
 {
 	Socket s;
-	GUIGantryManager gui;
+	GantryManagerApp app;
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	String command;
@@ -16,9 +16,9 @@ public class GantryManagerClient implements Runnable
 	String serverName;
 	Thread thread;
 	
-	public GantryManagerClient(GUIGantryManager g)
+	public GantryManagerClient(GantryManagerApp _app)
 	{
-		gui = g;
+		app = _app;
 		serverName = "localhost";
 		command = "";
 		commandSent = "";
@@ -69,7 +69,7 @@ public class GantryManagerClient implements Runnable
 		try
 		{
 			//Reads in the new gantry manager and sets it as the applications current one
-			gui.setGantryManager((GantryManager)in.readObject());
+			app.setGantryManager((GantryManager)in.readObject());
 		}
 		catch(Exception ignore){
 			ignore.printStackTrace();

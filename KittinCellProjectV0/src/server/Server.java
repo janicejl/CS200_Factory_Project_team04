@@ -666,6 +666,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
   	}
     
 	public void actionPerformed(ActionEvent e){
+		if(gantryManager.getGantry().getState().equals("free") && gantryWaitList.size()!=0)
+		{
+			//update gantry robot queue commands
+			gantryManager.getGantry().setState(gantryWaitList.get(0));
+			gantryManager.getGantry().setFeed(gantryFeedList.get(0));
+			gantryWaitList.remove(0);
+			gantryFeedList.remove(0);
+		}
 		//Check animation states to see if message should be sent
 		
 		//Empty Kit Ready for Pickup

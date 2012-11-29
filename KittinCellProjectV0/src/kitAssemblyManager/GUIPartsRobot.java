@@ -93,10 +93,15 @@ public class GUIPartsRobot{
         y = pr.getY();
 //        
 //        try{
-        	gParts.clear();
+        	
 	        for(int i = 0; i < pr.getPartsHeld().size(); i++){
 	        	//partImages.add(ImageIO.read(new File(app.getPartsRobot().getPartsHeld().get(i).getImagePath())));
-	        	gParts.add(new GUIPart(pr.getPartsHeld().get(i)));
+	        	if(gParts.size() < 4){
+	        		gParts.add(new GUIPart(pr.getPartsHeld().get(i)));
+	        	}
+	        	else {
+	        		gParts.set(i, new GUIPart(pr.getPartsHeld().get(i)));
+	        	}	
 	        }
 //        }
 //        catch(IOException e){

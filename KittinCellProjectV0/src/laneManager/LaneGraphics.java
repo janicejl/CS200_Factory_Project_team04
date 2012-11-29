@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class LaneGraphics extends JPanel implements ActionListener {
+public class LaneGraphics extends JPanel {
 	private Vector<Lane> lanes = new Vector<Lane> ();
 	private int maxX;
 	private int maxY;
@@ -26,21 +26,13 @@ public class LaneGraphics extends JPanel implements ActionListener {
 	private Vector<Feeder> feeders = new Vector<Feeder>();
 	private ArrayList<GUINest> gNests = new ArrayList<GUINest>();
 	private Vector<Nest> nests = new Vector<Nest>();
-	private LaneManagerClient client;
+	
 	private javax.swing.Timer timer;
 	int managerNum;
 	
     public LaneGraphics(int m) {
     	managerNum = m;
-    	client = new LaneManagerClient(this);
     	
-		int j = client.connect();
-		if(j == -1){
-			System.exit(1);
-		}
-		else if(j == 1){
-			client.getThread().start();
-		}
 	
 		for (int i = 0; i < 4; i++) {
     		if(i == 0 || i == 3){
@@ -86,17 +78,12 @@ public class LaneGraphics extends JPanel implements ActionListener {
         } catch (IOException e) {
         	System.out.println("Image load issue");
         }	
-		timer = new javax.swing.Timer(10, this);
-		timer.start();
     }
     
-    public void updateGUIFeeders(){
+    public void update(){
     	for(int i = 0; i < 4; i++){
     		gFeeders.get(i).setFeeder(feeders.get(i));
     	}
-    }
-    
-    public void updateGUINests() {
     	for (int i = 0; i < 8; i++) {
     		gNests.get(i).setNest(nests.get(i));
     	}
@@ -129,7 +116,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
         }  
         
         g2.setColor(Color.BLUE);		
-        updateGUIFeeders();
+        //updateGUIFeeders();
 		for (int i = 0; i < lanes.size(); i++) {
 			if(i < 4){ //only four nests
 				gFeeders.get(i).paintNest(g2);
@@ -145,7 +132,7 @@ public class LaneGraphics extends JPanel implements ActionListener {
 			}
 		}
 		
-		updateGUINests();
+		//updateGUINests();
 		for (int i = 0; i < gNests.size(); i++) {
 			gNests.get(i).paintNest(g2, 1);
 		}
@@ -216,7 +203,6 @@ public class LaneGraphics extends JPanel implements ActionListener {
 
 	public synchronized void setFeeders(Vector<Feeder> feeders) {
 		this.feeders = feeders;
-		updateGUIFeeders();
 	}
 	
 	public synchronized Vector<Nest> getNests() {
@@ -225,19 +211,9 @@ public class LaneGraphics extends JPanel implements ActionListener {
 	
 	public synchronized void setNests(Vector<Nest> nests) {
 		this.nests = nests;
-		updateGUINests();
 	}
 
 	public void addPartToLane(int lane, Part part) {
     	lanes.get(lane).addPart(part);
     }
-	
-	public void actionPerformed(ActionEvent e){
-		if(e.getSource() == timer){
-			client.updateThread();
-			repaint();
-		}
-	}
-	
-    
 }

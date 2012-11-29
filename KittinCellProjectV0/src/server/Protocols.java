@@ -41,7 +41,7 @@ public class Protocols implements Runnable{
 	
 	public void run(){
 		//choose which protocol to run based off client type
-		while(true){
+		while(this.thread.isAlive()){
 			if(protocolName.equals("Kit Assembly")){
 				runKitProtocol();
 			}
@@ -60,6 +60,9 @@ public class Protocols implements Runnable{
 			else if (protocolName.equals("Production Manager")){
 				runProductionProtocol();
 			}
+			else if (protocolName.equals("GUI Production Manager")){
+				runGUIProductionProtocol();
+			}
 		}
 	}
 	
@@ -68,14 +71,14 @@ public class Protocols implements Runnable{
 		try
 		{
 			//if Gantry robot is free and there is something in the waitlist queue
-			if(app.getGantryManager().getGantry().getState().equals("free") && app.getGantryWaitList().size()!=0)
-			{
-				//update gantry robot queue commands
-				app.getGantryManager().getGantry().setState(app.getGantryWaitList().get(0));
-				app.getGantryManager().getGantry().setFeed(app.getGantryFeedList().get(0));
-				app.getGantryWaitList().remove(0);
-				app.getGantryFeedList().remove(0);
-			}
+//			if(app.getGantryManager().getGantry().getState().equals("free") && app.getGantryWaitList().size()!=0)
+//			{
+//				//update gantry robot queue commands
+//				app.getGantryManager().getGantry().setState(app.getGantryWaitList().get(0));
+//				app.getGantryManager().getGantry().setFeed(app.getGantryFeedList().get(0));
+//				app.getGantryWaitList().remove(0);
+//				app.getGantryFeedList().remove(0);
+//			}
 			//update gantry manager
 			out.writeObject(app.getGantryManager());
 			out.reset();
@@ -293,27 +296,56 @@ public class Protocols implements Runnable{
 		}
 	}
 	
-	
-//	public void runProdKitProtocol(){
-//		try {
-//			out.writeObject(app.getKitRobot());
-//			out.reset();
-//			out.flush();
-//			out.writeObject(app.getPartsRobot());
-//			out.reset();
-//			out.flush();
-//			out.writeObject(app.getKitAssemblyManager());
-//			out.reset();
-//			out.flush();
-//		} catch (Exception e){
-//			System.err.println(protocolName);
-//			e.printStackTrace();
-//			try{
-//				s.close();
-//			} catch(Exception ae){
-//				System.out.println("Socket Fail to Close");
+	//Kit Assembly Protocol
+	public void runGUIProductionProtocol(){
+		try {
+			//write kit robot
+			out.writeObject(app.getKitRobot());
+			out.reset();
+			out.flush();
+			//write parts robot
+			out.writeObject(app.getPartsRobot());
+			out.reset();
+			out.flush();
+			//write kit assmebly
+			out.writeObject(app.getKitAssemblyManager());
+			out.reset();
+			out.flush();
+			//write lanes
+			out.writeObject(app.getLanes());
+			out.reset();
+			out.flush();
+			//write feeders
+			out.writeObject(app.getFeeders());
+			out.reset();
+			out.flush();
+			//write nests
+			out.writeObject(app.getNests());
+			out.reset();
+			out.flush();
+			//update gantry manager
+//			if(app.getGantryManager().getGantry().getState().equals("free") && app.getGantryWaitList().size()!=0)
+//			{
+//				//update gantry robot queue commands
+//				app.getGantryManager().getGantry().setState(app.getGantryWaitList().get(0));
+//				app.getGantryManager().getGantry().setFeed(app.getGantryFeedList().get(0));
+//				app.getGantryWaitList().remove(0);
+//				app.getGantryFeedList().remove(0);
 //			}
-//		}
-//	}
+			out.writeObject(app.getGantryManager());
+			out.reset();
+		}
+		catch(Exception e)
+		{
+			System.err.println(protocolName);
+			e.printStackTrace();
+			try{
+				s.close();
+				thread.stop();
+			} catch(Exception ae){
+				System.out.println("Socket Fail to Close");
+			}
+		}
+	}
 		
 }

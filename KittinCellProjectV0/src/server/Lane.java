@@ -73,7 +73,7 @@ public class Lane implements ActionListener, Serializable{
     	this.maxX = 600;
 		this.maxY = 30;
     	this.verticalSpacing = 0;
-	    this.conveyerBeltSpeed = 1;
+	    this.conveyerBeltSpeed = 10;
 	    this.itemList = new Vector<Part> ();
 	    this.importList = new Vector<Part> ();
 	    this.queueList = new Vector<Part> ();
@@ -87,7 +87,7 @@ public class Lane implements ActionListener, Serializable{
 		maxX = width;
 		maxY = 30;
     	this.verticalSpacing = verticalSpacing;
-	    conveyerBeltSpeed = 1;
+	    conveyerBeltSpeed = 10;
 	    itemList = new Vector<Part> ();
 	    importList = new Vector<Part> ();
 	    queueList = new Vector<Part> ();
@@ -117,7 +117,7 @@ public class Lane implements ActionListener, Serializable{
 		maxX = width;
 		maxY = 50;
     	this.verticalSpacing = verticalSpacing;
-	    conveyerBeltSpeed = 1;
+	    conveyerBeltSpeed = 10;
 	    itemList = new Vector<Part> ();
 	    importList = new Vector<Part> ();
 	    queueList = new Vector<Part> ();

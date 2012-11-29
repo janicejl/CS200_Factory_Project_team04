@@ -1,6 +1,7 @@
 package kitAssemblyManager;
 
 import server.*;
+
 import java.awt.event.*;
 import java.util.*;
 import java.util.concurrent.*;
@@ -18,10 +19,7 @@ import laneManager.GUINest;
 import java.awt.image.*;
 import java.io.*;
 
-public class GUIKitAssemblyManager extends JPanel{
-	KitAssemblyClient kitClient;
-//	PartsManagerClient partsClient;
-	
+public class GUIKitAssemblyManager extends JPanel{	
     KitAssemblyApp app;
     KitAssemblyManager kam;
     GUIKitRobot gKitRobot;
@@ -68,7 +66,7 @@ public class GUIKitAssemblyManager extends JPanel{
 
     public GUIKitAssemblyManager(int manager){
     	managerNum = manager;
-        kitClient = new KitAssemblyClient(this);
+        
 //    	partsClient = new PartsManagerClient(this);
     	
     	gNests = new ArrayList<GUINest>();
@@ -89,15 +87,6 @@ public class GUIKitAssemblyManager extends JPanel{
         baseFinishedKits = new ArrayList<Kit>();
         baseStationKits = new ArrayList<Kit>();
 
-        int i = kitClient.connect();
-		if(i == -1){
-			System.exit(1);
-		}
-		else if(i == 1){
-			kitClient.getThread().start();
-		}
-
-
         try {
             background = ImageIO.read(new File("images/background.png"));
             kitImage = ImageIO.read(new File("images/crate.png"));
@@ -109,8 +98,6 @@ public class GUIKitAssemblyManager extends JPanel{
     }
 
     public void update(){
-//    	partsClient.updateThread();
-    	kitClient.updateThread();
     	gPartsRobot.update();
         gKitRobot.update();
         emptyConveyorOn = kam.getEmptyConveyorOn();
@@ -237,9 +224,17 @@ public class GUIKitAssemblyManager extends JPanel{
 		this.baseFinishedKits = baseFinishedKits;
 	}
 	
-//	public PartsManagerClient getPartsClient() {
-//		return partsClient;
-//	}	
+	public void setKitAssemblyManager(KitAssemblyManager kitAssemblyManager) {
+		kam = kitAssemblyManager;
+	}
+	
+	public void setKitRobot(KitRobot kitRobot) {
+		this.kitRobot = kitRobot;
+	}
+	
+	public void setPartsRobot(PartsRobot partsRobot) {
+		this.partsRobot = partsRobot;
+	}
 
 	public KitRobot getKitRobot() {
 		return kitRobot;
@@ -247,17 +242,5 @@ public class GUIKitAssemblyManager extends JPanel{
 	
 	public PartsRobot getPartsRobot() {
 		return partsRobot;
-	}
-	
-    public void setKitAssemblyManager(KitAssemblyManager kitAssemblyManager) {
-		kam = kitAssemblyManager;
-	}
-
-	public void setKitRobot(KitRobot kitRobot) {
-		this.kitRobot = kitRobot;
-	}
-
-	public void setPartsRobot(PartsRobot partsRobot) {
-		this.partsRobot = partsRobot;
 	}
 }

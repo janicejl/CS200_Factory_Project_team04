@@ -94,8 +94,6 @@ public class VisionAgent extends Agent implements Vision {
 	public void msgImFull(Nest nest) {
 		fullNestsMap.put(nest.getNumber(), nest);
 		print("received message msgImFull from nest "+ nest.getName());
-		print("Nest Number: " +nest.getNumber());
-		print("Numberofnestsneeded: " + numberofnestsneeded);
 		 stateChanged();
 	}
 	
@@ -343,7 +341,6 @@ public class VisionAgent extends Agent implements Vision {
 	
 	public boolean pickAndExecuteAnAction() {
 	
-		print("running");
 	
 		if (state==State.IDLE){
 			// do nothing

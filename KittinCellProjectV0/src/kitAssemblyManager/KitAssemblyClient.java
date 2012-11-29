@@ -8,7 +8,7 @@ import server.KitRobot;
 import server.PartsRobot;
 
 public class KitAssemblyClient implements Runnable {
-	GUIKitAssemblyManager app;
+	KitAssemblyApp app;
 	protected Socket s;
 	protected ObjectOutputStream out;
 	protected ObjectInputStream in;
@@ -24,7 +24,7 @@ public class KitAssemblyClient implements Runnable {
 		thread = new Thread(this, "KitAssemblyClient_Thread");
 	}
 	
-	public KitAssemblyClient(GUIKitAssemblyManager _app){
+	public KitAssemblyClient(KitAssemblyApp _app){
 		app = _app;
 		serverName = "localhost";
 		command = "";

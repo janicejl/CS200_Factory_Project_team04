@@ -9,8 +9,7 @@ import javax.swing.*;
 import java.util.*;
 
 //Class that handles all of the painting, as well as containing the client and the gantry manager
-public class GUIGantryManager extends JPanel implements ActionListener
-{
+public class GUIGantryManager extends JPanel {
 	protected BufferedImage background = null;
 	protected BufferedImage rail = null;
 	protected BufferedImage station = null;
@@ -20,19 +19,15 @@ public class GUIGantryManager extends JPanel implements ActionListener
 	protected Vector<BufferedImage> partImages;
 	protected Vector<String> partImagesPath;
 	GantryManager manager;
-	GantryManagerClient client;
-	javax.swing.Timer timer;
+	
+	
 	int managerNum;
 	
 	public GUIGantryManager(int m)
 	{
 		partImages = new Vector<BufferedImage>();
 		partImagesPath = new Vector<String>();
-		client = new GantryManagerClient(this);
 		managerNum = m;
-		int j= client.connect();
-		if(j==1)
-			client.getThread().start();
 		try
 		{
 			//Static images
@@ -51,9 +46,6 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			}
 		}
 		catch(IOException e) {}
-		
-		timer = new javax.swing.Timer(9,this);
-		timer.start();
 	}
 		
 	public void paintComponent(Graphics g)
@@ -106,15 +98,6 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		}
 		g2.drawImage(rail, manager.getGantry().getxCurrent()+10,0,null);
 		g2.drawImage(gantryImage,manager.getGantry().getxCurrent(), manager.getGantry().getyCurrent(),null);
-	}
-	
-	public void actionPerformed(ActionEvent ae)
-	{
-		if(ae.getSource()==timer)
-		{
-			client.update();
-			this.repaint();
-		}
 	}
 	
 	public GantryManager getGantryManager()

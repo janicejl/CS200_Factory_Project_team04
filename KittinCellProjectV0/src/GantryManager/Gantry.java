@@ -15,6 +15,7 @@ public class Gantry implements Serializable
 	String state;
 	int feed; //Feeder #
 	int box; //Array index of box gantry is picking up
+	int speed = 1;
 	
 	public Gantry()
 	{
@@ -38,16 +39,20 @@ public class Gantry implements Serializable
 			if(xFinal!=xCurrent)
 			{
 				if(xFinal<xCurrent)
-					xCurrent-=1;
+					xCurrent-=speed;
 				else	
-					xCurrent+=1;
+					xCurrent+=speed;
+				if(Math.abs(xFinal-xCurrent) < speed)
+					xCurrent = xFinal;
 			}
 			if(yFinal!=yCurrent)
 			{
 				if(yFinal<yCurrent)
-					yCurrent-=1;
+					yCurrent-=speed;
 				else
-					yCurrent+=1;
+					yCurrent+=speed;
+				if(Math.abs(yFinal-yCurrent) < speed)
+					yCurrent = yFinal;
 			}
 		}
 		

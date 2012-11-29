@@ -11,6 +11,17 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.*;
 
+import kitAssemblyManager.GUIKitAssemblyManager;
+import kitAssemblyManager.KitAssemblyClient;
+
+import laneManager.Nest;
+import server.KitAssemblyManager;
+import server.KitRobot;
+import server.Lane;
+import server.PartsRobot;
+
+import Feeder.Feeder;
+import GantryManager.GantryManager;
 import PartsManager.PartsManagerClient;
 
 import data.Job;
@@ -33,6 +44,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	ArrayList<Job> jobs;
 	
 	public ProductionManagerApp(){
+		setIgnoreRepaint(true);
 		setSize(1200, 645);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
@@ -141,6 +153,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		try{
 			panel.repaint();
 			graphics.repaint();
+			menuBar.repaint();
 		} catch(Exception e){
 			e.printStackTrace();
 		}
@@ -241,7 +254,6 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 }

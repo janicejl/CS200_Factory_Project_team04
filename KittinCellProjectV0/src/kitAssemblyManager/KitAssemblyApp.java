@@ -28,8 +28,20 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     
     javax.swing.Timer timer;
     GUIKitAssemblyManager kamPanel;
+    KitAssemblyClient kitClient;
+    KitAssemblyManager kam;
+    KitRobot kitRobot;
+    PartsRobot partsRobot;
 
     public KitAssemblyApp(){
+    	kitClient = new KitAssemblyClient(this);
+    	int i = kitClient.connect();
+		if(i == -1){
+			System.exit(1);
+		}
+		else if(i == 1){
+			kitClient.getThread().start();
+		}
         setTitle("Kit Assembly Manager");
         cl = new CardLayout();
         getContentPane().setLayout(cl);
@@ -89,6 +101,10 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
 
     public void actionPerformed(ActionEvent ae) {
     	if(ae.getSource() == timer){
+    		kitClient.updateThread();
+    		kamPanel.setKitAssemblyManager(kam);
+    		kamPanel.setKitRobot(kitRobot);
+    		kamPanel.setPartsRobot(partsRobot);
     		kamPanel.update();
             kamPanel.repaint();
 	        
@@ -100,4 +116,28 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     		cl.show(this.getContentPane(), "controls");
     	}
     }
+    
+    public void setKitAssemblyManager(KitAssemblyManager kitAssemblyManager) {
+		kam = kitAssemblyManager;
+	}
+
+	public void setKitRobot(KitRobot kitRobot) {
+		this.kitRobot = kitRobot;
+	}
+
+	public void setPartsRobot(PartsRobot partsRobot) {
+		this.partsRobot = partsRobot;
+	}
+	
+	public KitAssemblyManager getKitAssemblyManager() {
+		return kam;
+	}
+	
+	public KitRobot getKitRobot() {
+		return kitRobot;
+	}
+	
+	public PartsRobot getPartsRobot() {
+		return partsRobot;
+	}
 }

@@ -220,7 +220,7 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	private void FeedParts(boolean divertLeft){
 		if(divertLeft){
-			app.execute("Feed Lane", left.fLane1.getNumber());
+			app.execute("Try Feed Lane", left.fLane1.getNumber());
 			left.fLane1.msgHereIsAPart(currentPart);
 			partsInFeeder --;
 			//DoGiveLeftLaneAPart();
@@ -231,7 +231,7 @@ public class FeederAgent extends Agent implements Feeder {
 			partsInFeeder--;
 			//DoGiveRightLaneAPart();
 			print("right lane was fed 1 part");
-			app.execute("Feed Lane", right.fLane1.getNumber());
+			app.execute("Try Feed Lane", right.fLane1.getNumber());
 		}
 		if(partsInFeeder == 0){
 			currentPart = new PartInfo("blank","blanksource");

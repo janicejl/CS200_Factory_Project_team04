@@ -302,7 +302,9 @@ public class VisionAgent extends Agent implements Vision {
 		}
 		else if(type == Type.KIT_INSPECTOR)
 		{
-			kitRobot.msgKitInspected(true);
+			KitConfig kit_config = new KitConfig();
+			kit_config.kit_state = KitConfig.KitState.GOOD;
+			kitRobot.msgKitInspected(kit_config);
 		}
 		
 		state=State.SCHEMATIC_RECEIVED;

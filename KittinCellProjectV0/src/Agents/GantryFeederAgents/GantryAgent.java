@@ -155,11 +155,11 @@ public class GantryAgent extends Agent implements Gantry{
 		Bin bin = new Bin(current_feeder_servicing.part_type, 10);
 		for(int i=0;i<10;i++)
 		{
-			server.execute("Feed Feeder",current_feeder_servicing.feeder.getNumber(),current_feeder_servicing.part_type);
+			server.execute("Feed Feeder",current_feeder_servicing.feeder.getNumber(),current_feeder_servicing.part_type,1);
 		}
 		current_feeder_servicing.feeder.msgHereAreParts(bin);
-		gantry_state = GantryState.None;
 		server.execute("Idle Bin",current_feeder_servicing.feeder.getNumber());
+		gantry_state = GantryState.None;
 		current_feeder_servicing = null;
 	}
 	
@@ -171,7 +171,7 @@ public class GantryAgent extends Agent implements Gantry{
 		current_feeder_servicing = feeder;
 		server.execute("Make PartsBox", feeder.part_type);
 		server.execute("Pickup Box");
-		//server.execute("Idle Bin",feeder.feeder.getNumber());
+	
 		
 	}
 	

@@ -490,6 +490,17 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Remove Finished")){
     		getKitRobot().addCommand("load,5,6");
     	}
+    	//moving bad kit to bad conveyor
+    	else if(process.equals("BadOut")){
+    		getKitRobot().addCommand("load,5,3");
+    	}
+    	//moving bad kit back using incomplete conveyor. 
+    	else if(process.equals("BadIn 1")){
+    		getKitRobot().addCommand("load,4,1");
+    	}
+    	else if(process.equals("BadIn 2")){
+    		getKitRobot().addCommand("load,4,2");
+    	}
     	
     	//Parts Robot Commands (Partial)
     	

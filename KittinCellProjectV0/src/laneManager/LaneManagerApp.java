@@ -21,10 +21,14 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	private JPanel window;
 	BufferedImage background = null;
 	private LaneManagerClient client;
-	
+	LaneManagerPanel laneManagerPanel;
 	private Vector<Lane> lanes = new Vector<Lane> ();
 	private Vector<Feeder> feeders = new Vector<Feeder>();
 	private Vector<Nest> nests = new Vector<Nest>();
+	
+	JMenuBar menuBar;
+	JMenu menu;
+	JMenuItem next;
 	
 	private javax.swing.Timer timer;
 
@@ -40,21 +44,36 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		}
 		this.setLayout(new GridBagLayout());	
 		window = new JPanel();
-		window.setLayout(new BoxLayout(window, BoxLayout.Y_AXIS));
-		window.setPreferredSize(new Dimension(800, 50));
-		window.setMaximumSize(new Dimension(800, 50));
-		window.setMinimumSize(new Dimension(800, 50));
+		window.setLayout(new CardLayout());
+		window.setPreferredSize(new Dimension(700, 600));
+		window.setMaximumSize(new Dimension(700, 600));
+		window.setMinimumSize(new Dimension(700, 600));
 		laneGraphics = new LaneGraphics(1);
 		laneGraphics.setPreferredSize(new Dimension(700, 600));
 		laneGraphics.setMaximumSize(new Dimension(700, 600));
 		laneGraphics.setMinimumSize(new Dimension(700,600));
+		laneManagerPanel  = new LaneManagerPanel(this);
+		laneManagerPanel.setPreferredSize(new Dimension(700, 600));
+		laneManagerPanel.setMaximumSize(new Dimension(700, 600));
+		laneManagerPanel.setMinimumSize(new Dimension(700, 600));
+		laneManagerPanel.setVisible(false);
+		menuBar = new JMenuBar();
+		menu = new JMenu("Switch");
+		next =  new JMenuItem("Screen");
+		next.addActionListener(this);
+		
+		menuBar.add(menu);
+		menu.add(next);
+		setJMenuBar(menuBar);
+		window.add(laneGraphics,"");
+		window.add(laneManagerPanel, "");
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		add(window, c);
 		c.gridy = 1;
-		this.add(laneGraphics,c);
-		this.setSize(700, 610);
+//		this.add(laneGraphics,c);
+		this.setSize(720, 650);
     	this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
@@ -74,19 +93,14 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		new LaneManagerApp();	
 	}
 	
-	public synchronized void setLanes(Vector<Lane> _lanes) {
-		this.lanes = _lanes;
+	public void next(){
+		CardLayout tempLayout = (CardLayout)window.getLayout();
+		tempLayout.next(window);
 	}
-	
-	public synchronized void setFeeders(Vector<Feeder> feeders) {
-		this.feeders = feeders;
-	}
-	
-	public synchronized void setNests(Vector<Nest> nests) {
-		this.nests = nests;
-	}
-	
 	public void actionPerformed(ActionEvent e){
+		if(e.getSource() == next){
+			next();
+		}
 		if(e.getSource() == timer){
 			client.updateThread();
 			laneGraphics.setFeeders(feeders);
@@ -95,5 +109,29 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 			laneGraphics.update();
 			laneGraphics.repaint();
 		}
-	}	
+	}
+
+	public Vector<Lane> getLanes() {
+		return lanes;
+	}
+
+	public void setLanes(Vector<Lane> lanes) {
+		this.lanes = lanes;
+	}
+
+	public Vector<Feeder> getFeeders() {
+		return feeders;
+	}
+
+	public void setFeeders(Vector<Feeder> feeders) {
+		this.feeders = feeders;
+	}
+
+	public Vector<Nest> getNests() {
+		return nests;
+	}
+
+	public void setNests(Vector<Nest> nests) {
+		this.nests = nests;
+	}
 }

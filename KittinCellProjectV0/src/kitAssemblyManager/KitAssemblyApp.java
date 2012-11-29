@@ -6,6 +6,10 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import data.Kit;
+import data.Part;
+import data.PartInfo;
+
 import server.KitAssemblyManager;
 import server.KitRobot;
 import server.PartsRobot;
@@ -28,6 +32,7 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     
     javax.swing.Timer timer;
     GUIKitAssemblyManager kamPanel;
+    BadKitPanel nonNorm;
     KitAssemblyClient kitClient;
     KitAssemblyManager kam;
     KitRobot kitRobot;
@@ -59,9 +64,19 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         
         kamPanel = new GUIKitAssemblyManager(1);
         add(kamPanel, "graphics");
+        nonNorm = new BadKitPanel(this);
+        add(nonNorm, "controls");
         
-        initControlPanel();
-        add(controlPanel, "controls");
+        Kit temp = new Kit();
+        for(int j = 0; j < 8; j++){
+        	temp.addPart(new Part(new PartInfo("hi", "images/kt1.png")));
+        }
+        for(int j = 0; j < 8; j ++){
+        	nonNorm.create(temp);
+        }
+        
+//        initControlPanel();
+//        add(controlPanel, "controls");
         timer = new javax.swing.Timer(10, this);
         timer.start();
 
@@ -76,16 +91,16 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         buttons.add(temp);
     }
 
-    public void initControlPanel(){
-        controlPanel = new JPanel();
-        buttons = new ArrayList<JButton>();
-        createButton("Connect PartsRobot");
-        createButton("Connect KitRobot");
-        
-        for(JButton b : buttons){
-        	controlPanel.add(b);
-        }
-    }
+//    public void initControlPanel(){
+//        controlPanel = new JPanel();
+//        buttons = new ArrayList<JButton>();
+//        createButton("Connect PartsRobot");
+//        createButton("Connect KitRobot");
+//        
+//        for(JButton b : buttons){
+//        	controlPanel.add(b);
+//        }
+//    }
 
     public static void main(String[] args) {
         try {

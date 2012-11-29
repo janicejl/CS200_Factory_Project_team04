@@ -1,5 +1,6 @@
 package productionManager;
 
+import fire.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -34,7 +35,8 @@ public class GUIProductionManager extends JPanel{
     KitRobot kitRobot;
     PartsRobot partsRobot;
     GantryManager manager;
-    
+    boolean fireOn = false;
+    Fire fire;
     GUIProductionClient client;
 	
 	public GUIProductionManager(ProductionManagerApp _app){
@@ -69,6 +71,17 @@ public class GUIProductionManager extends JPanel{
 //		timer = new Timer(10, this);
 //		timer.start();
 	}
+	public void burnItDown(){
+		fire = new Fire(1200, 600);
+		add(fire);
+		fireOn = true;
+	}
+	
+	public void clearFire(){
+		fireOn = false;
+		remove(fire);
+	}
+	
 	public void update(){
 		client.updateThread();
 		kamGraphics.setKitAssemblyManager(kam);
@@ -91,8 +104,11 @@ public class GUIProductionManager extends JPanel{
 		kamGraphics.paintComponent(g);
 		g.translate(830, 0);
 		gantryGraphics.paintComponent(g);
-		g.dispose();
-		
+		g.translate(-830, 0);
+		if(fireOn){
+			fire.paintFire(g2);
+		}
+		g.dispose();		
 	}
 	
 	public synchronized void setLanes(Vector<Lane> _lanes) {

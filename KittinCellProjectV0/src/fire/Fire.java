@@ -23,6 +23,7 @@ public class Fire extends JPanel implements ActionListener{
 
 	// Initialize applet
 	public Fire(int w, int h){
+		setOpaque(false);
 		// RANDOM NUMBER GENERATOR
 		rng = new Random();
 
@@ -118,6 +119,10 @@ public class Fire extends JPanel implements ActionListener{
 			}
 		}	
 	}
+	
+	public void paintFire(Graphics2D g2){
+		g2.drawImage(img,0,0,this);		
+	}
 
 	public void actionPerformed(ActionEvent e)	{
 		if (e.getSource() == timer){	
@@ -125,12 +130,12 @@ public class Fire extends JPanel implements ActionListener{
 			disperse();		// Apply the simple fire algorithm everywhere else
 		}
 		if (e.getSource() == t2){
-			this.getGraphics().drawImage(img,0,0,this);
+			
 			
 		}
 		if (e.getSource() == t3){
 			fireLevel++;
-			System.out.println(fireLevel);
+			//System.out.println(fireLevel);
 			for (int r = 0; r < rows; r++){
 				if(r != rows - 1){
 					for (int c = 1; c < cols; c++){
@@ -176,7 +181,9 @@ public class Fire extends JPanel implements ActionListener{
 				
 				if (values[r][c] < 0) values[r][c] = 0;
 				g2.setColor(colors[values[r][c]]);
-				g2.fillRect(c*res,r*res,res,res);
+				if(values[r][c] > 5){
+					g2.fillRect(c*res,r*res,res,res);
+				}
 			}
 		}
 	}

@@ -34,6 +34,8 @@ public class VisionAgent extends Agent implements Vision {
 	public State state;
 	public Type type;
 	
+	KitConfig currentKitConfig;
+	
 	Kit currentKit;
 
 	Part part;
@@ -79,7 +81,6 @@ public class VisionAgent extends Agent implements Vision {
 			}
 		}
 		numberofnestsneeded = nestsList.size();
-		
 		
 		
 		approved = false;
@@ -132,6 +133,9 @@ public class VisionAgent extends Agent implements Vision {
 		if (type=="kit") {
 			this.type = Type.KIT_INSPECTOR;
 			name = "Kit Vision Agent";
+			
+			currentKitConfig = new KitConfig();
+			currentKitConfig.kit_state = KitConfig.KitState.NOT_SET;
 
 			print ("initialized to kit inspecting vision agent");
 		}
@@ -196,21 +200,41 @@ public class VisionAgent extends Agent implements Vision {
 	}
 	
 	private void inspectKit() {
-		// check that the kit has all the parts (this is in the partsList)
+		
 		print("inspecting kit");
+		
+		List<Part> currentKitPartsList = new ArrayList<Part>();
+		currentKitPartsList = currentKit.peekParts();
+		
 		for (Part p: neededPartsList) {
 			if (currentKit.peekParts().contains(p)) {
 				neededPartsList.remove(p);
+				currentKitPartsList.remove(p);
 			}
 		}
 
-		if (neededPartsList.size()==0) {
+		if (neededPartsList.size()==0 && currentKitPartsList.size()==0) {
 			print("kit approved");
+			currentKitConfig.kit_state = KitConfig.KitState.GOOD;
 			approved = true;
-
 		}
 		else {
-			print("kit not approved");
+			
+			if (currentKitPartsList.size()>0) {
+				currentKitConfig.kit_state = KitConfig.KitState.BAD_PARTS;
+				print("kit not approved because of bad parts");
+			}
+				
+			if (neededPartsList.size()>0) {
+				currentKitConfig.kit_state = KitConfig.KitState.MISSING_PARTS;
+				
+				for (Part p: neededPartsList) {
+					currentKitConfig.missing_part_list.add(p.info);
+				}
+				
+				print("kit not approved because of missing parts");
+			}
+			
 			approved = false;
 		}	
 		approveOrDenyParts();
@@ -302,9 +326,9 @@ public class VisionAgent extends Agent implements Vision {
 		}
 		else if(type == Type.KIT_INSPECTOR)
 		{
-			KitConfig kit_config = new KitConfig();
-			kit_config.kit_state = KitConfig.KitState.GOOD;
-			kitRobot.msgKitInspected(kit_config);
+			// currentKitConfig = new KitConfig();
+			// currentKitConfig.kit_state = KitConfig.KitState.GOOD;
+			kitRobot.msgKitInspected(currentKitConfig);
 		}
 		
 		state=State.SCHEMATIC_RECEIVED;

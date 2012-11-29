@@ -9,26 +9,25 @@ import javax.swing.*;
 import java.util.*;
 
 //Class that handles all of the painting, as well as containing the client and the gantry manager
-public class GUIGantryManager extends JPanel implements ActionListener
-{
+public class GUIGantryManager extends JPanel {
 	protected BufferedImage background = null;
 	protected BufferedImage rail = null;
 	protected BufferedImage station = null;
 	protected BufferedImage feeder = null;
 	protected BufferedImage gantryImage = null;
 	protected BufferedImage crate = null;
+	protected Vector<BufferedImage> partImages;
+	protected Vector<String> partImagesPath;
 	GantryManager manager;
-	GantryManagerClient client;
-	javax.swing.Timer timer;
+	
+	
 	int managerNum;
 	
 	public GUIGantryManager(int m)
 	{
-		client = new GantryManagerClient(this);
+		partImages = new Vector<BufferedImage>();
+		partImagesPath = new Vector<String>();
 		managerNum = m;
-		int j= client.connect();
-		if(j==1)
-			client.getThread().start();
 		try
 		{
 			//Static images
@@ -38,11 +37,15 @@ public class GUIGantryManager extends JPanel implements ActionListener
 			feeder = ImageIO.read(new File("images/Feeder.png"));
 			gantryImage = ImageIO.read(new File("images/gantryrobot.png"));
 			crate = ImageIO.read(new File("images/crate.png"));
+			int i=0;
+			while(i<9)
+			{
+				partImages.add(ImageIO.read(new File("images/kt"+ i + ".png")));
+				partImagesPath.add("images/kt" + i + ".png");
+				i++;
+			}
 		}
 		catch(IOException e) {}
-		
-		timer = new javax.swing.Timer(9,this);
-		timer.start();
 	}
 		
 	public void paintComponent(Graphics g)
@@ -74,51 +77,27 @@ public class GUIGantryManager extends JPanel implements ActionListener
 		int i=0;
 		while(i<manager.getPartsBoxes().size())
 		{
+			
 			g2.drawImage(crate, manager.getPartsBoxes().get(i).getxCurrent(), manager.getPartsBoxes().get(i).getyCurrent(), null);
-			try
-			{
-				g2.drawImage(ImageIO.read(new File(manager.getPartsBoxes().get(i).getPartInfo().getImagePath())), manager.getPartsBoxes().get(i).getxCurrent()+13, manager.getPartsBoxes().get(i).getyCurrent()+35,null);
-			}
-			catch(IOException e){}
+			g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getPartsBoxes().get(i).getPartInfo().getImagePath())), manager.getPartsBoxes().get(i).getxCurrent()+13, manager.getPartsBoxes().get(i).getyCurrent()+35,null);
 			i++;
 		}
 		i=0;
 		while(i<manager.getExiting().size())
 		{
 			g2.drawImage(crate,manager.getExiting().get(i).getxCurrent(),manager.getExiting().get(i).getyCurrent(),null);
-			try
-			{
-				g2.drawImage(ImageIO.read(new File(manager.getExiting().get(i).getPartInfo().getImagePath())),manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
-			}
-			catch(IOException e){
-				e.printStackTrace();
-			}
+			g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getExiting().get(i).getPartInfo().getImagePath())),manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
 			i++;
 		}
 		i=0;
 		while(i<manager.getPurged().size())
 		{
 			g2.drawImage(crate,manager.getPurged().get(i).getxCurrent(),manager.getPurged().get(i).getyCurrent(),null);
-			try
-			{
-				g2.drawImage(ImageIO.read(new File(manager.getPurged().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
-			}
-			catch(IOException e){
-				e.printStackTrace();
-			}
+			g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getPurged().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
 			i++;
 		}
 		g2.drawImage(rail, manager.getGantry().getxCurrent()+10,0,null);
 		g2.drawImage(gantryImage,manager.getGantry().getxCurrent(), manager.getGantry().getyCurrent(),null);
-	}
-	
-	public void actionPerformed(ActionEvent ae)
-	{
-		if(ae.getSource()==timer)
-		{
-			client.update();
-			this.repaint();
-		}
 	}
 	
 	public GantryManager getGantryManager()

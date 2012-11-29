@@ -1,6 +1,7 @@
 package Interface.KitRobotAgent;
 
 import data.*;
+
 import java.util.*;
  
 
@@ -19,6 +20,8 @@ public interface KitStand {
 	void msgKitMoved(int i);
 
 	void msgKitRemovedFromInspection();
+	
+	public void msgPlacingBadKit(Kit k,int position);
 
 
 }

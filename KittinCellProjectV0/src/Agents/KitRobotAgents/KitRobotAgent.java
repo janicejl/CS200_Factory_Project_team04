@@ -104,7 +104,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	}
 	
 	// this will have to change to an enum or something
-	public void msgKitInspected(/*KitConfig kit_config*/ boolean bis_good)
+	public void msgKitInspected(KitConfig kit_config)
 	{
 		System.out.println("KitRobot: kit has been inspected");
 		for(KitHolder kit_h:inspection_list)
@@ -112,8 +112,8 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 			if(kit_h.state == KitState.WaitingForInspection)
 			{
 				
-				System.out.println("booooom");
-			/*	if(kit_config.kit_state == KitConfig.KitState.GOOD)
+			
+				if(kit_config.kit_state == KitConfig.KitState.GOOD)
 				{
 					kit_h.state = KitState.FinishedKit;
 					stateChanged();
@@ -135,10 +135,10 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 				{
 					System.out.println("Error at KitRobot msgInspected");
 					return;
-				}*/
+				}
 				
 			
-				if(bis_good)
+			/*	if(bis_good)
 				{
 					kit_h.state = KitState.FinishedKit;
 					stateChanged();
@@ -149,7 +149,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 					kit_h.state = KitState.DestroyKit;
 					stateChanged();
 					return;
-				}
+				}*/
 			}
 		}
 	}
@@ -253,11 +253,18 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	
 	private void MoveKitBackToStand(KitHolder kit)
 	{
-		//send message to animation here to move kit back to the stand.
-		//robot_agent.msgKitNeedsFixing(kit.position_on_stand, kit.state);
+		if(kit.position_on_stand == 0)
+		{
+			server.execute("Redo 1");
+		}
+		else
+		{
+			server.execute("Redo 2");
+		}
+		// will need to add back to regualr list i believe	
 		kit.state = KitState.KitBeingFixed;
-
-		
+		inspection_list.remove(kit);
+		kit_stand.msgPlacingBadKit(kit.kit, kit.position_on_stand);
 	}
 	
 	private void FinishedKit(KitHolder kit)
@@ -290,7 +297,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		}
 		else
 		{
-			System.out.println("hello");
+			
 		}
 	}
 	

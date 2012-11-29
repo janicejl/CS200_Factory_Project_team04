@@ -62,9 +62,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	Vector<Feeder> feeders; //Feeders
 	Vector<Lane> lanes; //Lanes
 	Vector<Nest> nestList; //Nests
-	
+	TreeMap<Integer, PartInfo> feederPartInfo; //Map the partinfo that the feeder should make
+	TreeMap<Integer, Integer> feederPartNum; //Map the amount of parts to make
+	TreeMap<Integer, Integer> feederDelay; //Map to delay feeder dumping speed
 	Vector<Integer> laneCounter; //counter for delaying lane release
-	Vector<Integer> laneQueue; //counter for holding feed lane commands
+	TreeMap<Integer, Integer> laneQueue; //counter for holding feed lane commands
+	TreeMap<Integer, Integer> feederPartCount; //count how many parts have been fed in feeder
 	
 	GantryManager gantryManager; //Gantry Manager
 	Integer gantryDelay; //counter to delay message sent
@@ -139,6 +142,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		
 		//Feeders
 		feeders = new Vector<Feeder>();
+		feederPartInfo = new TreeMap<Integer, PartInfo>();
+		feederPartNum = new TreeMap<Integer, Integer>();
+		feederDelay = new TreeMap<Integer, Integer>();
+		feederPartCount = new TreeMap<Integer, Integer>();
 		for(int i = 0; i < 4; i++){
 			if(i == 0 || i == 3){
     			feeders.add(new Feeder(475,30 + i*140));
@@ -146,7 +153,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		else {
     			feeders.add(new Feeder(400,30 + i*140));    			
     		}
+			
+			feederPartInfo.put(i, null);
+			feederPartNum.put(i, 0);
+			feederDelay.put(i, 0);
+			feederPartCount.put(i, 0);
 		}
+		
+		
 		
 		//Nests
 		nestList = new Vector<Nest>();
@@ -172,12 +186,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	lanes.get(1).setConveyerBeltSpeed(4);
     	lanes.get(2).setConveyerBeltSpeed(3);
     	laneCounter = new Vector<Integer>();
-    	laneQueue = new Vector<Integer>();
+    	laneQueue = new TreeMap<Integer, Integer>();
     	//Set Lane Speeds
     	for (int i = 0; i < 8; i ++) {
     		lanes.get(i).setConveyerBeltSpeed(1);
     		laneCounter.add(0);
-    		laneQueue.add(0);
+    		laneQueue.put(i, 0);
     	}
     	
     	//Gantry
@@ -533,15 +547,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	System.err.println(process);
     }
 	//Overloaded execute functions
-	public void execute(String process, Integer num, PartInfo info){
+	public void execute(String process, Integer feederNum, PartInfo info, Integer partNum){
 		//Dump part in feeder (one part)
 		if(process.equals("Feed Feeder")){
-			//create new part based on passed partinfo
-    		Part temp = new Part(info);
-    		System.out.println("TOPLANE: " + feeders.get(num).getTopLane());
-    		feeders.get(num).addParts(temp);
+			//add dump parts to feeder queue
+    		feederPartInfo.put(feederNum, info);
+    		feederPartNum.put(feederNum, partNum);
     	}
-		System.err.println(process + num);
+		System.err.println(process + feederNum);
 	}
     public void execute(String process, Integer num){
     	//Spawn an empty kit for the kit conveyer
@@ -576,10 +589,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			lanes.get(num).setRelease(true);
     			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
     		}
+    		feederPartCount.put(num/2, feederPartCount.get(num/2) - 1);
+    	}
+    	else if(process.equals("Try Feed Lane")){
     		//if feederagent calls too quickly
-    		else{
-    			laneQueue.set(num, laneQueue.get(num) + 1);
-    		}
+    		laneQueue.put(num, laneQueue.get(num) + 1);
     	}
     	//Move part from lane queue to nest
     	else if(process.equals("Feed Nest")){
@@ -652,6 +666,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
   	}
     
 	public void actionPerformed(ActionEvent e){
+		if(gantryManager.getGantry().getState().equals("free") && gantryWaitList.size()!=0)
+		{
+			//update gantry robot queue commands
+			gantryManager.getGantry().setState(gantryWaitList.get(0));
+			gantryManager.getGantry().setFeed(gantryFeedList.get(0));
+			gantryWaitList.remove(0);
+			gantryFeedList.remove(0);
+		}
 		//Check animation states to see if message should be sent
 		
 		//Empty Kit Ready for Pickup
@@ -699,6 +721,42 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			
 		}
 		
+		//Feeder dump parts
+		for(int i = 0; i < 4; i++){
+			if(feederPartInfo.get(i) != null){ //if there is a part to create
+				if(feederPartNum.get(i) != 0){ //if there is more than 0 parts to create
+					if(feederDelay.get(i) < 20){ //if delayed
+						feederDelay.put(i, feederDelay.get(i)+1);
+					}
+					else{ //if not delayed
+						Part temp = new Part(feederPartInfo.get(i)); //create part
+						feeders.get(i).addParts(temp); //add part to feeder
+						feederPartNum.put(i, feederPartNum.get(i)-1); //decrement count
+						feederDelay.put(i, 0); //reset delay
+						feederPartCount.put(i, feederPartCount.get(i)+1); //increment feederCount
+					}
+				}
+				else{ //no more parts to create
+					feederPartInfo.put(i, null); //remove partinfo
+					switch(i){
+					case 0:
+						gantry1.msgNeedBinPurged(feeder1); //tell gantry parts dumped
+						break;
+					case 1:
+						gantry1.msgNeedBinPurged(feeder2); //tell gantry parts dumped
+						break;
+					case 2:
+						gantry1.msgNeedBinPurged(feeder3); //tell gantry parts dumped
+						break;
+					case 3:
+						gantry1.msgNeedBinPurged(feeder4); //tell gantry parts dumped
+						break;
+					}
+					
+				}
+			}
+		}
+		
 		//Lane's Action Performed
 		for(int i = 0; i < lanes.size(); i++){
 			lanes.get(i).actionPerformed(e);
@@ -710,9 +768,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			
 			//deal with queued commands
 			if(laneQueue.get(i) > 0){
-				if(feeders.get(i/2).getParts().size() > 0){
+				if(feederPartCount.get(i/2) > 0){
 					execute("Feed Lane", i);
-					laneQueue.set(i, laneQueue.get(i)-1);
+					laneQueue.put(i, laneQueue.get(i)-1);
 				}
 			}
 			

@@ -12,26 +12,15 @@ public class GUIKit {
 
 	Kit kit;					//A reference to the kit from the server. 
 	BufferedImage image;		//image to paint for the graphics. 
-	
-	protected Vector<BufferedImage> partImages;			//array of all the parts image
-	protected Vector<String> partImagesPath;			//array of all the image path
+	protected Vector<GUIPart> gParts; // vector of GUIParts in kit
 	
 	public GUIKit(Kit k) {
 		kit = k;
 		
-		partImages = new Vector<BufferedImage>();
-		partImagesPath = new Vector<String>();
+		gParts = new Vector<GUIPart>();
 		
 		try {
-			image = ImageIO.read(new File("images/crate.png"));
-			
-			for (int i = 0; i < 9; i++)
-			{
-				partImages.add(ImageIO.read(new File("images/kt"+ i + ".png")));
-				partImagesPath.add("images/kt" + i + ".png");
-				i++;
-			}
-			
+			image = ImageIO.read(new File("images/crate.png"));			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -58,12 +47,16 @@ public class GUIKit {
 				j++;
 			}
 			
+			if(i >= gParts.size()){
+				gParts.add(new GUIPart(kit.getPartsList().get(i)));
+			}
+			else {
+				gParts.set(i, new GUIPart(kit.getPartsList().get(i)));
+			}
 		}
 		
 		for (int i = 0; i < kit.getPartsList().size(); i++) {
-			g.drawImage(partImages.get(partImagesPath.indexOf(kit.getPartsList().get(i).getImagePath())), (int)kit.getPartsList().get(i).getX(), (int)kit.getPartsList().get(i).getY(), null);
-		}
-
-		
+			g.drawImage(gParts.get(i).getImage(),(int)kit.getPartsList().get(i).getX(), (int)kit.getPartsList().get(i).getY(), null);
+		}		
 	}
 }

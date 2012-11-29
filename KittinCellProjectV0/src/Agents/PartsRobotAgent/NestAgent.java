@@ -122,9 +122,7 @@ public class NestAgent extends Agent implements Nest{
 	//Scheduler:
 	
 	public boolean pickAndExecuteAnAction()
-	{
-		print("running");
-		
+	{		
 		
 		if(partsrobotstate == PartsRobotStatus.readyforpart)
 		{
@@ -227,6 +225,15 @@ public class NestAgent extends Agent implements Nest{
 		nestslots[0] = null;
 		partsrobotstate = PartsRobotStatus.waitingForParts;
 		settleNest();
+		boolean stillempty = true;
+		for(int i = 0; i<8; i++){
+			if(nestslots[i]!= null){
+				stillempty = false;
+			}
+		}
+		if(stillempty){
+			askForParts();
+		}
 	}
 		
 	private void askForParts()

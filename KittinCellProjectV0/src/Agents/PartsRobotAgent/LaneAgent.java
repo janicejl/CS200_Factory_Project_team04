@@ -65,8 +65,7 @@ public class LaneAgent extends Agent implements Lane{
 
 	@Override
 	public void msgNeedThisPart(PartInfo type) {
-		if(this.type != type)
-			orderstate = OrderStatus.partRequested;
+		orderstate = OrderStatus.partRequested;
 		this.type = type;
 		print("Received Part Order");
 		stateChanged();

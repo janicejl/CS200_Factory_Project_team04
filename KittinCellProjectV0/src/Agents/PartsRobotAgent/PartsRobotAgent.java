@@ -177,9 +177,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 			kit1.partsneeded.add(type);
 			kit2.partsneeded.add(type);
 		}
-		for(PartInfo type: recipe){
-			camerarecipe.add(new Part(type)); //new Part(kitrecipe.get(i).getName(), kitrecipe.get(i).getImagePath())
-		}
+		
 		kit1.state = KitStatus.notAvailable;
 		kit2.state = KitStatus.notAvailable;
 		state = RobotState.mustOrderParts;
@@ -277,7 +275,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		orderParts();
 		return true;
 	}
-	if(!recipe.isEmpty() && !camerahasrecipe)
+	if(!recipe.isEmpty() && !camerahasrecipe && state!= RobotState.mustOrderParts)
 	{
 		giveCameraRecipe();
 		return true;
@@ -310,7 +308,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		goToStand();
 		return true;
 	}
-	if(count!= 0 && (animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome) && !allGrippersFull()){
+	if(count!= 0 && (animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome) && !allGrippersFull() && ((currentkit == CurrentKit.kit1 && kit1.state == KitStatus.available)||(currentkit == CurrentKit.kit2 && kit2.state == KitStatus.available))){
 		print("Checking parts");
 		for(MyNest mn: nests)
 		{
@@ -379,11 +377,13 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 			
 		print("Giving Recipe to VisionAgents");
 		List<Nest> nestassignments = new ArrayList<Nest>();
+		camerarecipe.clear();
 		for(MyNest mn : nests)
 		{
 			if(mn.type!= null)
 			{
 				nestassignments.add(mn.nest);
+				camerarecipe.add(new Part(mn.type));
 			}
 		}
 		if(!cameras.isEmpty())
@@ -415,13 +415,14 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		boolean kit2needsthispart = false;
 		if(currentkit == CurrentKit.kit1){
 			for(PartInfo pt: kit1.partsneeded){
-				if(type == pt){
+				if(type.getName().equals(pt.getName())){
 					kit1needsthispart = true;
 					parttoget = pt;
 				}
 			}
 			if(parttoget!= null){
 				kit1.partsneeded.remove(parttoget);
+				print("Kit 1 parts still needed: " + kit1.partsneeded.size());
 			}
 			if(kit1needsthispart){
 				for(int i = 0; i<4; i++){
@@ -445,7 +446,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		if(currentkit == CurrentKit.kit2)
 		{
 			for(PartInfo pt: kit2.partsneeded){
-				if(type == pt){
+				if(type.getName().equals(pt.getName())){
 					kit2needsthispart = true;
 					parttoget = pt;
 				}

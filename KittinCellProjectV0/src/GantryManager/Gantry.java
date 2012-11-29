@@ -15,7 +15,7 @@ public class Gantry implements Serializable
 	String state;
 	int feed; //Feeder #
 	int box; //Array index of box gantry is picking up
-	int speed = 1;
+	int speed = 2;
 	
 	public Gantry()
 	{

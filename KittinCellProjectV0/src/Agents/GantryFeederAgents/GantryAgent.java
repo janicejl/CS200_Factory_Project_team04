@@ -49,7 +49,6 @@ public class GantryAgent extends Agent implements Gantry{
 		new_feeder.state = FeederState.NeedParts;
 		feeder_list.add(new_feeder);
 		stateChanged();
-		print("boooom" + feeder.getNumber());
 		
 	}
 	

@@ -10,7 +10,8 @@ public class Nest implements Serializable{
 	
 	private double x;				//The x position for the nest
 	private double y;				//The y position for the nest
-	
+	boolean purged = false;
+	int purgedCount =0;
 	
 	ArrayList<Part> parts;			//a list of parts that is currently in the nest. 
 	
@@ -62,7 +63,8 @@ public class Nest implements Serializable{
 	}
 	
 	public void purgeNest() {	//empties the array since the parts are just dumped onto the ground. 
-		parts.clear();
+		this.clear();
+		purged = true;
 	}
 
 	public int getSize() {
@@ -73,4 +75,29 @@ public class Nest implements Serializable{
 //		return partsCount;
 //	}
 	
+	public boolean getPurged()
+	{
+		return purged;
+	}
+	
+	public void setPurged(boolean b)
+	{
+		purged = b;
+	}
+	
+	public int getPurgedCount()
+	{
+		return purgedCount;
+	}
+	
+	public void setPurgedCount(int pc)
+	{
+		purgedCount = pc;
+	}
+	
+	public void clear()
+	{
+		parts.clear();
+		partsCount.clear();
+	}
 }

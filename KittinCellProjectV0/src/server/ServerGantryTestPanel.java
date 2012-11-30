@@ -27,14 +27,12 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 		createButton("Load Feeder 2");
 		createButton("Load Feeder 3");
 		createButton("Load Feeder 4");
-		createButton("Dump Feeder 1");
-		createButton("Dump Feeder 2");
-		createButton("Dump Feeder 3");
-		createButton("Dump Feeder 4");
 		createButton("Purge Feeder 1");
 		createButton("Purge Feeder 2");
 		createButton("Purge Feeder 3");
 		createButton("Purge Feeder 4");
+		createButton("Purge Nest 1");
+		
 		
 		background = new ImageIcon("images/server3.jpeg");
 		
@@ -82,22 +80,6 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 		{
 			server.execute("Load Feeder",3);
 		}
-		else if("Dump Feeder 1".equals(ae.getActionCommand()))
-		{
-			server.execute("Dump Feeder",0);
-		}
-		else if("Dump Feeder 2".equals(ae.getActionCommand()))
-		{
-			server.execute("Dump Feeder",1);
-		}
-		else if("Dump Feeder 3".equals(ae.getActionCommand()))
-		{
-			server.execute("Dump Feeder",2);
-		}
-		else if("Dump Feeder 4".equals(ae.getActionCommand()))
-		{
-			server.execute("Dump Feeder",3);
-		}
 		else if("Purge Feeder 1".equals(ae.getActionCommand()))
 		{
 			server.execute("Idle Bin",0);
@@ -113,6 +95,10 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 		else if("Purge Feeder 4".equals(ae.getActionCommand()))
 		{
 			server.execute("Idle Bin",3);
+		}
+		else if("Purge Nest 1".equals(ae.getActionCommand()))
+		{
+			server.execute("Purge Nest",1);
 		}
 	}
 }

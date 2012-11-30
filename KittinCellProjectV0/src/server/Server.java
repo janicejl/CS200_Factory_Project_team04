@@ -574,6 +574,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			getKitAssemblyManager().processCommand("spawn");
     		}
     	}
+    	//Purge the nest corresponding to num
+    	else if(process.equals("Purge Nest"))
+    	{
+    		nestList.get(num).purgeNest();
+    	}
     	//Take picture for specified nest number
     	else if(process.equals("Take Picture")){
     		partsRobot.getNestCamera().takePicture(320, 40 + 140*((num-1)/2));
@@ -677,6 +682,23 @@ public class Server extends JFrame implements Runnable, ActionListener{
   	}
     
 	public void actionPerformed(ActionEvent e){
+		
+		int c =0;
+		while(c<nestList.size())
+		{
+			if(nestList.get(c).getPurged()==true)
+			{
+				if(nestList.get(c).getPurgedCount()<10)
+				{
+					nestList.get(c).setPurgedCount(nestList.get(c).getPurgedCount()+1);
+				}
+				else
+				{
+					nestList.get(c).setPurged(false);
+				}
+			}
+			c++;
+		}
 		if(gantryManager.getGantry().getState().equals("free") && gantryWaitList.size()!=0)
 		{
 			//update gantry robot queue commands

@@ -152,7 +152,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	public void msgHereAreParts(List<Part> part_l, int position)
 	{
 		System.out.println("KitStand: Parts to add for a kit");
-		System.out.println("boooom");
 		for(KitHolder kit_h:kit_holder_list)
 		{
 			if(kit_h.position == position)

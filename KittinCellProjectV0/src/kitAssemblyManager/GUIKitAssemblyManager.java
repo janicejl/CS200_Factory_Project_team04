@@ -177,8 +177,8 @@ public class GUIKitAssemblyManager extends JPanel{
             g2.drawImage(conveyorImage,75, 500 + i * 20 + (int)incompleteConveyorMove,null); // incomplete conveyor
             g2.drawLine(75,500 + 20*i+(int)incompleteConveyorMove,134, 500 + 20*i +(int)incompleteConveyorMove);
 
-            g2.drawImage(conveyorImage,5, 520 + (i+1)*20 - (int)badConveyorMove,null); // bad conveyor
-            g2.drawLine(5,520 + (i+1)*20-(int)badConveyorMove,64,520 + (i+1)*20-(int)badConveyorMove);			//changed to - sign
+            g2.drawImage(conveyorImage,5, 500 + (i+1)*20 - (int)badConveyorMove,null); // bad conveyor
+            g2.drawLine(5,500 + (i+1)*20-(int)badConveyorMove,64,500 + (i+1)*20-(int)badConveyorMove);			//changed to - sign
         }
 
         g2.drawImage(conveyorImage,75,100+(int)emptyConveyorMove,135,120,0,0,60,22,null); // empty conveyor end
@@ -190,7 +190,7 @@ public class GUIKitAssemblyManager extends JPanel{
         g2.drawImage(conveyorImage,75,480,135,480+(int)incompleteConveyorMove,0,0,60,22,null); // incomplete conveyor end
         g2.drawLine(75,480+(int)incompleteConveyorMove,134,480+(int)incompleteConveyorMove);
 
-        g2.drawImage(conveyorImage,5,500,65,480-(int)badConveyorMove,0,0,60,22,null); // bad conveyor end
+        g2.drawImage(conveyorImage,5,480,65,500-(int)badConveyorMove,0,0,60,22,null); // bad conveyor end
         g2.drawLine(5,500-(int)badConveyorMove,64,500-(int)badConveyorMove);
 
         for(GUIKit k : emptyKits){

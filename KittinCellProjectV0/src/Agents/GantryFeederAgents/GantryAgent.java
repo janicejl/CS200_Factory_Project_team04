@@ -15,8 +15,7 @@ import MoveableObjects.Bin;
 public class GantryAgent extends Agent implements Gantry{
 
 	enum FeederState {NeedParts, GettingBin, NeedPurge};
-	enum GantryEvents {
-		GotBin, FeederReadyForBin, GantryAtFeeder}
+	enum GantryEvents {GotBin, FeederReadyForBin, GantryAtFeeder}
 	enum GantryState {GettingBin,None};
 	List<MyFeeder> feeder_list = Collections.synchronizedList(new ArrayList<MyFeeder>());
 	List<GantryEvents> gantry_events = Collections.synchronizedList(new ArrayList<GantryEvents>());
@@ -30,6 +29,7 @@ public class GantryAgent extends Agent implements Gantry{
 		public Feeder feeder;
 		public PartInfo part_type;
 		public FeederState state;
+		//public boolean hasBin;
 		
 	}
 	
@@ -52,6 +52,7 @@ public class GantryAgent extends Agent implements Gantry{
 		print("boooom" + feeder.getNumber());
 		
 	}
+
 	
 	public void msgNeedBinPurged(Feeder feeder)
 	{

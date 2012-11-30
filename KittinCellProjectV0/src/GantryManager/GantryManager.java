@@ -156,13 +156,19 @@ public class GantryManager implements Serializable,ActionListener
 				if(parts.get(c).getFeeder()==gantry.getFeed())
 				{
 					gantry.setBox(c);
+					break;
 				}
 				c++;
 			}
-			if(parts.get(gantry.getBox()).getFeeder()!=gantry.getFeed())
+			if(c==parts.size())
 			{
 				gantry.setState("free");
 			}
+			else if(parts.get(gantry.getBox()).getFeeder()!=gantry.getFeed())
+			{
+				gantry.setState("free");
+			}
+			
 		}
 		
 		if(gantry.done()) //If the gantry has reached its destination (State transitions are almost all in this block)
@@ -216,7 +222,7 @@ public class GantryManager implements Serializable,ActionListener
 						purged.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
 						purged.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
 						purged.get(gantry.getBox()).setState("dumpf");
-						purged.get(gantry.getBox()).getPartInfo().setImagePath(null);
+						//purged.get(gantry.getBox()).getPartInfo().setImagePath(null);
 						state="dumpf";
 						break;
 					}

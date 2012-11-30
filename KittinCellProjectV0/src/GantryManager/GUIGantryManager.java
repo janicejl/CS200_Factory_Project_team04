@@ -93,8 +93,11 @@ public class GUIGantryManager extends JPanel {
 		while(i<manager.getPurged().size())
 		{
 			g2.drawImage(crate,manager.getPurged().get(i).getxCurrent(),manager.getPurged().get(i).getyCurrent(),null);
-			g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getPurged().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
-			i++;
+			if(manager.getPurged().get(i).getPartInfo().getImagePath()!=null)
+			{
+				g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getPurged().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
+			}
+				i++;
 		}
 		g2.drawImage(rail, manager.getGantry().getxCurrent()+10,0,null);
 		g2.drawImage(gantryImage,manager.getGantry().getxCurrent(), manager.getGantry().getyCurrent(),null);

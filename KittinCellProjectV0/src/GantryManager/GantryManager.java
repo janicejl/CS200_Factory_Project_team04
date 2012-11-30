@@ -229,18 +229,22 @@ public class GantryManager implements Serializable,ActionListener
 					parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
 					state="purgi";
 					parts.get(gantry.getBox()).setState("purgef");
+					gantry.setFeed(-1);
 				}
 				feeders.set(gantry.getFeed(),null);
 				feeder.set(gantry.getFeed(), 0);
 				feed.get(gantry.getFeed()).setHasCrate(false);
-				gantry.setFeed(-1);
 			}
 			else if(state.equals("purgef"))
 			{
 				purged.add(parts.get(gantry.getBox()));
+				purged.get(purged.size()-1).getPartInfo().setImagePath(null);
+				purged.get(purged.size()-1).setFeeder(gantry.getFeed());
 				parts.remove(gantry.getBox());
 				gantry.setState("free");
+				gantry.setFeed(-1);
 			}
+			
 		}
 	
 	}

@@ -22,6 +22,8 @@ public class LaneGraphics extends JPanel {
 	private ArrayList<Double> emptyConveyorMoveList;
 	private BufferedImage conveyorImage; 
 	private BufferedImage background;
+	private BufferedImage greenlightImage;
+	private BufferedImage redlightImage;
 	private ArrayList<GUIFeeder> gFeeders = new ArrayList<GUIFeeder>();
 	private Vector<Feeder> feeders = new Vector<Feeder>();
 	private ArrayList<GUINest> gNests = new ArrayList<GUINest>();
@@ -73,6 +75,8 @@ public class LaneGraphics extends JPanel {
     	}
 		
 		try {
+			redlightImage = ImageIO.read(new File("images/redlight.png"));
+            greenlightImage = ImageIO.read(new File("images/greenlight.png"));
             conveyorImage = ImageIO.read(new File("images/conveyerLong.png"));
             background = ImageIO.read(new File("images/background.png"));
         } catch (IOException e) {
@@ -174,7 +178,44 @@ public class LaneGraphics extends JPanel {
 			g2.draw(l21);
 			g2.draw(l31);
 		}
+		//Jam Semaphores:
+		if(lanes.get(0).getJamMessage())
+			g2.drawImage(redlightImage, 584, 34, this);
+		else 
+			g2.drawImage(greenlightImage, 584, 34, this);
+		if(lanes.get(1).getJamMessage())
+			g2.drawImage(redlightImage, 584, 138, this);
+		else 
+			g2.drawImage(greenlightImage, 584, 138, this);
 		
+		if(lanes.get(2).getJamMessage())
+			g2.drawImage(redlightImage, 509, 174, this);
+		else 
+			g2.drawImage(greenlightImage, 509, 174, this);
+		if(lanes.get(3).getJamMessage())
+			g2.drawImage(redlightImage, 509, 278, this);
+		else 
+			g2.drawImage(greenlightImage, 509, 278, this);
+		
+		if(lanes.get(4).getJamMessage())
+			g2.drawImage(redlightImage, 509, 314, this);
+		else 
+			g2.drawImage(greenlightImage, 509, 314, this);
+		if(lanes.get(5).getJamMessage())
+			g2.drawImage(redlightImage, 509, 338+80, this);
+		else 
+			g2.drawImage(greenlightImage, 509, 338+80, this);
+		
+		if(lanes.get(6).getJamMessage())
+			g2.drawImage(redlightImage, 584, 454, this);
+		else 
+			g2.drawImage(greenlightImage, 584, 454, this);
+		if(lanes.get(7).getJamMessage())
+			g2.drawImage(redlightImage, 584, 558, this);
+		else 
+			g2.drawImage(greenlightImage, 584, 558, this);		
+		
+	
     }
     
     public void setVibration() { //Unimplimented

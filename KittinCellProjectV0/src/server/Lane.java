@@ -32,8 +32,11 @@ public class Lane implements ActionListener, Serializable{
     private int gateCounter;
     private int vibrationAmplitude; 
     private int jamProbability;
+    private int jamIndex;
+    private int jammedBorder;
     private boolean isJammed;
     private Random random;
+    private boolean jamMessage;
     
     public class Gate implements Serializable{
     	public double topNodeX, topNodeY, bottomNodeX, bottomNodeY;
@@ -83,6 +86,7 @@ public class Lane implements ActionListener, Serializable{
 	 }
     
     public Lane(int width, int verticalSpacing, Nest n) {
+    	System.out.println("Loading constructor 1");
     	this.nest = n;
 		maxX = width;
 		maxY = 30;
@@ -114,7 +118,8 @@ public class Lane implements ActionListener, Serializable{
     }
     
     public Lane(int width, int verticalSpacing, Nest n, Feeder f) {
-		maxX = width;
+    	System.out.println("Loading constructor 2");
+    	maxX = width;
 		maxY = 50;
     	this.verticalSpacing = verticalSpacing;
 	    conveyerBeltSpeed = 10;
@@ -133,35 +138,47 @@ public class Lane implements ActionListener, Serializable{
 	    }
 		nest = n;
 	    feeder = f;
+	    vibrationAmplitude = 0;
+	    jamProbability = 3; //Initialized to 10
+	    System.out.println("Jam probability established to 3");
+	    isJammed = false;
+	    random = new Random();
     }
     
     public void actionPerformed( ActionEvent ae ) {	
 	    if(itemList.size() > 0) {
-//	    	random = new Random();
-//	    	System.out.println( random.nextInt(jamProbability) +  " out of: " + 10);
-	    	
-//	    	if(random.nextInt(jamProbability) == 0) {
-//	    		System.out.println("Lane jammed. Vibrate to release");
-//	    		this.isJammed = true;
-//	    	}
-	    	
-	    	for(int i = 0; i < itemList.size(); i++) { 
-		    	if(itemList.get(i).getX() > queueBorder + i*20 && isJammed == false) { //Moves parts down the line
-		    		itemList.get(i).setX(itemList.get(i).getX() - conveyerBeltSpeed);
-		    	}
-		    	else if(isJammed == true) {
-		    		itemList.get(i).setDestination(true);
-		    		atQueue = true;
-		    		
-		    	}
-		    	
-		    	else {
-		    		itemList.get(i).setDestination(true);
-		    		atQueue = true;
-		    	}
+	    	//set jammed border randomly;
+	    	//must be between queueborder + jamIndex*20 and less than max (random)
+	    	if(isJammed) {
+	    		for(int i = 0; i < jamIndex; i++) {
+	    			if(itemList.get(i).getX() > queueBorder + i*20) { //Moves parts down the line
+	    				itemList.get(i).setX(itemList.get(i).getX() - conveyerBeltSpeed);
+	    			}
+	    		}
+	    		for(int i = jamIndex; i < itemList.size(); i++) {
+	    			if(itemList.get(i).getX() > jammedBorder + i*20) { //Moves parts down the line
+	    				itemList.get(i).setX(itemList.get(i).getX() - conveyerBeltSpeed);
+	    			}
+	    			else {
+	    				jamMessage = true;
+	    			}
+	    		}
 	    	}
-	    } 
-	    
+	    	
+	    	else {
+	    		for(int i = 0; i < itemList.size(); i++) { 
+	    			if(itemList.get(i).getX() > queueBorder + i*20) { //Moves parts down the line
+	    				itemList.get(i).setX(itemList.get(i).getX() - conveyerBeltSpeed);
+	    			}
+	    			else {
+	    				itemList.get(i).setDestination(true);
+	    				atQueue = true;
+	    				
+	    			}
+	    		}	
+		    }
+	    }
+	     
 	    if(openGate == true && gateCounter < 37) {
 	    	if(gateCounter < 18) { //opengate
 	    		gate1.setNodes(105, verticalSpacing + 20 - gateCounter);
@@ -217,14 +234,25 @@ public class Lane implements ActionListener, Serializable{
     
 	//f = whether or not it should release part to top lane or bottom lane. 
     public void releasePart() {
-//		if(importList.size() != 0) {
-//			Part temp = importList.remove(0);
 			Part temp = feeder.removePart();
 			temp.setX(maxX-80);
 			temp.setY(maxY/2 + verticalSpacing - 10);
 			itemList.add(temp);
 			System.out.println("release!");
-//		}
+			
+			if(random.nextInt(jamProbability) == 0 && isJammed == false) {
+				jamIndex = itemList.size() - 1;
+				isJammed = true;	
+				
+				jammedBorder = 200 + random.nextInt(100);
+				//jammedBorder = random.nextInt(120) (DO ME)
+			}
+			
+			//release queue--
+			//check if its zero
+			
+			
+			
     }
 	
     public void releaseQueue(){
@@ -234,6 +262,7 @@ public class Lane implements ActionListener, Serializable{
     			openGate = true;
     			atQueue = false;
     			System.out.println("Rawr!!!!");
+    			if(jamIndex>0) jamIndex--;
     		}
     	}
     	return;
@@ -311,6 +340,14 @@ public class Lane implements ActionListener, Serializable{
     
     public int getJamProbability() {
     	return this.jamProbability;
+    }
+
+    public boolean isLaneJammed() {
+    	return isJammed;
+    }
+    
+    public boolean getJamMessage() {
+    	return jamMessage;
     }
     
 }  

@@ -62,4 +62,8 @@ public class Nest implements Serializable{
 		return this.parts.size();
 	}
 
+	public int[] getPartsCount(){
+		return partsCount;
+	}
+	
 }

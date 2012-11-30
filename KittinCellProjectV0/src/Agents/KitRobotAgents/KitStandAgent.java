@@ -146,7 +146,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		System.out.println("KitStand: kit removed from inspection");
 		stand_events.add(KitStandEvent.RemoveKit);
 		stateChanged();
-		
 	}
 	
 	public void msgHereAreParts(List<Part> part_l, int position)

@@ -1,5 +1,9 @@
 package Agents.GantryFeederAgents;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import server.Server;
 import Agent.Agent;
 import Interface.GantryFeederAgent.Feeder;
@@ -13,6 +17,221 @@ import data.PartInfo;
 
 public class FeederAgent extends Agent implements Feeder {
 
+	
+	enum LaneState {NeedPart,Nothing};
+	
+	class MyLane
+	{
+		Lane lane;
+		PartInfo part_wanted;
+		LaneState state;
+	}
+	
+	enum FeederState {HaveParts,NoPartsInFeeder};
+	enum FeederEvent {GotBinWithParts, IsFeederReadyForNewParts};
+	
+	FeederState state;
+	Bin current_bin;
+	List<FeederEvent> feeder_event_list = Collections.synchronizedList(new ArrayList<FeederEvent>());
+	List<MyLane> my_lane_list = Collections.synchronizedList(new ArrayList<MyLane>());
+	private Gantry gantry;
+	int number;
+	Server server;
+	
+	
+	
+	public FeederAgent(Lane l_lane, Lane r_lane, int number, Server sever)
+	{
+		
+		this.number = number;
+		this.server = server;
+		
+		MyLane temp_lane = new MyLane();
+		MyLane temp_lane_2 = new MyLane();
+		
+		temp_lane_2.lane = r_lane;
+		temp_lane.lane = l_lane;
+		
+		temp_lane_2.state = LaneState.Nothing;
+		temp_lane.state = LaneState.Nothing;
+		
+		my_lane_list.add(temp_lane_2);
+		my_lane_list.add(temp_lane);
+		state = FeederState.NoPartsInFeeder;
+		
+	}
+	
+	
+	public void msgNeedThisPart(PartInfo p, Lane lane)
+	{
+		for(MyLane lane_:my_lane_list)
+		{
+			if(lane_ == lane)
+			{
+				lane_.state = LaneState.NeedPart;
+				lane_.part_wanted = p;
+				stateChanged();
+				return;
+			}
+		}
+	}
+	
+	public void msgHereAreParts(Bin bin) 
+	{
+		feeder_event_list.add(FeederEvent.GotBinWithParts);
+		current_bin = bin;
+		stateChanged();
+	}
+	
+	
+	
+	//may not need this actually
+	public void msgAmIReadyForParts()
+	{
+		feeder_event_list.add(FeederEvent.IsFeederReadyForNewParts);
+		stateChanged();
+	}
+	
+	
+	public void msgIsLaneReadyForParts(Lane lane_)
+	{
+		for(MyLane lane:my_lane_list)
+		{
+			if(lane == lane_)
+			{
+				
+			}
+		}
+	}
+	
+	@Override
+	public boolean pickAndExecuteAnAction()
+	{
+		
+		
+		for(FeederEvent event:feeder_event_list)
+		{
+			if(event == FeederEvent.GotBinWithParts)
+			{
+				state = FeederState.HaveParts;
+				CheckIfLaneIsReadyForParts();
+				return true;
+			}
+		}
+		
+		if(state == FeederState.HaveParts)
+		{
+			for(FeederEvent event:feeder_event_list)
+			{
+				if(event == FeederEvent.GotBinWithParts)
+				{
+		}
+		
+		
+		if(state == FeederState.NoPartsInFeeder)
+		{
+			for(MyLane lane:my_lane_list)
+			{	
+				if(lane.state == LaneState.NeedPart)
+				{
+					AskGantryToGetPart(lane);
+					return true;
+				}
+			}
+		}
+
+	}
+	
+	
+	
+	
+	
+	//ACTIONS
+	
+	
+	private void AskGantryToGetPart(MyLane lane)
+	{
+		gantry.msgNeedThisPart(lane.part_wanted, this);
+	}
+	
+	
+	
+	private void CheckIfLaneIsReadyForParts()
+	{
+		
+		
+		for(MyLane lane:my_lane_list)
+		{	
+			if(lane.part_wanted.getName() == current_bin.getPartInfo().getName())
+			{
+				//send message here to check if is ready for parts
+			}
+		}
+	}
+	
+	private void GivePartsToLane()
+	{
+		for(MyLane lane:my_lane_list)
+		{
+			if(lane.part_wanted.getName() == current_bin.getPartInfo().getName())
+			{
+				
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public void SetGantry(Gantry gantry)
+	{
+		this.gantry = gantry;
+	}
+	
+	
+	public int getNumber(){
+		return number;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
 	//Data
 	String name;
 	PartInfo currentPart;
@@ -168,7 +387,7 @@ public class FeederAgent extends Agent implements Feeder {
 			return true;
 		}*/
 		
-		else if(fstate == FeederState.waitingLane || fstate == FeederState.low){
+	/*	else if(fstate == FeederState.waitingLane || fstate == FeederState.low){
 			if(currentPart == left.partWanted && left.readyForParts && partsInFeeder>0){
 				print("CurrentPart is left.partWanted and left is ready for parts. FeedParts(true) called.");
 				FeedParts(true);
@@ -292,8 +511,8 @@ public class FeederAgent extends Agent implements Feeder {
 	 * Hack to set gantry to be the Mock or real GantryAgent
 	 * @param g1 Gantry that is being set 
 	 */
-	@Override
-	public void setGantry(Gantry g1) {
+//	@Override
+	/*public void setGantry(Gantry g1) {
 		this.gantry = g1;
 	}
 
@@ -317,6 +536,6 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	public int getQuantity(){
 		return this.partsInFeeder;
-	}
+	}*/
 
 }

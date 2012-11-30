@@ -177,7 +177,7 @@ public class NestAgent extends Agent implements Nest{
 	private void purgeNest(){
 		print("Purging");
 		//Animation Call
-		//server.DoPurge(); // Run the purge animation
+		server.execute("Purge Nest", index);
 		
 		animationstate = AnimationStatus.purging;
 		for(int i = 0; i<8; i++)

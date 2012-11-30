@@ -1,6 +1,7 @@
 package laneManager;
 
 import data.Part;
+import data.PartInfo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +20,7 @@ public class TestNest extends JFrame implements ActionListener {
 		gNest = new GUINest(nest);
 		
 		for (int i = 0; i < 15; i++) {
-			Part p = new Part("2");
+			Part p = new Part(new PartInfo("" + 3, "images/kt" + 3 + ".png"));
 			nest.addPart(p);
 		}
 		
@@ -35,7 +36,7 @@ public class TestNest extends JFrame implements ActionListener {
 		g2.setColor(Color.GRAY);
 		g2.fill(background);
 		
-		gNest.paintNest(g2);
+		gNest.paintNest(g2,1);
 	}
 	
 	public static void main(String[] args) {

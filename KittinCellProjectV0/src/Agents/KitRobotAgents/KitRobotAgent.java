@@ -28,7 +28,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	List<KitHolder> kit_list = Collections.synchronizedList( new ArrayList<KitHolder>());
 	List<KitHolder> inspection_list = Collections.synchronizedList( new ArrayList<KitHolder>());
 	List<KitRobotEvent> event_list = Collections.synchronizedList( new ArrayList<KitRobotEvent>());
-	List<Integer> kits_needed = Collections.synchronizedList(new ArrayList<Integer>());
+	List<KitAmountHolder> kits_needed = Collections.synchronizedList(new ArrayList<KitAmountHolder>());
 	KitStand kit_stand;
 	KitConveyor kit_conveyor;
 	boolean b_ask_for_kit;
@@ -51,13 +51,20 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		server = _server;
 	}
 	
+	class KitAmountHolder
+	{
+		int kits_to_be_made;
+	}
+	
 	
 	
 	public void msgGetKits(int count)
 	{
 		System.out.println("KitRobot: get kits");
+		KitAmountHolder kit_h = new KitAmountHolder();
+		kit_h.kits_to_be_made = count;
 		//THIS WILL PROBALBY NEED TO BE REWORKED, depends on a new type of kit being made or a 
-		kits_needed.add(count);
+		kits_needed.add(kit_h);
 		stateChanged();
 	}
 	
@@ -93,7 +100,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	//telling where to place a kit
 	public void msgPlaceKitAtPosition(int position)
 	{
-		System.out.println("KitRobot: place kit at position");
+		System.out.println("KitRobot: place kit at position " + position);
 		event_list.add(KitRobotEvent.CanPlaceKit);
 		KitHolder kit_h = new KitHolder();
 		kit_h.position_on_stand = position;
@@ -160,8 +167,8 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 
-			
-			if(kit_list.size() + inspection_list.size()  < 2 && kits_needed.size() > 0 && b_ask_for_kit)
+		
+			if(kit_list.size() + inspection_list.size()  < 2 && kit_list.size() < 2 && kits_needed.size() > 0 && b_ask_for_kit)
 			{
 				CanIPlaceKit();
 				return true;
@@ -236,7 +243,6 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 				{
 					if(kit.state == KitState.FinishedKit)
 					{
-						System.out.println("hello");
 						FinishedKit(kit);
 						return true;
 					}
@@ -272,7 +278,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		server.execute("Remove Finished");
 		System.out.println("KitRobot: Finished a kit!");
 		kit_conveyor.msgHereIsFinishedKit(kit.kit);
-		System.out.println(kit_list.remove(kit));
+		kit_list.remove(kit);
 		inspection_list.remove(kit);
 		kit_stand.msgKitRemovedFromInspection();
 	}
@@ -324,9 +330,25 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	
 	private void GiveMeAKit()
 	{
-		int i = kits_needed.get(0); 
+		
+		KitAmountHolder kit_h = kits_needed.get(0);
+		
+		if(kit_h.kits_to_be_made <= 1)
+		{
+			kits_needed.remove(kit_h);
+			kit_conveyor.msgGiveMeAKit();
+			timer.cancel();
+		}
+		else
+		{
+			System.out.println("KitRobot: Give me a kit");
+			kit_conveyor.msgGiveMeAKit();
+		}
+		kit_h.kits_to_be_made--;
+		/*int i = kits_needed.get(0); 
 		i--;
-		if(i ==0)
+		System.out.println("kits left to be made" + i);
+		if(i == 0)
 		{
 			kits_needed.remove(0);
 		}
@@ -336,10 +358,13 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		}
 		else
 		{
-			kits_needed.add(0,i);
+			kits_needed.remove(0);
+			kits_needed.add(i);
 		}
 		System.out.println("KitRobot: Give me a kit");
-		kit_conveyor.msgGiveMeAKit();
+		System.out.println(kits_needed.get(0));
+		System.out.println("kit size " + kits_needed.size());
+		kit_conveyor.msgGiveMeAKit();*/
 	}
 	
 	private void CanIPlaceKit()
@@ -349,6 +374,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		b_ask_for_kit = false;
 		timer.schedule(new TimerTask(){
 		    public void run(){ 
+		    	
 		    	b_ask_for_kit = true;
 		    	stateChanged();
 		    }

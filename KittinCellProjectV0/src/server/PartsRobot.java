@@ -51,7 +51,14 @@ public class PartsRobot implements Runnable, Serializable{
     CopyOnWriteArrayList<Part> partsHeld;				//Arraylist of the parts held by the grippers. 
     
     boolean movingMsg;				//boolean on whether or not it is moving. 
-    boolean dumped;					//boolean on whether or not dumping. 
+    boolean dumped;					//boolean on whether or not dumping.
+    boolean dropParts = false;		//whether the part robot will drop parts
+    boolean dropTurn = false;		//whether the parts robot needs to try a drop this turn
+    Random rand = new Random();		//generate random number for dropping
+    int dropRate = 50;				//percentage chance that part will be dropped per move
+    double dropSrcY = 0;					// where the parts robot is coming from. used for drop purposes
+    double dropDstY = 300;
+    ArrayList<Integer> canDrop = new ArrayList<Integer>(); // randomized order for dropping
 
     public PartsRobot(KitAssemblyManager _app){
     	app = _app;
@@ -207,22 +214,31 @@ public class PartsRobot implements Runnable, Serializable{
                 newGripperExtensions.set(Integer.parseInt(ss[1]), Double.parseDouble(ss[2]));
                 processing = true;
             }
-            else if(ss[0].equals("p")){							//Pick
+            else if(ss[0].equals("p")){							//Pick            	
                 gripperHolding.set(Integer.parseInt(ss[1]),true);
                 partsHeld.add(app.nests.get(Integer.parseInt(ss[2])).getParts().get(0));
                 app.nests.get(Integer.parseInt(ss[2])).getParts().remove(0);
                 processing = true;
                 msg = true;
+                canDrop.add(new Integer(ss[1]));
+                dropTurn = true;
+                dropSrcY = y;
             }
             else if(ss[0].equals("d")){							//Drop
                 gripperHolding.set(Integer.parseInt(ss[1]),false);
                 app.getStationKit(Integer.parseInt(ss[2])+1).addPart(partsHeld.get(0));
+                dropDstY = kl[Integer.parseInt(ss[2])];
                 partsHeld.remove(0);
                 if(partsHeld.size() == 0){
                 	dumped = true;
                 }
                 System.out.println("Size : " + app.getStationKit(Integer.parseInt(ss[2])+1).getPartsList().size());
                 processing = true;
+                for(Integer i : canDrop){
+                	if(i.equals(new Integer(ss[1])));
+                	canDrop.remove(i);
+                	break;
+                }
             }
         } catch (Exception ignore){
         	ignore.printStackTrace();
@@ -279,6 +295,25 @@ public class PartsRobot implements Runnable, Serializable{
                 else {
                     y -=moveSpeed;
                 }
+                if(dropParts && dropTurn){ // check if part can be dropped
+                	double distDrop = Math.abs(newY-dropSrcY)*rand.nextDouble(); // beginning drop distance
+                	double distMoved = Math.abs(y - dropSrcY);
+                	if(distMoved > distDrop){ // drops at random place
+                		Collections.shuffle(canDrop, new Random(System.nanoTime()));
+		                for(Integer i : canDrop){	                	
+		                	if(gripperHolding.get(i) && rand.nextInt(100) < dropRate){ // random chance of drop
+		                		partsHeld.get(i).setPartDropped(true);		                		
+		                		dropTurn = false; // part has been dropped this turn
+		                		System.out.println("DROP: Part " + i + " was dropped at " + y + " heading to " + newY + " from " + dropSrcY);
+		                		System.out.println("Drop was set for " + distDrop / Math.abs(newY-dropSrcY) + " of distance (" + distDrop + ")");
+		                		System.out.println("Droppable objects was " + canDrop.size());
+		                		canDrop.remove(i);
+		                		break;
+		                	}
+		                }
+		                dropTurn = false;
+                	}                	
+                }
                 if(Math.abs(y - newY) < moveSpeed){
                     y = newY;
                 }
@@ -330,6 +365,10 @@ public class PartsRobot implements Runnable, Serializable{
 	//Getters and Setters
     public double getY(){
         return y;
+    }
+    
+    public void setDropParts(boolean b){
+    	dropParts = b;
     }
     
     public Camera getKitStandCamera() {

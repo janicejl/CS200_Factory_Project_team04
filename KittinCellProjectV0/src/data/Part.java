@@ -13,6 +13,7 @@ public class Part implements Serializable{
 	private double x;
 	private double y;
 	private boolean destination; // if part is at destination
+	boolean partDropped = false;
 
 	public void copy(Part p){
 		id = p.getID();
@@ -36,6 +37,14 @@ public class Part implements Serializable{
 		x = 0;
 		y = 0;
 		destination = false;
+	}
+	
+	public void setPartDropped(boolean b){
+		partDropped = b;
+	}
+	
+	public boolean getPartDropped(){
+		return partDropped;
 	}
 
 	public double getX() {

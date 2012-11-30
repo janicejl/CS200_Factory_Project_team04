@@ -23,8 +23,8 @@ public class KitAssemblyManager implements Runnable, Serializable{
     Vector<Nest> nests;
     boolean finishedConveyorOn;
     boolean emptyConveyorOn;
-    boolean badConveyorOn;
-    boolean incompleteConveyorOn;
+    boolean badConveyorOn = true;
+    boolean incompleteConveyorOn = true;
     boolean kitStandMsg;
     Boolean msg;
     int idCounter;
@@ -37,8 +37,8 @@ public class KitAssemblyManager implements Runnable, Serializable{
     0   empty   80    10
     1   kit 1   160   140
     2   kit 2   160   360
-    3   inc     80    490
-    4   bad     10    490
+    3   inc     80    490		//Bad Kit Out
+    4   bad     10    490		//Bad Kit In
     5   check   160   250
     6   done    10    10
     */
@@ -143,8 +143,8 @@ public class KitAssemblyManager implements Runnable, Serializable{
     public void update(){
         setEmptyConveyorOn(!getStationOccupied().get(0) && (getEmptyKits().size() > 0));
         setFinishedConveyorOn((getFinishedKits().size() > 0));
-        setBadConveyorOn(getStationKits().get(4).getY() < 600);
-        setIncompleteConveyorOn(getStationKits().get(3).getY() < 600);
+       // setBadConveyorOn(getStationKits().get(4).getY() < 600);
+        //setIncompleteConveyorOn(getStationKits().get(3).getY() < 600);
 
         if(getEmptyConveyorOn()){
             for(Kit k : getEmptyKits()){

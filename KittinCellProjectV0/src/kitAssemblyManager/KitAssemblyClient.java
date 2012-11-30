@@ -95,6 +95,9 @@ public class KitAssemblyClient implements Runnable {
 			app.setKitRobot((KitRobot)in.readObject());
 			app.setPartsRobot((PartsRobot)in.readObject());
 			app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
+			out.writeObject(app.getDropParts()); //send parts drop non-norm to server
+			out.reset();
+			out.flush();
 		} catch (Exception ignore){
 			ignore.printStackTrace();
 			System.exit(1);

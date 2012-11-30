@@ -13,16 +13,16 @@ import data.Part;
 import data.PartInfo;
 
 public class GUIKitCreation implements ActionListener{
-	KitCreationApp app;
+	KitCreationApp app; 
 	JPanel base, partSelect, displaySel,back,bob;
-	JButton create, clear;
-	JTextField enterName;
+	JButton create, clear; //buttons
+	JTextField enterName; //for changing names
 	JLabel name,sap;
-	JComboBox partsList;
-	Vector<JButton> selectionMade;
-	TreeMap<Integer, PartInfo> selection;
-	Vector<String> parts;
-	Vector<Kit> produced;
+	JComboBox partsList; //list of parts
+	Vector<JButton> selectionMade; //display what you have selected
+	TreeMap<Integer, PartInfo> selection; // temp kit configuration
+	Vector<String> parts; //list in jcombobox
+	Vector<Kit> produced;//kits have produced
 	
 	public GUIKitCreation(KitCreationApp _app){
 		app = _app;
@@ -116,7 +116,7 @@ public class GUIKitCreation implements ActionListener{
 		
 		clear();
 	}
-
+	//clear selections you just made
 	public void clear(){
 		enterName.setText("");
 		for(int i=0;i<8;i++){
@@ -133,7 +133,7 @@ public class GUIKitCreation implements ActionListener{
 		else if(ae.getSource().equals(create)){
 			Vector<PartInfo> temp = new Vector<PartInfo>();
 			for(int i = 0; i < selection.size(); i++){
-				if(selection.get(i) == null){
+				if(selection.get(i) == null){ //if nothing is selected on that button
 					temp.add(new PartInfo(null, "images/none.png"));
 				}
 				else{
@@ -150,7 +150,7 @@ public class GUIKitCreation implements ActionListener{
 		}
 		
 		for(int i=0;i<selectionMade.size();i++){
-			if(ae.getSource().equals(selectionMade.get(i))){
+			if(ae.getSource().equals(selectionMade.get(i))){//set the button picture
 				selectionMade.get(i).setIcon(new ImageIcon(app.getPartsList().get(partsList.getSelectedIndex()).getImagePath()));
 				selection.put(i, app.getPartsList().get(partsList.getSelectedIndex()));
 			}

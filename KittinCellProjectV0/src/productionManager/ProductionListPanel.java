@@ -13,13 +13,13 @@ public class ProductionListPanel extends JPanel implements ActionListener{
 	TitledBorder title; //border for panel
 	JobListPanel jobs; //jobs list panel
 	JButton start; //start production button
-	ImageIcon background; //background image
+	//ImageIcon background; //background image
 	
 	public ProductionListPanel(ProductionManagerApp _app){
 		app = _app;
-		setOpaque(true);
+		setOpaque(false);
 		//setup background and border and font
-		background = new ImageIcon("images/background.png");
+		//background = new ImageIcon("images/background.png");
 		title = new TitledBorder("Production List");
 		title.setTitleJustification(title.CENTER);
 		Font f = new Font("Cabrilli", Font.BOLD, 16);
@@ -53,7 +53,7 @@ public class ProductionListPanel extends JPanel implements ActionListener{
 		
 	//repaint
 	public void paintComponent(Graphics g){
-		background.paintIcon(this, g, 0,  0);
+		//background.paintIcon(this, g, 0,  0);
 		jobs.repaint();
 		revalidate();
 	}

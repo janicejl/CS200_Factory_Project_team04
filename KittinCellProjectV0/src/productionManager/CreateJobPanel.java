@@ -24,7 +24,8 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 	JButton addJob;
 	
 	public CreateJobPanel(ProductionManagerPanel _app) {		
-		background = new ImageIcon("images/background.png");
+		//background = new ImageIcon("images/background.png");
+		this.setOpaque(false);
 		app = _app;
 		content = new JPanel();
 		content.setOpaque(false);
@@ -100,7 +101,7 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 	}
 	
 	public void paintComponent(Graphics g){
-		background.paintIcon(this, g, 0, 0);
+		//background.paintIcon(this, g, 0, 0);
 	}
 	
 	public void actionPerformed(ActionEvent ae) {

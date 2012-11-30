@@ -8,4 +8,5 @@ public interface Gantry {
 	public void msgAnimationHasBin();
 	public void msgReadyForParts();
 	public void msgNeedBinPurged(Feeder feeder);
+	public void msgGantryAtFeeder();
 }

@@ -13,15 +13,15 @@ public class Nest implements Serializable{
 	
 	ArrayList<Part> parts;			//a list of parts that is currently in the nest. 
 	
-	int[] partsCount;
+	ArrayList<Integer> partsCount;
 	
 	public Nest(double nX, double nY) {
 		x = nX;
 		y = nY;
 		parts = new ArrayList<Part>();
-		partsCount = new int[8];
+		partsCount = new ArrayList<Integer>();
 		for (int i = 0; i < 8; i++) {
-			partsCount[i] = 0;
+			partsCount.add(0);
 		}
 	}
 	
@@ -62,4 +62,8 @@ public class Nest implements Serializable{
 		return this.parts.size();
 	}
 
+	public ArrayList<Integer> getPartsCount(){
+		return partsCount;
+	}
+	
 }

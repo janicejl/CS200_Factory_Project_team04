@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import data.Kit;
+import data.KitConfig;
 import data.Part;
 import data.PartInfo;
 import server.Server;
@@ -60,9 +61,8 @@ public class VisionAgentTest extends TestCase {
 		vision.pickAndExecuteAnAction();
 		assertTrue("full nests map should be filled", vision.fullNestsMap.size()==4);
 		assertTrue("should not be waiting for any other cameras", vision.waiting==false);
-		//assertTrue("state should have changed to ready to take pic", vision.state==State.READY_TO_TAKE_PICTURE);
 		
-		vision.pickAndExecuteAnAction();
+		// vision.pickAndExecuteAnAction();
 		assertTrue("camera should have taken the picture", vision.state==State.PICTURE_TAKEN);
 		assertTrue("parts should not have been approved yet", vision.approved==false);
 		
@@ -148,19 +148,23 @@ public class VisionAgentTest extends TestCase {
 		
 		vision.pickAndExecuteAnAction();
 		assertTrue("full nests map should be filled", vision.fullNestsMap.size()==2);
-		assertTrue("state should have changed to ready to take pic", vision.state==State.READY_TO_TAKE_PICTURE);
+		
+		System.out.println("\n\n\n" + vision.state + "\n\n\n");
+		assertTrue("should have taken the picture", vision.state==State.PICTURE_TAKEN);
 		assertTrue("should not be waiting for any other cameras", vision.waiting==false);
 		
 		vision.pickAndExecuteAnAction();
-		assertTrue("should have taken the picture", vision.state==State.PICTURE_TAKEN);
-		assertTrue("parts should not have been approved yet", vision.approved==false);
+		assertTrue("status should have changed back to schematic received", vision.state==State.SCHEMATIC_RECEIVED);
+		
+		/* this is a problem - it should not approve the nests but it is */
+		// fix this asap
+		assertTrue("parts should not have been approved", vision.approved==false);
 		
 		nest2.msgNeedThisPart(new PartInfo("badpart", "imagepath"));
 		vision.pickAndExecuteAnAction();
 		vision.approved=false;
-		assertTrue("approved flag should be false", vision.approved==false);
-		assertTrue("status should have changed back to schematic received", vision.state==State.SCHEMATIC_RECEIVED);		
-		
+		assertTrue("approved flag should be false", vision.approved==false);		
+	
 	}
 		
 	////////////////////////////// KIT TESTS

@@ -34,7 +34,7 @@ public class VisionAgent extends Agent implements Vision {
 	public State state;
 	public Type type;
 	
-	KitConfig currentKitConfig;
+	public KitConfig currentKitConfig;
 	
 	Kit currentKit;
 
@@ -125,6 +125,7 @@ public class VisionAgent extends Agent implements Vision {
 	
 	/////////////////////////////////////////////////////////////
 	/** ACTIONS**/
+	
 	private void initializeVisionAgent(String type) {
 		state = State.IDLE;
 		
@@ -247,6 +248,7 @@ public class VisionAgent extends Agent implements Vision {
 		boolean nest1Approved=false;
 		boolean nest2Approved=false;
 	
+
 		
 		// nest1.getPartType should return the string of the name that the nest should hold
 		if (nest1.getPartInfo() == fullNestsPartsList.get( nest1.getNumber()-1) ) {
@@ -269,6 +271,21 @@ public class VisionAgent extends Agent implements Vision {
 			print(nest2.getName() + " not approved");
 		}
 			
+		
+		for (int i=1; i<nest1.getPartsCount().size(); i++) {
+			if (nest1.getPartsCount()[i]>1) {
+				nest1Approved = false;
+			}
+			
+		}
+		
+		for (int i=1; i<nest2.getPartsCount().size(); i++) {
+			if (nest2.getPartsCount()[i]>1) {
+				nest1Approved = false;
+			}
+			
+		}
+		
 		if (nest1Approved && nest2Approved) {
 			approved=true;
 			print("consecutive nests approved");
@@ -292,6 +309,14 @@ public class VisionAgent extends Agent implements Vision {
 			nest1.msgBadParts();
 			print(nest1.getName() + " not approved");
 		}
+		
+		for (int i=1; i<nest1.getPartsCount().size(); i++) {
+			if (nest1.getPartsCount()[i]>1) {
+				nest1Approved = false;
+			}
+			
+		}
+		
 		if(nest1Approved){
 			partsRobot.msgPartsApproved(nest1.getNumber());
 		}
@@ -305,17 +330,12 @@ public class VisionAgent extends Agent implements Vision {
 
 	}
 	
-	
 	private void approveOrDenyParts() {
 		if (type==Type.NESTS_INSPECTOR) {
 			if (approved) {
 				partsRobot.msgPartsApproved(nest1.getNumber());
 				partsRobot.msgPartsApproved(nest2.getNumber());				
 			}
-/*			else {
-				// nestAgent.msgBadParts();
-			}
-*/
 			fullNestsMap.remove(nest1.getNumber());
 			fullNestsMap.remove(nest2.getNumber());
 			
@@ -324,8 +344,7 @@ public class VisionAgent extends Agent implements Vision {
 		}
 		else if(type == Type.KIT_INSPECTOR)
 		{
-			// currentKitConfig = new KitConfig();
-			// currentKitConfig.kit_state = KitConfig.KitState.GOOD;
+
 			kitRobot.msgKitInspected(currentKitConfig);
 		}
 		
@@ -377,6 +396,7 @@ public class VisionAgent extends Agent implements Vision {
 	
 	/////////////////////////////////////////////////////////////
 	/** OTHER **/
+	
 	public void setFlashPermit(Semaphore flashpermit){
 		this.flashpermit = flashpermit;
 	}

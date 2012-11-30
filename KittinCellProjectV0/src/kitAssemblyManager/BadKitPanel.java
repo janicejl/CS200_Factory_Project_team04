@@ -11,17 +11,27 @@ import data.Kit;
 public class BadKitPanel extends JPanel implements ActionListener{
 
 	KitAssemblyApp app;
+	JTabbedPane tabs;
+	
+	JPanel badModification;
 	JLabel titleLabel;
 	JPanel scrollPanel;
 	JScrollPane scroll;
 	ArrayList<BadKit> badKits;
 	ArrayList<JLabel> labels;
 	ArrayList<JButton> sendButtons;
+	
+	JPanel nonNorms;
 	JButton toggleDropParts;
 	GridBagConstraints c;
 	
 	public BadKitPanel(KitAssemblyApp _app){
 		setLayout(new GridBagLayout());
+		tabs = new JTabbedPane();
+		tabs.setPreferredSize(new Dimension(500, 600));
+		tabs.setMaximumSize(new Dimension(500, 600));
+		tabs.setMinimumSize(new Dimension(500, 600));
+		
 		c = new GridBagConstraints();
 		app = _app;
 		badKits = new ArrayList<BadKit>();
@@ -52,14 +62,32 @@ public class BadKitPanel extends JPanel implements ActionListener{
 		
 		scroll.getViewport().add(scrollPanel);
 		
+		badModification = new JPanel();
+		badModification.setLayout(new GridBagLayout());
+		badModification.setPreferredSize(new Dimension(500, 600));
+		badModification.setMaximumSize(new Dimension(500, 600));
+		badModification.setMinimumSize(new Dimension(500, 600));
+		
 		c.gridx=0;
 		c.gridy=0;
-		add(titleLabel,c);
+		badModification.add(titleLabel,c);
 		c.gridy=1;
-		add(scroll,c);
-//		c.insets = new Insets(10, 0, 0, 0);
-//		add(toggleDropParts,c);
+		badModification.add(scroll,c);
 		
+		
+		
+		c.gridy = 0;
+		
+		nonNorms = new JPanel();
+		nonNorms.setLayout(new GridBagLayout());
+		
+		c.insets = new Insets(10, 0, 0, 0);
+		nonNorms.add(toggleDropParts,c);
+		
+		tabs.add(nonNorms, "Non-Normatives");
+		tabs.add(badModification, "Bad Kits Interface");
+		
+		add(tabs,c);
 	}
 	
 	public void create(Kit kit){
@@ -109,7 +137,6 @@ public class BadKitPanel extends JPanel implements ActionListener{
 				toggleDropParts.setText("Enable Drop Parts");
 				app.setDropParts(false);
 			}
-			app.showPanel("graphics");
 		}		
 	}
 }

@@ -24,6 +24,7 @@ public class GantryAgent extends Agent implements Gantry{
 	Server server;
 	MyFeeder current_feeder_servicing;
 	int count;
+	ArrayList<Boolean> feederBoxExists;
 	
 	class MyFeeder
 	{
@@ -37,6 +38,10 @@ public class GantryAgent extends Agent implements Gantry{
 	{
 		this.server = server;
 		gantry_state = GantryState.None;
+		feederBoxExists = new ArrayList<Boolean>();
+		for(int i = 0; i < 4; i ++){
+			feederBoxExists.add(new Boolean(false));
+		}
 	}
 	
 	
@@ -148,8 +153,10 @@ public class GantryAgent extends Agent implements Gantry{
 				{
 					if(feeder.state == FeederState.NeedParts)
 					{
-						GoGetBin(feeder);
-						return true;
+						if(!feederBoxExists.get(feeder.feeder.getNumber())){
+							GoGetBin(feeder);
+							return true;
+						}
 					}
 				}
 			}
@@ -173,7 +180,7 @@ public class GantryAgent extends Agent implements Gantry{
 	private void GivePartsToFeeder()
 	{
 		print("Gantry: Giving parts to feeder");
-		
+		feederBoxExists.set(current_feeder_servicing.feeder.getNumber(), true);
 		Bin bin = new Bin(current_feeder_servicing.part_type, 10);
 		//need to change how many parts to feed
 		server.execute("Feed Feeder",current_feeder_servicing.feeder.getNumber(),current_feeder_servicing.part_type, 10);
@@ -187,6 +194,7 @@ public class GantryAgent extends Agent implements Gantry{
 	{
 		print("Gantry: Moving bin to purge phase");
 		server.execute("Idle Bin",feeder.feeder.getNumber());
+		feederBoxExists.set(feeder.feeder.getNumber(), false);
 		gantry_state = GantryState.None;
 		feeder_list.remove(feeder);
 	}

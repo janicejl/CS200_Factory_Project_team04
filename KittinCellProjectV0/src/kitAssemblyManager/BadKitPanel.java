@@ -14,6 +14,7 @@ public class BadKitPanel extends JPanel implements ActionListener{
 	JPanel scrollPanel;
 	JScrollPane scroll;
 	Vector<BadKit> badKits;
+	Vector<JLabel> labels;
 	JButton toggleDropParts;
 	GridBagConstraints c;
 	
@@ -49,8 +50,12 @@ public class BadKitPanel extends JPanel implements ActionListener{
 	}
 	
 	public void create(Kit kit){
-		scrollPanel.removeAll();
 		badKits.add(new BadKit(kit));
+		
+	}
+
+	public void update(){
+		scrollPanel.removeAll();
 		int size = badKits.size();
 		for(int i = 0; i < size; i++){
 			scrollPanel.add(badKits.get(i));
@@ -61,7 +66,7 @@ public class BadKitPanel extends JPanel implements ActionListener{
 		scrollPanel.setMaximumSize(new Dimension(250, size));
 		scrollPanel.setMinimumSize(new Dimension(250, size));
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(toggleDropParts)){

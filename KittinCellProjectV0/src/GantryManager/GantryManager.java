@@ -216,6 +216,7 @@ public class GantryManager implements Serializable,ActionListener
 						purged.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
 						purged.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
 						purged.get(gantry.getBox()).setState("dumpf");
+						purged.get(gantry.getBox()).getPartInfo().setImagePath(null);
 						state="dumpf";
 						break;
 					}
@@ -227,25 +228,21 @@ public class GantryManager implements Serializable,ActionListener
 					gantry.setxFinal(gantry.getxFinal()+60);
 					parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
 					parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
-					state="purgi";
+					state="purgef";
 					parts.get(gantry.getBox()).setState("purgef");
 				}
 				feeders.set(gantry.getFeed(),null);
 				feeder.set(gantry.getFeed(), 0);
 				feed.get(gantry.getFeed()).setHasCrate(false);
-				if(!state.equals("dumpf"))
-				{
-					gantry.setFeed(-1);
-				}
+				gantry.setFeed(-1);
 			}
 			else if(state.equals("purgef"))
 			{
 				purged.add(parts.get(gantry.getBox()));
 				purged.get(purged.size()-1).getPartInfo().setImagePath(null);
-				purged.get(purged.size()-1).setFeeder(gantry.getFeed());
+				//purged.get(purged.size()-1).setFeeder(gantry.getFeed());
 				parts.remove(gantry.getBox());
 				gantry.setState("free");
-				gantry.setFeed(-1);
 			}
 			
 		}

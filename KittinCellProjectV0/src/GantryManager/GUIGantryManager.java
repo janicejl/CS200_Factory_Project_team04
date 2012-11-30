@@ -79,14 +79,20 @@ public class GUIGantryManager extends JPanel {
 		{
 			
 			g2.drawImage(crate, manager.getPartsBoxes().get(i).getxCurrent(), manager.getPartsBoxes().get(i).getyCurrent(), null);
-			g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getPartsBoxes().get(i).getPartInfo().getImagePath())), manager.getPartsBoxes().get(i).getxCurrent()+13, manager.getPartsBoxes().get(i).getyCurrent()+35,null);
-			i++;
+			if(manager.getPartsBoxes().get(i).getPartInfo().getImagePath()!=null)
+			{
+				g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getPartsBoxes().get(i).getPartInfo().getImagePath())), manager.getPartsBoxes().get(i).getxCurrent()+13, manager.getPartsBoxes().get(i).getyCurrent()+35,null);
+			}
+				i++;
 		}
 		i=0;
 		while(i<manager.getExiting().size())
 		{
 			g2.drawImage(crate,manager.getExiting().get(i).getxCurrent(),manager.getExiting().get(i).getyCurrent(),null);
-			g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getExiting().get(i).getPartInfo().getImagePath())),manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
+			if(manager.getExiting().get(i).getPartInfo().getImagePath()!=null)
+			{
+				g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getExiting().get(i).getPartInfo().getImagePath())),manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
+			}
 			i++;
 		}
 		i=0;

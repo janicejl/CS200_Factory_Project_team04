@@ -4,6 +4,7 @@ import  Agent.*;
 import Agents.VisionAgent.VisionAgent;
 import server.Server;
 import data.*;
+import java.util.*;
 
 
 import Interface.PartsRobotAgent.*;
@@ -14,6 +15,7 @@ public class NestAgent extends Agent implements Nest{
 	//Data
 	public PartInfo partinfo;
 	public Part[] nestslots = new Part[8];
+	public List<Part> extraparts = new ArrayList<Part>();
 	PartsRobot partsrobot;
 	Lane lane;
 	Vision camera;
@@ -21,6 +23,8 @@ public class NestAgent extends Agent implements Nest{
 	Server server;
 		
 	public int index;
+	Random generator = new Random();
+	
 
 	public enum LaneStatus {hasPart, gettingParts, noAction}
 	public enum PartsRobotStatus {wantsParts, waitingForParts, noAction,readyforpart}
@@ -66,15 +70,20 @@ public class NestAgent extends Agent implements Nest{
 	}
 	public void msgHereIsPart(Part p)
 	{
+		boolean acceptedpart = false;
 			for(int i = 0; i < 8; i++)
 			{
 				if(nestslots[i]== null)
 				{
 					nestslots[i] = p;
+					acceptedpart =true;
 					if(i == 0)
 						neststate = NestStatus.needCheck;
 					break;
 				}
+			}
+			if(!acceptedpart){
+				extraparts.add(p);
 			}
 
 			stateChanged();
@@ -134,7 +143,7 @@ public class NestAgent extends Agent implements Nest{
 			settleNest();
 			return true;
 		}
-		if((neststate == NestStatus.badParts || animationstate == AnimationStatus.needPurge)&&animationstate != AnimationStatus.purging)
+		if(neststate == NestStatus.badParts || animationstate == AnimationStatus.needPurge)
 		{
 			purgeNest();
 			return true;
@@ -156,6 +165,12 @@ public class NestAgent extends Agent implements Nest{
 				}
 			}
 		}
+		if(lanestate == LaneStatus.hasPart){
+			int x = generator.nextInt(10);
+			if(x==1){
+				acceptPart();
+			}
+		}
 		
 		if(neststate == NestStatus.needCheck)
 		{
@@ -174,16 +189,18 @@ public class NestAgent extends Agent implements Nest{
 
 	//Actions
 
+	
 	private void purgeNest(){
 		print("Purging");
 		//Animation Call
 		server.execute("Purge Nest", index);
 		
-		animationstate = AnimationStatus.purging;
+		animationstate = AnimationStatus.noAction;
 		for(int i = 0; i<8; i++)
 		{
 			nestslots[i] = null;
 		}
+		extraparts.clear();
 	}
 
 	private void acceptPart()

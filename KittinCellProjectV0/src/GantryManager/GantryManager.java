@@ -232,11 +232,11 @@ public class GantryManager implements Serializable,ActionListener
 				}
 				feeders.set(gantry.getFeed(),null);
 				feeder.set(gantry.getFeed(), 0);
+				feed.get(gantry.getFeed()).setHasCrate(false);
 				if(!state.equals("dumpf"))
 				{
 					gantry.setFeed(-1);
 				}
-				feed.get(gantry.getFeed()).setHasCrate(false);
 			}
 			else if(state.equals("purgef"))
 			{

@@ -154,6 +154,11 @@ public class Lane implements ActionListener, Serializable{
 	    			if(itemList.get(i).getX() > queueBorder + i*20) { //Moves parts down the line
 	    				itemList.get(i).setX(itemList.get(i).getX() - conveyerBeltSpeed);
 	    			}
+	    			else {
+	    				itemList.get(i).setDestination(true);
+	    				atQueue = true;
+	    				
+	    			}
 	    		}
 	    		for(int i = jamIndex; i < itemList.size(); i++) {
 	    			if(itemList.get(i).getX() > jammedBorder + i*20) { //Moves parts down the line

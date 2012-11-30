@@ -87,6 +87,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D)g;
 		g2.drawImage(background,0,0,null);
+		laneManagerPanel.repaint();
 	}
 	
 	public static void main(String[] args) {

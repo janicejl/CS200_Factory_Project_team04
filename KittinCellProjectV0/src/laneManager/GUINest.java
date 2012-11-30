@@ -46,12 +46,14 @@ public class GUINest {
 		
 		gParts.clear();
 		for (int i = 0, j = 0; i < parts.size(); i++) {
-			parts.get(i).setX(x + ((i % 4) * 25));		//25 = size of image parts. 
-			parts.get(i).setY(y + (j * 25));
-			
-			if (i % 4 == 3) {
-				j++;
-			}
+			if (i < 8) {
+				parts.get(i).setX(x + ((i % 4) * 25));		//25 = size of image parts. 
+				parts.get(i).setY(y + (j * 25));
+				
+				if (i % 4 == 3) {
+					j++;
+				}
+			} // else no need to set position since it is already set when it is added. 
 			
 			gParts.add(new GUIPart(parts.get(i)));
 		}

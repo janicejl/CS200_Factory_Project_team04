@@ -98,6 +98,6 @@ public class Nest implements Serializable{
 	public void clear()
 	{
 		parts.clear();
-		partsCount.clear();
+		//partsCount.clear();
 	}
 }

@@ -20,6 +20,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
     ArrayList<Kit> emptyKits;
     ArrayList<Kit> finishedKits;
     ArrayList<Kit> stationKits;
+    Vector<Kit> badKits;
     Vector<Nest> nests;
     boolean finishedConveyorOn;
     boolean emptyConveyorOn;
@@ -62,6 +63,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
 
         emptyKits = new ArrayList<Kit>();
         finishedKits = new ArrayList<Kit>();
+        badKits = new Vector<Kit>();
         msg = new Boolean(false);
         kitStandMsg = false;
     }
@@ -213,6 +215,10 @@ public class KitAssemblyManager implements Runnable, Serializable{
         return stationOccupied;
     }
     
+    public Vector<Kit> getBadKits() {
+    	return badKits;
+    }
+    
     public Vector<Nest> getNests() {
     	return nests;
     }
@@ -261,6 +267,10 @@ public class KitAssemblyManager implements Runnable, Serializable{
 		this.finishedConveyorOn = finishedConveyorOn;
 	}
 
+	public void setBadKits(Vector<Kit> badKits) {
+		this.badKits = badKits;
+	}
+	
 	public void setEmptyConveyorOn(boolean emptyConveyorOn) {
 		this.emptyConveyorOn = emptyConveyorOn;
 	}

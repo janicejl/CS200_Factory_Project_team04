@@ -687,6 +687,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	if(process.equals("Get Part")){
     		getPartsRobot().addCommand("grab," + (nest) + "," + (grip) + "," + nest);
     	} 		
+    	//Lane Vibration
+    	else if(process.equals("Vibrate")){
+    		lanes.get(nest).vibrateLane(grip);
+    		//nest = lane #
+    		//grip = vibration amplitude
+    	}
     	System.err.println(process);
     }
     public void execute(String process,PartInfo p)

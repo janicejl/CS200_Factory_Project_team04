@@ -1,6 +1,9 @@
 package Interface.PartsRobotAgent;
 
 
+import java.awt.Component;
+import java.util.ArrayList;
+
 import Agents.VisionAgent.VisionAgent;
 import data.*;
 

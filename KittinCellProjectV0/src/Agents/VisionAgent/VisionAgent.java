@@ -240,62 +240,45 @@ public class VisionAgent extends Agent implements Vision {
 	}
 	
 	private void inspectNests() {
-	if(nest1.getIndex() == numberofnestsneeded){
-		inspectSoloNest();
-	}
-	else{
-		
-		boolean nest1Approved=false;
-		boolean nest2Approved=false;
-	
-
-		
-		// nest1.getPartType should return the string of the name that the nest should hold
-		if (nest1.getPartInfo() == fullNestsPartsList.get( nest1.getNumber()-1) ) {
-			nest1Approved=true;
-			print(nest1.getName() + " approved");
+		if(nest1.getIndex() == numberofnestsneeded){
+			inspectSoloNest();
 		}
-		else {
-			nest1Approved=false;
-			nest1.msgBadParts();
-			print(nest1.getName() + " not approved");
-		}
-				
-		if (nest2.getPartInfo() == fullNestsPartsList.get(nest2.getNumber()-1) ) { 
-			nest2Approved=true;
-			print(nest2.getName() + " approved");
-		}
-		else {
-			nest2Approved=false;
-			nest2.msgBadParts();
-			print(nest2.getName() + " not approved");
-		}
+		else{
 			
-		
-		for (int i=1; i<nest1.getPartsCount().size(); i++) {
-			if (nest1.getPartsCount()[i]>1) {
-				nest1Approved = false;
+			boolean nest1Approved=false;
+			boolean nest2Approved=false;
+			
+			// nest1.getPartType should return the string of the name that the nest should hold
+			if (nest1.getPartInfo() == fullNestsPartsList.get( nest1.getNumber()-1) ) {
+				nest1Approved=true;
+				print(nest1.getName() + " approved");
 			}
-			
-		}
-		
-		for (int i=1; i<nest2.getPartsCount().size(); i++) {
-			if (nest2.getPartsCount()[i]>1) {
-				nest1Approved = false;
+			else {
+				nest1Approved=false;
+				nest1.msgBadParts();
+				print(nest1.getName() + " not approved");
 			}
-			
-		}
-		
-		if (nest1Approved && nest2Approved) {
-			approved=true;
-			print("consecutive nests approved");
-		}
-		else {
-			approved=false;
-			print("consecutive not approved");
-		}
-		approveOrDenyParts();
-	}	
+					
+			if (nest2.getPartInfo() == fullNestsPartsList.get(nest2.getNumber()-1) ) { 
+				nest2Approved=true;
+				print(nest2.getName() + " approved");
+			}
+			else {
+				nest2Approved=false;
+				nest2.msgBadParts();
+				print(nest2.getName() + " not approved");
+			}
+						
+			if (nest1Approved && nest2Approved) {
+				approved=true;
+				print("consecutive nests approved");
+			}
+			else {
+				approved=false;
+				print("consecutive not approved");
+			}
+			approveOrDenyParts();
+		}	
 	}
 	
 	private void inspectSoloNest(){
@@ -308,13 +291,6 @@ public class VisionAgent extends Agent implements Vision {
 			nest1Approved=false;
 			nest1.msgBadParts();
 			print(nest1.getName() + " not approved");
-		}
-		
-		for (int i=1; i<nest1.getPartsCount().size(); i++) {
-			if (nest1.getPartsCount()[i]>1) {
-				nest1Approved = false;
-			}
-			
 		}
 		
 		if(nest1Approved){
@@ -368,7 +344,6 @@ public class VisionAgent extends Agent implements Vision {
 		
 		if (state==State.SCHEMATIC_RECEIVED) {
 //			print("Running");
-			
 
 			approved = false;
 			if (type==Type.NESTS_INSPECTOR) {

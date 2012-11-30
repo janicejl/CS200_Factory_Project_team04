@@ -52,7 +52,7 @@ public class PartsRobot implements Runnable, Serializable{
     
     boolean movingMsg;				//boolean on whether or not it is moving. 
     boolean dumped;					//boolean on whether or not dumping.
-    boolean dropParts = true;		//whether the part robot will drop parts
+    boolean dropParts = false;		//whether the part robot will drop parts
     boolean dropTurn = false;		//whether the parts robot needs to try a drop this turn
     Random rand = new Random();		//generate random number for dropping
     int dropRate = 50;				//percentage chance that part will be dropped per move
@@ -365,6 +365,10 @@ public class PartsRobot implements Runnable, Serializable{
 	//Getters and Setters
     public double getY(){
         return y;
+    }
+    
+    public void setDropParts(boolean b){
+    	dropParts = b;
     }
     
     public Camera getKitStandCamera() {

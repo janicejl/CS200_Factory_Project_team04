@@ -37,6 +37,7 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     KitAssemblyManager kam;
     KitRobot kitRobot;
     PartsRobot partsRobot;
+    boolean dropParts = false;
 
     public KitAssemblyApp(){
     	kitClient = new KitAssemblyClient(this);
@@ -113,6 +114,18 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         frame.setVisible(true);
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
+    
+    public void showPanel(String s){
+    	cl.show(this.getContentPane(), s);    	
+    }
+    
+    public void setDropParts(boolean b) {
+		dropParts = b;
+	}
+    
+    public boolean getDropParts() {
+		return dropParts;
+	}
 
     public void actionPerformed(ActionEvent ae) {
     	if(ae.getSource() == timer){
@@ -125,10 +138,10 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
 	        
     	}
     	else if(ae.getSource() == showGraphics){
-    		cl.show(this.getContentPane(), "graphics");
+    		showPanel("graphics");
     	}
     	else if(ae.getSource() == showControls){
-    		cl.show(this.getContentPane(), "controls");
+    		showPanel("controls");
     	}
     }
     

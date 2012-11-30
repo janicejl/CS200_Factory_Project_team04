@@ -143,10 +143,10 @@ public class LaneAgent extends Agent implements Lane{
 			if(lanequeue.size()<maxsize){
 				if(feeder!=null){
 				if(index%2==0){
-					feeder.msgLaneIsReadyForParts("left");
+					feeder.msgIsLaneReadyForParts(this);
 				}
 				else{
-					feeder.msgLaneIsReadyForParts("right");
+					feeder.msgIsLaneReadyForParts(this);
 				}
 				}
 				readystate = ReadyStatus.ready;
@@ -161,10 +161,10 @@ public class LaneAgent extends Agent implements Lane{
 			if(lanequeue.size()>maxsize)
 			{
 				if(index%2==0){
-					feeder.msgLaneIsFull("left");
+					feeder.msgLaneIsFull(this);
 				}
 				else{
-					feeder.msgLaneIsFull("right");
+					feeder.msgLaneIsFull(this);
 				}	
 				return false;
 			}
@@ -184,10 +184,10 @@ public class LaneAgent extends Agent implements Lane{
 	private void laneFull(){
 		lanefullstate = LaneFullStatus.full;
 		if(index%2==0){
-			feeder.msgLaneIsFull("left");
+			feeder.msgLaneIsFull(this);
 		}
 		else{
-			feeder.msgLaneIsFull("right");
+			feeder.msgLaneIsFull(this);
 		}
 		readystate = ReadyStatus.notready;
 	}
@@ -196,11 +196,11 @@ public class LaneAgent extends Agent implements Lane{
 		if(feeder!=null){
 			if(index%2==0){
 				print("Asking for parts (left)");
-				feeder.msgNeedThisPart(type,"left");
+				feeder.msgNeedThisPart(type,this);
 			}
 			else{
 				print("Asking for parts (right)");
-				feeder.msgNeedThisPart(type,"right");
+				feeder.msgNeedThisPart(type,this);
 			}
 		}
 		orderstate = OrderStatus.partOrdered;
@@ -208,7 +208,7 @@ public class LaneAgent extends Agent implements Lane{
 		
 	}
 	private void acceptPart(){
-		feeder.msgLaneIsReadyForParts(name);
+		feeder.msgIsLaneReadyForParts(this);
 		feederstate = FeederStatus.noAction;
 	}
 	

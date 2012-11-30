@@ -9,16 +9,13 @@ import Agent.Agent;
 import Interface.GantryFeederAgent.Feeder;
 import Interface.PartsRobotAgent.Lane;
 import Interface.GantryFeederAgent.Gantry;
-import Interface.GantryFeederAgent.GantryController;
 import MoveableObjects.Bin;
-import UnitTest.GantryFeederAgents.EventLog;
-import UnitTest.GantryFeederAgents.LoggedEvent;
 import data.PartInfo;
 
 public class FeederAgent extends Agent implements Feeder {
 
 	
-	enum LaneState {NeedPart,Nothing};
+	enum LaneState {NeedPart,Nothing, ReadyForParts};
 	
 	class MyLane
 	{
@@ -28,7 +25,7 @@ public class FeederAgent extends Agent implements Feeder {
 	}
 	
 	enum FeederState {HaveParts,NoPartsInFeeder};
-	enum FeederEvent {GotBinWithParts, IsFeederReadyForNewParts};
+	enum FeederEvent {GotBinWithParts, IsFeederReadyForNewParts, PartsGone};
 	
 	FeederState state;
 	Bin current_bin;
@@ -92,6 +89,12 @@ public class FeederAgent extends Agent implements Feeder {
 		stateChanged();
 	}
 	
+	public void msgPartsGone()
+	{
+		feeder_event_list.add(FeederEvent.PartsGone);
+		stateChanged();
+	}
+	
 	
 	public void msgIsLaneReadyForParts(Lane lane_)
 	{
@@ -99,9 +102,16 @@ public class FeederAgent extends Agent implements Feeder {
 		{
 			if(lane == lane_)
 			{
-				
+				lane.state = LaneState.ReadyForParts;
+				stateChanged();
+				return;
 			}
 		}
+	}
+	
+	public void msgLaneIsFull(Lane lane_)
+	{
+		
 	}
 	
 	@Override
@@ -114,6 +124,7 @@ public class FeederAgent extends Agent implements Feeder {
 			if(event == FeederEvent.GotBinWithParts)
 			{
 				state = FeederState.HaveParts;
+				feeder_event_list.remove(event);
 				CheckIfLaneIsReadyForParts();
 				return true;
 			}
@@ -121,10 +132,24 @@ public class FeederAgent extends Agent implements Feeder {
 		
 		if(state == FeederState.HaveParts)
 		{
+			for(MyLane lane:my_lane_list)
+			{	
+				if(lane.state == LaneState.ReadyForParts)
+				{
+					GivePartsToLane(lane);
+					return true;
+				}
+			}
+			
 			for(FeederEvent event:feeder_event_list)
 			{
-				if(event == FeederEvent.GotBinWithParts)
+				if(event == FeederEvent.PartsGone)
 				{
+					feeder_event_list.remove(event);
+					state = FeederState.NoPartsInFeeder;
+					return true;
+				}
+			}
 		}
 		
 		
@@ -140,17 +165,14 @@ public class FeederAgent extends Agent implements Feeder {
 			}
 		}
 
+		return false;
 	}
 	
-	
-	
-	
-	
 	//ACTIONS
-	
-	
+
 	private void AskGantryToGetPart(MyLane lane)
 	{
+		lane.state = LaneState.Nothing;
 		gantry.msgNeedThisPart(lane.part_wanted, this);
 	}
 	
@@ -158,8 +180,6 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	private void CheckIfLaneIsReadyForParts()
 	{
-		
-		
 		for(MyLane lane:my_lane_list)
 		{	
 			if(lane.part_wanted.getName() == current_bin.getPartInfo().getName())
@@ -169,15 +189,15 @@ public class FeederAgent extends Agent implements Feeder {
 		}
 	}
 	
-	private void GivePartsToLane()
+	private void GivePartsToLane(MyLane lane)
 	{
-		for(MyLane lane:my_lane_list)
+		for(int i=0;i<current_bin.getQuantity();i++)
 		{
-			if(lane.part_wanted.getName() == current_bin.getPartInfo().getName())
-			{
-				
-			}
+			lane.lane.msgHereIsAPart(current_bin.getPartInfo());
+			//animation call here i think
 		}
+		lane.state = LaneState.Nothing;
+	
 	}
 	
 	
@@ -200,6 +220,9 @@ public class FeederAgent extends Agent implements Feeder {
 	public int getNumber(){
 		return number;
 	}
+
+
+	
 	
 	
 	

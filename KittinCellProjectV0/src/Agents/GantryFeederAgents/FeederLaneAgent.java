@@ -68,7 +68,7 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 	}
 	
 	private void StartFeeder(){
-		feeder.msgLaneIsReadyForParts(name);
+		feeder.msgLaneIsReadyForParts(this);
 		state = FeederState.pending;
 	}
 	

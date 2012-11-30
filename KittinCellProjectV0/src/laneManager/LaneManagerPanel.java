@@ -19,8 +19,8 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 	JSlider vibrationSlider;
 	String[] lanes;
 	
-	public LaneManagerPanel(){
-		//app = _app;
+	public LaneManagerPanel(LaneManagerApp _app){
+		app = _app;
 		lanes = new String[]{"Lane 1", "Lane 2", "Lane 3", "Lane 4", "Lane 5", "Lane 6", "Lane 7", "Lane 8"};
 		horizPanels  = new ArrayList<JPanel>();
 		
@@ -90,15 +90,15 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		}
 	}
 	
-	//this main is for testing the panel
-	public static void main(String[] args){
-		JFrame test = new JFrame();
-		LaneManagerPanel p1 = new LaneManagerPanel();
-		test.add(p1);
-		test.setSize(700, 400);
-		test.setVisible(true);
-		test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+//	//this main is for testing the panel
+//	public static void main(String[] args){
+//		JFrame test = new JFrame();
+//		LaneManagerPanel p1 = new LaneManagerPanel();
+//		test.add(p1);
+//		test.setSize(700, 400);
+//		test.setVisible(true);
+//		test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//	}
 
 	@Override
 	public void stateChanged(ChangeEvent e) {

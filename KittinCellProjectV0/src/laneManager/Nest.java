@@ -52,8 +52,8 @@ public class Nest implements Serializable{
 		parts.add(p);
 		
 		if (parts.size() >= 9) {
-			parts.get(parts.size() - 1).setX(this.x + (double)random.nextInt(100));
-			parts.get(parts.size() - 1).setY(this.y + (double)random.nextInt(50));
+			parts.get(parts.size() - 1).setX(this.x + (double)random.nextInt(70));
+			parts.get(parts.size() - 1).setY(this.y + (double)random.nextInt(20));
 		}
 	}
 	

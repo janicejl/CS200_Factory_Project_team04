@@ -50,15 +50,15 @@ public class GUIKitAssemblyManager extends JPanel{
     int[] stationPositions = {160, 140, 160, 360, 80, 490, 10, 490, 160, 250}; // stations 1 - 2 - 3 - 4 - 5 (image corner coords)
     boolean emptyConveyorOn;
     boolean finishedConveyorOn;
-    boolean badConveyorOn;
-    boolean incompleteConveyorOn;
+    boolean badConveyorOn = true;
+    boolean incompleteConveyorOn = true;
     /*
     id  name    corX  corY
     0   empty   80    10
     1   kit 1   160   140
     2   kit 2   160   360
-    3   inc     80    490
-    4   bad     10    490
+    3   inc     80    490	//Bad Kit Out
+    4   bad     10    490	//Bad Kit In
     5   check   160   250
     6   done    10    10
     */
@@ -177,8 +177,8 @@ public class GUIKitAssemblyManager extends JPanel{
             g2.drawImage(conveyorImage,75, 500 + i * 20 + (int)incompleteConveyorMove,null); // incomplete conveyor
             g2.drawLine(75,500 + 20*i+(int)incompleteConveyorMove,134, 500 + 20*i +(int)incompleteConveyorMove);
 
-            g2.drawImage(conveyorImage,5, 500 + i*20 + (int)badConveyorMove,null); // bad conveyor
-            g2.drawLine(5,500 + i*20+(int)badConveyorMove,64,500 + i*20+(int)badConveyorMove);
+            g2.drawImage(conveyorImage,5, 520 + (i+1)*20 - (int)badConveyorMove,null); // bad conveyor
+            g2.drawLine(5,520 + (i+1)*20-(int)badConveyorMove,64,520 + (i+1)*20-(int)badConveyorMove);			//changed to - sign
         }
 
         g2.drawImage(conveyorImage,75,100+(int)emptyConveyorMove,135,120,0,0,60,22,null); // empty conveyor end
@@ -190,8 +190,8 @@ public class GUIKitAssemblyManager extends JPanel{
         g2.drawImage(conveyorImage,75,480,135,480+(int)incompleteConveyorMove,0,0,60,22,null); // incomplete conveyor end
         g2.drawLine(75,480+(int)incompleteConveyorMove,134,480+(int)incompleteConveyorMove);
 
-        g2.drawImage(conveyorImage,5,480,65,480+(int)badConveyorMove,0,0,60,22,null); // bad conveyor end
-        g2.drawLine(5,480+(int)badConveyorMove,64,480+(int)badConveyorMove);
+        g2.drawImage(conveyorImage,5,500,65,480-(int)badConveyorMove,0,0,60,22,null); // bad conveyor end
+        g2.drawLine(5,500-(int)badConveyorMove,64,500-(int)badConveyorMove);
 
         for(GUIKit k : emptyKits){
         	k.paintKit(g2);

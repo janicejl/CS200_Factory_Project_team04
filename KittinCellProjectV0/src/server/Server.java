@@ -39,7 +39,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	ServerPartTestPanel partsTest; //panel for parts robot commands
 	ServerLaneTestPanel laneTest; //panel for lane commands
 	ServerGantryTestPanel gantryTest; //panel for gantry commands
+	GUIServer serverGUI;
 	Integer phase; //phase to determine which panel to display (old)
+	
 	
 	String clientType; //type of client to connect to
 	
@@ -113,6 +115,25 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	//Constructor
 	public Server(){
+		serverGUI = new GUIServer();
+
+		/*OutputStream outConsole = new OutputStream() { // DO NOT REMOVE THIS BLOCK!!!
+			@Override
+			public void write(int b) throws IOException {
+				serverGUI.updateTextPane( String.valueOf((char) b));
+			}
+			@Override
+			public void write(byte[] b, int off, int len) throws IOException {
+				serverGUI.updateTextPane( new String(b, off, len));
+			}
+			@Override
+			public void write(byte[] b) throws IOException {
+			write(b, 0, b.length);
+			}
+		};
+			 
+		System.setOut(new PrintStream(outConsole, true));
+		System.setErr(new PrintStream(outConsole, true));*/
 		
 		//setup layout
 		setLayout(new GridBagLayout());
@@ -382,7 +403,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		timer = new Timer(10, this);
 		//start timer
 		timer.start();
-		this.setSize(1100, 400);
+		this.setSize(800, 600);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
@@ -394,13 +415,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;	
 		c.gridy = 0;
-		add(kitTest, c);
-		c.gridx = 1;
-		add(partsTest, c);
-		c.gridx = 2;
-		add(laneTest, c);
-		c.gridx = 3;
-		add(gantryTest,c);
+//		add(kitTest, c);
+//		c.gridx = 1;
+//		add(partsTest, c);
+//		c.gridx = 2;
+//		add(laneTest, c);
+//		c.gridx = 3;
+//		add(gantryTest,c);
+		add(serverGUI,c);
 		phase = 1;
 		try{
 			ss = new ServerSocket(61337); //attempt to start at indicated port #
@@ -866,10 +888,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			gui.repaint();
 		}
 		else if(phase.equals(1)){
-			kitTest.repaint();
-			partsTest.repaint();
-			laneTest.repaint();
-			gantryTest.repaint();
+//			kitTest.repaint();
+//			partsTest.repaint();
+//			laneTest.repaint();
+//			gantryTest.repaint();
+			serverGUI.repaint();
 		}
 		else if(phase.equals(2)){
 			partsTest.repaint();

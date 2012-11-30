@@ -20,6 +20,8 @@ public class LaneAgent extends Agent implements Lane{
 	Nest nest;
 	Server server;
 	
+	boolean jammed = false;
+	
 	int index = 0;
 	
 	public List<Part> lanequeue = new ArrayList<Part>();
@@ -32,6 +34,7 @@ public class LaneAgent extends Agent implements Lane{
 	public FeederStatus feederstate = FeederStatus.noAction;
 	public ReadyStatus readystate = ReadyStatus.ready;
 	public LaneFullStatus lanefullstate = LaneFullStatus.notFull;
+	public LaneJamStatus lanejamstate = LaneJamStatus.noAction;
 	
 	public enum OrderStatus{noAction,partRequested,partOrdered};
 	public enum LaneNestStatus{noAction,readyForPart,askedToTakePart};
@@ -39,6 +42,8 @@ public class LaneAgent extends Agent implements Lane{
 	public enum LaneStatus{noParts,hasParts,partsAtEndOfLane};
 	public enum LaneFullStatus{notFull,full}
 	public enum ReadyStatus{ready,notready}
+	
+	public enum LaneJamStatus{needJam,jammed,noAction};
 	
 	
 	public LaneAgent(Nest mynest,FeederAgent feed,Server server,String name,int index){
@@ -84,6 +89,10 @@ public class LaneAgent extends Agent implements Lane{
 		stateChanged();
 	}
 	
+	public void msgLaneJammed(){
+		lanejamstate = LaneJamStatus.needJam;
+	}
+	
 	@Override
 	public void msgPartAtEndOfLane() {
 		if(lanestate!= LaneStatus.partsAtEndOfLane){
@@ -106,6 +115,11 @@ public class LaneAgent extends Agent implements Lane{
 		
 		if(orderstate == OrderStatus.partRequested){
 			askForPart();
+			return true;
+		}
+		
+		if(lanejamstate == LaneJamStatus.needJam){
+			jamLane();
 			return true;
 		}
 		
@@ -162,6 +176,10 @@ public class LaneAgent extends Agent implements Lane{
 		return false;
 	}
 	
+	private void jamLane(){
+		//jamlane
+		lanejamstate = LaneJamStatus.jammed;
+	}
 	
 	private void laneFull(){
 		lanefullstate = LaneFullStatus.full;

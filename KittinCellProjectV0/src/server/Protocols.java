@@ -111,6 +111,7 @@ public class Protocols implements Runnable{
 			out.writeObject(app.getKitAssemblyManager());
 			out.reset();
 			out.flush();
+			app.getPartsRobot().setDropParts((boolean)in.readObject());
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();

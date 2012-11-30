@@ -79,7 +79,7 @@ public class GUIGantryManager extends JPanel {
 		{
 			
 			g2.drawImage(crate, manager.getPartsBoxes().get(i).getxCurrent(), manager.getPartsBoxes().get(i).getyCurrent(), null);
-			if(manager.getPartsBoxes().get(i).getPartInfo().getImagePath()!=null)
+			if(manager.getPartsBoxes().get(i).getEmpty()==false)
 			{
 				g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getPartsBoxes().get(i).getPartInfo().getImagePath())), manager.getPartsBoxes().get(i).getxCurrent()+13, manager.getPartsBoxes().get(i).getyCurrent()+35,null);
 			}
@@ -89,7 +89,7 @@ public class GUIGantryManager extends JPanel {
 		while(i<manager.getExiting().size())
 		{
 			g2.drawImage(crate,manager.getExiting().get(i).getxCurrent(),manager.getExiting().get(i).getyCurrent(),null);
-			if(manager.getExiting().get(i).getPartInfo().getImagePath()!=null)
+			if(manager.getExiting().get(i).getEmpty()==false)
 			{
 				g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getExiting().get(i).getPartInfo().getImagePath())),manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
 			}
@@ -99,7 +99,7 @@ public class GUIGantryManager extends JPanel {
 		while(i<manager.getPurged().size())
 		{
 			g2.drawImage(crate,manager.getPurged().get(i).getxCurrent(),manager.getPurged().get(i).getyCurrent(),null);
-			if(manager.getPurged().get(i).getPartInfo().getImagePath()!=null)
+			if(manager.getPurged().get(i).getEmpty()==false)
 			{
 				g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getPurged().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
 			}

@@ -18,6 +18,7 @@ public class PartsBox implements Serializable
 	static int xmax = 325;
 	static int ymax = 600;
 	PartInfo info;
+	boolean empty = false;
 	
 	public PartsBox(PartInfo i)
 	{
@@ -145,4 +146,16 @@ public class PartsBox implements Serializable
 	{
 		return info;
 	}
+	
+	public boolean getEmpty()
+	{
+		return empty;
+	}
+	
+	public void setEmpty(boolean b)
+	{
+		empty = b;
+	}
+	
+	
 }

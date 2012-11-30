@@ -131,9 +131,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 				inpspection_list.add(kit_h);
 				kit_h.state = KitState.BeingInspected;
 				kit_holder_list.remove(kit_h);
-				System.out.println("wazzzle");
-			//	System.out.println(kit_holder_list.size());
-			//	System.out.println(kit_holder_list.get(0).position);
 				stateChanged();
 				return;
 	
@@ -358,7 +355,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	{
 		System.out.println("KitStand: Removing kit");
 		msgInspectionSlotIsClear();
-	//	System.out.println(inpspection_list.get(0).position);
 		inpspection_list.remove(0);
 		server.execute("Kit Finished");
 	}

@@ -11,7 +11,7 @@ import data.KitInfo;
 public class KitPanel extends JPanel {
 
 	TitledBorder title;
-	ImageIcon background;
+	//ImageIcon background;
 	ProductionManagerPanel app;
 	
 	JPanel content;
@@ -34,7 +34,8 @@ public class KitPanel extends JPanel {
 	
 	public KitPanel(ProductionManagerPanel _app, KitInfo kitInfo) {
 		app = _app;
-		background = new ImageIcon("images/background.png");
+		//background = new ImageIcon("images/background.png");
+		this.setOpaque(false);
 		
 		if(kitInfo == null){
 			title = BorderFactory.createTitledBorder("  ");
@@ -137,7 +138,7 @@ public class KitPanel extends JPanel {
 	}
 	
 	public void paintComponent(Graphics g){
-		background.paintIcon(this, g, 0, 0);
+		//background.paintIcon(this, g, 0, 0);
 		revalidate();
 	}
 	

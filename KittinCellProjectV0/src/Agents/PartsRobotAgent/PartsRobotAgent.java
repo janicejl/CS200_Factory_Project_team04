@@ -338,19 +338,19 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		returnToStart();
 		return true;
 	}*/
+	// Hack due to some errors, might actually work fine:
 	
-	if(kit1.partsneeded.size()==recipe.size() && kit2.partsneeded.size()==recipe.size() && kit1.state==KitStatus.pending && kit2.state == KitStatus.available){
-		currentkit = CurrentKit.kit2;
+	if(kit1.partsneeded.size()==recipe.size() && kit2.partsneeded.size()==recipe.size() && kit1.state==KitStatus.pending){
+		kit1.state=KitStatus.available;
 		return true;
 	}
-	if(kit1.partsneeded.size()==recipe.size() && kit2.partsneeded.size()==recipe.size() && kit1.state==KitStatus.available && kit2.state == KitStatus.pending){
-		currentkit = CurrentKit.kit1;
-		return true;
-	}
+
+//	if(kit1.partsneeded.size()==recipe.size() && kit2.partsneeded.size()==recipe.size() && kit1.state==KitStatus.available && kit2.state == KitStatus.pending){
+//		return true;
+//	}
 	
 		print("Nothing to do, sleeping. Kit1 recipe size: " + kit1.partsneeded.size() + ". Kit 1 available: " + kit1.state);
 		print("Kit2 recipe size: " + kit2.partsneeded.size() + ". Kit 2 available: " + kit2.state);
-
 		return false;
 	}
 

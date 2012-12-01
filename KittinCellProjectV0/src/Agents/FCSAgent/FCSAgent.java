@@ -56,6 +56,7 @@ public class FCSAgent extends Agent implements FCS {
 	public void msgKitCompleted() {
 		numKitsNeeded--;
 		print("one kit completed");
+		stateChanged();
 	}
 	//public void msgNewConfig
 		
@@ -86,12 +87,10 @@ public class FCSAgent extends Agent implements FCS {
 		if (server.isRunning() && numKitsNeeded==0) {
 			print("sending out to get a job");
 			server.execute("Get Job");
-			stateChanged();
 			return true;
 		}
 		
-		stateChanged();
-		return false;
+		return true;
 	}
 
 

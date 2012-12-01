@@ -96,6 +96,11 @@ public class Kit implements Serializable {
 		partsList.add(p);
 	}
 	
+	public void addPart(int i, Part p) {
+		partsList.set(i,p);
+	}
+	
+	
 	public void update() {
 		if (destinationX != x) {			//move the kit x position. 
 			if (x < destinationX) {

@@ -171,7 +171,7 @@ public class GantryAgent extends Agent implements Gantry{
 	
 	private void AskFeederIfReadyForParts()
 	{
-		current_feeder_servicing.feeder.msgHaveParts(this);
+		//current_feeder_servicing.feeder.msgHaveParts(this);
 	}
 	
 	private void MoveGantryToFeeder()

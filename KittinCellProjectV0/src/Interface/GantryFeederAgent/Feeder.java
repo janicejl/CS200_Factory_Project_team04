@@ -16,7 +16,6 @@ public interface Feeder {
 	public void msgPartsGone();
 	public void msgIsLaneReadyForParts(Lane lane_);
 	public int getNumber();
-	public void msgHaveParts(Gantry gantryAgent);
 	public void msgLaneIsFull(Lane lane_);
 
 

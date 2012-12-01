@@ -34,12 +34,13 @@ public class FeederAgent extends Agent implements Feeder {
 	private Gantry gantry;
 	int number;
 	Server server;
+	String name;
 	
 	
 	
-	public FeederAgent(Lane l_lane, Lane r_lane, int number, Server sever)
+	public FeederAgent(String name, Lane l_lane, Lane r_lane, int number, Server sever)
 	{
-		
+		this.name = name;
 		this.number = number;
 		this.server = server;
 		
@@ -61,12 +62,14 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	public void msgNeedThisPart(PartInfo p, Lane lane)
 	{
-		for(MyLane lane_:my_lane_list)
+		System.out.println(name + ": Got a request for a part");
+		for(MyLane my_lane_:my_lane_list)
 		{
-			if(lane_ == lane)
+			if(my_lane_.lane.equals(lane))
 			{
-				lane_.state = LaneState.NeedPart;
-				lane_.part_wanted = p;
+				System.out.println("boooom");
+				my_lane_.state = LaneState.NeedPart;
+				my_lane_.part_wanted = p;
 				stateChanged();
 				return;
 			}
@@ -75,6 +78,7 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	public void msgHereAreParts(Bin bin) 
 	{
+		System.out.println(name + ": Got a bin");
 		feeder_event_list.add(FeederEvent.GotBinWithParts);
 		current_bin = bin;
 		stateChanged();
@@ -85,12 +89,14 @@ public class FeederAgent extends Agent implements Feeder {
 	//may not need this actually
 	public void msgAmIReadyForParts()
 	{
+		System.out.println(name + ": Is feeder ready for part?");
 		feeder_event_list.add(FeederEvent.IsFeederReadyForNewParts);
 		stateChanged();
 	}
 	
 	public void msgPartsGone()
 	{
+		System.out.println(name + ": No more parts in the feeder");
 		feeder_event_list.add(FeederEvent.PartsGone);
 		stateChanged();
 	}
@@ -98,11 +104,12 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	public void msgIsLaneReadyForParts(Lane lane_)
 	{
-		for(MyLane lane:my_lane_list)
+		System.out.println(name + ": Lane is ready to get parts");
+		for(MyLane my_lane_:my_lane_list)
 		{
-			if(lane == lane_)
+			if(my_lane_.lane == lane_)
 			{
-				lane.state = LaneState.ReadyForParts;
+				my_lane_.state = LaneState.ReadyForParts;
 				stateChanged();
 				return;
 			}
@@ -132,11 +139,11 @@ public class FeederAgent extends Agent implements Feeder {
 		
 		if(state == FeederState.HaveParts)
 		{
-			for(MyLane lane:my_lane_list)
+			for(MyLane my_lane_:my_lane_list)
 			{	
-				if(lane.state == LaneState.ReadyForParts)
+				if(my_lane_.state == LaneState.ReadyForParts)
 				{
-					GivePartsToLane(lane);
+					GivePartsToLane(my_lane_);
 					return true;
 				}
 			}
@@ -155,11 +162,11 @@ public class FeederAgent extends Agent implements Feeder {
 		
 		if(state == FeederState.NoPartsInFeeder)
 		{
-			for(MyLane lane:my_lane_list)
+			for(MyLane my_lane_:my_lane_list)
 			{	
-				if(lane.state == LaneState.NeedPart)
+				if(my_lane_.state == LaneState.NeedPart)
 				{
-					AskGantryToGetPart(lane);
+					AskGantryToGetPart(my_lane_);
 					return true;
 				}
 			}
@@ -172,6 +179,7 @@ public class FeederAgent extends Agent implements Feeder {
 
 	private void AskGantryToGetPart(MyLane lane)
 	{
+		System.out.println(name + ": Asking gantry for parts");
 		lane.state = LaneState.Nothing;
 		gantry.msgNeedThisPart(lane.part_wanted, this);
 	}
@@ -180,9 +188,10 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	private void CheckIfLaneIsReadyForParts()
 	{
-		for(MyLane lane:my_lane_list)
+		System.out.println(name + ": Checking if lane is ready for parts");
+		for(MyLane my_lane_:my_lane_list)
 		{	
-			if(lane.part_wanted.getName() == current_bin.getPartInfo().getName())
+			if(my_lane_.part_wanted.getName() == current_bin.getPartInfo().getName())
 			{
 				//send message here to check if is ready for parts
 			}
@@ -191,6 +200,7 @@ public class FeederAgent extends Agent implements Feeder {
 	
 	private void GivePartsToLane(MyLane lane)
 	{
+		System.out.println(name + ": Giving parts to lane");
 		for(int i=0;i<current_bin.getQuantity();i++)
 		{
 			lane.lane.msgHereIsAPart(current_bin.getPartInfo());

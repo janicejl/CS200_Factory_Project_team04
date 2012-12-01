@@ -289,14 +289,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	nest8.setLane(lane8);
     	
     	//Feeders
-    	feeder1 = new FeederAgent("feeder1", 5, lane1, lane2, 0, this);		
-		feeder2 = new FeederAgent("feeder2", 5, lane3, lane4, 1, this);		
-		feeder3 = new FeederAgent("feeder3", 5, lane5, lane6, 2, this);		
-		feeder4 = new FeederAgent("feeder4", 5, lane7, lane8, 3, this);
-		feeder1.setGantry(gantry1);
-		feeder2.setGantry(gantry1);
-		feeder3.setGantry(gantry1);
-		feeder4.setGantry(gantry1);
+    	feeder1 = new FeederAgent("feeder1", lane1, lane2, 0, this);		
+		feeder2 = new FeederAgent("feeder2", lane3, lane4, 1, this);		
+		feeder3 = new FeederAgent("feeder3", lane5, lane6, 2, this);		
+		feeder4 = new FeederAgent("feeder4", lane7, lane8, 3, this);
+		feeder1.SetGantry(gantry1);
+		feeder2.SetGantry(gantry1);
+		feeder3.SetGantry(gantry1);
+		feeder4.SetGantry(gantry1);
 	//	feeder1.setGantryController(gantryController);
 		//feeder2.setGantryController(gantryController);
 	//	feeder3.setGantryController(gantryController);

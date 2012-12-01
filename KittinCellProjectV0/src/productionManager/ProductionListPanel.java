@@ -13,6 +13,7 @@ public class ProductionListPanel extends JPanel implements ActionListener{
 	TitledBorder title; //border for panel
 	JobListPanel jobs; //jobs list panel
 	JButton start; //start production button
+	JButton burn;
 	//ImageIcon background; //background image
 	
 	public ProductionListPanel(ProductionManagerApp _app){
@@ -41,14 +42,31 @@ public class ProductionListPanel extends JPanel implements ActionListener{
 		start.addActionListener(this);
 		start.setAlignmentX(CENTER_ALIGNMENT);
 		
+		//burn button		
+		burn = new JButton("Burn it Down!");
+		burn.setPreferredSize(new Dimension(150, 27));
+		burn.setMaximumSize(new Dimension(150, 27));
+		burn.setMinimumSize(new Dimension(150, 27));
+		burn.addActionListener(this);
+		burn.setAlignmentX(CENTER_ALIGNMENT);
+		
 		//add everything to layout
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
+		c.weightx = 1;
 		c.gridx = 0;
 		c.gridy = 0;
+		c.gridwidth=2;
 		add(jobs, c);
+		c.gridwidth=1;
 		c.gridy = 2;
+		c.anchor = GridBagConstraints.LINE_END;
+		c.insets = new Insets(0,0,0,5);
 		add(start, c);
+		c.anchor = GridBagConstraints.LINE_START;
+		c.insets = new Insets(0,5,0,0);
+		c.gridx=1;
+		add(burn,c);
 	}
 		
 	//repaint
@@ -74,6 +92,18 @@ public class ProductionListPanel extends JPanel implements ActionListener{
 //				app.getClient().updateThread();
 			}
 			jobs.update();
+		}
+		else if(e.getSource() == burn){
+			if(burn.getText().equals("Burn it Down!")){
+				burn.setText("Clear Fire");
+				app.graphics.burnItDown();
+				app.next();
+			}
+			else {
+				burn.setText("Burn it Down!");
+				app.graphics.clearFire();
+				app.next();				
+			}
 		}
 	}
 

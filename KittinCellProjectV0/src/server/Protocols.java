@@ -295,6 +295,13 @@ public class Protocols implements Runnable{
 					
 				}
 			}
+			else if(commandSent.equals("Job Finished")){
+				app.setProductionCommand("Idle");
+				command = (String)in.readObject();
+				if(command.equals("Received")){
+					
+				}
+			}
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();

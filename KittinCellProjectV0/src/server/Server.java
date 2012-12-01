@@ -210,7 +210,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	laneQueue = new TreeMap<Integer, Integer>();
     	//Set Lane Speeds
     	for (int i = 0; i < 8; i ++) {
-    		lanes.get(i).setConveyerBeltSpeed(1);
+    		lanes.get(i).setConveyerBeltSpeed(5);
     		laneCounter.add(0);
     		laneQueue.put(i, 0);
     	}
@@ -558,13 +558,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	//Kit Complete, adjust server joblist
     	else if(process.equals("Kit Finished")){
     		if(jobsList.size() != 0){
-    			if(jobsList.get(0).getAmount() > 0){
+    			if(jobsList.get(0).getAmount() > 1){
 	    	    	 jobsList.get(0).setAmount(jobsList.get(0).getAmount() - 1);
+	    	    	 setProductionCommand("Update Jobs");
 	    	     }
 	    	     else{
 	    	    	 jobsList.remove(0);
+	    	    	 setProductionCommand("Job Finished");
 	    	     }
-	    	     setProductionCommand("Update Jobs");
 	    	     getFCSAgent().msgKitCompleted();
    	     	}
 	   	}
@@ -574,6 +575,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	   			getFCSAgent().msgHereIsKitConfig(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
 	//   	    getPartsRobotAgent().msgMakeThisKit(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
 	//   	    getKitRobotAgent().msgGetKits(jobsList.get(0).getAmount());
+	   		}
+	   		else{
+	   			running = false;
 	   		}
 	   	}
     	
@@ -722,8 +726,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
   	}
     
 	public void actionPerformed(ActionEvent e){
-		
-		
 		
 		int c =0;
 		while(c<nestList.size())

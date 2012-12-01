@@ -90,7 +90,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 	
 	public void actionPerformed(ActionEvent ae){		
 		if(ae.getSource()==jamButton){
-			app.getOnJammeds().set(laneSelectBox.getSelectedIndex(), true);
+			app.getOnJammeds().set(laneSelectBox.getSelectedIndex(),!app.getOnJammeds().get(laneSelectBox.getSelectedIndex()));
 		}
 	}
 	

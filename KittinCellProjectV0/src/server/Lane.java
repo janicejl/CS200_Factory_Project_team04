@@ -113,7 +113,7 @@ public class Lane implements ActionListener, Serializable{
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
 	    }
 	    vibrationAmplitude = 0;
-	    jamProbability = 10; //Initialized to 10
+	    jamProbability = 100; //Initialized to 10
 	    isJammed = false;
 	    random = new Random();
     }
@@ -140,7 +140,7 @@ public class Lane implements ActionListener, Serializable{
 		nest = n;
 	    feeder = f;
 	    vibrationAmplitude = 0;
-	    jamProbability = 100; //one out of ten parts will jam 
+	    jamProbability = 1; //one out of ten parts will jam 
 	    System.out.println("Jam probability established to 3");
 	    isJammed = false;
 	    random = new Random();
@@ -245,7 +245,7 @@ public class Lane implements ActionListener, Serializable{
 			temp.setY(maxY/2 + verticalSpacing - 10);
 			itemList.add(temp);
 			System.out.println("release!");
-			
+		
 			if(random.nextInt(jamProbability) == 0 && isJammed == false && jamOn == true) {
 				jamIndex = itemList.size() - 1;
 				isJammed = true;	
@@ -362,6 +362,9 @@ public class Lane implements ActionListener, Serializable{
 
 	public void setJamOn(boolean jamOn) {
 		this.jamOn = jamOn;
+		if(jamOn == false){
+			isJammed = false;
+		}		
 	}
     
 }  

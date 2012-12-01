@@ -151,7 +151,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	public void msgHereAreParts(List<Part> part_l, int position)
 	{
 		System.out.println("KitStand: Parts to add for a kit");
-		System.out.println(kit_holder_list.size());
 		for(KitHolder kit_h:kit_holder_list)
 		{
 			if(kit_h.position == position)
@@ -193,6 +192,20 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 				if(event == KitStandEvent.IsEmptyKit && kit_animation_arrived)
 				{
 					stand_events.remove(event);
+					kit_animation_arrived = false;
+					CheckForEmptyKit();
+					return true;
+				}
+			}
+		}
+		
+		
+		if(!kit_holder_list.isEmpty())
+		{
+			for(KitHolder kit_h:kit_holder_list)
+			{
+				if(kit_h.state == KitState.Empty && kit_animation_arrived)
+				{
 					kit_animation_arrived = false;
 					CheckForEmptyKit();
 					return true;
@@ -289,18 +302,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 				}
 			}
 		}
-		if(!kit_holder_list.isEmpty())
-		{
-			for(KitHolder kit_h:kit_holder_list)
-			{
-				if(kit_h.state == KitState.Empty && kit_animation_arrived)
-				{
-					kit_animation_arrived = false;
-					CheckForEmptyKit();
-					return true;
-				}
-			}
-		}
+		
 	
 
 		return false;
@@ -365,6 +367,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 			kit_h.kit.addPart(part);
 		}
 		System.out.println("KitStand: Add Parts to kit");
+		System.out.println(kit_h.position);
 		kit_h.state = KitState.None;
 		//kit_h.parts_to_add = null;
 	}
@@ -373,10 +376,12 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	{
 		System.out.println("KitStand: Check for empty kit");
 		for(KitHolder kit:kit_holder_list)
-		{
+		{System.out.println("helllo");
+		System.out.println(kit.state);
 			if(kit.state == KitState.Empty)
 			{
 				kit.state = KitState.BeingUsed;
+				System.out.println("Booooooom  " + kit.position);
 				parts_robot.msgEmptyKit(kit.position);
 				return;
 			}

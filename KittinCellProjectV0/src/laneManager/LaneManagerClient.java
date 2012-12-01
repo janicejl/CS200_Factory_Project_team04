@@ -52,68 +52,12 @@ public class LaneManagerClient implements Runnable {
 			out.writeObject(commandSent); //send to server identifying what client this is
 			out.reset();
 			out.flush();
-			/*
-			command = (String)in.readObject();
-			if(command.equals("Confirmed")){
-				//start
-				out.writeObject("Confirmed");
-				out.reset();
-			}
-			else{
-				//error connection
-				System.out.println(command);
-				System.exit(1);
-			}
-			
-//**************START CODE***************************
-			
-			
-			commandSent = "Received";*/
-			/*while(true){
-				app.setLanes((CopyOnWriteArrayList<Lane>)in.readObject());
-				app.setFeeders((CopyOnWriteArrayList<Feeder>)in.readObject());
-				app.setNests((CopyOnWriteArrayList<Nest>)in.readObject());
-				out.writeObject(commandSent);
-				out.reset();
-			}*/
-			
-			/*commandSent = "idle";
-			while(true){
-				
-				out.writeObject(commandSent);
-				out.reset();
-				command = (String)in.readObject();
-				if(command.equals("idle")){
-					commandSent = "idle";
-					continue;
-				}
-				else if(command.equals("start")){
-					break;
-				}
-			}
-			commandSent = "idle";
-			
-			while(true){
-				out.writeObject(commandSent);
-				out.reset();
-				command = (String)in.readObject();
-				if(command.equals("idle")){
-					continue;
-				}
-				else if(command.equals("work")){
-					
-					//***** code for pass the data to graphics
-					
-					//***** code for graphics to update feederData
-					commandSent = "working";
-					
-					
-					
-				}
-			}
-			*/
+			app.setOverFlow((Vector<Boolean>)in.readObject());
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(1);
+		} catch(ClassNotFoundException ce){
+			ce.printStackTrace();
 			System.exit(1);
 		}
 	}
@@ -129,6 +73,9 @@ public class LaneManagerClient implements Runnable {
 			app.setNests((Vector<Nest>)in.readObject());
 			//send jammed state of lanes
 			out.writeObject(app.getOnJammeds());
+			out.reset();
+			out.flush();
+			out.writeObject(app.getOverFlow());
 			out.reset();
 			out.flush();
 		} catch (Exception ignore){

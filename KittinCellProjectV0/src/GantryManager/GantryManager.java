@@ -215,7 +215,7 @@ public class GantryManager implements Serializable,ActionListener
 					{
 						gantry.setState("dumpf");
 						gantry.setxFinal(285);
-						gantry.setyFinal(172);
+						gantry.setyFinal(207);
 						purged.add(parts.get(gantry.getBox()));
 						parts.remove(gantry.getBox());
 						gantry.setBox(purged.size()-1);

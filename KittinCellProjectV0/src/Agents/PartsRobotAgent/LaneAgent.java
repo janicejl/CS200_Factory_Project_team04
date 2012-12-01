@@ -14,7 +14,7 @@ import server.Server;
 
 public class LaneAgent extends Agent implements Lane{
 
-	int maxsize = 20;
+	int maxsize = 17;
 	String name;
 	FeederAgent feeder;
 	Nest nest;

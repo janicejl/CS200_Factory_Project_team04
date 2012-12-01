@@ -117,10 +117,7 @@ public class FeederAgent extends Agent implements Feeder {
 		}
 	}
 	
-	public void msgLaneIsFull(Lane lane_)
-	{
-		
-	}
+	
 	
 	@Override
 	public boolean pickAndExecuteAnAction()
@@ -172,14 +169,14 @@ public class FeederAgent extends Agent implements Feeder {
 				}
 			}
 			
-			/*for(MyLane my_lane_:my_lane_list)
+			for(MyLane my_lane_:my_lane_list)
 			{	
 				if(my_lane_.state == LaneState.ReadyForParts)
 				{
 					AskGantryToGetPart(my_lane_);
 					return true;
 				}
-			}*/
+			}
 		}
 
 		return false;
@@ -199,23 +196,13 @@ public class FeederAgent extends Agent implements Feeder {
 	private void CheckIfLaneIsReadyForParts()
 	{
 		System.out.println(name + ": Checking if lane is ready for parts");
-	//	server.execute("Feed Feeder", number);
 		for(MyLane my_lane_:my_lane_list)
 		{	
 			if(my_lane_.part_wanted != null)
 			{	
 				if(my_lane_.part_wanted.getName() == current_bin.getPartInfo().getName())
 				{
-					for(int i=0;i<current_bin.getQuantity();i++)
-					{
-						my_lane_.lane.msgReadyForPart();
-						//my_lane_.lane.msgHereIsAPart(current_bin.getPartInfo());
-						//server.execute("Try Feed Lane", my_lane_.lane.getNumber());
-						
-					}
-					
-				//	server.execute("Idle Bin", this.getNumber());
-				//	state = FeederState.NoPartsInFeeder;
+					my_lane_.lane.msgCanIPlacePart();
 				}
 			}
 		}
@@ -224,12 +211,16 @@ public class FeederAgent extends Agent implements Feeder {
 	private void GivePartsToLane(MyLane lane)
 	{
 		System.out.println(name + ": Giving parts to lane");
+	//	server.execute("Feed Feeder", number);
+		lane.lane.msgHereIsAPart(current_bin.getPartInfo());
+
+	//	server.execute("Try Feed Lane", lane.lane.getNumber());
 		for(int i=0;i<current_bin.getQuantity();i++)
 		{
-			lane.lane.msgHereIsAPart(current_bin.getPartInfo());
-			//animation call here i think
+			server.execute("Try Feed Lane", lane.lane.getNumber());
 		}
 		lane.state = LaneState.Nothing;
+		state = FeederState.NoPartsInFeeder;
 	
 	}
 	

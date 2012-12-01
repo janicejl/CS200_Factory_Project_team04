@@ -64,6 +64,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
             idCounter++;
         }
         partsDropped.add(false);
+        partsDropped.add(false);
 
         emptyKits = new ArrayList<Kit>();
         finishedKits = new ArrayList<Kit>();
@@ -126,9 +127,9 @@ public class KitAssemblyManager implements Runnable, Serializable{
         	getStationKits().set(i,k);
         	getStationKits().get(5).setPosition(160, 250);
         	for(int j = 0; j < getStationKits().get(5).getParts().size(); j++){
-        		if(partsDropped.get(j)){
+        		if(partsDropped.get(j+1)){
         			getStationKits().get(5).getParts().get(j).setPartDropped(true);
-        			partsDropped.set(j, false);
+        			partsDropped.set(j+1, false);
         		}
         	}
         }
@@ -195,9 +196,6 @@ public class KitAssemblyManager implements Runnable, Serializable{
     
     public void setPartsDropped(Vector<Boolean> v){
     	partsDropped = v;
-    	for(Boolean b: partsDropped){
-    		System.out.println("KITDROP: " + b);
-    	}
     }
 
     

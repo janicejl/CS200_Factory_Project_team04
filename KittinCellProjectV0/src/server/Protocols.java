@@ -19,6 +19,7 @@ public class Protocols implements Runnable{
 	String commandSent; //command sent from protocol
 	String protocolName; //protocol type
 	Thread thread;
+	Vector<Boolean> v;
 	boolean flag = false;
 	
 	public Protocols(Socket _s, Server _app){
@@ -42,7 +43,7 @@ public class Protocols implements Runnable{
 	
 	public void run(){
 		//choose which protocol to run based off client type
-		while(this.thread.isAlive()){
+		while(true){
 			if(protocolName.equals("Kit Assembly")){
 				runKitProtocol();
 			}
@@ -71,16 +72,6 @@ public class Protocols implements Runnable{
 	public void runGantryProtocol(){
 		try
 		{
-			//if Gantry robot is free and there is something in the waitlist queue
-//			if(app.getGantryManager().getGantry().getState().equals("free") && app.getGantryWaitList().size()!=0)
-//			{
-//				//update gantry robot queue commands
-//				app.getGantryManager().getGantry().setState(app.getGantryWaitList().get(0));
-//				app.getGantryManager().getGantry().setFeed(app.getGantryFeedList().get(0));
-//				app.getGantryWaitList().remove(0);
-//				app.getGantryFeedList().remove(0);
-//			}
-			//update gantry manager
 			out.writeObject(app.getGantryManager());
 			out.reset();
 		}
@@ -108,15 +99,14 @@ public class Protocols implements Runnable{
 			out.writeObject(app.getPartsRobot());
 			out.reset();
 			out.flush();
-			//write kit assmebly
+			//write kit assembly
 			out.writeObject(app.getKitAssemblyManager());
 			out.reset();
 			out.flush();
-			if((boolean)in.readObject()){
-				app.getKitAssemblyManager().setPartsDropped((Vector<Boolean>)in.readObject());
-				for(int i = 0; i < 8; i ++){
-					System.out.println(app.getKitAssemblyManager().getPartsDropped().get(i));
-				}
+			app.getPartsRobot().setDropParts((boolean)in.readObject()); // read in for parts robot drops
+			v = (Vector<Boolean>)in.readObject(); // read in for kit stand user drops
+			if(v.get(0)){
+				app.getKitAssemblyManager().setPartsDropped(v);
 			}
 		} catch (Exception e){
 			System.err.println(protocolName);

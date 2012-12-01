@@ -42,6 +42,10 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     boolean kitDropUpdate = false;
 
     public KitAssemblyApp(){
+		kitDrops = new Vector<Boolean>();
+		for(int j = 0; j < 9; j++){
+			kitDrops.add(false);
+		}
     	kitClient = new KitAssemblyClient(this);
     	int i = kitClient.connect();
 		if(i == -1){
@@ -86,10 +90,7 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
 //        pack();
         setVisible(true);
         
-        kitDrops = new Vector<Boolean>();
-        for(int j = 0; j < 8; j++){
-        	kitDrops.add(false);
-        }
+       
     }
 
     public Vector<Boolean> getKitDrops() {
@@ -188,7 +189,7 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
 		return kitDropUpdate;
 	}
 
-	public void setKitDropUpdate(boolean kitDropUpdate) {
+	public synchronized void setKitDropUpdate(boolean kitDropUpdate) {
 		this.kitDropUpdate = kitDropUpdate;
 	}
 }

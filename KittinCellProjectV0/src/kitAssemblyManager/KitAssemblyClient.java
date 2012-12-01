@@ -3,6 +3,8 @@ package kitAssemblyManager;
 import java.io.*;
 import java.net.*;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import server.KitAssemblyManager;
 import server.KitRobot;
 import server.PartsRobot;
@@ -70,16 +72,11 @@ public class KitAssemblyClient implements Runnable {
 			app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
 			out.writeObject(app.getDropParts()); //send parts drop non-norm to server
 			out.reset();
-			out.flush();
-			out.writeObject(app.kitDropUpdate); // NEED THIS VAR IN KITASSEMBLY APP!!!!
+			out.flush();		
+			out.writeObject(app.getKitDrops()); // NEED THIS FUNCTION IN KITASSEMBLY APP!!!!
 			out.reset();
 			out.flush();
-			if(app.isKitDropUpdate()){			
-				out.writeObject(app.getKitDrops()); // NEED THIS FUNCTION IN KITASSEMBLY APP!!!!
-				out.reset();
-				out.flush();
-				app.setKitDropUpdate(false);
-			}
+			app.getKitDrops().set(0, false);
 		} catch (Exception ignore){
 			ignore.printStackTrace();
 			System.exit(1);

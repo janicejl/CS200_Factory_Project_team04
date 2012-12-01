@@ -42,7 +42,7 @@ public class FeederAgent extends Agent implements Feeder {
 	{
 		this.name = name;
 		this.number = number;
-		this.server = server;
+		this.server = sever;
 		
 		MyLane temp_lane = new MyLane();
 		MyLane temp_lane_2 = new MyLane();
@@ -81,6 +81,7 @@ public class FeederAgent extends Agent implements Feeder {
 		System.out.println(name + ": Got a bin");
 		feeder_event_list.add(FeederEvent.GotBinWithParts);
 		current_bin = bin;
+		System.out.println(bin);
 		stateChanged();
 	}
 	
@@ -189,11 +190,23 @@ public class FeederAgent extends Agent implements Feeder {
 	private void CheckIfLaneIsReadyForParts()
 	{
 		System.out.println(name + ": Checking if lane is ready for parts");
+		server.execute("Feed Feeder", number);
 		for(MyLane my_lane_:my_lane_list)
 		{	
-			if(my_lane_.part_wanted.getName() == current_bin.getPartInfo().getName())
-			{
-				//send message here to check if is ready for parts
+			if(my_lane_.part_wanted != null)
+			{	
+				if(my_lane_.part_wanted.getName() == current_bin.getPartInfo().getName())
+				{
+					System.out.println("booom");
+					for(int i=0;i<current_bin.getQuantity();i++)
+					{
+						my_lane_.lane.msgHereIsAPart(current_bin.getPartInfo());
+						server.execute("Try Feed Lane", my_lane_.lane.getNumber());
+						
+					}
+					
+					server.execute("Idle Bin", this.getNumber());
+				}
 			}
 		}
 	}

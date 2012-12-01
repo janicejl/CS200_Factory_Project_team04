@@ -139,7 +139,7 @@ public class Lane implements ActionListener, Serializable{
 		nest = n;
 	    feeder = f;
 	    vibrationAmplitude = 0;
-	    jamProbability = 10; //one out of ten parts will jam 
+	    jamProbability = 100; //one out of ten parts will jam 
 	    System.out.println("Jam probability established to 3");
 	    isJammed = false;
 	    random = new Random();

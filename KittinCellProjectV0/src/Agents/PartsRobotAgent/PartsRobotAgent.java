@@ -20,6 +20,8 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	public boolean camerahasrecipe = false;
 	Server server = null;
 	TestGUI gui;
+	private boolean switchkit = false;
+	
 
 	boolean executed = false;
 	
@@ -186,6 +188,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	public void msgPartsApproved(int nestindex){
 		nests.get(nestindex-1).state = NestStatus.hasPart;
 		print("PartReady at nest " + nestindex);
+		switchkit = false;
 		stateChanged();
 	}
 
@@ -304,7 +307,8 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		getPart();
 		return true;
 	}	
-	if(allGrippersFull() && (kit1.state == KitStatus.available || kit2.state == KitStatus.available)&& (animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome)){
+	if(allGrippersFull() && ((currentkit == CurrentKit.kit1 && kit1.state == KitStatus.available)||(currentkit == CurrentKit.kit2 && kit2.state == KitStatus.available))&& (animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome)){
+		print("Test1");
 		goToStand();
 		return true;
 	}
@@ -321,12 +325,13 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	}
 	if(animationstate == AnimationStatus.movingHome || animationstate == AnimationStatus.atHome)
 	{
-		if(kit1.state == KitStatus.available || kit2.state == KitStatus.available)
+		if((currentkit == CurrentKit.kit1 && kit1.state == KitStatus.available)||(currentkit == CurrentKit.kit2 && kit2.state == KitStatus.available))
 		{
 			for(int i = 0; i<4; i++)
 			{
 				if(grippers[i].full)
 				{
+					print("Test2");
 					goToStand();
 					return true;
 				}
@@ -340,14 +345,20 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	}*/
 	// Hack due to some errors, might actually work fine:
 	
-	if(kit1.partsneeded.size()==recipe.size() && kit2.partsneeded.size()==recipe.size() && kit1.state==KitStatus.pending){
-		kit1.state=KitStatus.available;
-		return true;
-	}
-
-//	if(kit1.partsneeded.size()==recipe.size() && kit2.partsneeded.size()==recipe.size() && kit1.state==KitStatus.available && kit2.state == KitStatus.pending){
+//	if(kit1.partsneeded.size()==recipe.size() && kit2.partsneeded.size()==recipe.size() && kit1.state==KitStatus.pending){
+//		kit1.state=KitStatus.available;
 //		return true;
 //	}
+	
+	
+	if(!switchkit && grippersEmpty()){
+		if(currentkit == CurrentKit.kit1)
+			currentkit = CurrentKit.kit2;
+		else
+			currentkit = CurrentKit.kit1;
+		switchkit = true;
+	}
+
 	
 		print("Nothing to do, sleeping. Kit1 recipe size: " + kit1.partsneeded.size() + ". Kit 1 available: " + kit1.state);
 		print("Kit2 recipe size: " + kit2.partsneeded.size() + ". Kit 2 available: " + kit2.state);
@@ -519,14 +530,14 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		//AnimationCall
 		animationstate = AnimationStatus.movingToStand;
 
-		boolean kit1 = false;
-		for(int i = 0; i<4; i++){
-			if(grippers[i].destinationkit == 1){
-				kit1 = true;
-			}
-		}
+	//	boolean kit1 = false;
+	//	for(int i = 0; i<4; i++){
+	//		if(grippers[i].destinationkit == 1){
+	//			kit1 = true;
+	//		}
+	//	}
 		if(!executed){
-			if(kit1)
+			if(currentkit == CurrentKit.kit1)
 			{
 				if(server!= null)
 				server.execute("Load Kit 1");

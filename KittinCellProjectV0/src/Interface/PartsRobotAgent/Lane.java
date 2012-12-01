@@ -21,5 +21,8 @@ public interface Lane {
 	
 		
 	public int getNumber();
+
+
+	public void msgPurge();
 		
 	}

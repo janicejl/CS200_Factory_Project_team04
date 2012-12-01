@@ -14,7 +14,7 @@ import server.Server;
 
 public class LaneAgent extends Agent implements Lane{
 
-	int maxsize = 20;
+	int maxsize = 17;
 	String name;
 	FeederAgent feeder;
 	Nest nest;
@@ -42,7 +42,7 @@ public class LaneAgent extends Agent implements Lane{
 	public enum LaneStatus{noParts,hasParts,partsAtEndOfLane};
 	public enum LaneFullStatus{notFull,full}
 	
-	public enum LaneJamStatus{jammed,noAction};
+	public enum LaneJamStatus{jammed,noAction,unjamming};
 	
 	
 	public LaneAgent(Nest mynest,FeederAgent feed,Server server,String name,int index){
@@ -98,6 +98,10 @@ public class LaneAgent extends Agent implements Lane{
 		lanejamstate = LaneJamStatus.noAction;
 		stateChanged();
 	}
+	public void msgPurge(){
+		lanequeue.clear();
+		stateChanged();
+	}
 	
 	
 	@Override
@@ -129,6 +133,9 @@ public class LaneAgent extends Agent implements Lane{
 			unJamLane();
 			return true;
 		}
+		if(lanejamstate == LaneJamStatus.unjamming){
+			return false;
+		}
 		
 		if(neststate ==  LaneNestStatus.readyForPart){
 			givePart();
@@ -152,15 +159,16 @@ public class LaneAgent extends Agent implements Lane{
 	}
 	
 	private void unJamLane(){
-		int i = 0;
-		while(i<500){
-			i++;
-		}
+//		int i = 0;
+//		while(i<500000){
+//			i++;
+//		}
 		if(lanejamstate == LaneJamStatus.jammed){
 			server.execute("Vibrate",this.index,vibrationspeed);
-			vibrationspeed++;
+//			vibrationspeed++;
+			System.err.println(vibrationspeed);
+			lanejamstate = LaneJamStatus.unjamming;
 		}
-		print("Vibrating");
 	}
 	
 	

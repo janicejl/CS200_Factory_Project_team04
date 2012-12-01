@@ -23,7 +23,6 @@ public class Lane implements ActionListener, Serializable{
     private boolean queueFull; 
     private boolean openGate;
     private boolean isVibrating;
-    private int vibrationCounter;
     private Feeder feeder;
     private boolean release = false;
     private int releaseCount = 0;
@@ -107,7 +106,6 @@ public class Lane implements ActionListener, Serializable{
 		gate2.setNodes(105, verticalSpacing + 30, 105, verticalSpacing + 50);
 		queueFull = false;	
 		isVibrating = false;
-		this.vibrationCounter = 0;
 	    for(int i = 0; i < importList.size(); i++) {
 	    	importList.get(i).setX(width-80);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
@@ -144,6 +142,7 @@ public class Lane implements ActionListener, Serializable{
 	    System.out.println("Jam probability established to 3");
 	    isJammed = false;
 	    random = new Random();
+	    vibrateLane(1);
     }
     
     public void actionPerformed( ActionEvent ae ) {	
@@ -210,23 +209,12 @@ public class Lane implements ActionListener, Serializable{
 	    	}	
 	    }
 	    
-	    //Vibrates all parts in Lane along Y axis using Sine Function with Amplitude of 10 pixels.
-	    if(isVibrating == true && vibrationCounter < 50) {
-		    vibrationCounter++;
-			if(vibrationCounter < 49) {    
-		    	if(itemList.size() > 0) {
-			    	for(int i = 0; i < itemList.size(); i++) { 
-				    	if(itemList.get(i).getX() > queueBorder + i*20) { //Moves parts down the line
-				    		itemList.get(i).setY(itemList.get(i).getY() - vibrationAmplitude * Math.sin(50*Math.PI*vibrationCounter));
-				    	}
-			    	}	
+	    if(isVibrating == true) { 
+	    	for(int i = 0; i < itemList.size(); i++) { 
+		    	if(itemList.get(i).getX() > queueBorder + i*20) { //Moves parts down the line
+		    		itemList.get(i).setY(itemList.get(i).getY());
 		    	}
-			}	
-			else {
-				vibrationCounter = 0;
-				isVibrating = false;	
-			}
-	    	
+	    	}	        	
 	    }
 	    //update feeder
 	    feeder.updateDiverter();
@@ -237,6 +225,14 @@ public class Lane implements ActionListener, Serializable{
     	part.setY(maxY/2 + verticalSpacing - 10);
     	importList.add(part);
     }
+	
+	public boolean isVibrating(){
+		return isVibrating;
+	}
+	
+	public int getVibrationAmplitude(){
+		return vibrationAmplitude;
+	}
     
 	//f = whether or not it should release part to top lane or bottom lane. 
     public void releasePart() {
@@ -331,11 +327,8 @@ public class Lane implements ActionListener, Serializable{
 	}
     
     public void vibrateLane(int amplitude) {
-    	if(itemList.size() > 0) {
-    		isVibrating = true;
-    		vibrationAmplitude = amplitude;
-    	}
-    	
+		isVibrating = true;
+		vibrationAmplitude = amplitude;
     }
     
     public void setJamProbability(int probability) {

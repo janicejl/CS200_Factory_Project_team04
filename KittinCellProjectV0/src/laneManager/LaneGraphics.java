@@ -132,7 +132,13 @@ public class LaneGraphics extends JPanel {
 			
 			for (int j = 0; j < lanes.get(i).getItemList().size(); j++){
 				guiPart.add(new GUIPart(lanes.get(i).getItemList().get(j)));
-				guiPart.get(j).paintPart(g2);
+				if(lanes.get(i).isVibrating()){
+					
+					guiPart.get(j).paintVibratingPart(g2, lanes.get(i).getVibrationAmplitude());
+				}
+				else {
+					guiPart.get(j).paintPart(g2);
+				}
 			}
 		}
 		

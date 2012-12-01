@@ -34,6 +34,7 @@ public class Lane implements ActionListener, Serializable{
     private int jamProbability;
     private int jamIndex;
     private int jammedBorder;
+    private boolean jamOn = false;
     private boolean isJammed;
     private Random random;
     private boolean jamMessage;
@@ -245,7 +246,7 @@ public class Lane implements ActionListener, Serializable{
 			itemList.add(temp);
 			System.out.println("release!");
 			
-			if(random.nextInt(jamProbability) == 0 && isJammed == false) {
+			if(random.nextInt(jamProbability) == 0 && isJammed == false && jamOn == true) {
 				jamIndex = itemList.size() - 1;
 				isJammed = true;	
 				

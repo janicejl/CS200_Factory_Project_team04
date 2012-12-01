@@ -53,33 +53,6 @@ public class KitAssemblyClient implements Runnable {
 			out.writeObject(commandSent); //send to server identifying what client this is
 			out.reset();
 			out.flush();
-		/*	//command = (String)in.readObject();
-			if(command.equals("Confirmed")){
-				//commandSent = "Confirmed";
-				//out.writeObject(commandSent);
-				//out.reset();
-				//start
-			}
-			else if(command.equals("Denied")){
-				System.err.println("Server not accepting this Client");
-				System.exit(1);
-			}
-			else{
-				//error connection
-				System.out.println(command);
-				System.exit(1);
-			}
-			
-//**************START CODE***************************
-			commandSent = "Received";*/
-			/*
-			while(true){
-				app.setKitRobot((KitRobot)in.readObject());
-				app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
-				out.writeObject(commandSent);
-				out.reset();
-			}
-			*/
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -96,6 +69,9 @@ public class KitAssemblyClient implements Runnable {
 			app.setPartsRobot((PartsRobot)in.readObject());
 			app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
 			out.writeObject(app.getDropParts()); //send parts drop non-norm to server
+			out.reset();
+			out.flush();
+			out.writeObject(app.getKitDrops()); // NEED THIS FUNCTION IN KITASSEMBLY APP!!!!
 			out.reset();
 			out.flush();
 		} catch (Exception ignore){

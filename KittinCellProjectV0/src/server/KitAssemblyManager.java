@@ -22,6 +22,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
     ArrayList<Kit> stationKits;
     Vector<Kit> badKits;
     Vector<Nest> nests;
+    Vector<Boolean> partsDropped;
     boolean finishedConveyorOn;
     boolean emptyConveyorOn;
     boolean badConveyorOn = true;
@@ -48,9 +49,11 @@ public class KitAssemblyManager implements Runnable, Serializable{
     	nests = n;
         stationOccupied = new ArrayList<Boolean>();
         stationKits = new ArrayList<Kit>();
+        partsDropped = new Vector<Boolean>();
         idCounter = 0;
         for(int i = 0; i < 7; i++){
             stationOccupied.add(false);
+            partsDropped.add(false);
             stationKits.add(new Kit(""+idCounter, 80, -110));		//80, -110 from Jared's kit file. 
             if(i == 3){
                 stationKits.get(i).setPosition(80,700);
@@ -121,6 +124,12 @@ public class KitAssemblyManager implements Runnable, Serializable{
         else if(i == 5){
         	getStationKits().set(i,k);
         	getStationKits().get(5).setPosition(160, 250);
+        	for(int j = 0; j < getStationKits().get(5).getParts().size(); j++){
+        		if(partsDropped.get(i)){
+        			getStationKits().get(5).getParts().get(i).setPartDropped(true);
+        			partsDropped.set(i, false);
+        		}
+        	}
         }
         else if(i == 6){
         	k.setPosition(10, 10);
@@ -182,6 +191,11 @@ public class KitAssemblyManager implements Runnable, Serializable{
             }
         }
     }
+    
+    public void setPartsDropped(Vector<Boolean> v){
+    	partsDropped = v;
+    }
+
     
     public boolean getEmptyConveyorOn(){
         return emptyConveyorOn;

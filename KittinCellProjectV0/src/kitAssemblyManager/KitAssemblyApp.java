@@ -79,6 +79,9 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         setVisible(true);
         
         kitDrops = new Vector<Boolean>();
+        for(int j = 0; j < 8; j++){
+        	kitDrops.add(false);
+        }
     }
 
     public Vector<Boolean> getKitDrops() {

@@ -31,7 +31,7 @@ public class GUIGantryManager extends JPanel {
 		try
 		{
 			//Static images
-			background = ImageIO.read(new File("images/background.png"));
+			background = ImageIO.read(new File("images/background1.png"));
 			rail = ImageIO.read(new File("images/rail.png"));
 			station = ImageIO.read(new File("images/station.png"));
 			feeder = ImageIO.read(new File("images/Feeder.png"));

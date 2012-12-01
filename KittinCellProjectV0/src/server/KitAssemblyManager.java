@@ -316,4 +316,8 @@ public class KitAssemblyManager implements Runnable, Serializable{
 	public void setKitStandMsg(boolean kitStandMsg) {
 		this.kitStandMsg = kitStandMsg;
 	}
+
+	public Vector<Boolean> getPartsDropped() {
+		return partsDropped;
+	}
 }

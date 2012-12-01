@@ -114,6 +114,9 @@ public class Protocols implements Runnable{
 			out.flush();
 			if((boolean)in.readObject()){
 				app.getKitAssemblyManager().setPartsDropped((Vector<Boolean>)in.readObject());
+				for(int i = 0; i < 8; i ++){
+					System.out.println(app.getKitAssemblyManager().getPartsDropped().get(i));
+				}
 			}
 		} catch (Exception e){
 			System.err.println(protocolName);

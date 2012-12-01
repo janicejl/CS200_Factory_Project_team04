@@ -66,16 +66,24 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         setJMenuBar(jmb);
         
         kamPanel = new GUIKitAssemblyManager(1);
+        kamPanel.setPreferredSize(new Dimension(500, 630));
+        kamPanel.setMaximumSize(new Dimension(500, 630));
+        kamPanel.setMinimumSize(new Dimension(500, 630));
         add(kamPanel, "graphics");
         nonNorm = new BadKitPanel(this);
+        nonNorm.setPreferredSize(new Dimension(500, 640));
+        nonNorm.setMaximumSize(new Dimension(500, 640));
+        nonNorm.setMinimumSize(new Dimension(500, 640));
         add(nonNorm, "controls");
+        
+        setSize(500, 640);
         
 //        initControlPanel();
 //        add(controlPanel, "controls");
         timer = new javax.swing.Timer(10, this);
         timer.start();
 
-        pack();
+//        pack();
         setVisible(true);
         
         kitDrops = new Vector<Boolean>();
@@ -117,7 +125,7 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         catch (Exception ignore) {}
         KitAssemblyApp frame = new KitAssemblyApp();
 
-        frame.pack();
+//        frame.pack();
         frame.setVisible(true);
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -142,7 +150,7 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     		kamPanel.setPartsRobot(partsRobot);
     		kamPanel.update();
             kamPanel.repaint();
-	        
+	        nonNorm.repaint();
     	}
     	else if(ae.getSource() == showGraphics){
     		showPanel("graphics");

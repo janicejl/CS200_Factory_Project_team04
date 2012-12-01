@@ -78,7 +78,7 @@ public class LaneGraphics extends JPanel {
 			redlightImage = ImageIO.read(new File("images/redlight.png"));
             greenlightImage = ImageIO.read(new File("images/greenlight.png"));
             conveyorImage = ImageIO.read(new File("images/conveyerLong.png"));
-            background = ImageIO.read(new File("images/background.png"));
+            background = ImageIO.read(new File("images/background1.png"));
         } catch (IOException e) {
         	System.out.println("Image load issue");
         }	

@@ -17,23 +17,24 @@ public class BadKit extends JPanel implements ActionListener{
 	public BadKit(Kit _kit){
 		kit = _kit;
 		
-		setPreferredSize(new Dimension(230, 65));
-		setMaximumSize(new Dimension(230,65));
-		setMinimumSize(new Dimension(230,65));
+		setPreferredSize(new Dimension(230, 250));
+		setMaximumSize(new Dimension(230,250));
+		setMinimumSize(new Dimension(230,250));
 		setLayout(new GridBagLayout());
 		
 		configPanel = new JPanel();
 		configPanel.setLayout(new GridLayout(4,2));
-		configPanel.setPreferredSize(new Dimension(230,65));
-		configPanel.setMaximumSize(new Dimension(230,65));
-		configPanel.setMinimumSize(new Dimension(230,65));
+		configPanel.setPreferredSize(new Dimension(100,200));
+		configPanel.setMaximumSize(new Dimension(100,200));
+		configPanel.setMinimumSize(new Dimension(100,200));
 		configPanel.setOpaque(false);
 		
 		config = new Vector<JButton>();
 		configClicks = new Vector<Boolean>();
 		
 		for(int i = 0; i < 8; i++){
-			config.add(new JButton(new ImageIcon(kit.getParts().get(i).getImagePath())));
+			JButton tempButton = new JButton(new ImageIcon(kit.getParts().get(i).getImagePath()));
+			config.add(tempButton);
 			config.get(i).addActionListener(this);
 			configPanel.add(config.get(i));
 			

@@ -32,6 +32,10 @@ public class LaneGraphics extends JPanel {
 	private javax.swing.Timer timer;
 	int managerNum;
 	
+	boolean flashUp;
+	boolean flashDown;
+	float opacity;
+	
     public LaneGraphics(int m) {
     	managerNum = m;
     	
@@ -78,10 +82,14 @@ public class LaneGraphics extends JPanel {
 			redlightImage = ImageIO.read(new File("images/redlight.png"));
             greenlightImage = ImageIO.read(new File("images/greenlight.png"));
             conveyorImage = ImageIO.read(new File("images/conveyerLong.png"));
-            background = ImageIO.read(new File("images/background.png"));
+            background = ImageIO.read(new File("images/background1.png"));
         } catch (IOException e) {
         	System.out.println("Image load issue");
         }	
+		
+		flashUp = true;
+		flashDown = false;
+		opacity = 0.0f;
     }
     
     public void update(){
@@ -90,6 +98,20 @@ public class LaneGraphics extends JPanel {
     	}
     	for (int i = 0; i < 8; i++) {
     		gNests.get(i).setNest(nests.get(i));
+    	}
+    	
+    	if (flashUp) {
+    		opacity = opacity + 0.1f;
+    		if (opacity >= 0.9) {
+    			flashUp = false;
+    			flashDown = true;
+    		}
+    	} else if (flashDown) {
+    		opacity = opacity - 0.1f;
+    		if (opacity <= 0.4) {
+    			flashDown = false;
+    			flashUp = true;
+    		}
     	}
     }
     
@@ -132,7 +154,13 @@ public class LaneGraphics extends JPanel {
 			
 			for (int j = 0; j < lanes.get(i).getItemList().size(); j++){
 				guiPart.add(new GUIPart(lanes.get(i).getItemList().get(j)));
-				guiPart.get(j).paintPart(g2);
+				if(lanes.get(i).isVibrating()){
+					
+					guiPart.get(j).paintVibratingPart(g2, lanes.get(i).getVibrationAmplitude());
+				}
+				else {
+					guiPart.get(j).paintPart(g2);
+				}
 			}
 		}
 		
@@ -179,42 +207,62 @@ public class LaneGraphics extends JPanel {
 			g2.draw(l31);
 		}
 		//Jam Semaphores:
-		if(lanes.get(0).getJamMessage())
+		if(lanes.get(0).isJammed()) { 
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 			g2.drawImage(redlightImage, 584, 34, this);
-		else 
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		} else {
 			g2.drawImage(greenlightImage, 584, 34, this);
-		if(lanes.get(1).getJamMessage())
+		}
+		if(lanes.get(1).isJammed()) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 			g2.drawImage(redlightImage, 584, 138, this);
-		else 
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		} else {
 			g2.drawImage(greenlightImage, 584, 138, this);
-		
-		if(lanes.get(2).getJamMessage())
+		}
+		if(lanes.get(2).isJammed()) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 			g2.drawImage(redlightImage, 509, 174, this);
-		else 
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		} else {
 			g2.drawImage(greenlightImage, 509, 174, this);
-		if(lanes.get(3).getJamMessage())
+		}
+		if(lanes.get(3).isJammed()) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 			g2.drawImage(redlightImage, 509, 278, this);
-		else 
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		} else {
 			g2.drawImage(greenlightImage, 509, 278, this);
-		
-		if(lanes.get(4).getJamMessage())
+		}
+		if(lanes.get(4).isJammed()) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 			g2.drawImage(redlightImage, 509, 314, this);
-		else 
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		} else {
 			g2.drawImage(greenlightImage, 509, 314, this);
-		if(lanes.get(5).getJamMessage())
+		}
+		if(lanes.get(5).isJammed()) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 			g2.drawImage(redlightImage, 509, 338+80, this);
-		else 
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		} else {
 			g2.drawImage(greenlightImage, 509, 338+80, this);
-		
-		if(lanes.get(6).getJamMessage())
+		}
+		if(lanes.get(6).isJammed()) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 			g2.drawImage(redlightImage, 584, 454, this);
-		else 
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		} else {
 			g2.drawImage(greenlightImage, 584, 454, this);
-		if(lanes.get(7).getJamMessage())
+		}
+		if(lanes.get(7).isJammed()) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 			g2.drawImage(redlightImage, 584, 558, this);
-		else 
-			g2.drawImage(greenlightImage, 584, 558, this);		
-		
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		} else {
+			g2.drawImage(greenlightImage, 584, 558, this);	
+		}
 	
     }
     

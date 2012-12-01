@@ -12,7 +12,7 @@ public class Fire extends JPanel implements ActionListener{
 	BufferedImage img = null;			// Image for drawing fire off-screen
 	Graphics g2;		// Graphics object for painting on img
 	Random rng;			// Random number generator
-	Timer timer, t2, t3;		// A timer to tick every 3 ms
+	Timer timer;		// timer
 	Color colors[];		// Color gradient array
 	int values[][];		// 2D array of fire color indices
 	int color1, color2;
@@ -20,6 +20,7 @@ public class Fire extends JPanel implements ActionListener{
 	int res;			// fire resolution
 	int fireLevel;
 	int rows, cols;
+	int cntr = 0;
 
 	// Initialize applet
 	public Fire(int w, int h){
@@ -55,11 +56,6 @@ public class Fire extends JPanel implements ActionListener{
 		
 		timer = new Timer(10, this); // update timer
 		timer.start();
-		t2 = new Timer(20, this); // display timer
-		t2.start();
-		t3 = new Timer(50, this); // fire rise timer
-		t3.start();
-		
 	}
 	
 	// Initialize array for color gradient: white - orange - red - black
@@ -128,26 +124,25 @@ public class Fire extends JPanel implements ActionListener{
 		if (e.getSource() == timer){	
 			speckle();		// Modify the bottom row for the fire
 			disperse();		// Apply the simple fire algorithm everywhere else
-		}
-		if (e.getSource() == t2){
-			
-			
-		}
-		if (e.getSource() == t3){
-			fireLevel++;
-			//System.out.println(fireLevel);
-			for (int r = 0; r < rows; r++){
-				if(r != rows - 1){
-					for (int c = 1; c < cols; c++){
-						values[r][c] = values[r+1][c];
-					}					
-				}
-				else {
-					for (int c = 1; c < cols; c++){
-						values[r][c] = values[r-1][c];
+			cntr++;
+		
+			if (cntr == 5){
+				cntr = 0;
+				fireLevel++;
+				//System.out.println(fireLevel);
+				for (int r = 0; r < rows; r++){
+					if(r != rows - 1){
+						for (int c = 1; c < cols; c++){
+							values[r][c] = values[r+1][c];
+						}					
 					}
-				}				
-			}			
+					else {
+						for (int c = 1; c < cols; c++){
+							values[r][c] = values[r-1][c];
+						}
+					}				
+				}			
+			}
 		}
 	}
 

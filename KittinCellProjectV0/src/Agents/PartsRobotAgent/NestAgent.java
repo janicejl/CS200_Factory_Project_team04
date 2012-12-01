@@ -22,6 +22,7 @@ public class NestAgent extends Agent implements Nest{
 	String name;
 	Server server;
 		
+	boolean allowextraparts = false;
 	public int index;
 	Random generator = new Random();
 	
@@ -126,6 +127,16 @@ public class NestAgent extends Agent implements Nest{
 		}
 		stateChanged();
 	}
+	public void msgToggleNestOverflow(){
+		if(!allowextraparts){
+		allowextraparts = true;
+		}
+		else{
+			allowextraparts = false;
+		}
+		stateChanged();
+	}
+	
 
 	
 	//Scheduler:
@@ -167,7 +178,7 @@ public class NestAgent extends Agent implements Nest{
 		}
 		if(lanestate == LaneStatus.hasPart){
 			int x = generator.nextInt(10);
-			if(x==1){
+			if(x==1&&allowextraparts){
 				acceptPart();
 			}
 		}

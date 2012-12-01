@@ -58,7 +58,7 @@ public class PartsRobot implements Runnable, Serializable{
     int dropRate = 50;				//percentage chance that part will be dropped per move
     double dropSrcY = 0;					// where the parts robot is coming from. used for drop purposes
     double dropDstY = 300;
-    ArrayList<Integer> canDrop = new ArrayList<Integer>(); // randomized order for dropping
+    CopyOnWriteArrayList<Integer> canDrop = new CopyOnWriteArrayList<Integer>(); // randomized order for dropping
 
     public PartsRobot(KitAssemblyManager _app){
     	app = _app;

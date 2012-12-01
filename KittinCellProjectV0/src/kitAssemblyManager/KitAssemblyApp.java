@@ -38,8 +38,14 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     KitRobot kitRobot;
     PartsRobot partsRobot;
     boolean dropParts = false;
+    Vector<Boolean> kitDrops;
+    boolean kitDropUpdate = false;
 
     public KitAssemblyApp(){
+		kitDrops = new Vector<Boolean>();
+		for(int j = 0; j < 9; j++){
+			kitDrops.add(false);
+		}
     	kitClient = new KitAssemblyClient(this);
     	int i = kitClient.connect();
 		if(i == -1){
@@ -64,28 +70,38 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         setJMenuBar(jmb);
         
         kamPanel = new GUIKitAssemblyManager(1);
+        kamPanel.setPreferredSize(new Dimension(500, 630));
+        kamPanel.setMaximumSize(new Dimension(500, 630));
+        kamPanel.setMinimumSize(new Dimension(500, 630));
         add(kamPanel, "graphics");
         nonNorm = new BadKitPanel(this);
+        nonNorm.setPreferredSize(new Dimension(500, 640));
+        nonNorm.setMaximumSize(new Dimension(500, 640));
+        nonNorm.setMinimumSize(new Dimension(500, 640));
         add(nonNorm, "controls");
         
-        Kit temp = new Kit();
-        for(int j = 0; j < 8; j++){
-        	temp.addPart(new Part(new PartInfo("hi", "images/kt1.png")));
-        }
-        for(int j = 0; j < 8; j ++){
-        	nonNorm.create(temp);
-        }
+        setSize(500, 640);
         
 //        initControlPanel();
 //        add(controlPanel, "controls");
         timer = new javax.swing.Timer(10, this);
         timer.start();
 
-        pack();
+//        pack();
         setVisible(true);
+        
+       
     }
 
-    public void createButton(String s){
+    public Vector<Boolean> getKitDrops() {
+		return kitDrops;
+	}
+
+	public void setKitDrops(Vector<Boolean> kitDrops) {
+		this.kitDrops = kitDrops;
+	}
+
+	public void createButton(String s){
         JButton temp = new JButton(s);
         temp.addActionListener(this);
         temp.setActionCommand(s);
@@ -110,7 +126,7 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         catch (Exception ignore) {}
         KitAssemblyApp frame = new KitAssemblyApp();
 
-        frame.pack();
+//        frame.pack();
         frame.setVisible(true);
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -135,12 +151,13 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     		kamPanel.setPartsRobot(partsRobot);
     		kamPanel.update();
             kamPanel.repaint();
-	        
+	        nonNorm.repaint();
     	}
     	else if(ae.getSource() == showGraphics){
     		showPanel("graphics");
     	}
     	else if(ae.getSource() == showControls){
+    		nonNorm.resetSentMessage();
     		showPanel("controls");
     	}
     }
@@ -167,5 +184,13 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
 	
 	public PartsRobot getPartsRobot() {
 		return partsRobot;
+	}
+
+	public boolean isKitDropUpdate() {
+		return kitDropUpdate;
+	}
+
+	public synchronized void setKitDropUpdate(boolean kitDropUpdate) {
+		this.kitDropUpdate = kitDropUpdate;
 	}
 }

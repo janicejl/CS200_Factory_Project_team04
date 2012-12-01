@@ -187,6 +187,12 @@ public class JobListPanel extends JPanel implements ActionListener{
 		
 		int size = nameLabels.size();
 		
+		if(app.getJobs().size() != 0){
+			for(int i = 0; i < amtLabels.size(); i++){
+				amtLabels.get(i).setText(app.getJobs().get(i).getAmount().toString());
+			}
+		}
+		
 		//make new number labels
 		numLabels.clear();
 		numPanelBase.removeAll();
@@ -245,10 +251,10 @@ public class JobListPanel extends JPanel implements ActionListener{
 		//Check for remove buttons being pressed
 		for(int i = 0; i < removeButtons.size(); i++){
 			if(e.getSource() == removeButtons.get(i)){
-				//remove job from panel
-				removeJob(i);
 				//update jobs
 				app.getJobs().remove(i);
+				//remove job from panel
+				removeJob(i);
 				//update server jobs
 				app.getClient().setCommandSent("Update");
 				app.getClient().updateThread();

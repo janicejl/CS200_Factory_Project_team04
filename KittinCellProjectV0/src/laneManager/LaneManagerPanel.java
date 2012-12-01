@@ -85,12 +85,77 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		}
 		this.setBorder(new TitledBorder("Lane"));
 		jamButton.addActionListener(this);
+		laneSelectBox.addActionListener(this);
 		
 	}
 	
 	public void actionPerformed(ActionEvent ae){		
 		if(ae.getSource()==jamButton){
-			
+			app.getOnJammeds().set(laneSelectBox.getSelectedIndex(),!app.getOnJammeds().get(laneSelectBox.getSelectedIndex()));
+		}
+		if(laneSelectBox.getSelectedItem().equals("Lane 1")){
+			if(app.getOnJammeds().get(0).equals(true)){
+				jamButton.setText("Unjam Selected");
+			}
+			else{
+				jamButton.setText("Jam Selected");
+			}
+		}
+		else if(laneSelectBox.getSelectedItem().equals("Lane 2")){
+			if(app.getOnJammeds().get(1).equals(true)){
+				jamButton.setText("Unjam Selected");
+			}
+			else{
+				jamButton.setText("Jam Selected");
+			}
+		}
+		else if(laneSelectBox.getSelectedItem().equals("Lane 3")){
+			if(app.getOnJammeds().get(2).equals(true)){
+				jamButton.setText("Unjam Selected");
+			}
+			else{
+				jamButton.setText("Jam Selected");
+			}
+		}
+		else if(laneSelectBox.getSelectedItem().equals("Lane 4")){
+			if(app.getOnJammeds().get(3).equals(true)){
+				jamButton.setText("Unjam Selected");
+			}
+			else{
+				jamButton.setText("Jam Selected");
+			}
+		}
+		else if(laneSelectBox.getSelectedItem().equals("Lane 5")){
+			if(app.getOnJammeds().get(4).equals(true)){
+				jamButton.setText("Unjam Selected");
+			}
+			else{
+				jamButton.setText("Jam Selected");
+			}
+		}
+		else if(laneSelectBox.getSelectedItem().equals("Lane 6")){
+			if(app.getOnJammeds().get(5).equals(true)){
+				jamButton.setText("Unjam Selected");
+			}
+			else{
+				jamButton.setText("Jam Selected");
+			}
+		}
+		else if(laneSelectBox.getSelectedItem().equals("Lane 7")){
+			if(app.getOnJammeds().get(6).equals(true)){
+				jamButton.setText("Unjam Selected");
+			}
+			else{
+				jamButton.setText("Jam Selected");
+			}
+		}
+		else if(laneSelectBox.getSelectedItem().equals("Lane 8")){
+			if(app.getOnJammeds().get(7).equals(true)){
+				jamButton.setText("Unjam Selected");
+			}
+			else{
+				jamButton.setText("Jam Selected");
+			}
 		}
 	}
 	

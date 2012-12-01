@@ -6,6 +6,7 @@ import java.util.List;
 
 import server.Server;
 import Agent.Agent;
+import Agents.PartsRobotAgent.LaneAgent;
 import Interface.GantryFeederAgent.Feeder;
 import Interface.PartsRobotAgent.Lane;
 import Interface.GantryFeederAgent.Gantry;
@@ -592,5 +593,10 @@ public class FeederAgent extends Agent implements Feeder {
 	public int getQuantity(){
 		return this.partsInFeeder;
 	}*/
+
+	public void msgLaneIsReadyForParts(LaneAgent laneAgent) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

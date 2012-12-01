@@ -6,19 +6,23 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import data.KitInfo;
+import DecorateAnimations.KittenQueue;
 
 public class ProductionManagerPanel extends JPanel implements ActionListener {
 
-	ProductionManagerApp app;
-	JPanel base,bg;
-	ProductionListPanel listPanel;
-	TitlePanel title;
-	KitPanel kitPanel;
-	CreateJobPanel createPanel;
+	ProductionManagerApp app;			//a reference to the main production manager 
+	JPanel base,bg;						//panels for all the different smaller panels and the background. 
+	ProductionListPanel listPanel;		//Panel to show the list of jobs. 
+	TitlePanel title;					//Panel to show the title of the window.
+	KitPanel kitPanel;					//Panel to show the list of premade panels
+	CreateJobPanel createPanel;			//Panel to create a job. 
+	KittenQueue kq;                     //panel for little kittens
+	
 	
 	public ProductionManagerPanel(ProductionManagerApp _app){
 		app = _app;
 		
+		//setting up the panel for all the smaller panels.
 		base = new JPanel();
 		base.setLayout(new GridBagLayout());
 		base.setPreferredSize(new Dimension(1200,600));
@@ -26,6 +30,7 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 		base.setMaximumSize(new Dimension(1200,600));
 		base.setOpaque(false);
 		
+		//Setting up the background of the panels. 
 		bg = new JPanel();
 		bg.setLayout(new FlowLayout());
 		bg.setPreferredSize(new Dimension(1200,600));
@@ -33,26 +38,34 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 		bg.setMaximumSize(new Dimension(1200,600));
 		bg.add(new JLabel(new ImageIcon("images/background.png")));
 		
+		//Setting up the panel for the job list. 
 		listPanel = new ProductionListPanel(app);
 		listPanel.setPreferredSize(new Dimension(600, 500));
 		listPanel.setMaximumSize(new Dimension(600, 500));
 		listPanel.setMinimumSize(new Dimension(600, 500));
 		
+		//Setting up the panel for the title
 		title = new TitlePanel();
 		title.setPreferredSize(new Dimension(1200, 120));
 		title.setMaximumSize(new Dimension(1200, 120));
 		title.setMinimumSize(new Dimension(1200, 120));
 		
+		//Setting up the panel for the create job panel. 
 		createPanel = new CreateJobPanel(this);
 		createPanel.setPreferredSize(new Dimension(600, 250));
 		createPanel.setMaximumSize(new Dimension(600, 250));
 		createPanel.setMinimumSize(new Dimension(600, 250));
 		
+		//Setting up the panel of the list of kits. 
 		kitPanel = new KitPanel(this, app.getKitsList().get(0));
 		kitPanel.setPreferredSize(new Dimension(600, 250));
 		kitPanel.setMaximumSize(new Dimension(600, 250));
 		kitPanel.setMinimumSize(new Dimension(600, 250));
 		
+		kq = new KittenQueue();
+		
+		
+		//Using a grid bag layout to place all the panels at the right place. 
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
@@ -75,13 +88,19 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 		GridBagConstraints a = new GridBagConstraints();
 		a.gridx = 0;
 		a.gridy = 0;
+		a.anchor=GridBagConstraints.FIRST_LINE_START;
+		add(kq,a);
 		add(base,a);
 		add(bg,a);
+		
 	}
 	
+	//Dynamically updates the job list. 
 	public void update(){
 		createPanel.update();
 	}
+	
+	//repaints the panels. 
 	public void paintComponent(Graphics g){
 		listPanel.repaint();
 		createPanel.repaint();

@@ -23,7 +23,6 @@ public class Lane implements ActionListener, Serializable{
     private boolean queueFull; 
     private boolean openGate;
     private boolean isVibrating;
-    private int vibrationCounter;
     private Feeder feeder;
     private boolean release = false;
     private int releaseCount = 0;
@@ -37,7 +36,8 @@ public class Lane implements ActionListener, Serializable{
     private boolean jamOn = false;
     private boolean isJammed;
     private Random random;
-    private boolean jamMessage;
+    private boolean jamMessage = false;
+    private boolean unjamMessage = false;
     
     public class Gate implements Serializable{
     	public double topNodeX, topNodeY, bottomNodeX, bottomNodeY;
@@ -107,13 +107,12 @@ public class Lane implements ActionListener, Serializable{
 		gate2.setNodes(105, verticalSpacing + 30, 105, verticalSpacing + 50);
 		queueFull = false;	
 		isVibrating = false;
-		this.vibrationCounter = 0;
 	    for(int i = 0; i < importList.size(); i++) {
 	    	importList.get(i).setX(width-80);
 	    	importList.get(i).setY(maxY/2 + verticalSpacing);
 	    }
 	    vibrationAmplitude = 0;
-	    jamProbability = 10; //Initialized to 10
+	    jamProbability = 100; //Initialized to 10
 	    isJammed = false;
 	    random = new Random();
     }
@@ -140,10 +139,11 @@ public class Lane implements ActionListener, Serializable{
 		nest = n;
 	    feeder = f;
 	    vibrationAmplitude = 0;
-	    jamProbability = 100; //one out of ten parts will jam 
+	    jamProbability = 1; //one out of ten parts will jam 
 	    System.out.println("Jam probability established to 3");
 	    isJammed = false;
 	    random = new Random();
+//	    vibrateLane(1);
     }
     
     public void actionPerformed( ActionEvent ae ) {	
@@ -210,33 +210,34 @@ public class Lane implements ActionListener, Serializable{
 	    	}	
 	    }
 	    
-	    //Vibrates all parts in Lane along Y axis using Sine Function with Amplitude of 10 pixels.
-	    if(isVibrating == true && vibrationCounter < 50) {
-		    vibrationCounter++;
-			if(vibrationCounter < 49) {    
-		    	if(itemList.size() > 0) {
-			    	for(int i = 0; i < itemList.size(); i++) { 
-				    	if(itemList.get(i).getX() > queueBorder + i*20) { //Moves parts down the line
-				    		itemList.get(i).setY(itemList.get(i).getY() - vibrationAmplitude * Math.sin(50*Math.PI*vibrationCounter));
-				    	}
-			    	}	
+	    if(isVibrating == true) { 
+	    	for(int i = 0; i < itemList.size(); i++) { 
+		    	if(itemList.get(i).getX() > queueBorder + i*20) { //Moves parts down the line
+		    		itemList.get(i).setY(itemList.get(i).getY());
 		    	}
-			}	
-			else {
-				vibrationCounter = 0;
-				isVibrating = false;	
-			}
-	    	
+	    	}
+	    	if(isJammed == true){
+	    		if(Math.random()*100 > 99){
+	    			setJamOn(false);
+	    		}
+	    	}
 	    }
 	    //update feeder
 	    feeder.updateDiverter();
     }
-
 	public void addPart(Part part) {
     	part.setX(maxX-80);
     	part.setY(maxY/2 + verticalSpacing - 10);
     	importList.add(part);
     }
+	
+	public boolean isVibrating(){
+		return isVibrating;
+	}
+	
+	public int getVibrationAmplitude(){
+		return vibrationAmplitude;
+	}
     
 	//f = whether or not it should release part to top lane or bottom lane. 
     public void releasePart() {
@@ -245,7 +246,7 @@ public class Lane implements ActionListener, Serializable{
 			temp.setY(maxY/2 + verticalSpacing - 10);
 			itemList.add(temp);
 			System.out.println("release!");
-			
+		
 			if(random.nextInt(jamProbability) == 0 && isJammed == false && jamOn == true) {
 				jamIndex = itemList.size() - 1;
 				isJammed = true;	
@@ -331,11 +332,8 @@ public class Lane implements ActionListener, Serializable{
 	}
     
     public void vibrateLane(int amplitude) {
-    	if(itemList.size() > 0) {
-    		isVibrating = true;
-    		vibrationAmplitude = amplitude;
-    	}
-    	
+		isVibrating = true;
+		vibrationAmplitude = amplitude;
     }
     
     public void setJamProbability(int probability) {
@@ -356,12 +354,37 @@ public class Lane implements ActionListener, Serializable{
     	return jamMessage;
     }
 
+	public void setJamMessage(boolean jamMessage) {
+		this.jamMessage = jamMessage;
+	}
+
 	public boolean isJamOn() {
 		return jamOn;
 	}
 
 	public void setJamOn(boolean jamOn) {
 		this.jamOn = jamOn;
+		if(jamOn == false){
+			isJammed = false;
+			jamMessage = false;
+			unjamMessage = true;
+		}		
+	}
+
+	public boolean isUnjamMessage() {
+		return unjamMessage;
+	}
+
+	public void setUnjamMessage(boolean unjamMessage) {
+		this.unjamMessage = unjamMessage;
+	}
+
+	public boolean isJammed() {
+		return isJammed;
+	}
+
+	public void setJammed(boolean isJammed) {
+		this.isJammed = isJammed;
 	}
     
 }  

@@ -22,6 +22,7 @@ public class GUIFeeder {
 	public GUIFeeder(Feeder f){
 		feeder = f;
 		try {
+			//load images
 			image = ImageIO.read(new File("images/feeder.png"));
 			diverter = ImageIO.read(new File("images/diverter.png"));
 			partbox = ImageIO.read(new File("images/crate.png"));
@@ -35,6 +36,8 @@ public class GUIFeeder {
 		double y = feeder.getY();
 		g2.drawImage(image, (int)x, (int)y, null);
 		
+		//Check to see if the dierter was in the same
+		//position as last frame.  If so, paint it there.
 		if (feeder.isPreviousPosition() == feeder.getLane()){
 			if (feeder.isPreviousPosition()){
 				g2.drawImage(diverter, feeder.getDiverterX(), feeder.getDiverterY(), null);
@@ -43,7 +46,10 @@ public class GUIFeeder {
 				g2.drawImage(diverter, feeder.getDiverterX(), (int)feeder.getY() + 70, null);
 			}
 		}
+		//Diverter has switched, so update position
 		else{
+			//Check if diverter was previously in the top lane
+			//draw accordingly
 			if (feeder.isPreviousPosition()){
 				if (feeder.getDiverterY() != feeder.getY() + 70){
 					g2.drawImage(diverter, feeder.getDiverterX(), feeder.getDiverterY(), null);
@@ -62,14 +68,15 @@ public class GUIFeeder {
 			}
 		}
 		
-		
+		//paint the parts
 		ArrayList<GUIPart> parts = new ArrayList<GUIPart>();
 		for (int i = 0; i < feeder.getPartAmount(); i++) {	
 			parts.add(new GUIPart(feeder.getParts().get(i)));
 			parts.get(i).paintPart(g2);
 		}
 	}
-
+	
+	//Paint the crate
 	public void paintCrate(Graphics2D g2){
 		if(feeder.getHasCrate()){
 			g2.drawImage(partbox, (int)feeder.getX() + 130, (int)feeder.getY() + 12, null);

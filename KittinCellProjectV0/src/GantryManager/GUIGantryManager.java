@@ -13,15 +13,15 @@ public class GUIGantryManager extends JPanel {
 	protected BufferedImage background = null;
 	protected BufferedImage rail = null;
 	protected BufferedImage station = null;
+	protected BufferedImage conveyor = null;
 	protected BufferedImage feeder = null;
 	protected BufferedImage gantryImage = null;
 	protected BufferedImage crate = null;
 	protected Vector<BufferedImage> partImages;
 	protected Vector<String> partImagesPath;
-	GantryManager manager;
-	
-	
+	GantryManager manager;	
 	int managerNum;
+	float conveyorMove = 0;
 	
 	public GUIGantryManager(int m)
 	{
@@ -31,12 +31,13 @@ public class GUIGantryManager extends JPanel {
 		try
 		{
 			//Static images
-			background = ImageIO.read(new File("images/background.png"));
+			background = ImageIO.read(new File("images/background1.png"));
 			rail = ImageIO.read(new File("images/rail.png"));
 			station = ImageIO.read(new File("images/station.png"));
 			feeder = ImageIO.read(new File("images/Feeder.png"));
 			gantryImage = ImageIO.read(new File("images/gantryrobot.png"));
 			crate = ImageIO.read(new File("images/crate.png"));
+			conveyor = ImageIO.read(new File("images/conveyerParts.png"));
 			int i=0;
 			while(i<9)
 			{
@@ -62,14 +63,28 @@ public class GUIGantryManager extends JPanel {
 			g2.drawImage(feeder, -110, 310,null);
 			g2.drawImage(feeder,  -35, 450, null);
 		}
-		g2.drawImage(station, 275,192, null);
-			g2.drawImage(station, 325, 192,null);
-		g2.drawImage(station, 275,242,null);
-			g2.drawImage(station, 325, 242,null);
-		g2.drawImage(station, 275,310,null);
-			g2.drawImage(station, 325, 310,null);
-		g2.drawImage(station, 275,360,null);
-			g2.drawImage(station, 325,360,null);
+		
+		conveyorMove+= 0.5;
+		if(conveyorMove > 20){
+			conveyorMove = 0;
+		}
+		
+		for(int i = 0; i < 5; i++){
+			g2.drawImage(conveyor, 265 + i*20 + (int)conveyorMove, 187,null);
+			g2.drawImage(conveyor, 285 + i*20 - (int)conveyorMove, 305,null);			
+		}
+		
+		g2.drawImage(conveyor, 265, 187, 266 + (int)conveyorMove, 297, 0,0, 22,110,null);
+		g2.drawImage(conveyor, 265, 305, 286 - (int)conveyorMove, 415, 0,0, 22,110,null);
+		
+//		g2.drawImage(conveyor, 275,192, null);
+//		g2.drawImage(conveyor, 325, 192,null);
+//		g2.drawImage(conveyor, 275,242,null);
+//		g2.drawImage(conveyor, 325, 242,null);
+//		g2.drawImage(conveyor, 275,310,null);
+//		g2.drawImage(conveyor, 325, 310,null);
+//		g2.drawImage(conveyor, 275,360,null);
+//		g2.drawImage(conveyor, 325,360,null);
 	
 		
 		

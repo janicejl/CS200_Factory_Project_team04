@@ -60,22 +60,22 @@ public class Gantry implements Serializable
 		if(feed == 0)
 		{
 			
-			xFinal = 110;
+			xFinal = 101;
 			yFinal = 55;
 		}
 		else if(feed == 1)
 		{
-			xFinal = 35;
+			xFinal = 26;
 			yFinal = 195;
 		}
 		else if(feed == 2)
 		{
-			xFinal = 35;
+			xFinal = 26;
 			yFinal = 335;
 		}
 		else if(feed == 3)
 		{
-			xFinal = 110;
+			xFinal = 101;
 			yFinal = 475;
 		}
 	}
@@ -141,22 +141,22 @@ public class Gantry implements Serializable
 		if(feed == 0)
 		{
 			
-			xFinal = 110;
+			xFinal = 101;
 			yFinal = 55;
 		}
 		else if(feed == 1)
 		{
-			xFinal = 35;
+			xFinal = 26;
 			yFinal = 195;
 		}
 		else if(feed == 2)
 		{
-			xFinal = 35;
+			xFinal = 26;
 			yFinal = 335;
 		}
 		else if(feed == 3)
 		{
-			xFinal = 110;
+			xFinal = 101;
 			yFinal = 475;
 		}
 	}

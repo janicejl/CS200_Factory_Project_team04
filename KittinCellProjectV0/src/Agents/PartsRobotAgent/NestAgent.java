@@ -177,7 +177,7 @@ public class NestAgent extends Agent implements Nest{
 			}
 		}
 		if(lanestate == LaneStatus.hasPart){
-			int x = generator.nextInt(10);
+			int x = generator.nextInt(2);
 			if(x==1&&allowextraparts){
 				acceptPart();
 			}
@@ -212,6 +212,7 @@ public class NestAgent extends Agent implements Nest{
 			nestslots[i] = null;
 		}
 		extraparts.clear();
+		lane.msgPurge();
 	}
 
 	private void acceptPart()

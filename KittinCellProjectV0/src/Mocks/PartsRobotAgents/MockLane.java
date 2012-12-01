@@ -50,4 +50,11 @@ public class MockLane extends MockAgent implements Lane{
 		return 0;
 	}
 
+	@Override
+	public void msgPurge() {
+		log.add(new LoggedEvent("Purge Called"));
+
+		
+	}
+
 }

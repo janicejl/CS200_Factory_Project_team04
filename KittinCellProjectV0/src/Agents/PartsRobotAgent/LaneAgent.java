@@ -115,6 +115,11 @@ public class LaneAgent extends Agent implements Lane{
 			stateChanged();
 		}
 	}
+	
+	public void msgPurge(){
+		lanequeue.clear();
+		stateChanged();
+	}
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
@@ -127,6 +132,9 @@ public class LaneAgent extends Agent implements Lane{
 		if(lanejamstate == LaneJamStatus.jammed){
 			unJamLane();
 			return true;
+		}
+		if(lanejamstate == LaneJamStatus.unjamming){
+			return false;
 		}
 		if(neststate ==  LaneNestStatus.readyForPart){
 			givePart();
@@ -190,6 +198,7 @@ public class LaneAgent extends Agent implements Lane{
 			server.execute("Vibrate",this.index,vibrationspeed);
 //			vibrationspeed++;
 			System.err.println(vibrationspeed);
+			lanejamstate = LaneJamStatus.unjamming;
 		}
 	}
 

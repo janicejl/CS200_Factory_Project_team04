@@ -23,7 +23,7 @@ public class BadKit extends JPanel implements ActionListener{
 		setLayout(new GridBagLayout());
 		
 		configPanel = new JPanel();
-		configPanel.setLayout(new GridLayout(2,4));
+		configPanel.setLayout(new GridLayout(4,2));
 		configPanel.setPreferredSize(new Dimension(230,65));
 		configPanel.setMaximumSize(new Dimension(230,65));
 		configPanel.setMinimumSize(new Dimension(230,65));

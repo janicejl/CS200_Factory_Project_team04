@@ -716,14 +716,17 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		{
 			if(nestList.get(c).getPurged()==true)
 			{
-				if(nestList.get(c).getPurgedCount()<10)
+				nestList.get(c).flip();
+				if(nestList.get(c).getPurgedCount()<20)
 				{
 					nestList.get(c).setPurgedCount(nestList.get(c).getPurgedCount()+1);
 				}
 				else
 				{
+					nestList.get(c).clear();
 					nestList.get(c).setPurged(false);
 				}
+	
 			}
 			c++;
 		}

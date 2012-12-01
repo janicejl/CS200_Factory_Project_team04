@@ -147,6 +147,8 @@ public class BadKitPanel extends JPanel implements ActionListener{
 		scrollPanel.setPreferredSize(new Dimension(250, size));
 		scrollPanel.setMaximumSize(new Dimension(250, size));
 		scrollPanel.setMinimumSize(new Dimension(250, size));
+		
+		revalidate();
 	}
 	
 	@Override

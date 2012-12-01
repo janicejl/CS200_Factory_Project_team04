@@ -157,6 +157,7 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     		showPanel("graphics");
     	}
     	else if(ae.getSource() == showControls){
+    		nonNorm.resetSentMessage();
     		showPanel("controls");
     	}
     }

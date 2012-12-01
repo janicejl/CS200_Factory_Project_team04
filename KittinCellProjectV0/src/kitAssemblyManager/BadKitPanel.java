@@ -48,7 +48,7 @@ public class BadKitPanel extends JPanel implements ActionListener{
         badKit = new BadKit(temp);
 		label = new JLabel(temp.getID());
 		
-		sent = new JLabel("Non-Norm Sent");
+		sent = new JLabel("");
         sent.setPreferredSize(new Dimension(230, 25));
         sent.setMaximumSize(new Dimension(230, 25));
         sent.setMinimumSize(new Dimension(230, 25));
@@ -69,10 +69,8 @@ public class BadKitPanel extends JPanel implements ActionListener{
 		add(sent,c);
 	}
 	
-	public void paintComponent(Graphics g) {
-		revalidate();
-		badKit.repaint();
-		
+	public void resetSentMessage(){
+		sent.setText("");
 	}
 	
 	@Override
@@ -98,6 +96,7 @@ public class BadKitPanel extends JPanel implements ActionListener{
 				}
 			}
 			app.getKitDrops().set(0, true);
+			sent.setText("Non-Norm Sent");
 		}		
 	}
 }

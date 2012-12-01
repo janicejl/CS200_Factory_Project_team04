@@ -30,18 +30,18 @@ import data.PartInfo;
 
 public class ProductionManagerApp extends JFrame implements ActionListener, WindowListener {
 
-	ProductionManagerPanel panel;
-	GUIProductionManager graphics;
-	JPanel card;
-	javax.swing.Timer timer;
-	ProductionClient client;
+	ProductionManagerPanel panel;		//Panel for all the factory control.
+	GUIProductionManager graphics;		//Panel for all the factory animations
+	JPanel card;						//Card Layout panel for making sure only one panel is shown at a time. 
+	javax.swing.Timer timer;			//Timer 
+	ProductionClient client;			//Client to talk to the server
 
 	JMenuBar menuBar;
 	JMenu menu;
 	JMenuItem next;
 	
-	ArrayList<KitInfo> kitsList;
-	ArrayList<Job> jobs;
+	ArrayList<KitInfo> kitsList;		//Collection of premade kits. 
+	ArrayList<Job> jobs;				//Collection of jobs to be done. 
 	
 	public ProductionManagerApp(){
 		setIgnoreRepaint(true);
@@ -58,18 +58,21 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		jobs = new ArrayList<Job>();
 		load("jobsList.sav");
 
+		//Setting up the panel for the production manager
 		panel = new ProductionManagerPanel(this);
 		panel.setPreferredSize(new Dimension(1000, 660));
 		panel.setMaximumSize(new Dimension(1000, 660));
 		panel.setMinimumSize(new Dimension(1000, 660));
 		panel.update();
 		
+		//Setting up the panel size for the GUI Production Manager
 		graphics = new GUIProductionManager(this);
 		graphics.setPreferredSize(new Dimension(1000, 600));
 		graphics.setMaximumSize(new Dimension(1000, 600));
 		graphics.setMinimumSize(new Dimension(1000, 600));
 		
-		card = new JPanel();
+		//Setting up the card layout with the two panels.
+		card = new JPanel();						 
 		card.setLayout(new CardLayout());
 		card.setPreferredSize(new Dimension(1000, 600));
 		card.setMaximumSize(new Dimension(1000, 600));
@@ -77,8 +80,9 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		card.add(panel, "");
 		card.add(graphics, "");
 		
-		add(card);
+		add(card);			//add the car layout panel to the JFrame
 		
+		//Setting up the menubar with the switch screen menu item. 
 		menuBar = new JMenuBar();
 		menu = new JMenu("Screen");
 		next = new JMenuItem("Switch Screen");
@@ -103,7 +107,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		timer = new javax.swing.Timer(10, this);
 	}
 	
-	//save
+	//save profiles. 
 	public void save(String path){
 		try{
 			FileOutputStream fileOut = new FileOutputStream(path); //write to settings.sav file (will overwrite)
@@ -144,11 +148,13 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		}
 	}
 	
+	//Function for switching the panels from the production manager to the animation and vice versa. 
 	public void next(){
 		CardLayout tempLayout = (CardLayout)card.getLayout();
 		tempLayout.next(card);
 	}
 	
+	//repainting the graphics and panels. 
 	public void paint(Graphics g){
 		try{
 			panel.repaint();
@@ -160,6 +166,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		revalidate();
 	}
 	
+	//Revalidate each of the panels and menu bars
 	public void revalidate(){
 		try{
 			panel.revalidate();
@@ -171,6 +178,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	}
 	
 	public void actionPerformed(ActionEvent e){
+		//"Switch Screen" is clicked. 
 		if(e.getSource() == next){
 			next();
 		}
@@ -228,6 +236,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		
 	}
 
+	//Saving the list of jobs needed to be finished when the window closes. 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
 		// TODO Auto-generated method stub

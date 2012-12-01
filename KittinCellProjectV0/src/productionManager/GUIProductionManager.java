@@ -20,25 +20,26 @@ import laneManager.*;
 import Feeder.Feeder;
 import GantryManager.*;
 
-public class GUIProductionManager extends JPanel{
+public class GUIProductionManager extends JPanel{		//The animation panel for the production manager. 
 	
-	ProductionManagerApp app;
-	GUIKitAssemblyManager kamGraphics;
-	LaneGraphics laneGraphics;
-	GUIGantryManager gantryGraphics;
-	BufferedImage background = null;
+	ProductionManagerApp app;					//A reference to the production manager
+	GUIKitAssemblyManager kamGraphics;			//reference to the kit assembly graphics
+	LaneGraphics laneGraphics;					//reference to the lane graphics
+	GUIGantryManager gantryGraphics;			//reference to the gantry graphics
+	BufferedImage background = null;			//image of the background of the factory. 
 	
-	private Vector<Lane> lanes = new Vector<Lane> ();
-	private Vector<Feeder> feeders = new Vector<Feeder>();
-	private Vector<Nest> nests = new Vector<Nest>();
-    KitAssemblyManager kam = new KitAssemblyManager(nests);
-    KitRobot kitRobot;
-    PartsRobot partsRobot;
-    GantryManager manager;
-    boolean fireOn = false;
-    Fire fire;
-    GUIProductionClient client;
+	private Vector<Lane> lanes = new Vector<Lane> ();			//Collection of the lanes	
+	private Vector<Feeder> feeders = new Vector<Feeder>();		//Collection of the Feeders
+	private Vector<Nest> nests = new Vector<Nest>();			//Coolection of the nests
+    KitAssemblyManager kam = new KitAssemblyManager(nests);		//Reference to the kit assembly manager
+    KitRobot kitRobot;				//Reference to the kit robot
+    PartsRobot partsRobot;			//reference to the parts robot
+    GantryManager manager;			//reference to the gantry manager 
+    boolean fireOn = false;			//Boolean to set whether or not the non-normative should paint. 
+    Fire fire;						//Fire for the non-normative. 
+    GUIProductionClient client;		//Client to communicate with the server. 
 	
+    //constructor for the animations for the production manager
 	public GUIProductionManager(ProductionManagerApp _app){
 		app = _app;
 		
@@ -71,17 +72,21 @@ public class GUIProductionManager extends JPanel{
 //		timer = new Timer(10, this);
 //		timer.start();
 	}
+	
+	//function to start the fire non-normative
 	public void burnItDown(){
 		fire = new Fire(1200, 600);
 		add(fire);
 		fireOn = true;
 	}
 	
+	//function to stop the fire non-normative. 
 	public void clearFire(){
 		fireOn = false;
 		remove(fire);
 	}
 	
+	//update function for all the different sections. 
 	public void update(){
 		client.updateThread();
 		kamGraphics.setKitAssemblyManager(kam);
@@ -95,6 +100,7 @@ public class GUIProductionManager extends JPanel{
 		gantryGraphics.setGantryManager(manager);
 	}
 	
+	//paint function. 
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D)g;
 		g2.drawImage(background,0,0,null);

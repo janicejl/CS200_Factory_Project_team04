@@ -6,10 +6,10 @@ import javax.swing.*;
 
 public class TitlePanel extends JPanel{
 	
-	JLabel titleText;
-	ImageIcon background;
+	JLabel titleText;				//Label for the title. 
+	ImageIcon background;			//Image for background. 
 	
-	public TitlePanel(){
+	public TitlePanel(){			//Constructor for the title panel 
 		background = new ImageIcon("images/background1.png");
 		titleText = new JLabel("Production Manager");
 		Font f = new Font("Verdana", Font.BOLD, 24);

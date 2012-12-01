@@ -23,6 +23,7 @@ public class BadKitPanel extends JPanel implements ActionListener{
 	ArrayList<JLabel> labels;
 	ArrayList<JButton> sendButtons;
 	JLabel sent;
+	boolean labelOn = false;
 	
 	JPanel nonNorms;
 	JButton toggleDropParts;
@@ -98,6 +99,10 @@ public class BadKitPanel extends JPanel implements ActionListener{
         create(temp);
         
         sent = new JLabel("Non-Norm Sent");
+        sent.setPreferredSize(new Dimension(230, 25));
+        sent.setMaximumSize(new Dimension(230, 25));
+        sent.setMinimumSize(new Dimension(230, 25));
+        sent.setAlignmentX(CENTER_ALIGNMENT);
 	}
 	
 	public void create(Kit kit){
@@ -128,9 +133,17 @@ public class BadKitPanel extends JPanel implements ActionListener{
 			sendButtons.get(i).setMinimumSize(new Dimension(230, 25));
 			sendButtons.get(i).setAlignmentX(CENTER_ALIGNMENT);
 			scrollPanel.add(sendButtons.get(i));
+		
+			if(labelOn){
+				scrollPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+				scrollPanel.add(sent);
+			}
 			scrollPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		}
 		size = size*155;
+		if(labelOn){
+			size = size*190;
+		}
 		scrollPanel.setPreferredSize(new Dimension(250, size));
 		scrollPanel.setMaximumSize(new Dimension(250, size));
 		scrollPanel.setMinimumSize(new Dimension(250, size));
@@ -160,6 +173,8 @@ public class BadKitPanel extends JPanel implements ActionListener{
 					}
 				}
 				app.setKitDropUpdate(true);
+				labelOn = true;
+				update();
 			}
 		}
 	}

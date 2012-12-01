@@ -11,18 +11,19 @@ import data.Job;
 
 public class CreateJobPanel extends JPanel implements ActionListener {
 
-	ProductionManagerPanel app;
-	Vector<String> kitNames;
-	ImageIcon background;
-	JPanel content;
-	TitledBorder title;
-	JPanel selectionDetails;
-	JLabel kitLabel;
-	JComboBox kitBox;
-	JLabel amtLabel;
-	JTextField amtText;
-	JButton addJob;
+	ProductionManagerPanel app;			//Reference to the ProductionManagerPanel	
+	Vector<String> kitNames;			//Collection of kit names
+	ImageIcon background;				//Background image of the panel. 
+	JPanel content;						//Panel to hold all the different components of the panel 
+	TitledBorder title;					//Setting the title for the panel section
+	JPanel selectionDetails;			//Panel of all the selection details. 
+	JLabel kitLabel;					//Label for the kit
+	JComboBox kitBox;					//Drop Down list of all the available premade kits to add to job list. 
+	JLabel amtLabel;					//Ammount label
+	JTextField amtText;					//Textfield for the user to put the amount of kits to make for the job. 
+	JButton addJob;						//Button for the user to add the job to the job list. 
 	
+	//Constructor for CreateJobPanel
 	public CreateJobPanel(ProductionManagerPanel _app) {		
 		//background = new ImageIcon("images/background.png");
 		this.setOpaque(false);
@@ -104,6 +105,7 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 		//background.paintIcon(this, g, 0, 0);
 	}
 	
+	//Action perform for button click. 
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == addJob) {
 			Integer amt = new Integer(0);
@@ -128,6 +130,7 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 		}
 	}
 	
+	//Update the list of kits available to make for jobs. 
 	public void update(){
 		for(int i = 0; i < app.getApp().getJobs().size(); i++){
 			app.getListPanel().getJobs().create(app.getApp().getJobs().get(i).getKit().getName(), app.getApp().getJobs().get(i).getAmount());

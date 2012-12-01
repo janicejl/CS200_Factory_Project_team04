@@ -108,7 +108,9 @@ public class BadKitPanel extends JPanel implements ActionListener{
 	public void create(Kit kit){
 		badKits.add(new BadKit(kit));
 		labels.add(new JLabel((labels.size()+1) + ") " + kit.getID()));
-		sendButtons.add(new JButton("Send"));
+		JButton sendTemp = new JButton("Send");
+		sendTemp.addActionListener(this);
+		sendButtons.add(sendTemp);
 		update();
 	}
 	

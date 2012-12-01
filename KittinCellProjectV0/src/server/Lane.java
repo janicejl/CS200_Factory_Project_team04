@@ -143,7 +143,7 @@ public class Lane implements ActionListener, Serializable{
 	    System.out.println("Jam probability established to 3");
 	    isJammed = false;
 	    random = new Random();
-	    vibrateLane(1);
+//	    vibrateLane(1);
     }
     
     public void actionPerformed( ActionEvent ae ) {	
@@ -217,7 +217,7 @@ public class Lane implements ActionListener, Serializable{
 		    	}
 	    	}
 	    	if(isJammed == true){
-	    		if(Math.random()*100 + vibrationAmplitude > 99){
+	    		if(Math.random()*100 > 99){
 	    			setJamOn(false);
 	    		}
 	    	}
@@ -225,7 +225,6 @@ public class Lane implements ActionListener, Serializable{
 	    //update feeder
 	    feeder.updateDiverter();
     }
-
 	public void addPart(Part part) {
     	part.setX(maxX-80);
     	part.setY(maxY/2 + verticalSpacing - 10);
@@ -378,6 +377,14 @@ public class Lane implements ActionListener, Serializable{
 
 	public void setUnjamMessage(boolean unjamMessage) {
 		this.unjamMessage = unjamMessage;
+	}
+
+	public boolean isJammed() {
+		return isJammed;
+	}
+
+	public void setJammed(boolean isJammed) {
+		this.isJammed = isJammed;
 	}
     
 }  

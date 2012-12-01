@@ -185,38 +185,38 @@ public class LaneGraphics extends JPanel {
 			g2.draw(l31);
 		}
 		//Jam Semaphores:
-		if(lanes.get(0).getJamMessage())
+		if(lanes.get(0).isJammed())
 			g2.drawImage(redlightImage, 584, 34, this);
 		else 
 			g2.drawImage(greenlightImage, 584, 34, this);
-		if(lanes.get(1).getJamMessage())
+		if(lanes.get(1).isJammed())
 			g2.drawImage(redlightImage, 584, 138, this);
 		else 
 			g2.drawImage(greenlightImage, 584, 138, this);
 		
-		if(lanes.get(2).getJamMessage())
+		if(lanes.get(2).isJammed())
 			g2.drawImage(redlightImage, 509, 174, this);
 		else 
 			g2.drawImage(greenlightImage, 509, 174, this);
-		if(lanes.get(3).getJamMessage())
+		if(lanes.get(3).isJammed())
 			g2.drawImage(redlightImage, 509, 278, this);
 		else 
 			g2.drawImage(greenlightImage, 509, 278, this);
 		
-		if(lanes.get(4).getJamMessage())
+		if(lanes.get(4).isJammed())
 			g2.drawImage(redlightImage, 509, 314, this);
 		else 
 			g2.drawImage(greenlightImage, 509, 314, this);
-		if(lanes.get(5).getJamMessage())
+		if(lanes.get(5).isJammed())
 			g2.drawImage(redlightImage, 509, 338+80, this);
 		else 
 			g2.drawImage(greenlightImage, 509, 338+80, this);
 		
-		if(lanes.get(6).getJamMessage())
+		if(lanes.get(6).isJammed())
 			g2.drawImage(redlightImage, 584, 454, this);
 		else 
 			g2.drawImage(greenlightImage, 584, 454, this);
-		if(lanes.get(7).getJamMessage())
+		if(lanes.get(7).isJammed())
 			g2.drawImage(redlightImage, 584, 558, this);
 		else 
 			g2.drawImage(greenlightImage, 584, 558, this);		

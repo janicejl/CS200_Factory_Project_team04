@@ -183,13 +183,14 @@ public class LaneAgent extends Agent implements Lane{
 	}
 	
 	private void unJamLane(){
-		int i = 0;
-		while(i<5000){
-			i++;
-		}
+//		int i = 0;
+//		while(i<500000){
+//			i++;
+//		}
 		if(lanejamstate == LaneJamStatus.jammed){
 			server.execute("Vibrate",this.index,vibrationspeed);
-			vibrationspeed++;
+//			vibrationspeed++;
+			System.err.println(vibrationspeed);
 		}
 	}
 	

@@ -18,12 +18,13 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 	JLabel laneLabel;
 	JSlider vibrationSlider;
 	String[] lanes;
+	ImageIcon background; //background
 	
 	public LaneManagerPanel(LaneManagerApp _app){
 		app = _app;
 		lanes = new String[]{"Lane 1", "Lane 2", "Lane 3", "Lane 4", "Lane 5", "Lane 6", "Lane 7", "Lane 8"};
 		horizPanels  = new ArrayList<JPanel>();
-		
+		background = new ImageIcon("images/server4.jpg");
 		jamButton = new JButton("Jam Selected");
 		jamButton.setPreferredSize(new Dimension(130, 27));
 		jamButton.setMaximumSize(new Dimension(130, 27));
@@ -60,6 +61,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		horizPanels.get(horizPanels.size()-1).add(laneSelectBox);
 		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10, 50)));
 		horizPanels.get(horizPanels.size()-1).add(jamButton);
+		horizPanels.get(horizPanels.size()-1).setOpaque(false);
 		
 		horizPanels.add(new JPanel());
 		horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
@@ -68,6 +70,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		horizPanels.get(horizPanels.size()-1).setMinimumSize(new Dimension(700, 50));
 		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10, 50)));
 		horizPanels.get(horizPanels.size()-1).add(laneLabel);
+		horizPanels.get(horizPanels.size()-1).setOpaque(false);
 		
 		horizPanels.add(new JPanel());
 		horizPanels.get(horizPanels.size()-1).setLayout(new BoxLayout(horizPanels.get(horizPanels.size()-1), BoxLayout.X_AXIS));
@@ -75,6 +78,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		horizPanels.get(horizPanels.size()-1).setMaximumSize(new Dimension(700, 50));
 		horizPanels.get(horizPanels.size()-1).setMinimumSize(new Dimension(700, 50));
 		horizPanels.get(horizPanels.size()-1).add(vibrationSlider);
+		horizPanels.get(horizPanels.size()-1).setOpaque(false);
 		
 		for(int i=0;i<horizPanels.size();i++){
 			this.add(horizPanels.get(i));
@@ -88,6 +92,10 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		if(ae.getSource()==jamButton){
 			
 		}
+	}
+	
+	public void paintComponent(Graphics g){
+		background.paintIcon(this, g, 0, 0);
 	}
 	
 //	//this main is for testing the panel

@@ -98,7 +98,7 @@ public class ServerGantryTestPanel extends JPanel implements ActionListener
 		}
 		else if("Purge Nest 1".equals(ae.getActionCommand()))
 		{
-			server.execute("Purge Nest",1);
+			server.execute("Purge Nest",0);
 		}
 	}
 }

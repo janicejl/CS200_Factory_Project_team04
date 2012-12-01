@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import data.KitInfo;
+import DecorateAnimations.KittenQueue;
 
 public class ProductionManagerPanel extends JPanel implements ActionListener {
 
@@ -15,6 +16,8 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 	TitlePanel title;					//Panel to show the title of the window.
 	KitPanel kitPanel;					//Panel to show the list of premade panels
 	CreateJobPanel createPanel;			//Panel to create a job. 
+	KittenQueue kq;                     //panel for little kittens
+	
 	
 	public ProductionManagerPanel(ProductionManagerApp _app){
 		app = _app;
@@ -59,6 +62,9 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 		kitPanel.setMaximumSize(new Dimension(600, 250));
 		kitPanel.setMinimumSize(new Dimension(600, 250));
 		
+		kq = new KittenQueue();
+		
+		
 		//Using a grid bag layout to place all the panels at the right place. 
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -82,8 +88,11 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 		GridBagConstraints a = new GridBagConstraints();
 		a.gridx = 0;
 		a.gridy = 0;
+		a.anchor=GridBagConstraints.FIRST_LINE_START;
+		add(kq,a);
 		add(base,a);
 		add(bg,a);
+		
 	}
 	
 	//Dynamically updates the job list. 

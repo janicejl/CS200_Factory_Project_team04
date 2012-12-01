@@ -64,6 +64,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	Vector<Feeder> feeders; //Feeders
 	Vector<Lane> lanes; //Lanes
 	Vector<Nest> nestList; //Nests
+	Vector<Boolean> overFlow; //nests that are overflowed
 	TreeMap<Integer, PartInfo> feederPartInfo; //Map the partinfo that the feeder should make
 	TreeMap<Integer, Integer> feederPartNum; //Map the amount of parts to make
 	TreeMap<Integer, Integer> feederDelay; //Map to delay feeder dumping speed
@@ -193,6 +194,10 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	nestList.add(new Nest(0, 380));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 450));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 520));	//x coordinate is zero for laneManagerApp
+    	overFlow = new Vector<Boolean>();
+    	for(int i = 0; i < 8; i++){
+    		overFlow.add(new Boolean(false));
+    	}
     	
     	//Lanes
 		lanes = new Vector<Lane>();
@@ -1143,6 +1148,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public void setRunning(boolean running) {
 		this.running = running;
+	}
+
+	public Vector<Boolean> getOverFlow() {
+		return overFlow;
+	}
+
+	public void setOverFlow(Vector<Boolean> overFlow) {
+		this.overFlow = overFlow;
 	}
 
 }

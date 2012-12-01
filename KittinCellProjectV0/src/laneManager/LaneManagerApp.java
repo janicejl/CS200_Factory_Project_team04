@@ -26,6 +26,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	private Vector<Feeder> feeders = new Vector<Feeder>();
 	private Vector<Nest> nests = new Vector<Nest>();
 	private Vector<Boolean> onJammeds;
+	private Vector<Boolean> overFlow;
 	
 	JMenuBar menuBar;
 	JMenu menu;
@@ -66,6 +67,10 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		onJammeds = new Vector<Boolean>();
 		for(int i=0;i<8;i++){
 			onJammeds.add(new Boolean(false));
+		}
+		overFlow = new Vector<Boolean>();
+		for(int i=0;i<8;i++){
+			overFlow.add(new Boolean(false));
 		}
 		menuBar.add(menu);
 		menu.add(next);
@@ -143,5 +148,17 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	
 	public synchronized Vector<Boolean> getOnJammeds(){
 		return onJammeds;
+	}
+
+	public Vector<Boolean> getOverFlow() {
+		return overFlow;
+	}
+
+	public void setOverFlow(Vector<Boolean> overFlow) {
+		this.overFlow = overFlow;
+	}
+
+	public void setOnJammeds(Vector<Boolean> onJammeds) {
+		this.onJammeds = onJammeds;
 	}
 }

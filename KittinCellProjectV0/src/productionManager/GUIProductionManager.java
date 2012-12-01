@@ -84,6 +84,7 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 	public void clearFire(){
 		fireOn = false;
 		remove(fire);
+		fire = null;
 	}
 	
 	//update function for all the different sections. 

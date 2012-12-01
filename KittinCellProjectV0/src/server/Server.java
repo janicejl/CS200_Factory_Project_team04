@@ -596,6 +596,18 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			getKitAssemblyManager().processCommand("spawn");
     		}
     	}
+    	//Remove parts from feeder
+    	if(process.equals("Purge Feeder"))
+    	{
+    		for (int i=0; i<gantryManager.getPurged().size(); i++)
+    		{
+    			if (gantryManager.getPurged().get(i).getFeeder() == num)
+    			{
+    				gantryManager.getPurged().get(i).getPartInfo().setImagePath(feeders.get(num).getInfo().getImagePath());
+    				break;
+    			}
+    		}
+    	}
     	//Purge the nest corresponding to num
     	else if(process.equals("Purge Nest"))
     	{

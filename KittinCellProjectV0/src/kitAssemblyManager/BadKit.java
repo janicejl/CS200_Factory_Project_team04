@@ -51,9 +51,11 @@ public class BadKit extends JPanel implements ActionListener{
 			if(e.getSource() == config.get(i)){
 				if(configClicks.get(i) == true){
 					config.get(i).setIcon(new ImageIcon("images/good.png"));
+					configClicks.set(i, false);
 				}
 				else if(configClicks.get(i) == false){
 					config.get(i).setIcon(new ImageIcon("images/none.png"));
+					configClicks.set(i, true);
 				}
 			}
 		}

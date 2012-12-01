@@ -37,6 +37,22 @@ public class Protocols implements Runnable{
 			e.printStackTrace();
 		}				
 		protocolName = command; //set protocol type
+		if(protocolName.equals("Lane Manager")){
+			try {
+				out.writeObject(app.getOverFlow());
+				out.reset();
+				out.flush();
+			} catch (IOException e) {
+				System.err.println(protocolName);
+				e.printStackTrace();
+				try{
+					s.close();
+					thread.stop();
+				} catch(Exception ae){
+					System.out.println("Socket Fail to Close");
+				}
+			}
+		}
 		thread = new Thread(this, "protocol thread");
 		thread.start();
 	}
@@ -138,6 +154,13 @@ public class Protocols implements Runnable{
 			Vector<Boolean> temp = (Vector<Boolean>)in.readObject();
 			for(int i=0;i<app.getLanes().size();i++){
 				app.getLanes().get(i).setJamOn(temp.get(i));
+			}
+			Vector<Boolean> tempOverflow = (Vector<Boolean>)in.readObject();
+			for(int i=0;i<app.getLanes().size();i++){
+				if(tempOverflow.get(i) != app.getOverFlow().get(i)){
+					app.getOverFlow().set(i, tempOverflow.get(i));
+					app.nests.get(i).msgToggleNestOverflow();
+				}
 			}
 		} catch (Exception e){
 			System.err.println(protocolName);

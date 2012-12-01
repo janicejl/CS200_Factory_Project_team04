@@ -74,10 +74,11 @@ public class KitAssemblyClient implements Runnable {
 			out.writeObject(app.kitDropUpdate); // NEED THIS VAR IN KITASSEMBLY APP!!!!
 			out.reset();
 			out.flush();
-			if(kitDropUpdate){			
+			if(app.isKitDropUpdate()){			
 				out.writeObject(app.getKitDrops()); // NEED THIS FUNCTION IN KITASSEMBLY APP!!!!
 				out.reset();
 				out.flush();
+				app.setKitDropUpdate(false);
 			}
 		} catch (Exception ignore){
 			ignore.printStackTrace();

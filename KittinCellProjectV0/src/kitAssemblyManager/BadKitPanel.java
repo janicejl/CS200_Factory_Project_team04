@@ -22,6 +22,7 @@ public class BadKitPanel extends JPanel implements ActionListener{
 	ArrayList<BadKit> badKits;
 	ArrayList<JLabel> labels;
 	ArrayList<JButton> sendButtons;
+	JLabel sent;
 	
 	JPanel nonNorms;
 	JButton toggleDropParts;
@@ -92,9 +93,11 @@ public class BadKitPanel extends JPanel implements ActionListener{
 		Kit temp = new Kit();
 		temp.setID("Bad Kit to Make");
         for(int j = 0; j < 8; j++){
-        	temp.addPart(new Part(new PartInfo(null, "images/none.png")));
+        	temp.addPart(new Part(new PartInfo(null, "images/good.png")));
         }
         create(temp);
+        
+        sent = new JLabel("Non-Norm Sent");
 	}
 	
 	public void create(Kit kit){
@@ -103,7 +106,7 @@ public class BadKitPanel extends JPanel implements ActionListener{
 		sendButtons.add(new JButton("Send"));
 		update();
 	}
-
+	
 	public void update(){
 		scrollPanel.removeAll();
 		int size = badKits.size();
@@ -144,6 +147,20 @@ public class BadKitPanel extends JPanel implements ActionListener{
 				toggleDropParts.setText("Enable Drop Parts");
 				app.setDropParts(false);
 			}
-		}		
+		}
+		
+		if(!sendButtons.isEmpty()){
+			if(e.getSource() == sendButtons.get(0)){
+				for(int i = 0; i < 8; i++){
+					if(badKits.get(0).getConfigClicks().get(i) == false){
+						app.getKitDrops().set(i, true);
+					}
+					else{
+						app.getKitDrops().set(i, false);
+					}
+				}
+				app.setKitDropUpdate(true);
+			}
+		}
 	}
 }

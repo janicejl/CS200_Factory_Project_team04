@@ -38,6 +38,8 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     KitRobot kitRobot;
     PartsRobot partsRobot;
     boolean dropParts = false;
+    Vector<Boolean> kitDrops;
+    boolean kitDropUpdate = false;
 
     public KitAssemblyApp(){
     	kitClient = new KitAssemblyClient(this);
@@ -75,9 +77,19 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
 
         pack();
         setVisible(true);
+        
+        kitDrops = new Vector<Boolean>();
     }
 
-    public void createButton(String s){
+    public Vector<Boolean> getKitDrops() {
+		return kitDrops;
+	}
+
+	public void setKitDrops(Vector<Boolean> kitDrops) {
+		this.kitDrops = kitDrops;
+	}
+
+	public void createButton(String s){
         JButton temp = new JButton(s);
         temp.addActionListener(this);
         temp.setActionCommand(s);
@@ -159,5 +171,13 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
 	
 	public PartsRobot getPartsRobot() {
 		return partsRobot;
+	}
+
+	public boolean isKitDropUpdate() {
+		return kitDropUpdate;
+	}
+
+	public void setKitDropUpdate(boolean kitDropUpdate) {
+		this.kitDropUpdate = kitDropUpdate;
 	}
 }

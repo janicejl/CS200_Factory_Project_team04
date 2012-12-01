@@ -11,6 +11,7 @@ public class BadKit extends JPanel implements ActionListener{
 
 	Kit kit;
 	Vector<JButton> config;
+	Vector<Boolean> configClicks;
 	JPanel configPanel;
 	
 	public BadKit(Kit _kit){
@@ -29,11 +30,14 @@ public class BadKit extends JPanel implements ActionListener{
 		configPanel.setOpaque(false);
 		
 		config = new Vector<JButton>();
+		configClicks = new Vector<Boolean>();
 		
 		for(int i = 0; i < 8; i++){
 			config.add(new JButton(new ImageIcon(kit.getParts().get(i).getImagePath())));
 			config.get(i).addActionListener(this);
 			configPanel.add(config.get(i));
+			
+			configClicks.add(new Boolean(true));
 		}
 		
 		GridBagConstraints c = new GridBagConstraints();
@@ -45,8 +49,21 @@ public class BadKit extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e){
 		for(int i = 0; i < config.size(); i++){
 			if(e.getSource() == config.get(i)){
-				
+				if(configClicks.get(i) == true){
+					config.get(i).setIcon(new ImageIcon("images/good.png"));
+				}
+				else if(configClicks.get(i) == false){
+					config.get(i).setIcon(new ImageIcon("images/none.png"));
+				}
 			}
 		}
+	}
+
+	public Vector<Boolean> getConfigClicks() {
+		return configClicks;
+	}
+
+	public void setConfigClicks(Vector<Boolean> configClicks) {
+		this.configClicks = configClicks;
 	}
 }

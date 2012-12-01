@@ -7,6 +7,8 @@ import java.util.*;
 import javax.swing.*;
 
 import data.Kit;
+import data.Part;
+import data.PartInfo;
 
 public class BadKitPanel extends JPanel implements ActionListener{
 
@@ -74,8 +76,6 @@ public class BadKitPanel extends JPanel implements ActionListener{
 		c.gridy=1;
 		badModification.add(scroll,c);
 		
-		
-		
 		c.gridy = 0;
 		
 		nonNorms = new JPanel();
@@ -88,6 +88,13 @@ public class BadKitPanel extends JPanel implements ActionListener{
 		tabs.add(badModification, "Bad Kits Interface");
 		
 		add(tabs,c);
+		
+		Kit temp = new Kit();
+		temp.setID("Bad Kit to Make");
+        for(int j = 0; j < 8; j++){
+        	temp.addPart(new Part(new PartInfo(null, "images/none.png")));
+        }
+        create(temp);
 	}
 	
 	public void create(Kit kit){

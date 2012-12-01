@@ -68,14 +68,6 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
         nonNorm = new BadKitPanel(this);
         add(nonNorm, "controls");
         
-        Kit temp = new Kit();
-        for(int j = 0; j < 8; j++){
-        	temp.addPart(new Part(new PartInfo("hi", "images/kt1.png")));
-        }
-        for(int j = 0; j < 8; j ++){
-        	nonNorm.create(temp);
-        }
-        
 //        initControlPanel();
 //        add(controlPanel, "controls");
         timer = new javax.swing.Timer(10, this);

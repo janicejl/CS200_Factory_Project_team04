@@ -156,11 +156,13 @@ public class VisionAgent extends Agent implements Vision {
 		print("BOOOM");
 		if (type==Type.NESTS_INSPECTOR) {
 			if(nest1.getIndex()==numberofnestsneeded){
+				waiting=true;
 				server.execute("Take Picture", nest1.getIndex()+1);
 				print ("taking a picture at " + (nest1.getIndex()+1));
 
 			}
 			else{
+				waiting=true;
 				server.execute("Take Picture", nest2.getIndex());
 				print ("taking a picture at " + nest2.getIndex());
 
@@ -356,7 +358,7 @@ public class VisionAgent extends Agent implements Vision {
 			return true;
 		}
 		
-		if (state==State.PICTURE_TAKEN) {
+		if (state==State.PICTURE_TAKEN && waiting == false) {
 			if (type==Type.KIT_INSPECTOR) {
 				inspectKit();
 			}

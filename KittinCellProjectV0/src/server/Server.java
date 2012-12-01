@@ -210,7 +210,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	laneQueue = new TreeMap<Integer, Integer>();
     	//Set Lane Speeds
     	for (int i = 0; i < 8; i ++) {
-    		lanes.get(i).setConveyerBeltSpeed(1);
+    		lanes.get(i).setConveyerBeltSpeed(5);
     		laneCounter.add(0);
     		laneQueue.put(i, 0);
     	}
@@ -558,13 +558,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	//Kit Complete, adjust server joblist
     	else if(process.equals("Kit Finished")){
     		if(jobsList.size() != 0){
-    			if(jobsList.get(0).getAmount() > 0){
+    			if(jobsList.get(0).getAmount() > 1){
 	    	    	 jobsList.get(0).setAmount(jobsList.get(0).getAmount() - 1);
+	    	    	 setProductionCommand("Update Jobs");
 	    	     }
 	    	     else{
 	    	    	 jobsList.remove(0);
+	    	    	 setProductionCommand("Job Finished");
 	    	     }
-	    	     setProductionCommand("Update Jobs");
 	    	     getFCSAgent().msgKitCompleted();
    	     	}
 	   	}
@@ -574,6 +575,9 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	   			getFCSAgent().msgHereIsKitConfig(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
 	//   	    getPartsRobotAgent().msgMakeThisKit(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
 	//   	    getKitRobotAgent().msgGetKits(jobsList.get(0).getAmount());
+	   		}
+	   		else{
+	   			running = false;
 	   		}
 	   	}
     	
@@ -594,6 +598,18 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	if(process.equals("Spawn Kit")){
     		for(int i = 0; i < num; i++){
     			getKitAssemblyManager().processCommand("spawn");
+    		}
+    	}
+    	//Remove parts from feeder
+    	if(process.equals("Purge Feeder"))
+    	{
+    		for (int i=0; i<gantryManager.getPurged().size(); i++)
+    		{
+    			if (gantryManager.getPurged().get(i).getFeeder() == num)
+    			{
+    				gantryManager.getPurged().get(i).getPartInfo().setImagePath(feeders.get(num).getInfo().getImagePath());
+    				break;
+    			}
     		}
     	}
     	//Purge the nest corresponding to num
@@ -847,6 +863,18 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			if(lanes.get(i).isAtQueue()){
 				laneagents.get(i).msgPartAtEndOfLane();
 			}
+			
+			//if lane is jammed
+			if(lanes.get(i).getJamMessage() == true){
+				lanes.get(i).setJamMessage(false);
+				laneagents.get(i).msgLaneJammed();
+			}
+			//if lane unjammed
+			if(lanes.get(i).isUnjamMessage() == true){
+				lanes.get(i).setUnjamMessage(false);
+				laneagents.get(i).msgLaneUnJammed();
+			}
+			
 			
 			//deal with queued commands
 			if(laneQueue.get(i) > 0){

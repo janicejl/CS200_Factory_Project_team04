@@ -16,6 +16,7 @@ public class Kit implements Serializable {
 	private double destinationY;	//y final position for moveent. 
 	
 	private boolean grabbed;		//Boolean stating whether or not the kit is being grabbed by the robot. 
+	boolean done = false;
 	
 	private ArrayList<Part> partsList = new ArrayList<Part>();
 	//Array of the list of parts in the nest. 
@@ -38,6 +39,14 @@ public class Kit implements Serializable {
 	
 	public ArrayList<Part> getParts(){
 		return partsList;
+	}
+	
+	public void setDone(boolean b){
+		done = b;
+	}
+	
+	public boolean getDone(){
+		return done;
 	}
 
 	

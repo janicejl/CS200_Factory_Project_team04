@@ -44,7 +44,7 @@ public class LaneAgent extends Agent implements Lane{
 	public enum LaneFullStatus{notFull,full}
 	public enum ReadyStatus{ready,notready}
 
-	public enum LaneJamStatus{jammed,noAction};
+	public enum LaneJamStatus{jammed,noAction,unjamming};
 
 
 	public LaneAgent(Nest mynest,FeederAgent feed,Server server,String name,int index){
@@ -128,7 +128,6 @@ public class LaneAgent extends Agent implements Lane{
 			unJamLane();
 			return true;
 		}
-
 		if(neststate ==  LaneNestStatus.readyForPart){
 			givePart();
 			return true;
@@ -183,13 +182,14 @@ public class LaneAgent extends Agent implements Lane{
 	}
 
 	private void unJamLane(){
-		int i = 0;
-		while(i<5000){
-			i++;
-		}
+//		int i = 0;
+//		while(i<500000){
+//			i++;
+//		}
 		if(lanejamstate == LaneJamStatus.jammed){
 			server.execute("Vibrate",this.index,vibrationspeed);
-			vibrationspeed++;
+//			vibrationspeed++;
+			System.err.println(vibrationspeed);
 		}
 	}
 

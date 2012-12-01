@@ -88,8 +88,8 @@ public class GUIKitAssemblyManager extends JPanel{
         baseStationKits = new ArrayList<Kit>();
 
         try {
-            background = ImageIO.read(new File("images/background.png"));
-            kitImage = ImageIO.read(new File("images/crate.png"));
+            background = ImageIO.read(new File("images/background1.png"));
+            kitImage = ImageIO.read(new File("images/kit.png"));
             stand = ImageIO.read(new File("images/stand.png"));
             conveyorImage = ImageIO.read(new File("images/conveyor.png"));
         } catch (IOException e) {}
@@ -127,30 +127,30 @@ public class GUIKitAssemblyManager extends JPanel{
         }
         
         if(emptyConveyorOn){
-            emptyConveyorMove += 0.5;
+            emptyConveyorMove += 5;
             if(emptyConveyorMove > 20.0){
                 emptyConveyorMove = 0;
             }
         }
 
         if(finishedConveyorOn){
-            finishedConveyorMove += 0.5;
+            finishedConveyorMove += 5;
             if(finishedConveyorMove > 20.0){
                 finishedConveyorMove = 0;
             }
         }
-        if(badConveyorOn){
-            badConveyorMove += 0.5;
-            if(badConveyorMove > 20.0){
-                badConveyorMove = 0;
-            }
-        }
-        if(incompleteConveyorOn){
-            incompleteConveyorMove += 0.5;
-            if(incompleteConveyorMove > 20.0){
-                incompleteConveyorMove = 0;
-            }
-        }
+//        if(badConveyorOn){
+//            badConveyorMove += 0.5;
+//            if(badConveyorMove > 20.0){
+//                badConveyorMove = 0;
+//            }
+//        }
+//        if(incompleteConveyorOn){
+//            incompleteConveyorMove += 0.5;
+//            if(incompleteConveyorMove > 20.0){
+//                incompleteConveyorMove = 0;
+//            }
+//        }
     }
 
     public void paintComponent(Graphics g){
@@ -163,35 +163,34 @@ public class GUIKitAssemblyManager extends JPanel{
 	        }
         }
         g2.drawImage(stand,150,130,70,340,null); // kit stand
-        g2.setColor(Color.BLACK);
-        
-        
 
         for(int i = -1; i < 5; i++){ // main conveyor images
             g2.drawImage(conveyorImage,75, i * 20 + (int)emptyConveyorMove,null); // empty conveyor
-            g2.drawLine(75,20*i+(int)emptyConveyorMove,134,20*i+(int)emptyConveyorMove);
+//            g2.drawLine(83,20*i+(int)emptyConveyorMove,126,20*i+(int)emptyConveyorMove);
 
             g2.drawImage(conveyorImage,5,(i+1)*20 - (int)finishedConveyorMove,null); // finished conveyor
-            g2.drawLine(5,(i+1)*20-(int)finishedConveyorMove,64,(i+1)*20-(int)finishedConveyorMove);
+//            g2.drawLine(13,(i+1)*20-(int)finishedConveyorMove,56,(i+1)*20-(int)finishedConveyorMove);
 
-            g2.drawImage(conveyorImage,75, 500 + i * 20 + (int)incompleteConveyorMove,null); // incomplete conveyor
-            g2.drawLine(75,500 + 20*i+(int)incompleteConveyorMove,134, 500 + 20*i +(int)incompleteConveyorMove);
-
-            g2.drawImage(conveyorImage,5, 500 + (i+1)*20 - (int)badConveyorMove,null); // bad conveyor
-            g2.drawLine(5,500 + (i+1)*20-(int)badConveyorMove,64,500 + (i+1)*20-(int)badConveyorMove);			//changed to - sign
+//            g2.drawImage(conveyorImage,75, 500 + i * 20 + (int)incompleteConveyorMove,null); // incomplete conveyor
+//            g2.drawLine(75,500 + 20*i+(int)incompleteConveyorMove,134, 500 + 20*i +(int)incompleteConveyorMove);
+//
+//            g2.drawImage(conveyorImage,5, 500 + (i+1)*20 - (int)badConveyorMove,null); // bad conveyor
+//            g2.drawLine(5,500 + (i+1)*20-(int)badConveyorMove,64,500 + (i+1)*20-(int)badConveyorMove);			//changed to - sign
         }
 
         g2.drawImage(conveyorImage,75,100+(int)emptyConveyorMove,135,120,0,0,60,22,null); // empty conveyor end
-        g2.drawLine(75,100+(int)emptyConveyorMove,134,100+(int)emptyConveyorMove);
+//        g2.drawLine(83,100+(int)emptyConveyorMove,126,100+(int)emptyConveyorMove);
 
         g2.drawImage(conveyorImage,5,120-(int)finishedConveyorMove,65,120,0,0,60,22,null); // finished conveyor end
-        g2.drawLine(5,120-(int)finishedConveyorMove,64,120-(int)finishedConveyorMove);
+//        if(finishedConveyorMove > 0){
+//        	g2.drawLine(13,120-(int)finishedConveyorMove,56,120-(int)finishedConveyorMove);
+//        }
 
-        g2.drawImage(conveyorImage,75,480,135,480+(int)incompleteConveyorMove,0,0,60,22,null); // incomplete conveyor end
-        g2.drawLine(75,480+(int)incompleteConveyorMove,134,480+(int)incompleteConveyorMove);
-
-        g2.drawImage(conveyorImage,5,480,65,500-(int)badConveyorMove,0,0,60,22,null); // bad conveyor end
-        g2.drawLine(5,500-(int)badConveyorMove,64,500-(int)badConveyorMove);
+//        g2.drawImage(conveyorImage,75,480,135,480+(int)incompleteConveyorMove,0,0,60,22,null); // incomplete conveyor end
+//        g2.drawLine(75,480+(int)incompleteConveyorMove,134,480+(int)incompleteConveyorMove);
+//
+//        g2.drawImage(conveyorImage,5,480,65,500-(int)badConveyorMove,0,0,60,22,null); // bad conveyor end
+//        g2.drawLine(5,500-(int)badConveyorMove,64,500-(int)badConveyorMove);
 
         for(GUIKit k : emptyKits){
         	k.paintKit(g2);

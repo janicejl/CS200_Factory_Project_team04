@@ -91,22 +91,22 @@ public class GUIPartsRobot{
     public void update(){
         pr = app.getPartsRobot();
         y = pr.getY();
-//        
-//        try{
-        	
-	        for(int i = 0; i < pr.getPartsHeld().size(); i++){
-	        	//partImages.add(ImageIO.read(new File(app.getPartsRobot().getPartsHeld().get(i).getImagePath())));
-	        	if(gParts.size() < 4){
-	        		gParts.add(new GUIPart(pr.getPartsHeld().get(i)));
-	        	}
-	        	else {
-	        		gParts.set(i, new GUIPart(pr.getPartsHeld().get(i)));
-	        	}	
-	        }
-//        }
-//        catch(IOException e){
-//        	e.printStackTrace();
-//        }
+        
+        gripperHolding = pr.getGripperHolding();
+
+        for(int i = 0; i < gripperHolding.size(); i++){
+        	if(gripperHolding.get(i)== true){
+        		for(int j = 0; j < pr.getPartsHeld().size(); j++){
+        			if((i+j) >= gParts.size()){
+        				gParts.add(new GUIPart(pr.getPartsHeld().get(j)));
+        			}
+        			else {
+        				gParts.set(i+j, new GUIPart(pr.getPartsHeld().get(j)));
+        			}
+        		}
+        		break;
+        	}        	
+        }
         
         gKitStandCamera.setCamera(pr.getKitStandCamera());
         gNestCamera.setCamera(pr.getNestCamera());
@@ -114,7 +114,6 @@ public class GUIPartsRobot{
         angle = pr.getAngle();
         
         gripperExtensions = pr.getGripperExtensions();
-        gripperHolding = pr.getGripperHolding();
         gripperPartIDs = pr.getGripperPartIDs();
         
         gKitStandCamera.update();
@@ -151,7 +150,7 @@ public class GUIPartsRobot{
 
         g2.drawImage(partsRobotRailImage,260,0,null);
         at = new AffineTransform();
-        at.translate(x-8,y-10);
+        at.translate(x-10,y-10);
         g2.drawImage(topImage,at,null);
 
         

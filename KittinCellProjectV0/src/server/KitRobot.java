@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.Random;
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.TreeMap;
 import java.util.concurrent.*;
 import java.io.*;
@@ -36,18 +36,18 @@ public class KitRobot implements Runnable, Serializable{
     int[] waypointY = {190,190,410,410,410,300,190};		//An array of y coordinates to help guide the kit robot to move without hitting other objects. 
     double speed = 4.0;			//speed of the kit robot. 
 	
-    ArrayList<String> commands;				//Arraylist of commands it has to proccess from the agents.
-    ArrayList<String> subCommands;			//Arraylist of commands to aid proccessing commands from agents
-    ArrayList<String> commandsSkipped;		//Arraylist of possible skipped commands. 
+    Vector<String> commands;				//Vector of commands it has to proccess from the agents.
+    Vector<String> subCommands;			//Vector of commands to aid proccessing commands from agents
+    Vector<String> commandsSkipped;		//Vector of possible skipped commands. 
     KitAssemblyManager kitAssemblyManager;		//A reference to kit assembly manager
 
     Thread thread;				//A separate thread for the kit robot to run in. 
 
     public KitRobot(KitAssemblyManager kam){
         kitAssemblyManager = kam;
-        commands = new ArrayList<String>();
-        subCommands = new ArrayList<String>();
-        commandsSkipped = new ArrayList<String>();
+        commands = new Vector<String>();
+        subCommands = new Vector<String>();
+        commandsSkipped = new Vector<String>();
         x = 100;
         y = 300;
         newX = x;
@@ -107,6 +107,9 @@ public class KitRobot implements Runnable, Serializable{
             	kit = new Kit();
             	kit = kitAssemblyManager.getStationKit(i);
                 kit.setGrabbed(true);
+                if(i == 5){
+                	kit.setDone(true);
+                }
                 kitAssemblyManager.setSingleStationOccupied(i, false);
             }
             catch (Exception ignore) {
@@ -278,27 +281,27 @@ public class KitRobot implements Runnable, Serializable{
         this.kit = kit;
     }
 
-    public ArrayList<String> getCommands() {
+    public Vector<String> getCommands() {
         return commands;
     }
 
-    public void setCommands(ArrayList<String> commands) {
+    public void setCommands(Vector<String> commands) {
         this.commands = commands;
     }
 
-    public ArrayList<String> getSubCommands() {
+    public Vector<String> getSubCommands() {
         return subCommands;
     }
 
-    public void setSubCommands(ArrayList<String> subCommands) {
+    public void setSubCommands(Vector<String> subCommands) {
         this.subCommands = subCommands;
     }
 
-    public ArrayList<String> getCommandsSkipped() {
+    public Vector<String> getCommandsSkipped() {
         return commandsSkipped;
     }
 
-    public void setCommandsSkipped(ArrayList<String> commandsSkipped) {
+    public void setCommandsSkipped(Vector<String> commandsSkipped) {
         this.commandsSkipped = commandsSkipped;
     }
 

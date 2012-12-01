@@ -118,10 +118,6 @@ public class GantryManager implements Serializable,ActionListener
 			{
 				gantry.setxFinal(-99);
 			}
-			if(gantry.getBox()>parts.size())
-			{
-				gantry.setState("free");
-			}	
 		}
 		else if(gantry.getState().equals("loading")) //if gantry is currently loading a parts box
 		{
@@ -249,10 +245,8 @@ public class GantryManager implements Serializable,ActionListener
 				//purged.get(purged.size()-1).setFeeder(gantry.getFeed());
 				parts.remove(gantry.getBox());
 				gantry.setState("free");
-			}
-			
-		}
-	
+			}			
+		}	
 	}
 	
 	public void actionPerformed(ActionEvent ae)

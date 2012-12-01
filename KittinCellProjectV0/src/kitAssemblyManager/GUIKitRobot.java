@@ -53,7 +53,7 @@ public class GUIKitRobot {
         kit = new Kit();
         gKit = new GUIKit(kit);
         try {
-            crateImage = ImageIO.read(new File("images/crate.png"));
+            crateImage = ImageIO.read(new File("images/kit.png"));
             metal = ImageIO.read(new File("images/metal.png"));
             grip = ImageIO.read(new File("images/grip.png"));
             base = ImageIO.read(new File("images/base.png"));

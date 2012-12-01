@@ -187,6 +187,12 @@ public class JobListPanel extends JPanel implements ActionListener{
 		
 		int size = nameLabels.size();
 		
+		if(app.getJobs().size() != 0){
+			for(int i = 0; i < amtLabels.size(); i++){
+				amtLabels.get(i).setText(app.getJobs().get(i).getAmount().toString());
+			}
+		}
+		
 		//make new number labels
 		numLabels.clear();
 		numPanelBase.removeAll();

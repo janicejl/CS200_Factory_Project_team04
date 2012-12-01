@@ -51,7 +51,9 @@ public class ProductionClient implements Runnable{
 			out.reset();
 			//update server with jobs
 			commandSent = "Update";
-			updateThread();
+			while(true){
+				updateThread();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -97,6 +99,19 @@ public class ProductionClient implements Runnable{
 				app.setJobs((ArrayList<Job>)in.readObject());
 				out.writeObject("Received");
 				out.reset();
+				app.getPanel().getListPanel().getJobs().update();
+			}
+			else if(command.equals("Job Finished")){
+				//decrement jobs
+				app.getJobs().remove(0);
+				app.getPanel().getListPanel().getJobs().removeJob(0);
+				if(app.getJobs().size() == 0){
+					app.getPanel().getListPanel().getStart().setText("Start Production"); //set text to update production
+					app.getPanel().getListPanel().getStart().setEnabled(true);
+				}
+				out.writeObject("Received");
+				out.reset();
+				app.getPanel().getListPanel().getJobs().update();
 			}
 		} catch (Exception ignore){
 			ignore.printStackTrace();

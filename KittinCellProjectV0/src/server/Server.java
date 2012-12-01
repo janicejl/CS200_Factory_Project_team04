@@ -723,6 +723,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     
 	public void actionPerformed(ActionEvent e){
 		
+		
+		
 		int c =0;
 		while(c<nestList.size())
 		{

@@ -39,7 +39,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	ServerPartTestPanel partsTest; //panel for parts robot commands
 	ServerLaneTestPanel laneTest; //panel for lane commands
 	ServerGantryTestPanel gantryTest; //panel for gantry commands
-	GUIServer serverGUI;
+	ServerTestPanel serverTest;
 	Integer phase; //phase to determine which panel to display (old)
 	
 	
@@ -115,7 +115,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	//Constructor
 	public Server(){
-		serverGUI = new GUIServer();
+		serverTest = new ServerTestPanel(this);
 
 		/*OutputStream outConsole = new OutputStream() { // DO NOT REMOVE THIS BLOCK!!!
 			@Override
@@ -422,7 +422,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 //		add(laneTest, c);
 //		c.gridx = 3;
 //		add(gantryTest,c);
-		add(serverGUI,c);
+		add(serverTest,c);
 		phase = 1;
 		try{
 			ss = new ServerSocket(61337); //attempt to start at indicated port #
@@ -898,7 +898,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 //			partsTest.repaint();
 //			laneTest.repaint();
 //			gantryTest.repaint();
-			serverGUI.repaint();
+			serverTest.repaint();
 		}
 		else if(phase.equals(2)){
 			partsTest.repaint();

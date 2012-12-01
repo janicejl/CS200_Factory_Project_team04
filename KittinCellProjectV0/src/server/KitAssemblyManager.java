@@ -63,7 +63,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
             }
             idCounter++;
         }
-        stationOccupied.add(false);
+        partsDropped.add(false);
 
         emptyKits = new ArrayList<Kit>();
         finishedKits = new ArrayList<Kit>();

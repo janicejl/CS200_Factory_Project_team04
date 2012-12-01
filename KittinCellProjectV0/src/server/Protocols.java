@@ -139,6 +139,10 @@ public class Protocols implements Runnable{
 			out.writeObject(app.getNests());
 			out.reset();
 			out.flush();
+			Vector<Boolean> temp = (Vector<Boolean>)in.readObject();
+			for(int i=0;i<app.getLanes().size();i++){
+				app.getLanes().get(i).setJamOn(temp.get(i));
+			}
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();

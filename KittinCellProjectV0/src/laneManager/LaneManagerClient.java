@@ -127,6 +127,10 @@ public class LaneManagerClient implements Runnable {
 			app.setLanes((Vector<Lane>)in.readObject());
 			app.setFeeders((Vector<Feeder>)in.readObject());
 			app.setNests((Vector<Nest>)in.readObject());
+			//send jammed state of lanes
+			out.writeObject(app.getOnJammeds());
+			out.reset();
+			out.flush();
 		} catch (Exception ignore){
 			ignore.printStackTrace();
 			System.exit(1);

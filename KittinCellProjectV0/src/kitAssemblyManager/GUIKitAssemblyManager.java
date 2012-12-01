@@ -89,7 +89,7 @@ public class GUIKitAssemblyManager extends JPanel{
 
         try {
             background = ImageIO.read(new File("images/background1.png"));
-            kitImage = ImageIO.read(new File("images/crate.png"));
+            kitImage = ImageIO.read(new File("images/kit.png"));
             stand = ImageIO.read(new File("images/stand.png"));
             conveyorImage = ImageIO.read(new File("images/conveyor.png"));
         } catch (IOException e) {}

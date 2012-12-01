@@ -20,7 +20,7 @@ public class GUIKit {
 		gParts = new Vector<GUIPart>();
 		
 		try {
-			image = ImageIO.read(new File("images/crate.png"));			
+			image = ImageIO.read(new File("images/kit.png"));			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

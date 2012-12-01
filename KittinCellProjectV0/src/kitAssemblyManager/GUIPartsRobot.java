@@ -150,7 +150,7 @@ public class GUIPartsRobot{
 
         g2.drawImage(partsRobotRailImage,260,0,null);
         at = new AffineTransform();
-        at.translate(x-8,y-10);
+        at.translate(x-10,y-10);
         g2.drawImage(topImage,at,null);
 
         

@@ -848,6 +848,18 @@ public class Server extends JFrame implements Runnable, ActionListener{
 				laneagents.get(i).msgPartAtEndOfLane();
 			}
 			
+			//if lane is jammed
+			if(lanes.get(i).getJamMessage() == true){
+				lanes.get(i).setJamMessage(false);
+				laneagents.get(i).msgLaneJammed();
+			}
+			//if lane unjammed
+			if(lanes.get(i).isUnjamMessage() == true){
+				lanes.get(i).setUnjamMessage(false);
+				laneagents.get(i).msgLaneUnJammed();
+			}
+			
+			
 			//deal with queued commands
 			if(laneQueue.get(i) > 0){
 				if(feederPartCount.get(i/2) > 0){

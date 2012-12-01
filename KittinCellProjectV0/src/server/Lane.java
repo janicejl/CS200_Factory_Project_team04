@@ -36,7 +36,8 @@ public class Lane implements ActionListener, Serializable{
     private boolean jamOn = false;
     private boolean isJammed;
     private Random random;
-    private boolean jamMessage;
+    private boolean jamMessage = false;
+    private boolean unjamMessage = false;
     
     public class Gate implements Serializable{
     	public double topNodeX, topNodeY, bottomNodeX, bottomNodeY;
@@ -214,7 +215,12 @@ public class Lane implements ActionListener, Serializable{
 		    	if(itemList.get(i).getX() > queueBorder + i*20) { //Moves parts down the line
 		    		itemList.get(i).setY(itemList.get(i).getY());
 		    	}
-	    	}	        	
+	    	}
+	    	if(isJammed == true){
+	    		if(Math.random()*100 + vibrationAmplitude > 99){
+	    			setJamOn(false);
+	    		}
+	    	}
 	    }
 	    //update feeder
 	    feeder.updateDiverter();
@@ -349,6 +355,10 @@ public class Lane implements ActionListener, Serializable{
     	return jamMessage;
     }
 
+	public void setJamMessage(boolean jamMessage) {
+		this.jamMessage = jamMessage;
+	}
+
 	public boolean isJamOn() {
 		return jamOn;
 	}
@@ -357,7 +367,17 @@ public class Lane implements ActionListener, Serializable{
 		this.jamOn = jamOn;
 		if(jamOn == false){
 			isJammed = false;
+			jamMessage = false;
+			unjamMessage = true;
 		}		
+	}
+
+	public boolean isUnjamMessage() {
+		return unjamMessage;
+	}
+
+	public void setUnjamMessage(boolean unjamMessage) {
+		this.unjamMessage = unjamMessage;
 	}
     
 }  

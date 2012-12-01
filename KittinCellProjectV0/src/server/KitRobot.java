@@ -107,6 +107,9 @@ public class KitRobot implements Runnable, Serializable{
             	kit = new Kit();
             	kit = kitAssemblyManager.getStationKit(i);
                 kit.setGrabbed(true);
+                if(i == 5){
+                	kit.setDone(true);
+                }
                 kitAssemblyManager.setSingleStationOccupied(i, false);
             }
             catch (Exception ignore) {

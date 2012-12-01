@@ -19,6 +19,7 @@ public class Protocols implements Runnable{
 	String commandSent; //command sent from protocol
 	String protocolName; //protocol type
 	Thread thread;
+	boolean flag = false;
 	
 	public Protocols(Socket _s, Server _app){
 		app = _app;
@@ -111,8 +112,9 @@ public class Protocols implements Runnable{
 			out.writeObject(app.getKitAssemblyManager());
 			out.reset();
 			out.flush();
-			app.getPartsRobot().setDropParts((boolean)in.readObject());
-			app.getKitAssemblyManager().setPartsDropped((Vector<Boolean>)in.readObject());
+			if((boolean)in.readObject()){
+				app.getKitAssemblyManager().setPartsDropped((Vector<Boolean>)in.readObject());
+			}
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();

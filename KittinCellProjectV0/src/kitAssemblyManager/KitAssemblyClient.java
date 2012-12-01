@@ -71,9 +71,14 @@ public class KitAssemblyClient implements Runnable {
 			out.writeObject(app.getDropParts()); //send parts drop non-norm to server
 			out.reset();
 			out.flush();
-			out.writeObject(app.getKitDrops()); // NEED THIS FUNCTION IN KITASSEMBLY APP!!!!
+			out.writeObject(app.kitDropUpdate); // NEED THIS VAR IN KITASSEMBLY APP!!!!
 			out.reset();
 			out.flush();
+			if(kitDropUpdate){			
+				out.writeObject(app.getKitDrops()); // NEED THIS FUNCTION IN KITASSEMBLY APP!!!!
+				out.reset();
+				out.flush();
+			}
 		} catch (Exception ignore){
 			ignore.printStackTrace();
 			System.exit(1);

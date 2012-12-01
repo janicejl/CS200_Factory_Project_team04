@@ -163,16 +163,13 @@ public class GUIKitAssemblyManager extends JPanel{
 	        }
         }
         g2.drawImage(stand,150,130,70,340,null); // kit stand
-        g2.setColor(Color.BLACK);
-        
-        
 
         for(int i = -1; i < 5; i++){ // main conveyor images
             g2.drawImage(conveyorImage,75, i * 20 + (int)emptyConveyorMove,null); // empty conveyor
-            g2.drawLine(83,20*i+(int)emptyConveyorMove,126,20*i+(int)emptyConveyorMove);
+//            g2.drawLine(83,20*i+(int)emptyConveyorMove,126,20*i+(int)emptyConveyorMove);
 
             g2.drawImage(conveyorImage,5,(i+1)*20 - (int)finishedConveyorMove,null); // finished conveyor
-            g2.drawLine(13,(i+1)*20-(int)finishedConveyorMove,56,(i+1)*20-(int)finishedConveyorMove);
+//            g2.drawLine(13,(i+1)*20-(int)finishedConveyorMove,56,(i+1)*20-(int)finishedConveyorMove);
 
 //            g2.drawImage(conveyorImage,75, 500 + i * 20 + (int)incompleteConveyorMove,null); // incomplete conveyor
 //            g2.drawLine(75,500 + 20*i+(int)incompleteConveyorMove,134, 500 + 20*i +(int)incompleteConveyorMove);
@@ -182,10 +179,12 @@ public class GUIKitAssemblyManager extends JPanel{
         }
 
         g2.drawImage(conveyorImage,75,100+(int)emptyConveyorMove,135,120,0,0,60,22,null); // empty conveyor end
-        g2.drawLine(83,100+(int)emptyConveyorMove,126,100+(int)emptyConveyorMove);
+//        g2.drawLine(83,100+(int)emptyConveyorMove,126,100+(int)emptyConveyorMove);
 
         g2.drawImage(conveyorImage,5,120-(int)finishedConveyorMove,65,120,0,0,60,22,null); // finished conveyor end
-        g2.drawLine(13,120-(int)finishedConveyorMove,56,120-(int)finishedConveyorMove);
+//        if(finishedConveyorMove > 0){
+//        	g2.drawLine(13,120-(int)finishedConveyorMove,56,120-(int)finishedConveyorMove);
+//        }
 
 //        g2.drawImage(conveyorImage,75,480,135,480+(int)incompleteConveyorMove,0,0,60,22,null); // incomplete conveyor end
 //        g2.drawLine(75,480+(int)incompleteConveyorMove,134,480+(int)incompleteConveyorMove);

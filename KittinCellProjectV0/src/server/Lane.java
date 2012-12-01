@@ -355,5 +355,13 @@ public class Lane implements ActionListener, Serializable{
     public boolean getJamMessage() {
     	return jamMessage;
     }
+
+	public boolean isJamOn() {
+		return jamOn;
+	}
+
+	public void setJamOn(boolean jamOn) {
+		this.jamOn = jamOn;
+	}
     
 }  

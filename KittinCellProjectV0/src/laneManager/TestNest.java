@@ -15,6 +15,10 @@ public class TestNest extends JFrame implements ActionListener {
 	Nest nest;
 	GUINest gNest;
 	
+	JFrame button;
+	JPanel panel;
+	JButton click;
+	
 	public TestNest() {
 		nest = new Nest(100, 100);
 		gNest = new GUINest(nest);
@@ -27,6 +31,17 @@ public class TestNest extends JFrame implements ActionListener {
 		setSize(500, 500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		
+		button = new JFrame();
+		button.setSize(300, 300);
+		button.setVisible(true);
+		button.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		panel = new JPanel();
+		panel.setSize(300, 300);
+		click = new JButton("Purge");
+		click.addActionListener(this);
+		panel.add(click);
+		button.add(panel);
 		
 	}
 	
@@ -41,10 +56,14 @@ public class TestNest extends JFrame implements ActionListener {
 	
 	public static void main(String[] args) {
 		TestNest t = new TestNest();
-		new Timer(25, t).start();
+		new Timer(25, t).start();		
 	}
+	
 
 	public void actionPerformed(ActionEvent ae) {
 		repaint();
+		if (ae.getSource() == click) {
+			this.nest.purgeNest();
+		}
 	}
 }

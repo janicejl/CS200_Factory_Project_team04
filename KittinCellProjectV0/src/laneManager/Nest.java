@@ -1,6 +1,7 @@
 package laneManager;
 
 import data.Part;
+import data.PartInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class Nest implements Serializable{
 	private double y;				//The y position for the nest
 	boolean purged = false;
 	int purgedCount =0;
+	boolean flip = true;
 	
 	ArrayList<Part> parts;			//a list of parts that is currently in the nest. 
 	
@@ -64,6 +66,13 @@ public class Nest implements Serializable{
 	
 	public void purgeNest() {	//empties the array since the parts are just dumped onto the ground. 
 		this.clear();
+		
+		int i=0;
+		while(i<9)
+		{
+			this.addPart(new Part(new PartInfo("purging","images/flame1.png")));
+			i++;
+		}
 		purged = true;
 	}
 
@@ -93,6 +102,36 @@ public class Nest implements Serializable{
 	public void setPurgedCount(int pc)
 	{
 		purgedCount = pc;
+	}
+	
+	public void flip()
+	{
+		this.clear();
+		if(flip == true)
+		{
+			int i=0;
+			while(i<9)
+			{
+				this.addPart(new Part(new PartInfo("flames","images/flame2.png")));
+				i++;
+			}
+			flip = false;
+		}
+		else if(flip==false)
+		{
+			int i=0;
+			while(i<9)
+			{
+				this.addPart(new Part(new PartInfo("flames","images/flame1.png")));
+				i++;
+			}
+			flip= true;
+		}
+	}
+	
+	public boolean getFlip()
+	{
+		return flip;
 	}
 	
 	public void clear()

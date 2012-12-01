@@ -156,13 +156,19 @@ public class GantryManager implements Serializable,ActionListener
 				if(parts.get(c).getFeeder()==gantry.getFeed())
 				{
 					gantry.setBox(c);
+					break;
 				}
 				c++;
 			}
-			if(parts.get(gantry.getBox()).getFeeder()!=gantry.getFeed())
+			if(c==parts.size())
 			{
 				gantry.setState("free");
 			}
+			else if(parts.get(gantry.getBox()).getFeeder()!=gantry.getFeed())
+			{
+				gantry.setState("free");
+			}
+			
 		}
 		
 		if(gantry.done()) //If the gantry has reached its destination (State transitions are almost all in this block)
@@ -209,13 +215,14 @@ public class GantryManager implements Serializable,ActionListener
 					{
 						gantry.setState("dumpf");
 						gantry.setxFinal(285);
-						gantry.setyFinal(172);
+						gantry.setyFinal(207);
 						purged.add(parts.get(gantry.getBox()));
 						parts.remove(gantry.getBox());
 						gantry.setBox(purged.size()-1);
 						purged.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
 						purged.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
 						purged.get(gantry.getBox()).setState("dumpf");
+						purged.get(gantry.getBox()).setEmpty(true);
 						state="dumpf";
 						break;
 					}
@@ -227,25 +234,21 @@ public class GantryManager implements Serializable,ActionListener
 					gantry.setxFinal(gantry.getxFinal()+60);
 					parts.get(gantry.getBox()).setxFinal(gantry.getxFinal()-10);
 					parts.get(gantry.getBox()).setyFinal(gantry.getyFinal()-15);
-					state="purgi";
+					state="purgef";
 					parts.get(gantry.getBox()).setState("purgef");
 				}
 				feeders.set(gantry.getFeed(),null);
 				feeder.set(gantry.getFeed(), 0);
 				feed.get(gantry.getFeed()).setHasCrate(false);
-				if(!state.equals("dumpf"))
-				{
-					gantry.setFeed(-1);
-				}
+				gantry.setFeed(-1);
 			}
 			else if(state.equals("purgef"))
 			{
 				purged.add(parts.get(gantry.getBox()));
-				purged.get(purged.size()-1).getPartInfo().setImagePath(null);
-				purged.get(purged.size()-1).setFeeder(gantry.getFeed());
+				purged.get(purged.size()-1).setEmpty(true);
+				//purged.get(purged.size()-1).setFeeder(gantry.getFeed());
 				parts.remove(gantry.getBox());
 				gantry.setState("free");
-				gantry.setFeed(-1);
 			}
 			
 		}

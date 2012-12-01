@@ -89,14 +89,14 @@ public class Camera implements Serializable{
 	public void update() {
         if(takePicture){
             if(flashUp){					//increment the opacity 
-                opacity += 0.1;
+                opacity += 0.02;
                 if(opacity >= 1){			//if reach full opacity, start flashDown. 
                 	flashUp = false;
                 	flashDown = true;
                 }
             }
             else if(flashDown){				//decrement the opacitys
-            	opacity -= 0.1;
+            	opacity -= 0.02;
             	if(opacity <= 0){			// if opacity becomes zero, finish flash animation
             		opacity = 0;
             		flashDown = false;

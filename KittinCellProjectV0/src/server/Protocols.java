@@ -283,6 +283,7 @@ public class Protocols implements Runnable{
 			else if(command.equals("Start")){
 				app.setJobsList((ArrayList<Job>)in.readObject());
 				app.running = true;
+				app.execute("Get Job");
 			}
 			commandSent = app.getProductionCommand();
 			out.writeObject(commandSent);

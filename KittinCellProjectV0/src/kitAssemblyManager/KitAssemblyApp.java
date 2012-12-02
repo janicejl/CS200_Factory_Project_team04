@@ -1,6 +1,7 @@
 package kitAssemblyManager;
 
 import java.util.*;
+import java.util.concurrent.*;
 import java.awt.*;
 
 import javax.imageio.ImageIO;
@@ -38,11 +39,11 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
     KitRobot kitRobot;
     PartsRobot partsRobot;
     boolean dropParts = false;
-    Vector<Boolean> kitDrops;
+    CopyOnWriteArrayList<Boolean> kitDrops;
     boolean kitDropUpdate = false;
 
     public KitAssemblyApp(){
-		kitDrops = new Vector<Boolean>();
+		kitDrops = new CopyOnWriteArrayList<Boolean>();
 		for(int j = 0; j < 9; j++){
 			kitDrops.add(false);
 		}
@@ -93,11 +94,11 @@ public class KitAssemblyApp extends JFrame implements ActionListener{
        
     }
 
-    public Vector<Boolean> getKitDrops() {
+    public CopyOnWriteArrayList<Boolean> getKitDrops() {
 		return kitDrops;
 	}
 
-	public void setKitDrops(Vector<Boolean> kitDrops) {
+	public void setKitDrops(CopyOnWriteArrayList<Boolean> kitDrops) {
 		this.kitDrops = kitDrops;
 	}
 

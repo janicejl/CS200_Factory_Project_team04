@@ -1,6 +1,7 @@
 package Agents.FCSAgent;
 
 import java.util.*;
+import java.util.concurrent.*;
 
 import server.Server;
 import data.KitInfo;
@@ -32,7 +33,7 @@ public class FCSAgent extends Agent implements FCS {
 	public Vector<Bin> binsList = new Vector<Bin>();
 	public int numKitsNeeded;
 	
-	Vector<Nest> nestsList = new Vector<Nest>();
+	CopyOnWriteArrayList<Nest> nestsList = new CopyOnWriteArrayList<Nest>();
 	
 	Server server; 
 

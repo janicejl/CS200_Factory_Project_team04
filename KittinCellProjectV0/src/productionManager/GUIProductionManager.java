@@ -8,7 +8,8 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.*;
+import java.util.concurrent.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -38,7 +39,7 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 	
 	private Vector<Lane> lanes = new Vector<Lane> ();			//Collection of the lanes	
 	private Vector<Feeder> feeders = new Vector<Feeder>();		//Collection of the Feeders
-	private Vector<Nest> nests = new Vector<Nest>();			//Coolection of the nests
+	private CopyOnWriteArrayList<Nest> nests = new CopyOnWriteArrayList<Nest>();			//Coolection of the nests
     KitAssemblyManager kam = new KitAssemblyManager(nests);		//Reference to the kit assembly manager
     KitRobot kitRobot;				//Reference to the kit robot
     PartsRobot partsRobot;			//reference to the parts robot
@@ -173,7 +174,7 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		this.feeders = feeders;
 	}
 	
-	public synchronized void setNests(Vector<Nest> nests) {
+	public synchronized void setNests(CopyOnWriteArrayList<Nest> nests) {
 		this.nests = nests;
 	}
 	

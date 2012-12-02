@@ -63,7 +63,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	//200 Hardware
 	Vector<Feeder> feeders; //Feeders
 	Vector<Lane> lanes; //Lanes
-	Vector<Nest> nestList; //Nests
+	CopyOnWriteArrayList<Nest> nestList; //Nests
 	Vector<Boolean> overFlow; //nests that are overflowed
 	TreeMap<Integer, PartInfo> feederPartInfo; //Map the partinfo that the feeder should make
 	TreeMap<Integer, Integer> feederPartNum; //Map the amount of parts to make
@@ -185,7 +185,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		
 		
 		//Nests
-		nestList = new Vector<Nest>();
+		nestList = new CopyOnWriteArrayList<Nest>();
     	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 100));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 170));	//x coordinate is zero for laneManagerApp
@@ -746,6 +746,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 				{
 					nestList.get(c).clear();
 					nestList.get(c).setPurged(false);
+					nestList.get(c).setPurgedCount(0);
 				}
 	
 			}
@@ -951,7 +952,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	}
 
 	//Getters and setters
-	public KitAssemblyManager getKitAssemblyManager() {
+	public synchronized KitAssemblyManager getKitAssemblyManager() {
 		return kitAssemblyManager;
 	}
 
@@ -959,7 +960,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.kitAssemblyManager = kitAssemblyManager;
 	}
 
-	public KitRobot getKitRobot() {
+	public synchronized KitRobot getKitRobot() {
 		return kitRobot;
 	}
 
@@ -999,15 +1000,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.kitConveyorAgent = kitConveyorAgent;
 	}
 
-//	public PartsRobotProtocol getPartsPro() {
-//		return partsPro;
-//	}
-//
-//	public void setPartsPro(PartsRobotProtocol partsPro) {
-//		this.partsPro = partsPro;
-//	}
-
-	public PartsRobot getPartsRobot() {
+	public synchronized PartsRobot getPartsRobot() {
 		return partsRobot;
 	}
 
@@ -1047,11 +1040,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.feeders = feeders;
 	}
 	
-	public synchronized Vector<Nest> getNests() {
+	public synchronized CopyOnWriteArrayList<Nest> getNests() {
 		return nestList;
 	}
 	
-	public void setNests(Vector<Nest> nests) {
+	public void setNests(CopyOnWriteArrayList<Nest> nests) {
 		this.nestList = nests;
 	}
 	

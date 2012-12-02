@@ -36,16 +36,16 @@ public class GUIKitAssemblyManager extends JPanel{
     BufferedImage stand = null;
     BufferedImage conveyorImage = null;
 
-    ArrayList<Boolean> stationOccupied;
+    CopyOnWriteArrayList<Boolean> stationOccupied;
     ArrayList<GUIKit> emptyKits;
     ArrayList<GUIKit> finishedKits;
     ArrayList<GUIKit> stationKits;
-    ArrayList<Kit> baseEmptyKits;
-    ArrayList<Kit> baseFinishedKits;
-    ArrayList<Kit> baseStationKits;
+    CopyOnWriteArrayList<Kit> baseEmptyKits;
+    CopyOnWriteArrayList<Kit> baseFinishedKits;
+    CopyOnWriteArrayList<Kit> baseStationKits;
 
     ArrayList<GUINest> gNests;
-    Vector<Nest> nests;
+    CopyOnWriteArrayList<Nest> nests;
     
     int[] stationPositions = {160, 140, 160, 360, 80, 490, 10, 490, 160, 250}; // stations 1 - 2 - 3 - 4 - 5 (image corner coords)
     boolean emptyConveyorOn;
@@ -70,7 +70,7 @@ public class GUIKitAssemblyManager extends JPanel{
 //    	partsClient = new PartsManagerClient(this);
     	
     	gNests = new ArrayList<GUINest>();
-    	nests = new Vector<Nest>();
+    	nests = new CopyOnWriteArrayList<Nest>();
     	
     	kam = new KitAssemblyManager(nests);
     	kitRobot = new KitRobot(kam);
@@ -79,13 +79,13 @@ public class GUIKitAssemblyManager extends JPanel{
         setPreferredSize(new Dimension (450,600));
         gKitRobot = new GUIKitRobot(this);
         gPartsRobot = new GUIPartsRobot(this);
-        stationOccupied = new ArrayList<Boolean>();
+        stationOccupied = new CopyOnWriteArrayList<Boolean>();
         emptyKits = new ArrayList<GUIKit>();
         finishedKits = new ArrayList<GUIKit>();
         stationKits = new ArrayList<GUIKit>();
-        baseEmptyKits = new ArrayList<Kit>();
-        baseFinishedKits = new ArrayList<Kit>();
-        baseStationKits = new ArrayList<Kit>();
+        baseEmptyKits = new CopyOnWriteArrayList<Kit>();
+        baseFinishedKits = new CopyOnWriteArrayList<Kit>();
+        baseStationKits = new CopyOnWriteArrayList<Kit>();
 
         try {
             background = ImageIO.read(new File("images/background1.png"));
@@ -207,19 +207,19 @@ public class GUIKitAssemblyManager extends JPanel{
         gKitRobot.paintKitRobot(g2);
     }
 
-	public ArrayList<Kit> getBaseEmptyKits() {
+	public CopyOnWriteArrayList<Kit> getBaseEmptyKits() {
 		return baseEmptyKits;
 	}
 
-	public void setBaseEmptyKits(ArrayList<Kit> baseEmptyKits) {
+	public void setBaseEmptyKits(CopyOnWriteArrayList<Kit> baseEmptyKits) {
 		this.baseEmptyKits = baseEmptyKits;
 	}
 
-	public ArrayList<Kit> getBaseFinishedKits() {
+	public CopyOnWriteArrayList<Kit> getBaseFinishedKits() {
 		return baseFinishedKits;
 	}
 
-	public void setBaseFinishedKits(ArrayList<Kit> baseFinishedKits) {
+	public void setBaseFinishedKits(CopyOnWriteArrayList<Kit> baseFinishedKits) {
 		this.baseFinishedKits = baseFinishedKits;
 	}
 	

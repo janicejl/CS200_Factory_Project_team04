@@ -11,8 +11,8 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import javax.swing.*;
 
-public class Snowy extends JPanel{
-	private Timer timer = new Timer(100, new TimerListener());
+public class Snowy extends JPanel implements ActionListener{
+	private Timer timer = new Timer(100, this);
 	private double x;
 	private double y = 0;
 	int time=0;
@@ -27,45 +27,43 @@ public class Snowy extends JPanel{
 		this.setOpaque(false);
 		timer.start();
 	}
-
-	private class TimerListener implements ActionListener{
 		
-		public void actionPerformed(ActionEvent e){
-			for(int i=0;i<snowflakes.size();i++){
-				if(snowflakes.get(i).isLeft()){
-					x=Math.random()*10;
-					if(x<2){
-						snowflakes.get(i).setX(snowflakes.get(i).getX()+1);
-						snowflakes.get(i).setLeft(false);
-					}
-					else{
-						snowflakes.get(i).setX(snowflakes.get(i).getX()-1);
-						snowflakes.get(i).setY(snowflakes.get(i).getY()+1);
-						snowflakes.get(i).setLeft(true);
-					}
+	public void actionPerformed(ActionEvent e){
+		for(int i=0;i<snowflakes.size();i++){
+			if(snowflakes.get(i).isLeft()){
+				x=Math.random()*10;
+				if(x<2){
+					snowflakes.get(i).setX(snowflakes.get(i).getX()+1);
+					snowflakes.get(i).setLeft(false);
 				}
 				else{
-					x=Math.random()*10;
-					if(x<8){
-						snowflakes.get(i).setX(snowflakes.get(i).getX()+1);
-						snowflakes.get(i).setLeft(false);
-					}
-					else{
-						snowflakes.get(i).setX(snowflakes.get(i).getX()-1);
-						snowflakes.get(i).setY(snowflakes.get(i).getY()+2);
-						snowflakes.get(i).setLeft(true);
-					}
+					snowflakes.get(i).setX(snowflakes.get(i).getX()-1);
+					snowflakes.get(i).setY(snowflakes.get(i).getY()+1);
+					snowflakes.get(i).setLeft(true);
 				}
 			}
-	        repaint();
-			revalidate();
-	        time++;
-	        if(time==100)
-	        	time=0;
+			else{
+				x=Math.random()*10;
+				if(x<8){
+					snowflakes.get(i).setX(snowflakes.get(i).getX()+1);
+					snowflakes.get(i).setLeft(false);
+				}
+				else{
+					snowflakes.get(i).setX(snowflakes.get(i).getX()-1);
+					snowflakes.get(i).setY(snowflakes.get(i).getY()+2);
+					snowflakes.get(i).setLeft(true);
+				}
+			}
+		}
+	    repaint();
+		revalidate();
+	    time++;
+	    if(time==100)
+	    	time=0;
 	        
-	    }
-		
 	}
+		
+
 
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g); 

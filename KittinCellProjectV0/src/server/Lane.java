@@ -15,33 +15,35 @@ public class Lane implements ActionListener, Serializable{
 	private Vector<Part> itemList;  //items moving down 
     private Vector<Part> queueList; 
     private Rectangle2D.Double backgroundRectangle;
-    private int conveyerBeltSpeed;
-    private int maxX;
-    private int maxY;
-    private int verticalSpacing;
+    private int conveyerBeltSpeed;			//Speed of the conveyor. 
+    private int maxX;				//Lane horizontal size
+    private int maxY;				//Lane vertical size
+    private int verticalSpacing;	//vertical spacing between the lanes. 
     private int queueBorder = 120;
-    private boolean queueFull; 
-    private boolean openGate;
-    private boolean isVibrating;
-    private Feeder feeder;
+    private boolean queueFull; 		//Boolean state for whether the lane is full
+    private boolean openGate;		//Boolean state for whether the gate should open to let a part into the nest
+    private boolean isVibrating;	//Boolean state for whether the lanes should vibrarte. 
+    private Feeder feeder;			//Feeder attached to the lane
     private boolean release = false;
     private int releaseCount = 0;
-    private Nest nest;
-    private boolean atQueue = false;
-    private int gateCounter;
-    private int vibrationAmplitude; 
-    private int jamProbability;
-    private int jamIndex;
-    private int jammedBorder;
-    private boolean jamOn = false;
-    private boolean isJammed;
+    private Nest nest;				//reference to the nest attached to the lane
+    private boolean atQueue = false;		//Boolean for queuing 
+    private int gateCounter;				//gate number
+    private int vibrationAmplitude; 		//For vibration speed
+    private int jamProbability;				//Probability of a lane being jammed for non-normative. 
+    private int jamIndex;					//Index of the part that gets stuck
+    private int jammedBorder;				//the coordinate position of where the lane jams
+    private boolean jamOn = false;			//Boolean state for whether or not the lane can jam for non-normative. 
+    private boolean isJammed;				//Boolean state for whether or not the lane is jammed. 
     private Random random;
-    private boolean jamMessage = false;
-    private boolean unjamMessage = false;
-    private boolean purging = false;
+    private boolean jamMessage = false;			//Boolean state for whether or not to send the jammed message
+    private boolean unjamMessage = false;		//Boolean state for whether or not to send the unjammed message
+    private boolean purging = false;			//Boolean state for purging. 
     
+    //Class for the gates.
     public class Gate implements Serializable{
-    	public double topNodeX, topNodeY, bottomNodeX, bottomNodeY;
+    	public double topNodeX, topNodeY, bottomNodeX, bottomNodeY;		//Coordinates of half the gate position. 
+    	//Setting the position of the gate
     	public void setNodes(double bottomNodeX, double bottomNodeY, double topNodeX, double topNodeY) {
     		this.topNodeX = topNodeX;
     		this.topNodeY = topNodeY;
@@ -64,15 +66,17 @@ public class Lane implements ActionListener, Serializable{
 		public double getBottomNodeY() {
 			return bottomNodeY;
 		}
-		
+		//gate position for the first lane
 		public void setDefaultPosition() {
 			this.setNodes(105, verticalSpacing + 20, 105, verticalSpacing);
 		}	
-    }
+    }	//Close the gate class
     
-    public Gate gate1;
-    public Gate gate2;
+    //Together makes one gate
+    public Gate gate1;		//top half of the gate
+    public Gate gate2;		//bottom half of the gate
     
+    //Constructor for lane
     private Lane() {
     	this.gateCounter = 0;
     	this.maxX = 600;
@@ -86,7 +90,7 @@ public class Lane implements ActionListener, Serializable{
 		this.queueFull = false;
 		this.openGate = false;
 	 }
-    
+  //Constructor for lane
     public Lane(int width, int verticalSpacing, Nest n) {
     	System.out.println("Loading constructor 1");
     	this.nest = n;
@@ -117,7 +121,7 @@ public class Lane implements ActionListener, Serializable{
 	    isJammed = false;
 	    random = new Random();
     }
-    
+  //Constructor for lane
     public Lane(int width, int verticalSpacing, Nest n, Feeder f) {
     	System.out.println("Loading constructor 2");
     	maxX = width;
@@ -194,7 +198,7 @@ public class Lane implements ActionListener, Serializable{
 	    		}	
 		    }
 	    }
-	     
+	     //Opening and closing the gate appropriately. 
 	    if(openGate == true && gateCounter < 37) {
 	    	if(gateCounter < 18) { //opengate
 	    		gate1.setNodes(105, verticalSpacing + 20 - gateCounter);

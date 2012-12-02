@@ -208,7 +208,7 @@ public class VisionAgent extends Agent implements Vision {
 				currentKitPartsList.remove(p);
 			}
 		}
-
+		
 		if (neededPartsList.size()==0 && currentKitPartsList.size()==0) {
 			print("kit approved");
 			currentKitConfig.kit_state = KitConfig.KitState.GOOD;
@@ -232,7 +232,15 @@ public class VisionAgent extends Agent implements Vision {
 			}
 			
 			approved = false;
-		}	
+		}
+		
+		// check for dropped parts
+		for (Part p: currentKitPartsList) {
+			if (p.getPartDropped()==true) {
+				approved = false;
+			}
+		}
+		
 		approveOrDenyParts();
 	}
 	
@@ -352,7 +360,7 @@ public class VisionAgent extends Agent implements Vision {
 			return true;
 		}
 		
-		if (state==State.PICTURE_TAKEN && waiting == false) {
+		if (state==State.PICTURE_TAKEN) {
 			if (type==Type.KIT_INSPECTOR) {
 				inspectKit();
 			}

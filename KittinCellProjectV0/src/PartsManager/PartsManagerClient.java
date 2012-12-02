@@ -62,11 +62,14 @@ public class PartsManagerClient implements Runnable{
 	public synchronized void updateThread() {
 		try {
 			if(commandSent.equals("Update Parts")){
+				// enable the server to recognize parts manager
 				out.writeObject(commandSent);
 				out.reset();
 				commandSent = "Idle";
+				//send the recipe to the server constantly
 				out.writeObject(app.getPartsList());
 				out.reset();
+				//receive feedback from server and check if it goes wrong
 				command = (String) in.readObject();
 				if(command.equals("Received")){
 					

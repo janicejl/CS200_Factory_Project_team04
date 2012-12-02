@@ -14,7 +14,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 	LaneManagerApp app;
 	ArrayList<JPanel> horizPanels;
 	JComboBox laneSelectBox;
-	JButton jamButton;
+	JButton jamButton;  //jam non-normative button
 	JButton overFlowButton;
 	JLabel laneLabel;
 	JSlider vibrationSlider;
@@ -71,6 +71,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		horizPanels.get(horizPanels.size()-1).add(jamButton);
 		horizPanels.get(horizPanels.size()-1).add(Box.createRigidArea(new Dimension(10, 50)));
 		horizPanels.get(horizPanels.size()-1).add(overFlowButton);
+		//set opaque to false in order to show the background
 		horizPanels.get(horizPanels.size()-1).setOpaque(false);
 		
 		horizPanels.add(new JPanel());
@@ -103,6 +104,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		if(ae.getSource()==overFlowButton){
 			app.getOverFlow().set(laneSelectBox.getSelectedIndex(),!app.getOverFlow().get(laneSelectBox.getSelectedIndex()));
 		}
+		//listen to the selection box in order to change the text of the jamButton
 		if(laneSelectBox.getSelectedItem().equals("Lane 1")){
 			if(app.getOnJammeds().get(0).equals(true)){
 				jamButton.setText("Unjam Selected");

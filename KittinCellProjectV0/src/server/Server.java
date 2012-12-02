@@ -34,12 +34,12 @@ import GantryManager.GantryManager;
 
 public class Server extends JFrame implements Runnable, ActionListener{
 	
-	ServerPanel gui; //panel for gui
-	ServerKitTestPanel kitTest; //panel for kit assembly commands
-	ServerPartTestPanel partsTest; //panel for parts robot commands
-	ServerLaneTestPanel laneTest; //panel for lane commands
-	ServerGantryTestPanel gantryTest; //panel for gantry commands
-	ServerTestPanel serverTest;
+//	ServerPanel gui; //panel for gui
+//	ServerKitTestPanel kitTest; //panel for kit assembly commands
+//	ServerPartTestPanel partsTest; //panel for parts robot commands
+//	ServerLaneTestPanel laneTest; //panel for lane commands
+//	ServerGantryTestPanel gantryTest; //panel for gantry commands
+	GUIServer serverTest;
 	Integer phase; //phase to determine which panel to display (old)
 	
 	
@@ -116,7 +116,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	//Constructor
 	public Server(){
-		serverTest = new ServerTestPanel(this);
+		serverTest = new GUIServer(this);
 
 		/*OutputStream outConsole = new OutputStream() { // DO NOT REMOVE THIS BLOCK!!!
 			@Override
@@ -138,26 +138,26 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		
 		//setup layout
 		setLayout(new GridBagLayout());
-		gui = new ServerPanel(this);
+//		gui = new ServerPanel(this);
 		phase = new Integer(0);
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;	
-		c.gridy = 0;
-		add(gui, c);
-		//Testing buttons
-		kitTest = new ServerKitTestPanel(this);
-		kitTest.setPreferredSize(new Dimension(300, 400));
-		kitTest.setMaximumSize(new Dimension(300, 400));
-		kitTest.setMinimumSize(new Dimension(300, 400));
-		partsTest = new ServerPartTestPanel(this);
-		partsTest.setPreferredSize(new Dimension(300, 400));
-		partsTest.setMaximumSize(new Dimension(300, 400));
-		partsTest.setMinimumSize(new Dimension(300, 400));
-		laneTest = new ServerLaneTestPanel(this);
-		laneTest.setPreferredSize(new Dimension(300, 400));
-		laneTest.setMaximumSize(new Dimension(300, 400));
-		laneTest.setMinimumSize(new Dimension(300, 400));
-		gantryTest = new ServerGantryTestPanel(this);
+//		GridBagConstraints c = new GridBagConstraints();
+//		c.gridx = 0;	
+//		c.gridy = 0;
+//		add(gui, c);
+//		//Testing buttons
+//		kitTest = new ServerKitTestPanel(this);
+//		kitTest.setPreferredSize(new Dimension(300, 400));
+//		kitTest.setMaximumSize(new Dimension(300, 400));
+//		kitTest.setMinimumSize(new Dimension(300, 400));
+//		partsTest = new ServerPartTestPanel(this);
+//		partsTest.setPreferredSize(new Dimension(300, 400));
+//		partsTest.setMaximumSize(new Dimension(300, 400));
+//		partsTest.setMinimumSize(new Dimension(300, 400));
+//		laneTest = new ServerLaneTestPanel(this);
+//		laneTest.setPreferredSize(new Dimension(300, 400));
+//		laneTest.setMaximumSize(new Dimension(300, 400));
+//		laneTest.setMinimumSize(new Dimension(300, 400));
+//		gantryTest = new ServerGantryTestPanel(this);
 		running = false; //set running state to false
 		
 		//200 Hardware Setup
@@ -917,42 +917,42 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	//Old GUI removal function
 	public void removeCenter(){
-		if(phase.equals(0)){
-			remove(gui);
-		}
-		else if(phase.equals(1)){
-			remove(kitTest);
-		}
+//		if(phase.equals(0)){
+//			remove(gui);
+//		}
+//		else if(phase.equals(1)){
+//			remove(kitTest);
+//		}
 	}
 	
 	//Paint Function for Test Panels
 	public void paint(Graphics g){
-		if(phase.equals(0)){
-			gui.repaint();
-		}
-		else if(phase.equals(1)){
+//		if(phase.equals(0)){
+//			gui.repaint();
+//		}
+		if(phase.equals(1)){
 //			kitTest.repaint();
 //			partsTest.repaint();
 //			laneTest.repaint();
 //			gantryTest.repaint();
 			serverTest.repaint();
 		}
-		else if(phase.equals(2)){
-			partsTest.repaint();
-		}
-		else if(phase.equals(3)){
-			laneTest.repaint();
-		}
+//		else if(phase.equals(2)){
+//			partsTest.repaint();
+//		}
+//		else if(phase.equals(3)){
+//			laneTest.repaint();
+//		}
 		revalidate();
 	}
 	
 	//Revalidate functions for certain IDE's that don't support it for JFrames
 	public void revalidate(){
-		gui.revalidate();
-		kitTest.revalidate();
-		partsTest.revalidate();
-		laneTest.revalidate();
-		gantryTest.revalidate();
+//		gui.revalidate();
+//		kitTest.revalidate();
+//		partsTest.revalidate();
+//		laneTest.revalidate();
+//		gantryTest.revalidate();
 	}
 	
 	//Main Function

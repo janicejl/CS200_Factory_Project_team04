@@ -226,6 +226,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		}
 		else if(animationstate == AnimationStatus.movingHome){
 			animationstate = AnimationStatus.atHome;
+			stateChanged();
 		}
 	}
 	
@@ -267,6 +268,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 			}
 			kit2.state = KitStatus.available;
 		}
+		stateChanged();
 	}
 
 	//Scheduler:
@@ -352,17 +354,31 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 //	}
 	
 	
-	if(!switchkit && grippersEmpty()){
+	if(!switchkit && grippersEmpty()&&count!= 1){
 		if(currentkit == CurrentKit.kit1)
 			currentkit = CurrentKit.kit2;
 		else
 			currentkit = CurrentKit.kit1;
 		switchkit = true;
+		return true;
+	}
+	if(count==1&&!switchkit && grippersEmpty()){
+		if(kit1.state == KitStatus.available){
+			currentkit = CurrentKit.kit1;
+			switchkit = true;
+			return true;
+		}
+		else if (kit2.state == KitStatus.available){
+			currentkit = CurrentKit.kit2;
+			switchkit = true;
+			return true;
+		}
 	}
 
 	
 		print("Nothing to do, sleeping. Kit1 recipe size: " + kit1.partsneeded.size() + ". Kit 1 available: " + kit1.state);
 		print("Kit2 recipe size: " + kit2.partsneeded.size() + ". Kit 2 available: " + kit2.state);
+		print("Current Kit: " + currentkit);
 		return false;
 	}
 

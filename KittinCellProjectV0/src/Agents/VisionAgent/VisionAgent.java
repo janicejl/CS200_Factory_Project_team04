@@ -198,7 +198,6 @@ public class VisionAgent extends Agent implements Vision {
 	private void inspectKit() {
 		
 		print("inspecting kit");
-		
 		List<Part> currentKitPartsList = new ArrayList<Part>();
 		currentKitPartsList = currentKit.peekParts();
 		
@@ -243,7 +242,6 @@ public class VisionAgent extends Agent implements Vision {
 				break;
 			}
 		}
-		
 		approveOrDenyParts();
 	}
 	

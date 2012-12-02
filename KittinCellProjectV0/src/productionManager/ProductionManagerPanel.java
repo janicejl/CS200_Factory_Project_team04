@@ -7,11 +7,13 @@ import javax.swing.*;
 
 import data.KitInfo;
 import DecorateAnimations.KittenQueue;
+import DecorateAnimations.Snowy;
 
 public class ProductionManagerPanel extends JPanel implements ActionListener {
 
 	ProductionManagerApp app;			//a reference to the main production manager 
 	JPanel base,bg;						//panels for all the different smaller panels and the background. 
+	Snowy snowy;                        //panel of snowy background
 	ProductionListPanel listPanel;		//Panel to show the list of jobs. 
 	TitlePanel title;					//Panel to show the title of the window.
 	KitPanel kitPanel;					//Panel to show the list of premade panels
@@ -63,7 +65,7 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 		kitPanel.setMinimumSize(new Dimension(600, 250));
 		
 		kq = new KittenQueue();
-		
+		snowy = new Snowy();
 		
 		//Using a grid bag layout to place all the panels at the right place. 
 		setLayout(new GridBagLayout());
@@ -91,6 +93,9 @@ public class ProductionManagerPanel extends JPanel implements ActionListener {
 		a.anchor=GridBagConstraints.FIRST_LINE_START;
 		add(kq,a);
 		add(base,a);
+		a.anchor=GridBagConstraints.LAST_LINE_END;
+		add(snowy,a);
+		a.anchor=GridBagConstraints.FIRST_LINE_START;
 		add(bg,a);
 		
 	}

@@ -12,9 +12,6 @@ import Interface.PartsRobotAgent.*;
 import data.*;
 
 public class VisionAgent extends Agent implements Vision {
-	
-	/** NOTES **/
-	// upon integration, make sure the messages are all cool (msgHereIsSchematic, msgPartsApproved, msgBadParts, etc.
 
 	/////////////////////////////////////////////////////////////
 	/** DATA **/
@@ -63,7 +60,6 @@ public class VisionAgent extends Agent implements Vision {
 		
 		initializeVisionAgent(type);
 	}
-	
 	
 	/////////////////////////////////////////////////////////////
 	/** MESSAGES **/
@@ -368,7 +364,6 @@ public class VisionAgent extends Agent implements Vision {
 		return false;
 	}
 
-	
 	/////////////////////////////////////////////////////////////
 	/** OTHER **/
 	

@@ -29,6 +29,10 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 	LaneGraphics laneGraphics;					//reference to the lane graphics
 	GUIGantryManager gantryGraphics;			//reference to the gantry graphics
 	BufferedImage background = null;			//image of the background of the factory. 
+	Image catGIF;
+	Image catGIF2;
+	boolean catGIFOn;
+	JLabel label;
 	JPanel base;                                //base of those factory panels
 	Snowy snowy;                                //panel of snowy background
 	
@@ -42,7 +46,9 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
     boolean fireOn = false;			//Boolean to set whether or not the non-normative should paint. 
     Fire fire;						//Fire for the non-normative. 
     GUIProductionClient client;		//Client to communicate with the server. 
-	
+	int gifCounter;
+    
+    
     //constructor for the animations for the production manager
 	public GUIProductionManager(ProductionManagerApp _app){
 		app = _app;
@@ -70,9 +76,16 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		base.add(gantryGraphics);
 		 try {
             background = ImageIO.read(new File("images/background1.png"));
+            catGIF = Toolkit.getDefaultToolkit().createImage("images/KittyGIF.gif");
+            catGIF2 = Toolkit.getDefaultToolkit().createImage("images/movingcat.gif");
+            
+        	System.out.println("Kitty load!");
+            //image = Toolkit.getDefaultToolkit().createImage("e:/java/spin.gif");
+            //label = new JLabel(new ImageIcon(image));
 
         } catch (IOException e) {
         	e.printStackTrace();
+        	System.out.println("Kitty no load :(");
         }
 		
 		snowy = new Snowy();
@@ -89,6 +102,7 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		fire = new Fire(1200, 600);
 		add(fire);
 		fireOn = true;
+		catGIFOn = true;
 	}
 	
 	//function to stop the fire non-normative. 
@@ -126,7 +140,29 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		if(fireOn){
 			fire.paintFire(g2);
 		}
-		g.dispose();		
+
+		
+		if(catGIFOn) {
+			g2.drawImage(catGIF, 1000, 0, this);
+			
+			if(catGIF2 != null && gifCounter < 15)
+				g2.drawImage(catGIF2, 0, 0, this);
+			else catGIF2 = null;
+				
+			if(gifCounter % 68 == 0) {
+				catGIF = Toolkit.getDefaultToolkit().createImage("images/KittyGIF.gif");
+			}
+			
+			//if(gifCounter % 100 == 0) {
+			//	catGIF2 = Toolkit.getDefaultToolkit().createImage("images/movingcat.gif");   	
+			//s}
+			gifCounter++;
+		}
+		
+		
+		
+		
+		g.dispose();	
 	}
 	
 	public synchronized void setLanes(Vector<Lane> _lanes) {
@@ -149,6 +185,10 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		this.kitRobot = kitRobot;
 	}
 
+	public void setCatGIFs(boolean b) {
+		catGIFOn = b;
+	}
+	
 	public void setPartsRobot(PartsRobot partsRobot) {
 		this.partsRobot = partsRobot;
 	}

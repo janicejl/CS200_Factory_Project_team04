@@ -33,6 +33,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
     double conveyorSpeed = 1;
    
     boolean checked = false;
+    boolean inspected = false;
 
     /*
     id  name    corX  corY
@@ -132,6 +133,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
         			partsDropped.set(j+1, false);
         		}
         	}
+        	inspected = true;
         }
         else if(i == 6){
         	k.setPosition(10, 10);
@@ -140,7 +142,15 @@ public class KitAssemblyManager implements Runnable, Serializable{
         System.out.println(getStationKits().get(4).getY() + " - " + getStationKits().get(3).getY());
     }
 
-    public void processCommand(String s){
+    public boolean isInspected() {
+		return inspected;
+	}
+
+	public void setInspected(boolean inspected) {
+		this.inspected = inspected;
+	}
+
+	public void processCommand(String s){
         String[] ss = s.split("\\,");
         if(ss[0].equals("spawn")){
             Kit temp = new Kit(""+getIdCounter(), 80, -110);

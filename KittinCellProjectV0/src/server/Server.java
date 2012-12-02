@@ -793,6 +793,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			getPartsRobot().getNestCamera().setAnimationDone(false);
 		}
 		
+		//Kit Robot Placed Kit on Inspection
+		if(getKitAssemblyManager().isInspected()){
+			getKitRobotAgent().msgKitAtInspection();
+			getKitAssemblyManager().setInspected(false);
+		}
 		//Gantry has picked up parts box from station
 		if(getGantryManager().isStationMsg())
 		{

@@ -456,9 +456,11 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		boolean kit2needsthispart = false;
 		if(currentkit == CurrentKit.kit1){
 			for(PartInfo pt: kit1.partsneeded){
-				if(type.getName().equals(pt.getName())){
-					kit1needsthispart = true;
-					parttoget = pt;
+				if(type!=null){
+					if(type.getName().equals(pt.getName())){
+						kit1needsthispart = true;
+						parttoget = pt;
+					}
 				}
 			}
 			if(parttoget!= null){
@@ -487,9 +489,11 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		if(currentkit == CurrentKit.kit2)
 		{
 			for(PartInfo pt: kit2.partsneeded){
-				if(type.getName().equals(pt.getName())){
-					kit2needsthispart = true;
-					parttoget = pt;
+				if(type!= null){
+					if(type.getName().equals(pt.getName())){
+						kit2needsthispart = true;
+						parttoget = pt;
+					}
 				}
 			}
 			if(parttoget!= null){

@@ -25,7 +25,7 @@ public class FCSAgent extends Agent implements FCS {
 	KitRobot kitRobot;
 	
 	public enum State {NEW_JOB_RECEIVED, WORKING, JOB_COMPLETED, IDLE};
-	State state;
+	public State state;
 	
 	KitInfo currentKitInfo;
 	
@@ -103,11 +103,10 @@ public class FCSAgent extends Agent implements FCS {
 		if (server.isRunning() && numKitsNeeded==0 && state==State.WORKING) {
 			print("sending out to get a job");
 			server.execute("Get Job");
-			state=State.IDLE;
 			return true;
 		}
 		
-/*	
+/*	this may not be necessary
  * 	if (state==State.JOB_COMPLETED) {
 			// message the agents that the job is finished (?)
 			// all nests

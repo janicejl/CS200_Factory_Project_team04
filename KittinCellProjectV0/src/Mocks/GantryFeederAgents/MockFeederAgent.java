@@ -1,8 +1,8 @@
 package Mocks.GantryFeederAgents;
 
 import Interface.GantryFeederAgent.Feeder;
-import Interface.GantryFeederAgent.Gantry;
 import Interface.GantryFeederAgent.GantryController;
+import Interface.PartsRobotAgent.Lane;
 import MoveableObjects.Bin;
 import data.PartInfo;
 import UnitTest.GantryFeederAgents.EventLog;
@@ -20,14 +20,8 @@ public class MockFeederAgent extends MockAgent implements Feeder {
 	}
 
 	@Override
-	public void msgNeedThisPart(PartInfo p, String laneName) {
-		log.add(new LoggedEvent("msgNeedThisPart received from lane " + laneName + " requesting part type " + p + "."));
-	}
-
-	@Override
-	public void msgHaveParts(Gantry g1) {
-		log.add(new LoggedEvent("msgHaveParts received from gantry " +  "."));
-		
+	public void msgNeedThisPart(PartInfo p, Lane lane) {
+		log.add(new LoggedEvent("msgNeedThisPart received from lane " + lane.getNumber() + " requesting part type " + p + "."));
 	}
 
 	@Override
@@ -36,41 +30,23 @@ public class MockFeederAgent extends MockAgent implements Feeder {
 	}
 
 	@Override
-	public void msgHereAreParts(PartInfo p, int quantity) {
-		log.add(new LoggedEvent("msgHereAreParts received from GUI"));
+	public void msgIsLaneReadyForParts(Lane lane) {
+		log.add(new LoggedEvent("msgIsLaneReadyForParts received from lane " + lane.getNumber() +"."));
 	}
 	
-	@Override
-	public void msgLaneIsFull(String laneName) {
-		log.add(new LoggedEvent("msgLaneIsFull received from lane " + laneName + "."));
-	}
-
-	@Override
-	public void msgLaneIsReadyForParts(String laneName) {
-		log.add(new LoggedEvent("msgLaneIsReadyForParts received from lane " + laneName +"."));
-	}
-	
-	@Override
-	public void setGantry(Gantry g1) {
-		log.add(new LoggedEvent("Gantry " + g1.getName() + "set to gantry."));
-		
-	}
-
-	@Override
-	public void removeGantry() {
-		log.add(new LoggedEvent("Gantry removed."));
-		
-	}
-
-	@Override
-	public void setGantryController(GantryController gc) {
-		this.gc = gc;
-	}
-
 	@Override
 	public int getNumber() {
-		// TODO Auto-generated method stub
 		return index;
+	}
+
+	@Override
+	public void msgAmIReadyForParts() {
+		log.add(new LoggedEvent("msgAmIReadyForParts received from self."));
+	}
+
+	@Override
+	public void msgPartsGone() {
+		log.add(new LoggedEvent("msgPartsGone received from "));
 	}
 
 	

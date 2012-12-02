@@ -35,6 +35,7 @@ public class MockKitRobot extends MockAgent implements KitRobot{
 
 	@Override
 	public void msgKitInspected(KitConfig kit_config) {
+		log.add(new UnitTest.KitRobotAgents.LoggedEvent("message that kit was inspected was received"));
 		if (kit_config.kit_state == KitConfig.KitState.GOOD) {
 			log.add(new UnitTest.KitRobotAgents.LoggedEvent("Kit has been inspected and it was approved"));	
 		}

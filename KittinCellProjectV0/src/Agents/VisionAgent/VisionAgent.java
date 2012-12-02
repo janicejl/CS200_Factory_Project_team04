@@ -204,6 +204,7 @@ public class VisionAgent extends Agent implements Vision {
 		print("inspecting kit");
 		List<Part> currentKitPartsList = new ArrayList<Part>();
 		currentKitPartsList = currentKit.peekParts();
+		currentKitConfig = new KitConfig();
 		
 		for (Part p: neededPartsList) {
 			if (currentKit.peekParts().contains(p)) {

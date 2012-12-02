@@ -562,7 +562,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		List <Part> kit1parts = new ArrayList<Part>();
 		for(int i = 0; i<4; i++)
 		{
-			if(grippers[i].destinationkit == 1){
+			if(currentkit == CurrentKit.kit1){
 				kit1parts.add(grippers[i].p);
 				grippers[i].p = null;
 				grippers[i].full = false;
@@ -571,19 +571,21 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		}
 			
 		
-
-		kitstand.msgHereAreParts(kit1parts,0);
+		if(currentkit == CurrentKit.kit1){
+			kitstand.msgHereAreParts(kit1parts,0);
+		}
 		List<Part> kit2parts = new ArrayList<Part>();
 		for(int i = 0; i<4; i++){
-			if(grippers[i].destinationkit == 2){
+			if(currentkit == CurrentKit.kit2){
 				kit2parts.add(grippers[i].p);
 				grippers[i].p = null;
 				grippers[i].full = false;
 				grippers[i].nestindex = -1;
 			}
 		} 
-		kitstand.msgHereAreParts(kit2parts,0);
-		
+		if(currentkit == CurrentKit.kit2){
+			kitstand.msgHereAreParts(kit2parts,1);
+		}
 		for(MyNest mn : nests)
 		{
 			if(mn.state == NestStatus.skipped){

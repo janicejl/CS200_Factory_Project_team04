@@ -21,7 +21,7 @@ public interface KitStand {
 
 	void msgKitRemovedFromInspection();
 	
-	public void msgPlacingBadKit(Kit k,int position);
+	public void msgPlacingBadKit(Kit k,int position, List<Part> parts_needed);
 
 
 }

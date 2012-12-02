@@ -16,6 +16,8 @@ import Interface.KitRobotAgent.KitRobot;
 import Interface.KitRobotAgent.KitStand;
 import data.Kit;
 import data.KitConfig;
+import data.Part;
+import data.PartInfo;
 
 public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 
@@ -49,6 +51,8 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		public int position_on_stand;
 		public KitState state;
 		public Kit kit;
+		public 	List<Part> parts_needed = Collections.synchronizedList(new ArrayList<Part>());
+
 		
 	}
 	
@@ -141,6 +145,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 				else if(kit_config.kit_state == KitConfig.KitState.MISSING_PARTS)
 				{
 					kit_h.state = KitState.MissingParts;
+					kit_h.parts_needed = kit_config.missing_part_list;
 					stateChanged();
 					return;
 				}
@@ -235,9 +240,9 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 				}
 			}
 			
-			if(!kit_list.isEmpty())
+			if(!inspection_list.isEmpty())
 			{
-				for(KitHolder kit:kit_list)
+				for(KitHolder kit:inspection_list)
 				{
 					if(kit.state == KitState.MissingParts)
 					{
@@ -247,9 +252,9 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 				}
 			}
 			
-			if(!kit_list.isEmpty())
+			if(!inspection_list.isEmpty())
 			{
-				for(KitHolder kit:kit_list)
+				for(KitHolder kit:inspection_list)
 				{
 					if(kit.state == KitState.BadParts)
 					{
@@ -304,8 +309,9 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		}
 		// will need to add back to regualr list i believe	
 		kit.state = KitState.KitBeingFixed;
+		kit_list.add(kit);
 		inspection_list.remove(kit);
-		kit_stand.msgPlacingBadKit(kit.kit, kit.position_on_stand);
+		kit_stand.msgPlacingBadKit(kit.kit, kit.position_on_stand,kit.parts_needed);
 	}
 	
 	private void FinishedKit(KitHolder kit)

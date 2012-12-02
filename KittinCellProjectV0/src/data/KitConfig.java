@@ -12,7 +12,7 @@ public class KitConfig {
 	
 	public KitState kit_state;
 	// adi, this will be the list you will put the parts that are missing from the kit
-	public List<PartInfo> missing_part_list = Collections.synchronizedList(new ArrayList<PartInfo>());
+	public List<Part> missing_part_list = Collections.synchronizedList(new ArrayList<Part>());
 	
 	public KitConfig()
 	{

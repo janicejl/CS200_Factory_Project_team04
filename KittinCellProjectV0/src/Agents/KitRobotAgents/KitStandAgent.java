@@ -17,6 +17,7 @@ import Interface.VisionAgent.Vision;
 import data.KitConfig;
 import data.Part;
 import data.Kit;
+import data.PartInfo;
 
 public class KitStandAgent extends Agent implements KitStand, Serializable{
 
@@ -92,13 +93,14 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		}
 	}
 	
-	public void msgPlacingBadKit(Kit k,int position)
+	public void msgPlacingBadKit(Kit k,int position, List<Part> need_list)
 	{
 		System.out.println("KitStand: bad kit being placed");
 		
 		KitHolder kit_h = new KitHolder();
 		kit_h.kit = k;
 		kit_h.state = KitState.WaitingToBeFixed;
+		kit_h.parts_to_add = need_list;
 		kit_h.position = position;
 		kit_holder_list.add(kit_h);
 		inpspection_list.remove(0);
@@ -293,6 +295,18 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 			}
 		}
 		
+		if(!kit_holder_list.isEmpty())
+		{
+			for(KitHolder kit:kit_holder_list)
+			{
+				if(kit.state == KitState.WaitingToBeFixed)
+				{
+					FixBadKit(kit);
+					return true;
+				}
+			}
+		}
+		
 		if(!stand_events.isEmpty())
 		{
 			for(KitStandEvent event:stand_events)
@@ -317,7 +331,14 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	
 	//ACTIONS/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-
+	private void FixBadKit(KitHolder kit_h)
+	{
+		kit_h.state = KitState.None;
+		//send parts robot a messge here to fix the kitparts_robot.ms
+		//parts_robot.msgHereIsABadKit(kit_h.positiont, kit_h.parts_list);
+	}
+	
+	
 	private void CheckForQueuedFinishedKits()
 	{
 		for(KitHolder kit_h:kit_holder_list)
@@ -354,7 +375,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		kit_h.state = KitState.None;
 		System.out.println("KitStand: Inspect kit by vision");
 		KitConfig kit_config = new KitConfig();
-		kit_config.kit_state = KitConfig.KitState.GOOD;
+		kit_config.kit_state = KitConfig.KitState.MISSING_PARTS;
 		kit_robot.msgKitInspected(kit_config);
 	}
 	

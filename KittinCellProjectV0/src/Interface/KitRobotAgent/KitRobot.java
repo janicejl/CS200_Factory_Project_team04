@@ -14,8 +14,8 @@ public interface KitRobot {
 	void msgPlaceKitAtPosition(int i);
 	
 	public void msgKitInspected(KitConfig kit_config);
-	
-	
 
+	
+	public void msgKitAtInspection();
 
 }

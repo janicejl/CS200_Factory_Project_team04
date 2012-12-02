@@ -62,8 +62,8 @@ public class GantryAgent extends Agent implements Gantry{
 		new_feeder.feeder = feeder;
 		new_feeder.state = FeederState.NeedParts;
 		feeder_list.add(new_feeder);
-		log.add(new LoggedEvent("msgNeedThisPart sent from Feeder " + feeder.getNumber()
-				+ " requesting part " + p.getDescription()));
+	/*	log.add(new LoggedEvent("msgNeedThisPart sent from Feeder " + feeder.getNumber()
+				+ " requesting part " + p.getDescription()));*/
 		stateChanged();
 		
 	}
@@ -79,7 +79,7 @@ public class GantryAgent extends Agent implements Gantry{
 		new_feeder.feeder = feeder;
 		new_feeder.state = FeederState.NeedPurge;
 		feeder_list.add(new_feeder);
-		log.add(new LoggedEvent("msgNeedBinPurged sent from Feeder " + feeder.getNumber()));
+	//	log.add(new LoggedEvent("msgNeedBinPurged sent from Feeder " + feeder.getNumber()));
 		stateChanged();
 	}
 
@@ -91,7 +91,7 @@ public class GantryAgent extends Agent implements Gantry{
 	{
 		print("Gantry: I gots the bin!!!");
 		gantry_events.add(GantryEvents.GotBin);
-		log.add(new LoggedEvent("msgAnimationHasBin sent from Server"));
+	//	log.add(new LoggedEvent("msgAnimationHasBin sent from Server"));
 		stateChanged();
 	}
 	
@@ -103,7 +103,7 @@ public class GantryAgent extends Agent implements Gantry{
 	{
 		print("Gantry: Feeder ready for party");
 		gantry_events.add(GantryEvents.FeederReadyForBin);
-		log.add(new LoggedEvent("msgReadyForParts received from Feeder"));
+	//	log.add(new LoggedEvent("msgReadyForParts received from Feeder"));
 		stateChanged();
 	}
 	
@@ -115,7 +115,7 @@ public class GantryAgent extends Agent implements Gantry{
 	{
 		print("Gantry: Gantry at feeder");
 		gantry_events.add(GantryEvents.GantryAtFeeder);
-		log.add(new LoggedEvent("msgGantryAtFeeder sent from Server"));
+	//	log.add(new LoggedEvent("msgGantryAtFeeder sent from Server"));
 		stateChanged();
 	}
 	

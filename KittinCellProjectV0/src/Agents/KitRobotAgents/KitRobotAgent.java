@@ -282,10 +282,11 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	
 	private void TellKitStandKitArrivedAtInspection()
 	{
+		System.out.println("KitRobot: Telling kitstand kit arrived at inspection");
 		kit_stand.msgKitMoved(inspection_list.get(0).position_on_stand);
 		KitConfig kit_config = new KitConfig();
 		kit_config.kit_state = KitConfig.KitState.GOOD;
-		this.msgKitInspected(kit_config);
+		//this.msgKitInspected(kit_config);
 	}
 	
 	

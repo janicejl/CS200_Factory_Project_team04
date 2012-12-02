@@ -14,6 +14,7 @@ import Interface.PartsRobotAgent.*;
 import Interface.KitRobotAgent.KitRobot;
 import Interface.KitRobotAgent.KitStand;
 import Interface.VisionAgent.Vision;
+import data.KitConfig;
 import data.Part;
 import data.Kit;
 
@@ -187,8 +188,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 
-		System.out.println("booooom");
-		System.out.println(kit_animation_arrived);
 		if(!stand_events.isEmpty())
 		{
 			for(KitStandEvent event:stand_events)
@@ -354,6 +353,9 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		vision.msgTakePicture(kit_h.kit);
 		kit_h.state = KitState.None;
 		System.out.println("KitStand: Inspect kit by vision");
+		KitConfig kit_config = new KitConfig();
+		kit_config.kit_state = KitConfig.KitState.GOOD;
+		kit_robot.msgKitInspected(kit_config);
 	}
 	
 	private void RemoveKit()

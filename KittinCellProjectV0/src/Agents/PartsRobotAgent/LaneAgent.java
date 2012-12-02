@@ -100,6 +100,9 @@ public class LaneAgent extends Agent implements Lane{
 	}
 	public void msgPurge(){
 		lanequeue.clear();
+		lanestate = LaneStatus.noParts;
+		feederstate = FeederStatus.noAction;
+		neststate = LaneNestStatus.noAction;
 		stateChanged();
 	}
 	

@@ -50,11 +50,12 @@ public class FCSAgentTest extends TestCase {
 		fcs.pickAndExecuteAnAction();
 		assertTrue("check that the fcs has reduced the num of kits needed by 1", fcs.numKitsNeeded==9);
 		
-		for (int i=0; i<10; i++) {
+		for (int i=0; i<9; i++) {
+			fcs.msgKitCompleted();
 			fcs.pickAndExecuteAnAction();
 		}
 		
-		assertTrue("fcs state should be IDLE", fcs.state==FCSAgent.State.IDLE);
+		 assertTrue("check that the fcs has no more kits to make", fcs.numKitsNeeded==0);
 		
 		
 		

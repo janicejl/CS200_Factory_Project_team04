@@ -203,6 +203,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 			print("Kit 2 Available");
 			kit2.state = KitStatus.available;
 		}
+		switchkit = false;
 		stateChanged();
 		
 	}

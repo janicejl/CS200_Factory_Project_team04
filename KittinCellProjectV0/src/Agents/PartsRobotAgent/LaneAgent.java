@@ -63,7 +63,7 @@ public class LaneAgent extends Agent implements Lane{
 	@Override
 	public void msgReadyForPart() {
 		neststate = LaneNestStatus.readyForPart;
-		print("Nest ready to give part");
+		print("Nest ready to take part. Lanequeue size: " + lanequeue.size() );
 		stateChanged();
 	}
 
@@ -129,20 +129,20 @@ public class LaneAgent extends Agent implements Lane{
 			return true;
 		}
 		
-		if(lanejamstate == LaneJamStatus.jammed){
-			unJamLane();
-			return true;
-		}
-		if(lanejamstate == LaneJamStatus.unjamming){
-			return false;
-		}
+	//	if(lanejamstate == LaneJamStatus.jammed){
+	//		unJamLane();
+	//		return true;
+	//	}
+	//	if(lanejamstate == LaneJamStatus.unjamming){
+	//		return false;
+	//	}
 		
 		if(neststate ==  LaneNestStatus.readyForPart){
 			givePart();
 			return true;
 		}
 		
-		if(lanestate == LaneStatus.partsAtEndOfLane && neststate != LaneNestStatus.askedToTakePart){
+		if(lanestate == LaneStatus.partsAtEndOfLane && neststate != LaneNestStatus.askedToTakePart && neststate!= LaneNestStatus.readyForPart){
 			askToGivePart();
 			return true;
 		}		
@@ -155,6 +155,7 @@ public class LaneAgent extends Agent implements Lane{
 			}
 			
 		}
+		print("sleeping... Neststate = " + neststate);
 		return false;
 	}
 	
@@ -193,9 +194,9 @@ public class LaneAgent extends Agent implements Lane{
 	}
 	
 	private void askToGivePart(){
+		print("Trying to place part" + neststate);
+		neststate = LaneNestStatus.askedToTakePart;	
 		nest.msgCanIPlacePart(this);
-		print("Trying to place part");
-		neststate = LaneNestStatus.askedToTakePart;		
 	}
 	private void givePart(){
 		nest.msgHereIsPart(lanequeue.get(0));

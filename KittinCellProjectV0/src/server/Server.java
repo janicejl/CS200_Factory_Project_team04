@@ -611,7 +611,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		{
     			if (gantryManager.getPurged().get(i).getFeeder() == num)
     			{
-    				gantryManager.getPurged().get(i).getPartInfo().setImagePath(feeders.get(num).getInfo().getImagePath());
+    				gantryManager.getPurged().get(i).setEmpty(false);
     				break;
     			}
     		}

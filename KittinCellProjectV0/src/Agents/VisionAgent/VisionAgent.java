@@ -225,7 +225,7 @@ public class VisionAgent extends Agent implements Vision {
 				currentKitConfig.kit_state = KitConfig.KitState.MISSING_PARTS;
 				
 				for (Part p: neededPartsList) {
-					currentKitConfig.missing_part_list.add(p.info);
+					currentKitConfig.missing_part_list.add(p);
 				}
 				
 				print("kit not approved because of missing parts");

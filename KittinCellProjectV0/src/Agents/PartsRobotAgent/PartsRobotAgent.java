@@ -255,7 +255,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	}
 	
 	public void msgBadKit(int standindex, List<Part> missingparts){
-		print("Bad Kit at standindex " + standindex);
+		print("Bad Kit at standindex " + standindex + "number of parts: " + missingparts.size());
 		count++;
 		for(MyNest mn: nests){
 			if(mn.state == NestStatus.skipped)
@@ -267,7 +267,6 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 				kit1.partsneeded.add(p.info);
 			}
 			kit1.state = KitStatus.available;
-			currentkit = CurrentKit.kit1;
 		}
 		else{
 			kit2.partsneeded.clear();
@@ -275,7 +274,6 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 				kit2.partsneeded.add(p.info);
 			}
 			kit2.state = KitStatus.available;
-			currentkit = CurrentKit.kit2;
 
 		}
 		stateChanged();

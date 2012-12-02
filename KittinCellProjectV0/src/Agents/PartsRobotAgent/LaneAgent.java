@@ -129,13 +129,13 @@ public class LaneAgent extends Agent implements Lane{
 			return true;
 		}
 		
-	//	if(lanejamstate == LaneJamStatus.jammed){
-	//		unJamLane();
-	//		return true;
-	//	}
-	//	if(lanejamstate == LaneJamStatus.unjamming){
-	//		return false;
-	//	}
+		if(lanejamstate == LaneJamStatus.jammed){
+			unJamLane();
+			return true;
+		}
+		if(lanejamstate == LaneJamStatus.unjamming){
+			return false;
+		}
 		
 		if(neststate ==  LaneNestStatus.readyForPart){
 			givePart();

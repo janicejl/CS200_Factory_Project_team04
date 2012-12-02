@@ -127,14 +127,14 @@ public class GUIKitAssemblyManager extends JPanel{
         }
         
         if(emptyConveyorOn){
-            emptyConveyorMove += 5;
+            emptyConveyorMove += 2;
             if(emptyConveyorMove > 20.0){
                 emptyConveyorMove = 0;
             }
         }
 
         if(finishedConveyorOn){
-            finishedConveyorMove += 5;
+            finishedConveyorMove += 2;
             if(finishedConveyorMove > 20.0){
                 finishedConveyorMove = 0;
             }

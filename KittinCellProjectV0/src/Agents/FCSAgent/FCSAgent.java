@@ -100,7 +100,7 @@ public class FCSAgent extends Agent implements FCS {
 			return true;
 		}
 		
-		if (server.isRunning() && numKitsNeeded==0 && state==State.WORKING) {
+		if (server.isRunning() && numKitsNeeded==0) {
 			print("sending out to get a job");
 			server.execute("Get Job");
 			return true;

@@ -376,12 +376,10 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	{
 		System.out.println("KitStand: Check for empty kit");
 		for(KitHolder kit:kit_holder_list)
-		{System.out.println("helllo");
-		System.out.println(kit.state);
+		{
 			if(kit.state == KitState.Empty)
 			{
 				kit.state = KitState.BeingUsed;
-				System.out.println("Booooooom  " + kit.position);
 				parts_robot.msgEmptyKit(kit.position);
 				return;
 			}

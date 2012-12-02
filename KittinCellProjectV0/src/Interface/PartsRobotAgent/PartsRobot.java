@@ -23,5 +23,6 @@ public interface PartsRobot {
 	public String getName();
 	public void setTestGUI(TestGUI test);
 	public void setMockVisionAgents(List <Vision> cams);
+	public void msgBadKit(int position, List<Part> parts_to_add);
 	
 }

@@ -1,6 +1,8 @@
 package productionManager;
 
 import fire.*;
+import DecorateAnimations.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -27,6 +29,8 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 	LaneGraphics laneGraphics;					//reference to the lane graphics
 	GUIGantryManager gantryGraphics;			//reference to the gantry graphics
 	BufferedImage background = null;			//image of the background of the factory. 
+	JPanel base;                                //base of those factory panels
+	Snowy snowy;                                //panel of snowy background
 	
 	private Vector<Lane> lanes = new Vector<Lane> ();			//Collection of the lanes	
 	private Vector<Feeder> feeders = new Vector<Feeder>();		//Collection of the Feeders
@@ -59,9 +63,11 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		laneGraphics.setOpaque(false);
 		gantryGraphics = new GUIGantryManager(2);
 		gantryGraphics.setOpaque(false);
-		add(kamGraphics);
-		add(laneGraphics);
-		add(gantryGraphics);
+		base = new JPanel();
+		
+		base.add(kamGraphics);
+		base.add(laneGraphics);
+		base.add(gantryGraphics);
 		 try {
             background = ImageIO.read(new File("images/background1.png"));
 
@@ -69,8 +75,17 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
         	e.printStackTrace();
         }
 		
+		snowy = new Snowy();
 //		timer = new Timer(10, this);
 //		timer.start();
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx=0;
+		c.gridy=0;
+		
+		add(snowy,c);
+		add(base,c);
+		
 	}
 	
 	//function to start the fire non-normative

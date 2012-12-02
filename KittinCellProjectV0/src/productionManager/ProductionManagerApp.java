@@ -20,6 +20,7 @@ import server.KitRobot;
 import server.Lane;
 import server.PartsRobot;
 
+import DecorateAnimations.Snowy;
 import Feeder.Feeder;
 import GantryManager.GantryManager;
 import PartsManager.PartsManagerClient;
@@ -32,6 +33,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 
 	ProductionManagerPanel panel;		//Panel for all the factory control.
 	GUIProductionManager graphics;		//Panel for all the factory animations
+	
 	JPanel card;						//Card Layout panel for making sure only one panel is shown at a time. 
 	javax.swing.Timer timer;			//Timer 
 	ProductionClient client;			//Client to talk to the server
@@ -44,6 +46,7 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	ArrayList<Job> jobs;				//Collection of jobs to be done. 
 	
 	public ProductionManagerApp(){
+		setLayout(new GridBagLayout());
 		setIgnoreRepaint(true);
 		setSize(1200, 645);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,25 +63,26 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 
 		//Setting up the panel for the production manager
 		panel = new ProductionManagerPanel(this);
-		panel.setPreferredSize(new Dimension(1000, 660));
-		panel.setMaximumSize(new Dimension(1000, 660));
-		panel.setMinimumSize(new Dimension(1000, 660));
+		panel.setPreferredSize(new Dimension(1200, 660));
+		panel.setMaximumSize(new Dimension(1200, 660));
+		panel.setMinimumSize(new Dimension(1200, 660));
 		panel.update();
 		
 		//Setting up the panel size for the GUI Production Manager
 		graphics = new GUIProductionManager(this);
-		graphics.setPreferredSize(new Dimension(1000, 600));
-		graphics.setMaximumSize(new Dimension(1000, 600));
-		graphics.setMinimumSize(new Dimension(1000, 600));
+		graphics.setPreferredSize(new Dimension(1200, 600));
+		graphics.setMaximumSize(new Dimension(1200, 600));
+		graphics.setMinimumSize(new Dimension(1200, 600));
 		
 		//Setting up the card layout with the two panels.
 		card = new JPanel();						 
 		card.setLayout(new CardLayout());
-		card.setPreferredSize(new Dimension(1000, 600));
-		card.setMaximumSize(new Dimension(1000, 600));
-		card.setMinimumSize(new Dimension(1000, 600));
+		card.setPreferredSize(new Dimension(1200, 600));
+		card.setMaximumSize(new Dimension(1200, 600));
+		card.setMinimumSize(new Dimension(1200, 600));
 		card.add(panel, "");
 		card.add(graphics, "");
+		
 		
 		add(card);			//add the car layout panel to the JFrame
 		

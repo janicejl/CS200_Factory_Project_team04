@@ -335,7 +335,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	{
 		kit_h.state = KitState.None;
 		//send parts robot a messge here to fix the kitparts_robot.ms
-		//parts_robot.msgHereIsABadKit(kit_h.positiont, kit_h.parts_list);
+		parts_robot.msgBadKit(kit_h.position, kit_h.parts_to_add);
 	}
 	
 	

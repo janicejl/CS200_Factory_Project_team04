@@ -94,11 +94,13 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	public void msgPlacingBadKit(Kit k,int position)
 	{
 		System.out.println("KitStand: bad kit being placed");
+		
 		KitHolder kit_h = new KitHolder();
 		kit_h.kit = k;
 		kit_h.state = KitState.WaitingToBeFixed;
 		kit_h.position = position;
 		kit_holder_list.add(kit_h);
+		inpspection_list.remove(0);
 		stateChanged();
 	}
 	

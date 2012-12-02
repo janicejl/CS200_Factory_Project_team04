@@ -117,6 +117,9 @@ public class VisionAgent extends Agent implements Vision {
 		print("received message that the camera is available again from the GUI");
 		stateChanged();
 	}	
+	public void msgChangeNumberOfNests(){
+		numberofnestsneeded =8;
+	}
 	
 	
 	/////////////////////////////////////////////////////////////

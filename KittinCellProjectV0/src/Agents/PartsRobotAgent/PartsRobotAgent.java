@@ -276,17 +276,18 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 
 	public boolean pickAndExecuteAnAction(){
 		
-	
-	if(recipe!= null && state == RobotState.mustOrderParts)
-	{
-		orderParts();
-		return true;
-	}
 	if(!recipe.isEmpty() && !camerahasrecipe && state!= RobotState.mustOrderParts)
 	{
 		giveCameraRecipe();
 		return true;
 	}
+		
+	if(recipe!= null && state == RobotState.mustOrderParts)
+	{
+		orderParts();
+		return true;
+	}
+	
 	if(count > 1 && (kit1.state == KitStatus.notAvailable || kit2.state == KitStatus.notAvailable)){
 		requestEmptyKit();
 		return true;

@@ -121,8 +121,10 @@ public class NestAgent extends Agent implements Nest{
 						
 				}
 			}
-			if(animationstate != AnimationStatus.needPurge){
+			if(animationstate != AnimationStatus.needPurge && !order){
 				partsrobot.msgPartsApproved(this.index);
+				camera.msgChangeNumberOfNests();
+				camera.msgImFull(this);
 			}
 			if(order){
 				partsrobotstate = PartsRobotStatus.wantsParts;

@@ -15,6 +15,7 @@ public interface Vision{
 	public void msgCameraAvailable();
 	
 	public void setFlashPermit(Semaphore flashpermit);
+	public void msgChangeNumberOfNests();
 	
 	
 }

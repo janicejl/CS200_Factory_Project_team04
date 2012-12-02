@@ -352,7 +352,7 @@ public class VisionAgent extends Agent implements Vision {
 			return true;
 		}
 		
-		if (state==State.PICTURE_TAKEN && waiting == false) {
+		if (state==State.PICTURE_TAKEN) {
 			if (type==Type.KIT_INSPECTOR) {
 				inspectKit();
 			}

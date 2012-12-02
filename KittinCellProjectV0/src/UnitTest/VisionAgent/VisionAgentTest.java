@@ -60,6 +60,10 @@ public class VisionAgentTest extends TestCase {
 		
 		vision.pickAndExecuteAnAction();
 		assertTrue("full nests map should be filled", vision.fullNestsMap.size()==4);
+		// assertTrue("should not be waiting for any other cameras", vision.waiting==true);
+		vision.msgCameraAvailable();
+		
+		vision.pickAndExecuteAnAction();
 		assertTrue("should not be waiting for any other cameras", vision.waiting==false);
 		
 		// vision.pickAndExecuteAnAction();
@@ -184,6 +188,7 @@ public class VisionAgentTest extends TestCase {
 		assertTrue("current kit config state should be created but not set yet", vision.currentKitConfig.kit_state==KitConfig.KitState.NOT_SET);
 		assertTrue("check that the vision agent is in idle state", vision.state==VisionAgent.State.IDLE);
 		assertTrue("check that nothing is approved yet", vision.approved==false);
+		assertTrue("current kit config state should be NOT SET", vision.currentKitConfig.kit_state==KitConfig.KitState.NOT_SET);
 		
 		vision.msgTakePicture(k);
 		assertTrue("check that msgTakePicture was received", vision.state==State.READY_TO_TAKE_PICTURE);
@@ -192,16 +197,20 @@ public class VisionAgentTest extends TestCase {
 		assertTrue("state should have changed to take picture", vision.state==State.PICTURE_TAKEN);
 		assertTrue("should not be waiting for any other cameras", vision.waiting==false);
 		assertTrue("kit should not have been approved yet", vision.approved==false);
+		assertTrue("current kit config state should still be NOT SET", vision.currentKitConfig.kit_state==KitConfig.KitState.NOT_SET);
 		
 		vision.pickAndExecuteAnAction();
+		
 		assertTrue("kit should have been approved", vision.approved==true);
 		assertTrue("current kit config state should be GOOD", vision.currentKitConfig.kit_state==KitConfig.KitState.GOOD);
 		assertTrue("kitrobot should have received kit inspected and approved message", kitRobot.log.containsString("Kit has been inspected and it was approved"));
+		assertTrue("kitrobot should have received message the kit was inspected", kitRobot.log.containsString("message that kit was inspected was received"));
+		
 		
 		vision.pickAndExecuteAnAction();
 		assertTrue("should have changed state back to schematic_received", vision.state==State.SCHEMATIC_RECEIVED);
 		assertTrue("approved should be back to false", vision.approved==false);
-		// assertTrue("current kit config state should return to not set", vision.currentKitConfig.kit_state==KitConfig.KitState.NOT_SET);
+		// assertTrue("current kit config state should return to not set", vision.currentKitConfig.kit_state==KitConfig.KitState.NOT_SET);		
 
 	}
 	
@@ -228,12 +237,20 @@ public class VisionAgentTest extends TestCase {
 		assertTrue("should not be waiting for any other cameras", vision.waiting==false);
 		
 		vision.neededPartsList.add(new Part("newPart", "mockimagepath"));
+		
 		vision.pickAndExecuteAnAction();
 		assertTrue("kit should not have been approved", vision.approved==false);
 		assertTrue("kitrobot should have received kit inspected and not approved message", kitRobot.log.containsString("Kit has been inspected and it was not approved"));
 		
+		// assertTrue("kit config should be bad parts", vision.currentKitConfig.kit_state==KitConfig.KitState.BAD_PARTS);
+		assertTrue("kit config should be missing parts", vision.currentKitConfig.kit_state==KitConfig.KitState.MISSING_PARTS);
+		
+		assertTrue("kitrobot should have received message the kit was inspected", kitRobot.log.containsString("message that kit was inspected was received"));
+		
 		vision.pickAndExecuteAnAction();
 		assertTrue("should have changed state back to schematic_received", vision.state==State.SCHEMATIC_RECEIVED);
+		
+		
 	}
 	
 }

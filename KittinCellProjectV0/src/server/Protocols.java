@@ -151,11 +151,15 @@ public class Protocols implements Runnable{
 			out.writeObject(app.getNests());
 			out.reset();
 			out.flush();
+			//receive jammmed state from lane client
 			Vector<Boolean> temp = (Vector<Boolean>)in.readObject();
 			for(int i=0;i<app.getLanes().size();i++){
+				//update each lane's state
 				app.getLanes().get(i).setJamOn(temp.get(i));
 			}
+			//receive overflow state from lane client
 			Vector<Boolean> tempOverflow = (Vector<Boolean>)in.readObject();
+			//update each lane's overflow state
 			for(int i=0;i<app.getLanes().size();i++){
 				if(tempOverflow.get(i) != app.getOverFlow().get(i)){
 					app.getOverFlow().set(i, tempOverflow.get(i));
@@ -283,6 +287,7 @@ public class Protocols implements Runnable{
 			else if(command.equals("Start")){
 				app.setJobsList((ArrayList<Job>)in.readObject());
 				app.running = true;
+				app.execute("Get Job");
 			}
 			commandSent = app.getProductionCommand();
 			out.writeObject(commandSent);

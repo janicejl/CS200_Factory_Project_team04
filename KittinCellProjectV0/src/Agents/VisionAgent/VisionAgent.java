@@ -12,9 +12,6 @@ import Interface.PartsRobotAgent.*;
 import data.*;
 
 public class VisionAgent extends Agent implements Vision {
-	
-	/** NOTES **/
-	// upon integration, make sure the messages are all cool (msgHereIsSchematic, msgPartsApproved, msgBadParts, etc.
 
 	/////////////////////////////////////////////////////////////
 	/** DATA **/
@@ -39,10 +36,9 @@ public class VisionAgent extends Agent implements Vision {
 	Kit currentKit;
 
 	Part part;
-	//KitRobotAgent kitRobotAgent;
 	KitRobot kitRobot;
-	PartsRobot partsRobot; // no interface for this yet
-	public Nest nest1; // no interface for this yet
+	PartsRobot partsRobot; 
+	public Nest nest1;
 	public Nest nest2;
 	Server server;
 	
@@ -64,7 +60,6 @@ public class VisionAgent extends Agent implements Vision {
 		
 		initializeVisionAgent(type);
 	}
-	
 	
 	/////////////////////////////////////////////////////////////
 	/** MESSAGES **/
@@ -213,7 +208,7 @@ public class VisionAgent extends Agent implements Vision {
 				currentKitPartsList.remove(p);
 			}
 		}
-
+		
 		if (neededPartsList.size()==0 && currentKitPartsList.size()==0) {
 			print("kit approved");
 			currentKitConfig.kit_state = KitConfig.KitState.GOOD;
@@ -237,7 +232,15 @@ public class VisionAgent extends Agent implements Vision {
 			}
 			
 			approved = false;
-		}	
+		}
+		
+		// check for dropped parts
+		for (Part p: currentKitPartsList) {
+			if (p.getPartDropped()==true) {
+				approved = false;
+			}
+		}
+		
 		approveOrDenyParts();
 	}
 	
@@ -322,7 +325,6 @@ public class VisionAgent extends Agent implements Vision {
 		}
 		else if(type == Type.KIT_INSPECTOR)
 		{
-
 			kitRobot.msgKitInspected(currentKitConfig);
 		}
 		
@@ -358,7 +360,7 @@ public class VisionAgent extends Agent implements Vision {
 			return true;
 		}
 		
-		if (state==State.PICTURE_TAKEN && waiting == false) {
+		if (state==State.PICTURE_TAKEN) {
 			if (type==Type.KIT_INSPECTOR) {
 				inspectKit();
 			}
@@ -370,7 +372,6 @@ public class VisionAgent extends Agent implements Vision {
 		return false;
 	}
 
-	
 	/////////////////////////////////////////////////////////////
 	/** OTHER **/
 	

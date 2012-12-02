@@ -63,7 +63,7 @@ public class FeederLaneAgent extends Agent implements FeederLane {
 	//Actions
 	
 	private void StopFeeder(){
-		feeder.msgLaneIsFull(name);
+	//	feeder.msgLaneIsFull(name);
 		state = FeederState.stopped;
 	}
 	

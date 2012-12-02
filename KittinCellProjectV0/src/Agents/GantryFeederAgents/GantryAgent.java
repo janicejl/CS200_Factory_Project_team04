@@ -11,6 +11,8 @@ import Interface.GantryFeederAgent.Feeder;
 import Interface.GantryFeederAgent.Gantry;
 import Interface.GantryFeederAgent.GantryController;
 import MoveableObjects.Bin;
+import UnitTest.GantryFeederAgents.EventLog;
+import UnitTest.GantryFeederAgents.LoggedEvent;
 
 public class GantryAgent extends Agent implements Gantry{
 
@@ -24,6 +26,7 @@ public class GantryAgent extends Agent implements Gantry{
 	MyFeeder current_feeder_servicing;
 	int count;
 	ArrayList<Boolean> feederBoxExists;
+	EventLog log;
 	
 	class MyFeeder
 	{
@@ -46,6 +49,12 @@ public class GantryAgent extends Agent implements Gantry{
 	
 	
 	
+	/**
+	 * This message is sent from the feeder indicating that it 
+	 * needs a specific part type
+	 * @param p this is the PartInfo that the feeder needs
+	 * @param feeder this is the Feeder that needs parts 
+	 */
 	public void msgNeedThisPart(PartInfo p, Feeder feeder)
 	{
 		MyFeeder new_feeder = new MyFeeder();
@@ -53,38 +62,60 @@ public class GantryAgent extends Agent implements Gantry{
 		new_feeder.feeder = feeder;
 		new_feeder.state = FeederState.NeedParts;
 		feeder_list.add(new_feeder);
+	/*	log.add(new LoggedEvent("msgNeedThisPart sent from Feeder " + feeder.getNumber()
+				+ " requesting part " + p.getDescription()));*/
 		stateChanged();
 		
 	}
 
-	
+	/**
+	 * This message is sent from a feeder that needs a bin moved
+	 * to the purge position?
+	 * @param feeder is the feeder that needs the bin purged
+	 */
 	public void msgNeedBinPurged(Feeder feeder)
 	{
 		MyFeeder new_feeder = new MyFeeder();
 		new_feeder.feeder = feeder;
 		new_feeder.state = FeederState.NeedPurge;
 		feeder_list.add(new_feeder);
+	//	log.add(new LoggedEvent("msgNeedBinPurged sent from Feeder " + feeder.getNumber()));
 		stateChanged();
 	}
 
+	/**
+	 * This message is sent by the Server to indicate that the gantry
+	 * animation has a bin
+	 */
 	public void msgAnimationHasBin()
 	{
 		print("Gantry: I gots the bin!!!");
 		gantry_events.add(GantryEvents.GotBin);
+	//	log.add(new LoggedEvent("msgAnimationHasBin sent from Server"));
 		stateChanged();
 	}
 	
+	/**
+	 * This message is sent by the feeder to indicate that it is ready
+	 * for parts?
+	 */
 	public void msgReadyForParts()
 	{
 		print("Gantry: Feeder ready for party");
 		gantry_events.add(GantryEvents.FeederReadyForBin);
+	//	log.add(new LoggedEvent("msgReadyForParts received from Feeder"));
 		stateChanged();
 	}
 	
+	/**
+	 * This message is sent by the Server to indicate that the
+	 * animated gantry is at the feeder.
+	 */
 	public void msgGantryAtFeeder()
 	{
 		print("Gantry: Gantry at feeder");
 		gantry_events.add(GantryEvents.GantryAtFeeder);
+	//	log.add(new LoggedEvent("msgGantryAtFeeder sent from Server"));
 		stateChanged();
 	}
 	

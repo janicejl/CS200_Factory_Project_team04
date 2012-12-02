@@ -108,6 +108,7 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 	//Action perform for button click. 
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == addJob) {
+			//app.snowy.getTimer().stop();
 			Integer amt = new Integer(0);
 			try{
 				amt = Integer.parseInt(amtText.getText());
@@ -123,6 +124,7 @@ public class CreateJobPanel extends JPanel implements ActionListener {
 			//update server jobs
 			app.getApp().getClient().setCommandSent("Update");
 			app.getApp().getClient().updateThread();
+			//app.snowy.getTimer().start();
 		}
 		else if (ae.getSource() == kitBox){
 			int index = kitBox.getSelectedIndex();

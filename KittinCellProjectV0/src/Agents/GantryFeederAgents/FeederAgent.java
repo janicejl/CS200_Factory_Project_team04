@@ -60,7 +60,9 @@ public class FeederAgent extends Agent implements Feeder {
 		
 	}
 	
-	
+	/**
+	 * 
+	 */
 	public void msgNeedThisPart(PartInfo p, Lane lane)
 	{
 		System.out.println(name + ": Got a request for a part");
@@ -225,15 +227,7 @@ public class FeederAgent extends Agent implements Feeder {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	//Extras	
 	
 	public void SetGantry(Gantry gantry)
 	{

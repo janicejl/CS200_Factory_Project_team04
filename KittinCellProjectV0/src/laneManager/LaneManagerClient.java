@@ -71,10 +71,11 @@ public class LaneManagerClient implements Runnable {
 			app.setLanes((Vector<Lane>)in.readObject());
 			app.setFeeders((Vector<Feeder>)in.readObject());
 			app.setNests((Vector<Nest>)in.readObject());
-			//send jammed state of lanes
+			//send jammed state of lanes to server
 			out.writeObject(app.getOnJammeds());
 			out.reset();
 			out.flush();
+			//send overflow state to server
 			out.writeObject(app.getOverFlow());
 			out.reset();
 			out.flush();

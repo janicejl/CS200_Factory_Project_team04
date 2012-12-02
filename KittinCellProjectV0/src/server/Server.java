@@ -737,7 +737,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			if(nestList.get(c).getPurged()==true)
 			{
 				nestList.get(c).flip();
-				if(nestList.get(c).getPurgedCount()<20 || lanes.get(c).isPurging())
+				if(nestList.get(c).getPurgedCount()<100 || lanes.get(c).isPurging())
 				{
 					nestList.get(c).setPurgedCount(nestList.get(c).getPurgedCount()+1);
 				}
@@ -793,34 +793,24 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			getPartsRobot().getNestCamera().setAnimationDone(false);
 		}
 		
+		//Kit Robot Placed Kit on Inspection
+		if(getKitAssemblyManager().isInspected()){
+			getKitRobotAgent().msgKitAtInspection();
+			getKitAssemblyManager().setInspected(false);
+		}
 		//Gantry has picked up parts box from station
 		if(getGantryManager().isStationMsg())
 		{
-			if(gantryDelay<50)
-			{
-				gantryDelay++;
-			}
-			else
-			{
-				getGantryManager().setStationMsg(false);
-				gantry1.msgReadyForParts();
-				gantryDelay =0;
-			}
+			getGantryManager().setStationMsg(false);
+			gantry1.msgReadyForParts();
+			gantryDelay =0;
 		}
 		//Gantry has placed parts box on feeder
 		if(getGantryManager().isFeederMsg())
 		{
-			if(gantryDelay < 100)
-			{
-				gantryDelay++;
-			}
-			else
-			{
-				getGantryManager().setFeederMsg(false);
-				gantry1.msgGantryAtFeeder();
-				gantryDelay = 0;
-			}
-			
+			getGantryManager().setFeederMsg(false);
+			gantry1.msgGantryAtFeeder();
+			gantryDelay = 0;
 		}
 		
 		//Feeder dump parts

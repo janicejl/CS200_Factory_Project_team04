@@ -80,6 +80,8 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 		card.setPreferredSize(new Dimension(1200, 600));
 		card.setMaximumSize(new Dimension(1200, 600));
 		card.setMinimumSize(new Dimension(1200, 600));
+		panel.setName("panel");
+		graphics.setName("graphics");
 		card.add(panel, "");
 		card.add(graphics, "");
 		
@@ -155,9 +157,15 @@ public class ProductionManagerApp extends JFrame implements ActionListener, Wind
 	//Function for switching the panels from the production manager to the animation and vice versa. 
 	public void next(){
 		CardLayout tempLayout = (CardLayout)card.getLayout();
+		panel.snowy.getTimer().start();
 		tempLayout.next(card);
 	}
 	
+	public void next2(){
+		CardLayout tempLayout = (CardLayout)card.getLayout();
+		panel.snowy.getTimer().stop();
+		tempLayout.next(card);
+	}
 	//repainting the graphics and panels. 
 	public void paint(Graphics g){
 		try{

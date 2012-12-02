@@ -24,11 +24,15 @@ public class FCSAgent extends Agent implements FCS {
 	PartsRobot partsRobot;
 	KitRobot kitRobot;
 	
-	// public List<Gantry> gantriesList = Collections.synchronizedList( new ArrayList<Gantry>() );
-	// public List<PartInfo> kitRecipe = Collections.synchronizedList( new ArrayList<PartInfo>() );
+	public enum State {NEW_JOB_RECEIVED, WORKING, JOB_COMPLETED, IDLE};
+	public State state;
+	
+	KitInfo currentKitInfo;
+	
 	public Vector<Bin> binsList = new Vector<Bin>();
 	public int numKitsNeeded;
 	
+	Vector<Nest> nestsList = new Vector<Nest>();
 	
 	Server server; 
 
@@ -36,6 +40,7 @@ public class FCSAgent extends Agent implements FCS {
 	/** CONSTRUCTOR **/
 	
 	public FCSAgent(Server server, PartsRobot partsRobotAgent, KitRobot kitRobotAgent) {
+		state=State.IDLE;
 		numKitsNeeded=0;
 		this.server = server;
 		this.partsRobot = partsRobotAgent;
@@ -44,22 +49,34 @@ public class FCSAgent extends Agent implements FCS {
 	}
 	
 	/////////////////////////////////////////////////////////////
-	/** MESSAGES **/ // receive messages from the GUI control panel
+	/** MESSAGES **/ // receive messages from the GUI control panel/ server
 	
-	// receive a message telling what the bins are
+	// receive a message with all the kit configurations to be made
 	public void msgHereIsKitConfig(KitInfo kitInfo, int amount) {
-		sendKitConfig(kitInfo, amount);
+		currentKitInfo = kitInfo;
 		numKitsNeeded=amount;
 		print("kit config received. Build "+amount+" kits");
+		state=State.NEW_JOB_RECEIVED;
+		stateChanged();
 	}
 	
+	// receive a message from server when one kit is completed
 	public void msgKitCompleted() {
 		numKitsNeeded--;
 		print("one kit completed");
+		
+		if (numKitsNeeded==0) {
+			state=State.JOB_COMPLETED;
+		}
 		stateChanged();
 	}
-	//public void msgNewConfig
-		
+	
+	// receive a message from the server when the job is complete
+	public void msgFinalJobCompleted(Vector<Nest> nestsList, Feeder feeder1, Feeder feeder) {
+		state=State.JOB_COMPLETED;
+		stateChanged();
+	}
+
 	/////////////////////////////////////////////////////////////
 	/** ACTIONS **/
 	
@@ -70,12 +87,8 @@ public class FCSAgent extends Agent implements FCS {
 			binsList.add(new Bin(p, amount));
 		}
 	
-	
-		
 		partsRobot.msgMakeThisKit(info, amount);
 		kitRobot.msgGetKits(amount);
-		
-		
 	}
 	
 	/////////////////////////////////////////////////////////////
@@ -84,13 +97,27 @@ public class FCSAgent extends Agent implements FCS {
 	// doesn't really do much because all the FCS does is send and receive messages as it gets them
 	public boolean pickAndExecuteAnAction() {
 	
-		if (server.isRunning() && numKitsNeeded==0) {
+		if (state==State.NEW_JOB_RECEIVED) {
+			sendKitConfig(currentKitInfo, numKitsNeeded);
+			state=State.WORKING;
+			stateChanged();
+			return true;
+		}
+		
+		if (server.isRunning() && state==State.JOB_COMPLETED) {
 			print("sending out to get a job");
 			server.execute("Get Job");
 			return true;
 		}
 		
-		return true;
+/*	this may not be necessary
+ * 	if (state==State.JOB_COMPLETED) {
+			// message the agents that the job is finished (?)
+			// all nests
+			// all feeders
+		}
+*/		
+		return false;
 	}
 
 

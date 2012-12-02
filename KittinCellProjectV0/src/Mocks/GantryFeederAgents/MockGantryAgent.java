@@ -26,7 +26,8 @@ public class MockGantryAgent extends MockAgent implements Gantry {
 
 	@Override
 	public void msgNeedThisPart(PartInfo p, Feeder feeder) {
-		log.add(new LoggedEvent("msgNeedThisPart received from Feeder " + feeder.getNumber()));
+		log.add(new LoggedEvent("msgNeedThisPart sent from Feeder " + feeder.getNumber()
+				+ " requesting part " + p.getDescription()));
 	}
 
 

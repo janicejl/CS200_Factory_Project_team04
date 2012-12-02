@@ -166,6 +166,10 @@ public class Protocols implements Runnable{
 					app.nests.get(i).msgToggleNestOverflow();
 				}
 			}
+			//receive feeder speed
+			if((boolean)in.readObject()){
+				app.setFeederSlow(!app.isFeederSlow());
+			}
 		} catch (Exception e){
 			System.err.println(protocolName);
 			e.printStackTrace();

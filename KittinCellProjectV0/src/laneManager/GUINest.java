@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.*;
 
 import javax.imageio.ImageIO;
 
@@ -15,12 +16,12 @@ public class GUINest {
 	
 	Nest nest;						//A reference to Nest from server
 	BufferedImage image;			//Image to paint for animation. 
-	ArrayList<Part> parts;			//Array of the parts inside the nest 
+	CopyOnWriteArrayList<Part> parts;			//Array of the parts inside the nest 
 	ArrayList<GUIPart> gParts;		//Array of the graphic parts class to paint the parts. 
 	
 	public GUINest(Nest n) {
 		nest = n;
-		parts = new ArrayList<Part>();
+		parts = new CopyOnWriteArrayList<Part>();
 		gParts = new ArrayList<GUIPart>();
 		try {
 			image = ImageIO.read(new File("images/nest.png"));

@@ -25,6 +25,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	private CopyOnWriteArrayList<Nest> nests = new CopyOnWriteArrayList<Nest>();
 	private Vector<Boolean> onJammeds;
 	private Vector<Boolean> overFlow;
+	private boolean feederSlow = false;
 	
 	JMenuBar menuBar;
 	JMenu menu;
@@ -158,5 +159,13 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 
 	public void setOnJammeds(Vector<Boolean> onJammeds) {
 		this.onJammeds = onJammeds;
+	}
+
+	public boolean isFeederSlow() {
+		return feederSlow;
+	}
+
+	public void setFeederSlow(boolean feederSlow) {
+		this.feederSlow = feederSlow;
 	}
 }

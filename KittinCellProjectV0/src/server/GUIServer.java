@@ -117,7 +117,7 @@ public class GUIServer extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(exit)){
-        	System.exit(1);
+			System.exit(1);
         }
 		else if(e.getSource().equals(pause)){
 			if(pause.getText().equals("Pause Output")){

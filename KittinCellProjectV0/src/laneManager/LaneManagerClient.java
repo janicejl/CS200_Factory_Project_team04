@@ -79,6 +79,10 @@ public class LaneManagerClient implements Runnable {
 			out.writeObject(app.getOverFlow());
 			out.reset();
 			out.flush();
+			//send feeder speed
+			out.writeObject(app.isFeederSlow());
+			out.reset();
+			out.flush();
 		} catch (Exception ignore){
 			ignore.printStackTrace();
 			System.exit(1);

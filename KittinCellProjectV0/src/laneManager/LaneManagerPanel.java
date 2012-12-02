@@ -16,6 +16,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 	JComboBox laneSelectBox;
 	JButton jamButton;  //jam non-normative button
 	JButton overFlowButton;
+	JButton feederSlow;
 	JLabel laneLabel;
 	JSlider vibrationSlider;
 	String[] lanes;
@@ -36,6 +37,11 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		overFlowButton.setMaximumSize(new Dimension(130, 27));
 		overFlowButton.setMinimumSize(new Dimension(130, 27));
 		overFlowButton.addActionListener(this);
+		feederSlow = new JButton("Make Feeder Slow");
+		feederSlow.setPreferredSize(new Dimension(150, 27));
+		feederSlow.setMaximumSize(new Dimension(150, 27));
+		feederSlow.setMinimumSize(new Dimension(150, 27));
+		feederSlow.addActionListener(this);
 		
 		laneSelectBox = new JComboBox(lanes);
 		laneSelectBox.setPreferredSize(new Dimension(400, 27));
@@ -94,6 +100,7 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		for(int i=0;i<horizPanels.size();i++){
 			this.add(horizPanels.get(i));
 		}
+		this.add(feederSlow);
 		this.setBorder(new TitledBorder("Lane"));		
 	}
 	
@@ -103,6 +110,15 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 		}
 		if(ae.getSource()==overFlowButton){
 			app.getOverFlow().set(laneSelectBox.getSelectedIndex(),!app.getOverFlow().get(laneSelectBox.getSelectedIndex()));
+		}
+		if(ae.getSource() == feederSlow){
+			app.setFeederSlow(!app.isFeederSlow());
+			if(app.isFeederSlow()){
+				feederSlow.setText("Fix Feeder Slow");
+			}
+			else{
+				feederSlow.setText("Make Feeder Slow");
+			}
 		}
 		//listen to the selection box in order to change the text of the jamButton
 		if(laneSelectBox.getSelectedItem().equals("Lane 1")){

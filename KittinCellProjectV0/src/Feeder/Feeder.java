@@ -23,7 +23,16 @@ public class Feeder implements Serializable{
 	boolean previousPosition;
 	private boolean moving;
 	private boolean topLane;
+	double diverterSpeed;
 	
+	public double getDiverterSpeed() {
+		return diverterSpeed;
+	}
+
+	public void setDiverterSpeed(double diverterSpeed) {
+		this.diverterSpeed = diverterSpeed;
+	}
+
 	public Feeder(double nX, double nY){
 		x = nX;
 		y = nY;
@@ -38,6 +47,7 @@ public class Feeder implements Serializable{
 		
 		diverterX = (int)(getX() - 3);
 		diverterY = (int)getY();
+		diverterSpeed = 2;
 		info = null;
 		hasCrate = false;
 	}
@@ -50,7 +60,7 @@ public class Feeder implements Serializable{
 			moving = true;
 			if (previousPosition){
 				if (diverterY != y + 70){
-					diverterY += 2;
+					diverterY += diverterSpeed;
 				}
 				else{
 					previousPosition = topLane;
@@ -58,7 +68,7 @@ public class Feeder implements Serializable{
 			}
 			else {
 				if (diverterY != y){
-					diverterY -= 2;
+					diverterY -= diverterSpeed;
 				}
 				else{
 					previousPosition = topLane;

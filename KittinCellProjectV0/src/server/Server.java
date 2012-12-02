@@ -71,6 +71,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	Vector<Integer> laneCounter; //counter for delaying lane release
 	TreeMap<Integer, Integer> laneQueue; //counter for holding feed lane commands
 	TreeMap<Integer, Integer> feederPartCount; //count how many parts have been fed in feeder
+	boolean feederSlow = false;
 	
 	GantryManager gantryManager; //Gantry Manager
 	Integer gantryDelay; //counter to delay message sent
@@ -643,10 +644,38 @@ public class Server extends JFrame implements Runnable, ActionListener{
     			feeders.get(num/2).setTopLane(false);
     		}
     		//add part to lane if feeder has parts, else this function improperly called
-    		if (feeders.get(num/2).getPartAmount() > 0){
-//    			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
-    			lanes.get(num).setRelease(true);
-    			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
+    		if(feederSlow == true){
+    			if(num%2 == 0){ //if top lane
+    				if(feeders.get(num/2).isPreviousPosition() == false){ //if diverter on bottom lane 
+    					lanes.get(num+1).releasePart();
+    				}
+    				else{
+    					if (feeders.get(num/2).getPartAmount() > 0){
+			//    			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
+			    			lanes.get(num).setRelease(true);
+			    			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
+			    		}
+    				}
+    			}
+    			else{ //if bottom lane
+    				if(feeders.get(num/2).isPreviousPosition() == true){ //if diverter on top lane
+    					lanes.get(num-1).releasePart();
+    				}
+    				else{
+    					if (feeders.get(num/2).getPartAmount() > 0){
+			//    			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
+			    			lanes.get(num).setRelease(true);
+			    			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
+			    		}
+    				}
+    			}
+    		}
+    		else{
+	    		if (feeders.get(num/2).getPartAmount() > 0){
+	//    			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
+	    			lanes.get(num).setRelease(true);
+	    			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
+	    		}
     		}
     		feederPartCount.put(num/2, feederPartCount.get(num/2) - 1);
     	}
@@ -1139,6 +1168,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 
 	public void setOverFlow(Vector<Boolean> overFlow) {
 		this.overFlow = overFlow;
+	}
+
+	public boolean isFeederSlow() {
+		return feederSlow;
+	}
+
+	public void setFeederSlow(boolean feederSlow) {
+		this.feederSlow = feederSlow;
 	}
 
 }

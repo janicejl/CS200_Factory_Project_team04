@@ -4,8 +4,8 @@ import data.Part;
 import data.PartInfo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.concurrent.*;
+import java.util.*;
 
 public class Nest implements Serializable{
 	
@@ -15,18 +15,18 @@ public class Nest implements Serializable{
 	int purgedCount =0;
 	boolean flip = true;
 	
-	ArrayList<Part> parts;			//a list of parts that is currently in the nest. 
+	CopyOnWriteArrayList<Part> parts;			//a list of parts that is currently in the nest. 
 	
-//	ArrayList<Integer> partsCount;
+//	CopyOnWriteArrayList<Integer> partsCount;
 	
 	private Random random;
 	
 	public Nest(double nX, double nY) {
 		x = nX;
 		y = nY;
-		parts = new ArrayList<Part>();
+		parts = new CopyOnWriteArrayList<Part>();
 		random = new Random();
-//		partsCount = new ArrayList<Integer>();
+//		partsCount = new CopyOnWriteArrayList<Integer>();
 //		for (int i = 0; i < 8; i++) {
 //			partsCount.add(0);
 //		}
@@ -60,7 +60,7 @@ public class Nest implements Serializable{
 		}
 	}
 	
-	public ArrayList<Part> getParts() {
+	public CopyOnWriteArrayList<Part> getParts() {
 		return parts;
 	}
 	
@@ -80,7 +80,7 @@ public class Nest implements Serializable{
 		return this.parts.size();
 	}
 
-//	public ArrayList<Integer> getPartsCount(){
+//	public CopyOnWriteArrayList<Integer> getPartsCount(){
 //		return partsCount;
 //	}
 	

@@ -169,7 +169,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	public void msgMakeThisKit(KitInfo kit, int ct){ //will pass in KitInfo instead of List of parts
 		count = ct;
 		recipe.clear();
-		for(PartInfo p:kit.getParts()){
+		for(PartInfo p: kit.getParts()){
 			recipe.add(p);
 		}
 		camerahasrecipe = false;
@@ -185,6 +185,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		state = RobotState.mustOrderParts;
 		stateChanged();
 	}
+	
 	public void msgPartsApproved(int nestindex){
 		nests.get(nestindex-1).state = NestStatus.hasPart;
 		print("PartReady at nest " + nestindex);

@@ -112,10 +112,8 @@ public class NestAgent extends Agent implements Nest{
 						animationstate = AnimationStatus.needPurge;
 				}
 			}
-			if(animationstate == AnimationStatus.needPurge){
+			if(animationstate != AnimationStatus.needPurge){
 				partsrobot.msgPartsApproved(this.index);
-			}
-			else{
 				partsrobotstate = PartsRobotStatus.wantsParts;
 			}
 					

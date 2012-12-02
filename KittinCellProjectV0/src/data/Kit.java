@@ -17,6 +17,7 @@ public class Kit implements Serializable {
 	
 	private boolean grabbed;		//Boolean stating whether or not the kit is being grabbed by the robot. 
 	boolean done = false;
+	boolean bad = false;
 	
 	private ArrayList<Part> partsList = new ArrayList<Part>();
 	//Array of the list of parts in the nest. 
@@ -35,6 +36,53 @@ public class Kit implements Serializable {
 	public Kit()
 	{
 		
+	}
+	
+	public void addPart(Part p) {
+		if(bad){
+			for(int i = 0; i < partsList.size(); i++){
+				if(partsList.get(i).getPartDropped()){
+					if(!p.getPartDropped() && p.getImagePath().equals(partsList.get(i).getImagePath())){
+						partsList.get(i).setPartDropped(false);
+						return;
+					}
+				}
+			}
+		}
+		partsList.add(p);
+	}	
+	
+	public void update() {
+		if (destinationX != x) {			//move the kit x position. 
+			if (x < destinationX) {
+				x++;
+			} else {
+				x--;
+			}
+		}
+		
+		if (destinationY != y) {			//move the kit y position. 
+			if (y < destinationY) {
+				y++;
+			} else {
+				y--;
+			}
+		}
+	}
+	
+	public boolean finishMoving() {
+		if (x == destinationX && y == destinationY) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public void setPosition(double nX, double nY) {
+		x = nX;
+		y = nY;
+		//destinationX = nX;
+		//destinationY = nY;
 	}
 	
 	public ArrayList<Part> getParts(){
@@ -101,49 +149,15 @@ public class Kit implements Serializable {
 		this.grabbed = grabbed;
 	}
 	
-	public void addPart(Part p) {
-		partsList.add(p);
-	}
-	
-	public void addPart(int i, Part p) {
-		partsList.set(i,p);
-	}
-	
-	
-	public void update() {
-		if (destinationX != x) {			//move the kit x position. 
-			if (x < destinationX) {
-				x++;
-			} else {
-				x--;
-			}
-		}
-		
-		if (destinationY != y) {			//move the kit y position. 
-			if (y < destinationY) {
-				y++;
-			} else {
-				y--;
-			}
-		}
-	}
-	
-	public boolean finishMoving() {
-		if (x == destinationX && y == destinationY) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public void setPosition(double nX, double nY) {
-		x = nX;
-		y = nY;
-		//destinationX = nX;
-		//destinationY = nY;
-	}
-	
 	public ArrayList<Part> getPartsList() {
 		return partsList;
+	}
+
+	public boolean isBad() {
+		return bad;
+	}
+
+	public void setBad(boolean bad) {
+		this.bad = bad;
 	}
 }

@@ -127,10 +127,14 @@ public class KitAssemblyManager implements Runnable, Serializable{
         else if(i == 5){
         	getStationKits().set(i,k);
         	getStationKits().get(5).setPosition(160, 250);
+        	getStationKits().get(5).setBad(false);
         	for(int j = 0; j < getStationKits().get(5).getParts().size(); j++){
         		if(partsDropped.get(j+1)){
         			getStationKits().get(5).getParts().get(j).setPartDropped(true);
         			partsDropped.set(j+1, false);
+        		}
+        		if(getStationKits().get(5).getParts().get(j).getPartDropped() == true){
+        			getStationKits().get(5).setBad(true);
         		}
         	}
         	inspected = true;

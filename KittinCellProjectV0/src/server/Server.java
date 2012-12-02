@@ -621,6 +621,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	else if(process.equals("Purge Nest"))
     	{
     		nestList.get(num).purgeNest();
+    		lanes.get(num).purge();
     	}
     	//Take picture for specified nest number
     	else if(process.equals("Take Picture")){
@@ -738,7 +739,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			if(nestList.get(c).getPurged()==true)
 			{
 				nestList.get(c).flip();
-				if(nestList.get(c).getPurgedCount()<20)
+				if(nestList.get(c).getPurgedCount()<20 || lanes.get(c).isPurging())
 				{
 					nestList.get(c).setPurgedCount(nestList.get(c).getPurgedCount()+1);
 				}

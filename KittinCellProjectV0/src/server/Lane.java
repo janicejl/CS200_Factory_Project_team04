@@ -38,6 +38,7 @@ public class Lane implements ActionListener, Serializable{
     private Random random;
     private boolean jamMessage = false;
     private boolean unjamMessage = false;
+    private boolean purging = false;
     
     public class Gate implements Serializable{
     	public double topNodeX, topNodeY, bottomNodeX, bottomNodeY;
@@ -156,9 +157,13 @@ public class Lane implements ActionListener, Serializable{
 	    				itemList.get(i).setX(itemList.get(i).getX() - conveyerBeltSpeed);
 	    			}
 	    			else {
-	    				itemList.get(i).setDestination(true);
-	    				atQueue = true;
-	    				
+	    				if(purging == true){
+	    					releaseQueue();
+	    				}
+	    				else{
+	    					itemList.get(i).setDestination(true);
+	    					atQueue = true;
+	    				}
 	    			}
 	    		}
 	    		for(int i = jamIndex; i < itemList.size(); i++) {
@@ -177,8 +182,13 @@ public class Lane implements ActionListener, Serializable{
 	    				itemList.get(i).setX(itemList.get(i).getX() - conveyerBeltSpeed);
 	    			}
 	    			else {
-	    				itemList.get(i).setDestination(true);
-	    				atQueue = true;
+	    				if(purging == true){
+	    					releaseQueue();
+	    				}
+	    				else{
+	    					itemList.get(i).setDestination(true);
+		    				atQueue = true;
+	    				}
 	    				
 	    			}
 	    		}	
@@ -265,7 +275,15 @@ public class Lane implements ActionListener, Serializable{
     public void releaseQueue(){
     	if(itemList.size() != 0){
     		if(itemList.get(0).getDestination() == true){
-    			nest.addPart(itemList.remove(0));
+    			if(purging == true){
+    				itemList.remove(0);
+    				if(itemList.size() == 0){
+    					purging = false;
+    				}
+    			}
+    			else{
+    				nest.addPart(itemList.remove(0));
+    			}
     			openGate = true;
     			atQueue = false;
     			System.out.println("Rawr!!!!");
@@ -273,6 +291,13 @@ public class Lane implements ActionListener, Serializable{
     		}
     	}
     	return;
+    }
+    
+    public void purge(){
+    	purging = true;
+    	if(itemList.size() == 0){
+    		purging = false;
+    	}
     }
     
     public Gate getGate1() {
@@ -385,6 +410,14 @@ public class Lane implements ActionListener, Serializable{
 
 	public void setJammed(boolean isJammed) {
 		this.isJammed = isJammed;
+	}
+
+	public boolean isPurging() {
+		return purging;
+	}
+
+	public void setPurging(boolean purging) {
+		this.purging = purging;
 	}
     
 }  

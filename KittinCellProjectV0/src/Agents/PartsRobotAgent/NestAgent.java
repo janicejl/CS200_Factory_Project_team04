@@ -94,6 +94,7 @@ public class NestAgent extends Agent implements Nest{
 	public void msgBadParts()
 	{
 			neststate = NestStatus.badParts;
+			print("Received message badParts");
 			stateChanged();
 	}
 
@@ -105,17 +106,28 @@ public class NestAgent extends Agent implements Nest{
 
 	public void msgNeedThisPart(PartInfo p)
 	{
+			boolean order = true;
+			for(int i = 0; i<8; i++){
+				if(nestslots[i] != null)
+					order = false;
+			}
 			for(int i = 0; i<8; i++)
 			{
 				if(nestslots[i] != null){
-					if(!nestslots[i].info.getName().equals(p.getName()))
+					if(!nestslots[i].info.getName().equals(p.getName())){
 						animationstate = AnimationStatus.needPurge;
+						order = true;
+					}
+						
 				}
 			}
 			if(animationstate != AnimationStatus.needPurge){
 				partsrobot.msgPartsApproved(this.index);
+			}
+			if(order){
 				partsrobotstate = PartsRobotStatus.wantsParts;
 			}
+
 					
 			partinfo = p;
 			
@@ -213,9 +225,10 @@ public class NestAgent extends Agent implements Nest{
 
 	
 	private void purgeNest(){
-		print("Purging");
 		//Animation Call
-		server.execute("Purge Nest", index);
+		server.execute("Purge Nest", index-1);
+		print("Purging");
+
 		
 		for(int i = 0; i<8; i++)
 		{
@@ -224,16 +237,17 @@ public class NestAgent extends Agent implements Nest{
 		extraparts.clear();
 		lane.msgPurge();
 		animationstate = AnimationStatus.noAction;
+		neststate = NestStatus.noParts;
 
 	}
 
 	private void acceptPart()
-	{
-		
+	{	
 		print("Ready to take the part" + lanestate);
 		lanestate = LaneStatus.noAction;
 		lane.msgReadyForPart();
 	}
+	
 	private void askForInspection()
 	{
 		print("I am full and need inspection");

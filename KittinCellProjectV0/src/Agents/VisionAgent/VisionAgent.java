@@ -69,6 +69,7 @@ public class VisionAgent extends Agent implements Vision {
 		// receive a list of all the parts that a kit needs, and a list of all the nests
 		this.nestsList = nestsList;
 		this.neededPartsList = partsList;
+		fullNestsPartsList.clear();
 		if(partsList.size()>0){
 			for(Part p : partsList){
 				fullNestsPartsList.add(p.info);				
@@ -208,7 +209,7 @@ public class VisionAgent extends Agent implements Vision {
 			}
 		}
 		
-		if (neededPartsList.size()==0 && currentKitPartsList.size()==0) {
+		if (neededPartsList.size()==0 /*&& currentKitPartsList.size()==0*/) {
 			print("kit approved");
 			currentKitConfig.kit_state = KitConfig.KitState.GOOD;
 			approved = true;

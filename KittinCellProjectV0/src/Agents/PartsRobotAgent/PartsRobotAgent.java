@@ -267,6 +267,8 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 				kit1.partsneeded.add(p.info);
 			}
 			kit1.state = KitStatus.available;
+			if(count == 1)
+				currentkit = CurrentKit.kit1;
 		}
 		else{
 			kit2.partsneeded.clear();
@@ -274,8 +276,11 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 				kit2.partsneeded.add(p.info);
 			}
 			kit2.state = KitStatus.available;
+			if(count == 1)
+				currentkit = CurrentKit.kit2;
 
 		}
+		switchkit = true;
 		stateChanged();
 	}
 

@@ -1,5 +1,6 @@
 package Mocks.GantryFeederAgents;
 
+import data.PartInfo;
 import Interface.GantryFeederAgent.Feeder;
 import Interface.GantryFeederAgent.Gantry;
 import Interface.GantryFeederAgent.GantryController;
@@ -11,26 +12,42 @@ public class MockGantryAgent extends MockAgent implements Gantry {
 
 	public EventLog log = new EventLog();
 	String name;
-	GantryController gc;
 	
 	public MockGantryAgent(String name) {
 		super(name);
 	}
 
-	@Override
-	public void msgGiveFeederParts(Feeder f1, Bin b) {
-		log.add(new LoggedEvent("msgGiveFeederParts received from GantryController."));
-	}
-
+	
 	@Override
 	public void msgReadyForParts() {
 		log.add(new LoggedEvent("msgReadyForParts received from Feeder"));
 	}
 
+
 	@Override
-	public void setGantryController(GantryController gc) {
-		log.add(new LoggedEvent("Gantry Controller has been set for " + this.name +"."));
-		this.gc = gc;
+	public void msgNeedThisPart(PartInfo p, Feeder feeder) {
+		log.add(new LoggedEvent("msgNeedThisPart received from Feeder " + feeder.getNumber()));
 	}
 
+
+	@Override
+	public void msgAnimationHasBin() {
+		log.add(new LoggedEvent("msgAnimationHasBin sent from Server"));
+	}
+
+
+	@Override
+	public void msgNeedBinPurged(Feeder feeder) {
+		log.add(new LoggedEvent("msgNeedBinPurged sent from Feeder " + feeder.getNumber()));
+	}
+
+
+	@Override
+	public void msgGantryAtFeeder() {
+		log.add(new LoggedEvent("msgGantryAtFeeder sent from Server"));
+	}
+	
+	
+
+	
 }

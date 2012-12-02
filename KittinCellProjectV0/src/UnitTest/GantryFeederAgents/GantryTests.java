@@ -19,7 +19,6 @@ public class GantryTests extends TestCase {
 
 	GantryAgent gantry;
 	MockFeederAgent feeder1;
-	MockGantryControllerAgent gc;
 	PartInfo type1;
 	Bin bin1;
 	
@@ -28,11 +27,8 @@ public class GantryTests extends TestCase {
 		super.setUp();
 		gantry = new GantryAgent("Gantry 1", new Server());
 		feeder1 = new MockFeederAgent("Feeder 1", 0);
-		gc = new MockGantryControllerAgent("gc");
 		type1 = new PartInfo("Part 1", "source 1");
-		bin1 = new Bin(type1, 20);
-		gantry.setGantryController(gc);
-		
+		bin1 = new Bin(type1, 20);	
 	}
 	
 	@Test
@@ -49,8 +45,6 @@ public class GantryTests extends TestCase {
 		while(gantry.pickAndExecuteAnAction());
 		assertTrue("Feeder should have received msgHereAreParts from gantry.", feeder1.log.containsString("msgHereAreParts"));
 		assertTrue("Gantry Controller should have received msgDoneDeliveringParts", gc.log.containsString("msgDoneDeliveringParts"));
-		
-		
 		
 	}
 

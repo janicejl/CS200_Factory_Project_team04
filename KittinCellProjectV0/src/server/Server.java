@@ -378,6 +378,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
         nestvisionagent2.startThread();
         nestvisionagent3.startThread();
         nestvisionagent4.startThread();
+        kitvisionagent.startThread();
         
         //Parts Robot Thread
 		partsRobotAgent.startThread();

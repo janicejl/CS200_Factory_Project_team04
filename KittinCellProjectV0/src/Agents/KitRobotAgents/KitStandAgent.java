@@ -370,7 +370,7 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 	
 	private void InspectKitByVision(KitHolder kit_h)
 	{
-		server.execute("Take Picture");
+//		server.execute("Take Picture");
 		vision.msgTakePicture(kit_h.kit);
 		kit_h.state = KitState.None;
 		System.out.println("KitStand: Inspect kit by vision");

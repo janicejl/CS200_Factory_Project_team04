@@ -78,13 +78,9 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		snowy = new Snowy();
 //		timer = new Timer(10, this);
 //		timer.start();
-		setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx=0;
-		c.gridy=0;
-		
-		add(snowy,c);
-		add(base,c);
+
+		//add(snowy);
+		add(base);
 		
 	}
 	

@@ -738,7 +738,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			if(nestList.get(c).getPurged()==true)
 			{
 				nestList.get(c).flip();
-				if(nestList.get(c).getPurgedCount()<125 || lanes.get(c).isPurging())
+				if(nestList.get(c).getPurgedCount()<100 || lanes.get(c).isPurging())
 				{
 					nestList.get(c).setPurgedCount(nestList.get(c).getPurgedCount()+1);
 				}
@@ -952,7 +952,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	}
 
 	//Getters and setters
-	public KitAssemblyManager getKitAssemblyManager() {
+	public synchronized KitAssemblyManager getKitAssemblyManager() {
 		return kitAssemblyManager;
 	}
 
@@ -960,7 +960,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.kitAssemblyManager = kitAssemblyManager;
 	}
 
-	public KitRobot getKitRobot() {
+	public synchronized KitRobot getKitRobot() {
 		return kitRobot;
 	}
 
@@ -1000,15 +1000,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.kitConveyorAgent = kitConveyorAgent;
 	}
 
-//	public PartsRobotProtocol getPartsPro() {
-//		return partsPro;
-//	}
-//
-//	public void setPartsPro(PartsRobotProtocol partsPro) {
-//		this.partsPro = partsPro;
-//	}
-
-	public PartsRobot getPartsRobot() {
+	public synchronized PartsRobot getPartsRobot() {
 		return partsRobot;
 	}
 
@@ -1048,7 +1040,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.feeders = feeders;
 	}
 	
-	public CopyOnWriteArrayList<Nest> getNests() {
+	public synchronized CopyOnWriteArrayList<Nest> getNests() {
 		return nestList;
 	}
 	

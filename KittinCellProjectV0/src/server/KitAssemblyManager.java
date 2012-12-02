@@ -204,128 +204,128 @@ public class KitAssemblyManager implements Runnable, Serializable{
         }
     }
     
-    public void setPartsDropped(CopyOnWriteArrayList<Boolean> v){
+    public synchronized void setPartsDropped(CopyOnWriteArrayList<Boolean> v){
     	partsDropped = v;
     }
 
     
-    public boolean getEmptyConveyorOn(){
+    public synchronized boolean getEmptyConveyorOn(){
         return emptyConveyorOn;
     }
 
-    public boolean getFinishedConveyorOn(){
+    public synchronized boolean getFinishedConveyorOn(){
         return finishedConveyorOn;
     }
 
-    public boolean getBadConveyorOn(){
+    public synchronized boolean getBadConveyorOn(){
         return badConveyorOn;
     }
 
-    public boolean getIncompleteConveyorOn(){
+    public synchronized boolean getIncompleteConveyorOn(){
         return incompleteConveyorOn;
     }
 
-    public CopyOnWriteArrayList<Kit> getEmptyKits(){
+    public synchronized CopyOnWriteArrayList<Kit> getEmptyKits(){
         return emptyKits;
     }
 
-    public CopyOnWriteArrayList<Kit> getFinishedKits(){
+    public synchronized CopyOnWriteArrayList<Kit> getFinishedKits(){
         return finishedKits;
     }
 
-    public CopyOnWriteArrayList<Kit> getStationKits(){
+    public synchronized CopyOnWriteArrayList<Kit> getStationKits(){
         return stationKits;
     }
 
-    public CopyOnWriteArrayList<Boolean> getStationOccupied(){
+    public synchronized CopyOnWriteArrayList<Boolean> getStationOccupied(){
         return stationOccupied;
     }
     
-    public CopyOnWriteArrayList<Kit> getBadKits() {
+    public synchronized CopyOnWriteArrayList<Kit> getBadKits() {
     	return badKits;
     }
     
-    public CopyOnWriteArrayList<Nest> getNests() {
+    public synchronized CopyOnWriteArrayList<Nest> getNests() {
     	return nests;
     }
     
-	public Boolean getMsg() {
+	public synchronized Boolean getMsg() {
 		return msg;
 	}
 
-	public void setMsg(Boolean msg) {
+	public synchronized void setMsg(Boolean msg) {
 		this.msg = msg;
 	}
 
-	public int getIdCounter() {
+	public synchronized int getIdCounter() {
 		return idCounter;
 	}
 
-	public void setIdCounter(int idCounter) {
+	public synchronized void setIdCounter(int idCounter) {
 		this.idCounter = idCounter;
 	}
 
-	public double getConveyorSpeed() {
+	public synchronized double getConveyorSpeed() {
 		return conveyorSpeed;
 	}
 
-	public void setConveyorSpeed(double conveyorSpeed) {
+	public synchronized void setConveyorSpeed(double conveyorSpeed) {
 		this.conveyorSpeed = conveyorSpeed;
 	}
 
-	public void setStationOccupied(CopyOnWriteArrayList<Boolean> stationOccupied) {
+	public synchronized void setStationOccupied(CopyOnWriteArrayList<Boolean> stationOccupied) {
 		this.stationOccupied = stationOccupied;
 	}
 
-	public void setEmptyKits(CopyOnWriteArrayList<Kit> emptyKits) {
+	public synchronized void setEmptyKits(CopyOnWriteArrayList<Kit> emptyKits) {
 		this.emptyKits = emptyKits;
 	}
 
-	public void setFinishedKits(CopyOnWriteArrayList<Kit> finishedKits) {
+	public synchronized void setFinishedKits(CopyOnWriteArrayList<Kit> finishedKits) {
 		this.finishedKits = finishedKits;
 	}
 
-	public void setStationKits(CopyOnWriteArrayList<Kit> stationKits) {
+	public synchronized void setStationKits(CopyOnWriteArrayList<Kit> stationKits) {
 		this.stationKits = stationKits;
 	}
 
-	public void setFinishedConveyorOn(boolean finishedConveyorOn) {
+	public synchronized void setFinishedConveyorOn(boolean finishedConveyorOn) {
 		this.finishedConveyorOn = finishedConveyorOn;
 	}
 
-	public void setBadKits(CopyOnWriteArrayList<Kit> badKits) {
+	public synchronized void setBadKits(CopyOnWriteArrayList<Kit> badKits) {
 		this.badKits = badKits;
 	}
 	
-	public void setEmptyConveyorOn(boolean emptyConveyorOn) {
+	public synchronized void setEmptyConveyorOn(boolean emptyConveyorOn) {
 		this.emptyConveyorOn = emptyConveyorOn;
 	}
 
-	public void setBadConveyorOn(boolean badConveyorOn) {
+	public synchronized void setBadConveyorOn(boolean badConveyorOn) {
 		this.badConveyorOn = badConveyorOn;
 	}
 
-	public void setIncompleteConveyorOn(boolean incompleteConveyorOn) {
+	public synchronized void setIncompleteConveyorOn(boolean incompleteConveyorOn) {
 		this.incompleteConveyorOn = incompleteConveyorOn;
 	}
 
-	public boolean isChecked() {
+	public synchronized boolean isChecked() {
 		return checked;
 	}
 
-	public void setChecked(boolean checked) {
+	public synchronized void setChecked(boolean checked) {
 		this.checked = checked;
 	}
 
-	public boolean isKitStandMsg() {
+	public synchronized boolean isKitStandMsg() {
 		return kitStandMsg;
 	}
 
-	public void setKitStandMsg(boolean kitStandMsg) {
+	public synchronized void setKitStandMsg(boolean kitStandMsg) {
 		this.kitStandMsg = kitStandMsg;
 	}
 
-	public CopyOnWriteArrayList<Boolean> getPartsDropped() {
+	public synchronized CopyOnWriteArrayList<Boolean> getPartsDropped() {
 		return partsDropped;
 	}
 }

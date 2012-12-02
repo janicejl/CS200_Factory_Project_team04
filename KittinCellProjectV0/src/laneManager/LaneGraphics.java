@@ -14,28 +14,30 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+//lane animations
 public class LaneGraphics extends JPanel {
-	private Vector<Lane> lanes = new Vector<Lane> ();
-	private int maxX;
-	private int maxY;
-	private ArrayList<Boolean> emptyConveyorOnList;
-	private ArrayList<Double> emptyConveyorMoveList;
-	private BufferedImage conveyorImage; 
-	private BufferedImage background;
-	private BufferedImage greenlightImage;
-	private BufferedImage redlightImage;
-	private ArrayList<GUIFeeder> gFeeders = new ArrayList<GUIFeeder>();
-	private Vector<Feeder> feeders = new Vector<Feeder>();
-	private ArrayList<GUINest> gNests = new ArrayList<GUINest>();
-	private Vector<Nest> nests = new Vector<Nest>();
+	private Vector<Lane> lanes = new Vector<Lane> ();		//Collection of all the lanes. 
+	private int maxX;				//Maximum horizontal distance for the panel
+	private int maxY;				//Maximum vertical distance for the panel
+	private ArrayList<Boolean> emptyConveyorOnList;			//Boolean for each lane on whether or not they are on
+	private ArrayList<Double> emptyConveyorMoveList;		//Boolean for each lane on their speeds. 
+	private BufferedImage conveyorImage; 					//Image for the conveyer. 
+	private BufferedImage background;						//Image for the background of the lane animation
+	private BufferedImage greenlightImage;					//Image for the green light when the lanes are not jammed
+	private BufferedImage redlightImage;					//Image for the red flashing light when the lanes are jammed. 
+	private ArrayList<GUIFeeder> gFeeders = new ArrayList<GUIFeeder>();			//Collection of all the graphical feeders. 
+	private Vector<Feeder> feeders = new Vector<Feeder>();						//Collection of all the feeders
+	private ArrayList<GUINest> gNests = new ArrayList<GUINest>();				//Collection of all the graphical nests
+	private Vector<Nest> nests = new Vector<Nest>();							//Collection of all the nests
 	
 	private javax.swing.Timer timer;
-	int managerNum;
+	int managerNum;					//To know where it is being painted. (KAM or LM)
 	
-	boolean flashUp;
-	boolean flashDown;
-	float opacity;
+	boolean flashUp;				//Boolean for whether or not the red light is flashing up
+	boolean flashDown;				//Boolean for whether or not the red light is flashing down
+	float opacity;					//Opacity for the flashing red light. 
 	
+	//Constructor for lane graphics. 
     public LaneGraphics(int m) {
     	managerNum = m;
     	
@@ -92,6 +94,7 @@ public class LaneGraphics extends JPanel {
 		opacity = 0.0f;
     }
     
+    //update feeders and nest from the server. 
     public void update(){
     	for(int i = 0; i < 4; i++){
     		gFeeders.get(i).setFeeder(feeders.get(i));
@@ -100,6 +103,7 @@ public class LaneGraphics extends JPanel {
     		gNests.get(i).setNest(nests.get(i));
     	}
     	
+    	//increment or decrement the opacity of the flashing red light. 
     	if (flashUp) {
     		opacity = opacity + 0.1f;
     		if (opacity >= 0.9) {
@@ -115,6 +119,7 @@ public class LaneGraphics extends JPanel {
     	}
     }
     
+    //Painting the content of the lane animation.  
     public void paintComponent(Graphics g) {
     	Graphics2D g2 = (Graphics2D)g;
 		g2.setColor(Color.LIGHT_GRAY);
@@ -152,6 +157,7 @@ public class LaneGraphics extends JPanel {
 			}
 			ArrayList<GUIPart> guiPart = new ArrayList<GUIPart>();
 			
+			//For painting the parts vibrating down the lane. 
 			for (int j = 0; j < lanes.get(i).getItemList().size(); j++){
 				guiPart.add(new GUIPart(lanes.get(i).getItemList().get(j)));
 				if(lanes.get(i).isVibrating()){
@@ -207,11 +213,11 @@ public class LaneGraphics extends JPanel {
 			g2.draw(l31);
 		}
 		//Jam Semaphores:
-		if(lanes.get(0).isJammed()) { 
+		if(lanes.get(0).isJammed()) { 	//Paint the red flashing lights
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 			g2.drawImage(redlightImage, 584, 34, this);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-		} else {
+		} else {						//Paint the green static light
 			g2.drawImage(greenlightImage, 584, 34, this);
 		}
 		if(lanes.get(1).isJammed()) {

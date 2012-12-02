@@ -60,6 +60,10 @@ public class VisionAgentTest extends TestCase {
 		
 		vision.pickAndExecuteAnAction();
 		assertTrue("full nests map should be filled", vision.fullNestsMap.size()==4);
+		// assertTrue("should not be waiting for any other cameras", vision.waiting==true);
+		vision.msgCameraAvailable();
+		
+		vision.pickAndExecuteAnAction();
 		assertTrue("should not be waiting for any other cameras", vision.waiting==false);
 		
 		// vision.pickAndExecuteAnAction();
@@ -202,6 +206,9 @@ public class VisionAgentTest extends TestCase {
 		assertTrue("should have changed state back to schematic_received", vision.state==State.SCHEMATIC_RECEIVED);
 		assertTrue("approved should be back to false", vision.approved==false);
 		// assertTrue("current kit config state should return to not set", vision.currentKitConfig.kit_state==KitConfig.KitState.NOT_SET);
+		
+		assertTrue("kitrobot should have received message the kit was inspected", kitRobot.log.containsString("message that kit was inspected was received"));
+		
 
 	}
 	
@@ -234,6 +241,8 @@ public class VisionAgentTest extends TestCase {
 		
 		vision.pickAndExecuteAnAction();
 		assertTrue("should have changed state back to schematic_received", vision.state==State.SCHEMATIC_RECEIVED);
+		
+		assertTrue("kitrobot should have received message the kit was inspected", kitRobot.log.containsString("message that kit was inspected was received"));
 	}
 	
 }

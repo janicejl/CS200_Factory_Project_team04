@@ -108,7 +108,7 @@ public class NestAgent extends Agent implements Nest{
 			for(int i = 0; i<8; i++)
 			{
 				if(nestslots[i] != null){
-					if(!nestslots[i].info.equals(partinfo))
+					if(!nestslots[i].info.getName().equals(p.getName()))
 						animationstate = AnimationStatus.needPurge;
 				}
 			}
@@ -145,6 +145,11 @@ public class NestAgent extends Agent implements Nest{
 	public boolean pickAndExecuteAnAction()
 	{		
 		
+		if(neststate == NestStatus.badParts || animationstate == AnimationStatus.needPurge)
+		{
+			purgeNest();
+			return true;
+		}
 		if(partsrobotstate == PartsRobotStatus.readyforpart)
 		{
 			givePart();
@@ -155,11 +160,7 @@ public class NestAgent extends Agent implements Nest{
 			settleNest();
 			return true;
 		}
-		if(neststate == NestStatus.badParts || animationstate == AnimationStatus.needPurge)
-		{
-			purgeNest();
-			return true;
-		}
+		
 		if(partsrobotstate == PartsRobotStatus.wantsParts)
 		{
 			askForParts();
@@ -177,13 +178,13 @@ public class NestAgent extends Agent implements Nest{
 				}
 			}
 		}
-	/*	if(lanestate == LaneStatus.hasPart){
+		if(lanestate == LaneStatus.hasPart){
 			int x = generator.nextInt(2);
 			if(x==1 && allowextraparts){
 				acceptPart();
 				return true;
 			}
-		}*/
+		}
 		
 		if(neststate == NestStatus.needCheck)
 		{
@@ -208,13 +209,14 @@ public class NestAgent extends Agent implements Nest{
 		//Animation Call
 		server.execute("Purge Nest", index);
 		
-		animationstate = AnimationStatus.noAction;
 		for(int i = 0; i<8; i++)
 		{
 			nestslots[i] = null;
 		}
 		extraparts.clear();
 		lane.msgPurge();
+		animationstate = AnimationStatus.noAction;
+
 	}
 
 	private void acceptPart()

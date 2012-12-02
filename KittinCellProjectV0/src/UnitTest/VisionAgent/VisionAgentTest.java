@@ -241,6 +241,10 @@ public class VisionAgentTest extends TestCase {
 		vision.pickAndExecuteAnAction();
 		assertTrue("kit should not have been approved", vision.approved==false);
 		assertTrue("kitrobot should have received kit inspected and not approved message", kitRobot.log.containsString("Kit has been inspected and it was not approved"));
+		
+		// assertTrue("kit config should be bad parts", vision.currentKitConfig.kit_state==KitConfig.KitState.BAD_PARTS);
+		assertTrue("kit config should be missing parts", vision.currentKitConfig.kit_state==KitConfig.KitState.MISSING_PARTS);
+		
 		assertTrue("kitrobot should have received message the kit was inspected", kitRobot.log.containsString("message that kit was inspected was received"));
 		
 		vision.pickAndExecuteAnAction();

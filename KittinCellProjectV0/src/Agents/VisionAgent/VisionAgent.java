@@ -237,7 +237,10 @@ public class VisionAgent extends Agent implements Vision {
 		// check for dropped parts
 		for (Part p: currentKitPartsList) {
 			if (p.getPartDropped()==true) {
+				currentKitConfig.kit_state = KitConfig.KitState.MISSING_PARTS;
+				print("kit not approved because of missing parts");
 				approved = false;
+				break;
 			}
 		}
 		

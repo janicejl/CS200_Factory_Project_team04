@@ -69,6 +69,7 @@ public class NestAgent extends Agent implements Nest{
 			lanestate = LaneStatus.hasPart;
 			stateChanged();
 	}
+	
 	public void msgHereIsPart(Part p)
 	{
 		boolean acceptedpart = false;
@@ -176,12 +177,13 @@ public class NestAgent extends Agent implements Nest{
 				}
 			}
 		}
-		if(lanestate == LaneStatus.hasPart){
+	/*	if(lanestate == LaneStatus.hasPart){
 			int x = generator.nextInt(2);
-			if(x==1&&allowextraparts){
+			if(x==1 && allowextraparts){
 				acceptPart();
+				return true;
 			}
-		}
+		}*/
 		
 		if(neststate == NestStatus.needCheck)
 		{
@@ -218,9 +220,9 @@ public class NestAgent extends Agent implements Nest{
 	private void acceptPart()
 	{
 		
-		print("Ready to take the part");
-		lane.msgReadyForPart();
+		print("Ready to take the part" + lanestate);
 		lanestate = LaneStatus.noAction;
+		lane.msgReadyForPart();
 	}
 	private void askForInspection()
 	{

@@ -9,28 +9,29 @@ import javax.swing.border.*;
 import data.KitInfo;
 
 public class KitPanel extends JPanel {
-
+	//Panel to show the kit being selected currently. 
+	
 	TitledBorder title;
 	//ImageIcon background;
-	ProductionManagerPanel app;
+	ProductionManagerPanel app;		//Reference to the main production manager. 
 	
 	JPanel content;
 	
-	JPanel one;
-	JPanel two;
-	JPanel three;
-	JPanel four;
+	JPanel one;				//Used for the spacing
+	JPanel two;				//used for the spacing
+	JPanel three;			//Used for the spacing
+	JPanel four;			//Used for the spacing
 	
 	ArrayList<JButton> parts;
 	
-	JButton part1;
-	JButton part2;
-	JButton part3;
-	JButton part4;
-	JButton part5;
-	JButton part6;
-	JButton part7;
-	JButton part8;
+	JButton part1;			//Part one image
+	JButton part2;			//Part two image
+	JButton part3;			//Part three image
+	JButton part4;			//Part four image
+	JButton part5;			//Part five image
+	JButton part6;			//Part six image
+	JButton part7;			//Part seven image
+	JButton part8;			//Part eight image
 	
 	public KitPanel(ProductionManagerPanel _app, KitInfo kitInfo) {
 		app = _app;
@@ -144,9 +145,11 @@ public class KitPanel extends JPanel {
 	
 	public void updateKit(KitInfo kitInfo){
 		if(kitInfo != null){
+			//Setting the right image for each kit.
 			for(int i = 0; i < parts.size(); i++){
 				parts.get(i).setIcon(new ImageIcon(kitInfo.getParts().get(i).getImagePath()));
 			}
+			//setting the name of the kit displayed. 
 			title.setTitle("  " + kitInfo.getName() + "  ");
 		}
 	}

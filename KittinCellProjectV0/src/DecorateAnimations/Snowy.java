@@ -93,4 +93,14 @@ public class Snowy extends JPanel implements ActionListener{
 		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		j.add(s);
 	}
+
+	public synchronized Timer getTimer() {
+		return timer;
+	}
+
+	public synchronized void setTimer(Timer timer) {
+		this.timer = timer;
+	}
+	
+	
 }

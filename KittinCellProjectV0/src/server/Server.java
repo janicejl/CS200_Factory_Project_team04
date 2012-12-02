@@ -209,13 +209,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	lanes.add(new Lane(600,380, nestList.get(5), feeders.get(2)));
     	lanes.add(new Lane(600,450, nestList.get(6), feeders.get(3))); 
     	lanes.add(new Lane(600,520, nestList.get(7), feeders.get(3)));
-    	lanes.get(1).setConveyerBeltSpeed(4);
-    	lanes.get(2).setConveyerBeltSpeed(3);
     	laneCounter = new Vector<Integer>();
     	laneQueue = new TreeMap<Integer, Integer>();
     	//Set Lane Speeds
     	for (int i = 0; i < 8; i ++) {
-    		lanes.get(i).setConveyerBeltSpeed(5);
+    		lanes.get(i).setConveyerBeltSpeed(2);
     		laneCounter.add(0);
     		laneQueue.put(i, 0);
     	}

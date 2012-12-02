@@ -94,6 +94,7 @@ public class NestAgent extends Agent implements Nest{
 	public void msgBadParts()
 	{
 			neststate = NestStatus.badParts;
+			partsrobotstate = PartsRobotStatus.wantsParts;
 			print("Received message badParts");
 			stateChanged();
 	}

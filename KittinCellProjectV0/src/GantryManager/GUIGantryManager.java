@@ -106,7 +106,8 @@ public class GUIGantryManager extends JPanel {
 			g2.drawImage(crate,manager.getExiting().get(i).getxCurrent(),manager.getExiting().get(i).getyCurrent(),null);
 			if(manager.getExiting().get(i).getEmpty()==false)
 			{
-				g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getExiting().get(i).getPartInfo().getImagePath())),manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
+				//g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getExiting().get(i).getPartInfo().getImagePath())),manager.getExiting().get(i).getxCurrent()+13, manager.getExiting().get(i).getyCurrent()+35,null);
+				//Image for drawing bows on boxes
 			}
 			i++;
 		}
@@ -116,7 +117,8 @@ public class GUIGantryManager extends JPanel {
 			g2.drawImage(crate,manager.getPurged().get(i).getxCurrent(),manager.getPurged().get(i).getyCurrent(),null);
 			if(manager.getPurged().get(i).getEmpty()==false)
 			{
-				g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getPurged().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
+				//g2.drawImage(partImages.get(partImagesPath.indexOf(manager.getPurged().get(i).getPartInfo().getImagePath())), manager.getPurged().get(i).getxCurrent()+13, manager.getPurged().get(i).getyCurrent()+35,null);
+				//Image for drawing bows on boxes
 			}
 				i++;
 		}

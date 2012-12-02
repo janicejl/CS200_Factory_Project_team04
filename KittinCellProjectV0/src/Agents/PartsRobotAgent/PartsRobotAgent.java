@@ -423,12 +423,12 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 				k++;
 			}
 		}
-		//for(MyNest mn: nests){
-		//	if(mn.type == null){
-		//		mn.state = NestStatus.noAction;
-		//		mn.nest.msgBadParts();
-		//	}
-		//}		
+		for(MyNest mn: nests){
+			if(mn.type == null){
+				mn.state = NestStatus.noAction;
+				mn.nest.msgPurge();
+			}
+		}
 		state = RobotState.PartsOrdered;
 	}
 

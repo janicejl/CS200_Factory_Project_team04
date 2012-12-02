@@ -35,6 +35,14 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	Timer timer = new Timer();
 	Random rn = new Random();
 	Server server;
+	TimerTask timer_task = new TimerTask(){ public void run(){ 
+    	
+    	b_ask_for_kit = true;
+    	stateChanged();
+    }
+	};
+		
+	
 	
 	class KitHolder
 	{
@@ -61,6 +69,10 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	public void msgGetKits(int count)
 	{
 		System.out.println("KitRobot: get kits");
+		if(kit_list.size() == 0 )
+		{
+			b_ask_for_kit = true;
+		}
 		KitAmountHolder kit_h = new KitAmountHolder();
 		kit_h.kits_to_be_made = count;
 		//THIS WILL PROBALBY NEED TO BE REWORKED, depends on a new type of kit being made or a 
@@ -166,10 +178,11 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	
 	@Override
 	public boolean pickAndExecuteAnAction() {
-
+		
 		
 			if(kit_list.size() + inspection_list.size()  < 2 && kit_list.size() < 2 && kits_needed.size() > 0 && b_ask_for_kit)
 			{
+				System.out.println("whyyy you no");
 				CanIPlaceKit();
 				return true;
 			}
@@ -337,7 +350,7 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 		{
 			kits_needed.remove(kit_h);
 			kit_conveyor.msgGiveMeAKit();
-			timer.cancel();
+
 		}
 		else
 		{

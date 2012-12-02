@@ -13,10 +13,10 @@ import data.PartInfo;
 
 public class PartsManagerApp extends JFrame implements ActionListener, Serializable, WindowListener{
 	
-	PartsPanel partPanel;
-	EditPanel editPanel;
-	ArrayList<PartInfo> partsList;
-	PartsManagerClient client;
+	PartsPanel partPanel; // panel for user to create new parts
+	EditPanel editPanel; //panel for user to edit parts
+	ArrayList<PartInfo> partsList; // data for parts
+	PartsManagerClient client; // connect to the server
 	JTabbedPane tabbedPane;
 	
 	public PartsManagerApp(){

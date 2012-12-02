@@ -24,7 +24,7 @@ public class ServerTestPanel extends JPanel implements ActionListener {
 		buttons = new ArrayList<JButton>();
 		horizPanels = new ArrayList<JPanel>();
 		
-		feedBackPanel = new GUIServer();
+		feedBackPanel = new GUIServer(server);
 		feedBackPanel.setPreferredSize(new Dimension(800, 300));
 		feedBackPanel.setMaximumSize(new Dimension(800,300));
 		feedBackPanel.setMinimumSize(new Dimension(800,300));

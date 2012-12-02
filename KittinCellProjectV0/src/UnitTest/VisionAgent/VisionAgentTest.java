@@ -195,6 +195,7 @@ public class VisionAgentTest extends TestCase {
 
 		vision.pickAndExecuteAnAction();
 		assertTrue("state should have changed to take picture", vision.state==State.PICTURE_TAKEN);
+		assertTrue("type should still be kit inspector", vision.type==VisionAgent.Type.KIT_INSPECTOR);
 		assertTrue("should not be waiting for any other cameras", vision.waiting==false);
 		assertTrue("kit should not have been approved yet", vision.approved==false);
 		assertTrue("current kit config state should still be NOT SET", vision.currentKitConfig.kit_state==KitConfig.KitState.NOT_SET);

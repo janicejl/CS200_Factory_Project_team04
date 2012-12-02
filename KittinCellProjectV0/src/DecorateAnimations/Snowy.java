@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class Snowy extends JPanel{
-	private Timer timer = new Timer(120, new TimerListener());
+	private Timer timer = new Timer(100, new TimerListener());
 	private double x;
 	private double y = 0;
 	int time=0;
@@ -20,9 +20,9 @@ public class Snowy extends JPanel{
 	
 	public Snowy() {
 		snowflakes=new ArrayList<Snow>();
-		this.setPreferredSize(new Dimension(1200,600));
-		this.setMinimumSize(new Dimension(1200,600));
-		this.setMaximumSize(new Dimension(1200,600));
+		this.setPreferredSize(new Dimension(1200,500));
+		this.setMinimumSize(new Dimension(1200,500));
+		this.setMaximumSize(new Dimension(1200,500));
 		//this.setBackground(Color.black);
 		this.setOpaque(false);
 		timer.start();
@@ -60,7 +60,7 @@ public class Snowy extends JPanel{
 	        repaint();
 			revalidate();
 	        time++;
-	        if(time==80)
+	        if(time==100)
 	        	time=0;
 	        
 	    }
@@ -72,7 +72,7 @@ public class Snowy extends JPanel{
 		Graphics2D g2 = (Graphics2D)g;
 		
 		if(time==0){
-			for (int i=0;i<7;i++){
+			for (int i=0;i<1;i++){
 				snowflakes.add(new Snow());
 			}
 			time=0;

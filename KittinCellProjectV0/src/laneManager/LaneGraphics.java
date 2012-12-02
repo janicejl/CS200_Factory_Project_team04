@@ -123,14 +123,14 @@ public class LaneGraphics extends JPanel {
 		}
 		for (int i = 0; i < 8; i++) {
 			 if(emptyConveyorOnList.get(i)){
-		            emptyConveyorMoveList.set(i,emptyConveyorMoveList.get(i) + 0.23 * lanes.get(i).getConveyerBeltSpeed()); //magic ratio
+		            emptyConveyorMoveList.set(i,emptyConveyorMoveList.get(i) + 0.59 * lanes.get(i).getConveyerBeltSpeed()); //magic ratio
 		            if(emptyConveyorMoveList.get(i) > 20.0){
 		                emptyConveyorMoveList.set(i, 0.0);
 		            }
 		        }
 		}
 		
-        for(int i = 1; i < 29; i++){ // main conveyor images
+        for(int i = 1; i < 30; i++){ // main conveyor images
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(0).intValue(),30,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(1).intValue(),100,null); // empty conveyor   
         	g2.drawImage(conveyorImage, i * 20 - emptyConveyorMoveList.get(2).intValue(),170,null); // empty conveyor   

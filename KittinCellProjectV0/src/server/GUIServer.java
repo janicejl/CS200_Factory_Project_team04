@@ -17,6 +17,7 @@ import javax.swing.text.StyleConstants;
 import com.sun.istack.internal.FinalArrayList;
 
 public class GUIServer extends JPanel implements ActionListener{
+	Server app;
 	GridBagConstraints c;
 	JScrollPane scrollPane;
 	JTextPane textPane;
@@ -28,7 +29,8 @@ public class GUIServer extends JPanel implements ActionListener{
     boolean paused = false;
     ArrayList<String> messages;
 	
-	public GUIServer(){
+	public GUIServer(Server _app){
+		app = _app;
 		messages = new ArrayList<String>();
 		background = new ImageIcon("images/server4.jpg");
 		setLayout(new GridBagLayout());

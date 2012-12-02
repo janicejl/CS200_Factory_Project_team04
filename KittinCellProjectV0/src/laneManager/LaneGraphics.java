@@ -28,7 +28,7 @@ public class LaneGraphics extends JPanel {
 	private ArrayList<GUIFeeder> gFeeders = new ArrayList<GUIFeeder>();			//Collection of all the graphical feeders. 
 	private Vector<Feeder> feeders = new Vector<Feeder>();						//Collection of all the feeders
 	private ArrayList<GUINest> gNests = new ArrayList<GUINest>();				//Collection of all the graphical nests
-	private Vector<Nest> nests = new Vector<Nest>();							//Collection of all the nests
+	private CopyOnWriteArrayList<Nest> nests = new CopyOnWriteArrayList<Nest>();							//Collection of all the nests
 	
 	private javax.swing.Timer timer;
 	int managerNum;					//To know where it is being painted. (KAM or LM)
@@ -284,27 +284,27 @@ public class LaneGraphics extends JPanel {
     	lanes.get(lane).releaseQueue();
     }
     
-    public synchronized void setLanes(Vector<Lane> _lanes) {
+    public void setLanes(Vector<Lane> _lanes) {
 		this.lanes = _lanes;
 	}
     
-	public synchronized Vector<Lane> getLanes() {
+	public Vector<Lane> getLanes() {
 		return lanes;
 	}
 
-	public synchronized Vector<Feeder> getFeeders() {
+	public Vector<Feeder> getFeeders() {
 		return feeders;
 	}
 
-	public synchronized void setFeeders(Vector<Feeder> feeders) {
+	public void setFeeders(Vector<Feeder> feeders) {
 		this.feeders = feeders;
 	}
 	
-	public synchronized Vector<Nest> getNests() {
+	public CopyOnWriteArrayList<Nest> getNests() {
 		return nests;
 	}
 	
-	public synchronized void setNests(Vector<Nest> nests) {
+	public void setNests(CopyOnWriteArrayList<Nest> nests) {
 		this.nests = nests;
 	}
 

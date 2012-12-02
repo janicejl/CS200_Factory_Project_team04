@@ -63,7 +63,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	//200 Hardware
 	Vector<Feeder> feeders; //Feeders
 	Vector<Lane> lanes; //Lanes
-	Vector<Nest> nestList; //Nests
+	CopyOnWriteArrayList<Nest> nestList; //Nests
 	Vector<Boolean> overFlow; //nests that are overflowed
 	TreeMap<Integer, PartInfo> feederPartInfo; //Map the partinfo that the feeder should make
 	TreeMap<Integer, Integer> feederPartNum; //Map the amount of parts to make
@@ -185,7 +185,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		
 		
 		//Nests
-		nestList = new Vector<Nest>();
+		nestList = new CopyOnWriteArrayList<Nest>();
     	nestList.add(new Nest(0, 30));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 100));	//x coordinate is zero for laneManagerApp
     	nestList.add(new Nest(0, 170));	//x coordinate is zero for laneManagerApp
@@ -738,7 +738,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			if(nestList.get(c).getPurged()==true)
 			{
 				nestList.get(c).flip();
-				if(nestList.get(c).getPurgedCount()<100 || lanes.get(c).isPurging())
+				if(nestList.get(c).getPurgedCount()<125 || lanes.get(c).isPurging())
 				{
 					nestList.get(c).setPurgedCount(nestList.get(c).getPurgedCount()+1);
 				}
@@ -746,6 +746,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 				{
 					nestList.get(c).clear();
 					nestList.get(c).setPurged(false);
+					nestList.get(c).setPurgedCount(0);
 				}
 	
 			}
@@ -1047,11 +1048,11 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		this.feeders = feeders;
 	}
 	
-	public synchronized Vector<Nest> getNests() {
+	public CopyOnWriteArrayList<Nest> getNests() {
 		return nestList;
 	}
 	
-	public void setNests(Vector<Nest> nests) {
+	public void setNests(CopyOnWriteArrayList<Nest> nests) {
 		this.nestList = nests;
 	}
 	

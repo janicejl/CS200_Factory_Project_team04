@@ -1,7 +1,7 @@
 package server;
 
 import java.util.*;
-//import java.util.concurrent.ArrayList;
+import java.util.concurrent.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -16,13 +16,13 @@ import data.Kit;
 import laneManager.Nest;
 
 public class KitAssemblyManager implements Runnable, Serializable{
-    ArrayList<Boolean> stationOccupied;
-    ArrayList<Kit> emptyKits;
-    ArrayList<Kit> finishedKits;
-    ArrayList<Kit> stationKits;
-    Vector<Kit> badKits;
-    Vector<Nest> nests;
-    Vector<Boolean> partsDropped;
+    CopyOnWriteArrayList<Boolean> stationOccupied;
+    CopyOnWriteArrayList<Kit> emptyKits;
+    CopyOnWriteArrayList<Kit> finishedKits;
+    CopyOnWriteArrayList<Kit> stationKits;
+    CopyOnWriteArrayList<Kit> badKits;
+    CopyOnWriteArrayList<Nest> nests;
+    CopyOnWriteArrayList<Boolean> partsDropped;
     boolean finishedConveyorOn;
     boolean emptyConveyorOn;
     boolean badConveyorOn = true;
@@ -46,11 +46,11 @@ public class KitAssemblyManager implements Runnable, Serializable{
     6   done    10    10
     */
     
-    public KitAssemblyManager(Vector<Nest> n){
+    public KitAssemblyManager(CopyOnWriteArrayList<Nest> n){
     	nests = n;
-        stationOccupied = new ArrayList<Boolean>();
-        stationKits = new ArrayList<Kit>();
-        partsDropped = new Vector<Boolean>();
+        stationOccupied = new CopyOnWriteArrayList<Boolean>();
+        stationKits = new CopyOnWriteArrayList<Kit>();
+        partsDropped = new CopyOnWriteArrayList<Boolean>();
         idCounter = 0;
         for(int i = 0; i < 7; i++){
             stationOccupied.add(false);
@@ -67,9 +67,9 @@ public class KitAssemblyManager implements Runnable, Serializable{
         partsDropped.add(false);
         partsDropped.add(false);
 
-        emptyKits = new ArrayList<Kit>();
-        finishedKits = new ArrayList<Kit>();
-        badKits = new Vector<Kit>();
+        emptyKits = new CopyOnWriteArrayList<Kit>();
+        finishedKits = new CopyOnWriteArrayList<Kit>();
+        badKits = new CopyOnWriteArrayList<Kit>();
         msg = new Boolean(false);
         kitStandMsg = false;
     }
@@ -204,7 +204,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
         }
     }
     
-    public void setPartsDropped(Vector<Boolean> v){
+    public void setPartsDropped(CopyOnWriteArrayList<Boolean> v){
     	partsDropped = v;
     }
 
@@ -225,27 +225,27 @@ public class KitAssemblyManager implements Runnable, Serializable{
         return incompleteConveyorOn;
     }
 
-    public ArrayList<Kit> getEmptyKits(){
+    public CopyOnWriteArrayList<Kit> getEmptyKits(){
         return emptyKits;
     }
 
-    public ArrayList<Kit> getFinishedKits(){
+    public CopyOnWriteArrayList<Kit> getFinishedKits(){
         return finishedKits;
     }
 
-    public ArrayList<Kit> getStationKits(){
+    public CopyOnWriteArrayList<Kit> getStationKits(){
         return stationKits;
     }
 
-    public ArrayList<Boolean> getStationOccupied(){
+    public CopyOnWriteArrayList<Boolean> getStationOccupied(){
         return stationOccupied;
     }
     
-    public Vector<Kit> getBadKits() {
+    public CopyOnWriteArrayList<Kit> getBadKits() {
     	return badKits;
     }
     
-    public Vector<Nest> getNests() {
+    public CopyOnWriteArrayList<Nest> getNests() {
     	return nests;
     }
     
@@ -273,19 +273,19 @@ public class KitAssemblyManager implements Runnable, Serializable{
 		this.conveyorSpeed = conveyorSpeed;
 	}
 
-	public void setStationOccupied(ArrayList<Boolean> stationOccupied) {
+	public void setStationOccupied(CopyOnWriteArrayList<Boolean> stationOccupied) {
 		this.stationOccupied = stationOccupied;
 	}
 
-	public void setEmptyKits(ArrayList<Kit> emptyKits) {
+	public void setEmptyKits(CopyOnWriteArrayList<Kit> emptyKits) {
 		this.emptyKits = emptyKits;
 	}
 
-	public void setFinishedKits(ArrayList<Kit> finishedKits) {
+	public void setFinishedKits(CopyOnWriteArrayList<Kit> finishedKits) {
 		this.finishedKits = finishedKits;
 	}
 
-	public void setStationKits(ArrayList<Kit> stationKits) {
+	public void setStationKits(CopyOnWriteArrayList<Kit> stationKits) {
 		this.stationKits = stationKits;
 	}
 
@@ -293,7 +293,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
 		this.finishedConveyorOn = finishedConveyorOn;
 	}
 
-	public void setBadKits(Vector<Kit> badKits) {
+	public void setBadKits(CopyOnWriteArrayList<Kit> badKits) {
 		this.badKits = badKits;
 	}
 	
@@ -325,7 +325,7 @@ public class KitAssemblyManager implements Runnable, Serializable{
 		this.kitStandMsg = kitStandMsg;
 	}
 
-	public Vector<Boolean> getPartsDropped() {
+	public CopyOnWriteArrayList<Boolean> getPartsDropped() {
 		return partsDropped;
 	}
 }

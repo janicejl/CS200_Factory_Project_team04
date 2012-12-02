@@ -19,7 +19,7 @@ public class Protocols implements Runnable{
 	String commandSent; //command sent from protocol
 	String protocolName; //protocol type
 	Thread thread;
-	Vector<Boolean> v;
+	CopyOnWriteArrayList<Boolean> v;
 	boolean flag = false;
 	
 	public Protocols(Socket _s, Server _app){
@@ -120,7 +120,7 @@ public class Protocols implements Runnable{
 			out.reset();
 			out.flush();
 			app.getPartsRobot().setDropParts((boolean)in.readObject()); // read in for parts robot drops
-			v = (Vector<Boolean>)in.readObject(); // read in for kit stand user drops
+			v = (CopyOnWriteArrayList<Boolean>)in.readObject(); // read in for kit stand user drops
 			if(v.get(0)){
 				app.getKitAssemblyManager().setPartsDropped(v);
 			}

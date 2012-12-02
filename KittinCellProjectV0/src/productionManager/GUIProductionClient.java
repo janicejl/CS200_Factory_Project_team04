@@ -1,10 +1,9 @@
 package productionManager;
 
 import java.io.*;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Vector;
+import java.net.*;
+import java.util.*;
+import java.util.concurrent.*;
 
 import laneManager.Nest;
 import Feeder.Feeder;
@@ -76,7 +75,7 @@ public class GUIProductionClient implements Runnable{
 			app.setKitAssemblyManager((KitAssemblyManager)in.readObject());
 			app.setLanes((Vector<Lane>)in.readObject());
 			app.setFeeders((Vector<Feeder>)in.readObject());
-			app.setNests((Vector<Nest>)in.readObject());
+			app.setNests((CopyOnWriteArrayList<Nest>)in.readObject());
 			app.setGantryManager((GantryManager)in.readObject());
 		} catch (Exception ignore){
 			ignore.printStackTrace();

@@ -1,12 +1,10 @@
 package laneManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Vector;
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,7 +22,7 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 	LaneManagerPanel laneManagerPanel;
 	private Vector<Lane> lanes = new Vector<Lane> ();
 	private Vector<Feeder> feeders = new Vector<Feeder>();
-	private Vector<Nest> nests = new Vector<Nest>();
+	private CopyOnWriteArrayList<Nest> nests = new CopyOnWriteArrayList<Nest>();
 	private Vector<Boolean> onJammeds;
 	private Vector<Boolean> overFlow;
 	
@@ -138,11 +136,11 @@ public class LaneManagerApp extends JFrame implements ActionListener {
 		this.feeders = feeders;
 	}
 
-	public Vector<Nest> getNests() {
+	public CopyOnWriteArrayList<Nest> getNests() {
 		return nests;
 	}
 
-	public void setNests(Vector<Nest> nests) {
+	public void setNests(CopyOnWriteArrayList<Nest> nests) {
 		this.nests = nests;
 	}
 	

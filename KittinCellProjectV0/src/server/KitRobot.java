@@ -5,9 +5,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.Random;
-import java.util.Vector;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.*;
 import java.io.*;
 import javax.imageio.*;
@@ -36,18 +34,18 @@ public class KitRobot implements Runnable, Serializable{
     int[] waypointY = {190,190,410,410,410,300,190};		//An array of y coordinates to help guide the kit robot to move without hitting other objects. 
     double speed = 4.0;			//speed of the kit robot. 
 	
-    Vector<String> commands;				//Vector of commands it has to proccess from the agents.
-    Vector<String> subCommands;			//Vector of commands to aid proccessing commands from agents
-    Vector<String> commandsSkipped;		//Vector of possible skipped commands. 
+    CopyOnWriteArrayList<String> commands;				//CopyOnWriteArrayList of commands it has to proccess from the agents.
+    CopyOnWriteArrayList<String> subCommands;			//CopyOnWriteArrayList of commands to aid proccessing commands from agents
+    CopyOnWriteArrayList<String> commandsSkipped;		//CopyOnWriteArrayList of possible skipped commands. 
     KitAssemblyManager kitAssemblyManager;		//A reference to kit assembly manager
 
     Thread thread;				//A separate thread for the kit robot to run in. 
 
     public KitRobot(KitAssemblyManager kam){
         kitAssemblyManager = kam;
-        commands = new Vector<String>();
-        subCommands = new Vector<String>();
-        commandsSkipped = new Vector<String>();
+        commands = new CopyOnWriteArrayList<String>();
+        subCommands = new CopyOnWriteArrayList<String>();
+        commandsSkipped = new CopyOnWriteArrayList<String>();
         x = 100;
         y = 300;
         newX = x;
@@ -281,27 +279,27 @@ public class KitRobot implements Runnable, Serializable{
         this.kit = kit;
     }
 
-    public Vector<String> getCommands() {
+    public CopyOnWriteArrayList<String> getCommands() {
         return commands;
     }
 
-    public void setCommands(Vector<String> commands) {
+    public void setCommands(CopyOnWriteArrayList<String> commands) {
         this.commands = commands;
     }
 
-    public Vector<String> getSubCommands() {
+    public CopyOnWriteArrayList<String> getSubCommands() {
         return subCommands;
     }
 
-    public void setSubCommands(Vector<String> subCommands) {
+    public void setSubCommands(CopyOnWriteArrayList<String> subCommands) {
         this.subCommands = subCommands;
     }
 
-    public Vector<String> getCommandsSkipped() {
+    public CopyOnWriteArrayList<String> getCommandsSkipped() {
         return commandsSkipped;
     }
 
-    public void setCommandsSkipped(Vector<String> commandsSkipped) {
+    public void setCommandsSkipped(CopyOnWriteArrayList<String> commandsSkipped) {
         this.commandsSkipped = commandsSkipped;
     }
 

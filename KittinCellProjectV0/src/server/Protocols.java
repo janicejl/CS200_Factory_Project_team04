@@ -332,7 +332,7 @@ public class Protocols implements Runnable{
 		}
 	}
 	
-	//Kit Assembly Protocol
+	//Production GUI Protocol
 	public void runGUIProductionProtocol(){
 		try {
 			//write kit robot

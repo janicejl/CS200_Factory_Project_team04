@@ -83,8 +83,9 @@ public class ProductionListPanel extends JPanel implements ActionListener{
 				app.getClient().setCommandSent("Start");
 				start.setText("Update Production"); //set text to update production
 				start.setEnabled(false); //turn off button when started
+				
 				app.getClient().updateThread();
-				app.next();
+				app.next2();
 			}
 			else{
 //				app.getClient().setCommandSent("Update");
@@ -97,12 +98,12 @@ public class ProductionListPanel extends JPanel implements ActionListener{
 			if(burn.getText().equals("Burn it Down!")){
 				burn.setText("Clear Fire");
 				app.graphics.burnItDown();
-				app.next();
+				app.next2();
 			}
 			else {
 				burn.setText("Burn it Down!");
 				app.graphics.clearFire();
-				app.next();				
+				app.next2();	
 			}
 		}
 	}

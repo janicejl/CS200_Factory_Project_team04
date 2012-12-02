@@ -39,10 +39,9 @@ public class VisionAgent extends Agent implements Vision {
 	Kit currentKit;
 
 	Part part;
-	//KitRobotAgent kitRobotAgent;
 	KitRobot kitRobot;
-	PartsRobot partsRobot; // no interface for this yet
-	public Nest nest1; // no interface for this yet
+	PartsRobot partsRobot; 
+	public Nest nest1;
 	public Nest nest2;
 	Server server;
 	
@@ -322,7 +321,6 @@ public class VisionAgent extends Agent implements Vision {
 		}
 		else if(type == Type.KIT_INSPECTOR)
 		{
-
 			kitRobot.msgKitInspected(currentKitConfig);
 		}
 		

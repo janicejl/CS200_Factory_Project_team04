@@ -225,15 +225,7 @@ public class FeederAgent extends Agent implements Feeder {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	//Extras	
 	
 	public void SetGantry(Gantry gantry)
 	{

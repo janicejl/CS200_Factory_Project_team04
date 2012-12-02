@@ -26,5 +26,6 @@ public interface Nest {
 	public void setVisionAgent(VisionAgent camera);
 	public Integer getIndex();
 	public boolean pickAndExecuteAnAction();
+	public void msgPurge();
 	
 }

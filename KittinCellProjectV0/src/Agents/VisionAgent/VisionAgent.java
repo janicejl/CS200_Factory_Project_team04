@@ -208,7 +208,7 @@ public class VisionAgent extends Agent implements Vision {
 			}
 		}
 		
-		if (neededPartsList.size()==0 && currentKitPartsList.size()==0) {
+		if (neededPartsList.size()==0 /*&& currentKitPartsList.size()==0*/) {
 			print("kit approved");
 			currentKitConfig.kit_state = KitConfig.KitState.GOOD;
 			approved = true;

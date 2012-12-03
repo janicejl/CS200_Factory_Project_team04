@@ -119,7 +119,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public Server(){
 		serverTest = new GUIServer(this);
 
-		OutputStream outConsole = new OutputStream() { // DO NOT REMOVE THIS BLOCK!!!
+		/*OutputStream outConsole = new OutputStream() { // DO NOT REMOVE THIS BLOCK!!!
 			@Override
 			public void write(int b) throws IOException {
 				serverTest.updateTextPane( String.valueOf((char) b));
@@ -135,7 +135,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		};
 			 
 		System.setOut(new PrintStream(outConsole, true));
-		System.setErr(new PrintStream(outConsole, true));
+		System.setErr(new PrintStream(outConsole, true));*/
 		
 		//setup layout
 		setLayout(new GridBagLayout());

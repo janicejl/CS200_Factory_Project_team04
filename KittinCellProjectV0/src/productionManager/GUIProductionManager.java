@@ -153,7 +153,7 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		if(catGIFOn) {
 			g2.drawImage(catGIF, 1000, 0, this);
 			
-			if(catGIF2 != null && gifCounter < 15)
+			if(catGIF2 != null && gifCounter < 37)
 				g2.drawImage(catGIF2, 0, 0, this);
 			else catGIF2 = null;
 				

@@ -214,12 +214,12 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 				} else {
 					jam.get(i).setText("Jam Lane");
 				}
-			} else if (ae.getSource() == overflow.get(i)) {
+			} else if(ae.getSource() == overflow.get(i)) {
 				app.getOverFlow().set(i,!app.getOverFlow().get(i));
 				if (app.getOverFlow().get(i).equals(true)) {
-					jam.get(i).setText("Fix Overflow");
+					overflow.get(i).setText("Fix Overflow");
 				} else {
-					jam.get(i).setText("Overflow Nest");
+					overflow.get(i).setText("Overflow Nest");
 				}
 			}
 		}

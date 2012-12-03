@@ -53,12 +53,13 @@ public class NestAgent extends Agent implements Nest{
 			nestslots[i]=null;
 		}
 		
-		nest = this;
-		timer.schedule(new TimerTask()
-		{
-			 public void run(){ 
+		TimerTask timer_task = new TimerTask()
+		{  
+			public void run()
+			{ System.out.println("boooom");
 				 if(lanestate != LaneStatus.gettingParts)
 				 {
+					 System.out.println("boooom2");
 					 int count = 0;
 					 for(int i=0; i< nestslots.length;i++)
 					 {
@@ -67,14 +68,17 @@ public class NestAgent extends Agent implements Nest{
 							 count++;
 						 }
 					 }
-					 if(count!= 0 && partsrobotstate == PartsRobotStatus.waitingForParts)
+					 if(count!= 0 || partsrobotstate == PartsRobotStatus.waitingForParts )
 					 {
+						 System.out.println("boooom3");
 						 camera.msgImFull(nest);
 					 }
 				 }
 			
-			 }
-		}, rn.nextInt(1000)+1000);
+			}
+		};
+		
+		timer.schedule(timer_task, (rn.nextInt(1000)+1000));
 	}
 	
 	public NestAgent(int index,Server server)
@@ -364,9 +368,10 @@ public class NestAgent extends Agent implements Nest{
 		TimerTask timer_task = new TimerTask()
 		{  
 			public void run()
-			{ 
+			{ System.out.println("boooom");
 				 if(lanestate != LaneStatus.gettingParts)
 				 {
+					 System.out.println("boooom2");
 					 int count = 0;
 					 for(int i=0; i< nestslots.length;i++)
 					 {
@@ -375,8 +380,9 @@ public class NestAgent extends Agent implements Nest{
 							 count++;
 						 }
 					 }
-					 if(count!= 0 && partsrobotstate == PartsRobotStatus.waitingForParts)
+					 if(count!= 0 || partsrobotstate == PartsRobotStatus.waitingForParts )
 					 {
+						 System.out.println("boooom3");
 						 camera.msgImFull(nest);
 					 }
 				 }

@@ -37,6 +37,7 @@ public class NestAgent extends Agent implements Nest{
 	public PartsRobotStatus partsrobotstate= PartsRobotStatus.noAction;
 	public NestStatus neststate = NestStatus.noParts;
 	public AnimationStatus animationstate = AnimationStatus.noAction;
+	boolean justasked = false;
 	
 	public NestAgent(Lane lane, Vision camera, int index)
 	{
@@ -216,6 +217,7 @@ public class NestAgent extends Agent implements Nest{
 		
 		if(neststate == NestStatus.needCheck)
 		{
+			justasked = true;
 			askForInspection();
 			return true;
 			
@@ -226,6 +228,13 @@ public class NestAgent extends Agent implements Nest{
 			settleNest();
 			return true;
 		}
+		if(!justasked && nestslots[0]!=null){
+			askForInspection();
+		}
+		if(justasked){
+			justasked = false;
+		}
+		
 		return false;
 	}
 
@@ -303,6 +312,9 @@ public class NestAgent extends Agent implements Nest{
 		if(stillempty){
 			hadeight = false;
 			askForParts();
+		}
+		if(nestslots[0]!=null){
+			neststate = NestStatus.needCheck;
 		}
 	}
 		

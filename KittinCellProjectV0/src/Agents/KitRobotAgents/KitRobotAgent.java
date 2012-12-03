@@ -37,12 +37,12 @@ public class KitRobotAgent extends Agent implements KitRobot, Serializable{
 	Timer timer = new Timer();
 	Random rn = new Random();
 	Server server;
-	TimerTask timer_task = new TimerTask(){ public void run(){ 
+/*	TimerTask timer_task = new TimerTask(){ public void run(){ 
     	
     	b_ask_for_kit = true;
     	stateChanged();
     }
-	};
+	};*/
 		
 	
 	

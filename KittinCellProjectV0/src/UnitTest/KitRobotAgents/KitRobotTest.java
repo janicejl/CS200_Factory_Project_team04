@@ -12,6 +12,7 @@ import Agents.KitRobotAgents.KitStandAgent;
 import Mocks.KitRobotAgents.MockConveyorAgent;
 import Mocks.KitRobotAgents.MockKitStand;
 import data.Kit;
+import data.KitConfig;
 
 public class KitRobotTest {
 
@@ -58,8 +59,9 @@ public class KitRobotTest {
 		assertEquals("The kit stand should have 3 messages",3,kit_stand.log.size());
 		assertTrue("The stand recieved the wrong message",kit_stand.log.containsString("Kit moved to inspection"));
 		
-		
-		robot_agent.msgKitInspected(true);
+		KitConfig kit_config = new KitConfig();
+		kit_config.kit_state = KitConfig.KitState.GOOD;
+		robot_agent.msgKitInspected(kit_config);
 		robot_agent.pickAndExecuteAnAction();
 		
 		assertEquals("The kit stand should have 4 messages",4,kit_stand.log.size());
@@ -114,7 +116,9 @@ public class KitRobotTest {
 		assertTrue("The stand recieved the wrong message",kit_stand.log.containsString("Kit moved to inspection"));
 		
 		
-		robot_agent.msgKitInspected(true);
+		KitConfig kit_config = new KitConfig();
+		kit_config.kit_state = KitConfig.KitState.GOOD;
+		robot_agent.msgKitInspected(kit_config);
 		robot_agent.pickAndExecuteAnAction();
 		
 		assertEquals("The kit stand should have 4 messages",4,kit_stand.log.size());

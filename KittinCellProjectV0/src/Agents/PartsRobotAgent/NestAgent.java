@@ -5,7 +5,8 @@ import Agents.VisionAgent.VisionAgent;
 import server.Server;
 import data.*;
 import java.util.*;
-
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Interface.PartsRobotAgent.*;
 import Interface.VisionAgent.Vision;
@@ -38,7 +39,11 @@ public class NestAgent extends Agent implements Nest{
 	public NestStatus neststate = NestStatus.noParts;
 	public AnimationStatus animationstate = AnimationStatus.noAction;
 	
-	public NestAgent(Lane lane, Vision camera, int index)
+	Timer timer = new Timer();
+	Random rn = new Random();
+	Nest nest;
+	
+	public NestAgent(Lane lane, final Vision camera, int index)
 	{
 		this.lane = lane;
 		this.camera = camera;
@@ -47,6 +52,29 @@ public class NestAgent extends Agent implements Nest{
 		for(int i = 0; i<8; i++){
 			nestslots[i]=null;
 		}
+		
+		nest = this;
+		timer.schedule(new TimerTask()
+		{
+			 public void run(){ 
+				 if(lanestate != LaneStatus.gettingParts)
+				 {
+					 int count = 0;
+					 for(int i=0; i< nestslots.length;i++)
+					 {
+						 if(nestslots == null)
+						 {
+							 count++;
+						 }
+					 }
+					 if(count!= 0 && partsrobotstate == PartsRobotStatus.waitingForParts)
+					 {
+						 camera.msgImFull(nest);
+					 }
+				 }
+			
+			 }
+		}, rn.nextInt(1000)+1000);
 	}
 	
 	public NestAgent(int index,Server server)
@@ -59,6 +87,10 @@ public class NestAgent extends Agent implements Nest{
 		for(int i = 0; i<8; i++){
 			nestslots[i]=null;
 		}
+		
+		
+		nest = this;
+		
 	}	
 
 	public void setPartsRobotAgent(PartsRobot robot){
@@ -326,8 +358,57 @@ public class NestAgent extends Agent implements Nest{
 		return partinfo;
 	}
 	
-	public void setVisionAgent(VisionAgent camera){
+	public void setVisionAgent(final VisionAgent camera){
 		this.camera = camera;
+		
+		TimerTask timer_task = new TimerTask()
+		{  
+			public void run()
+			{ 
+				 if(lanestate != LaneStatus.gettingParts)
+				 {
+					 int count = 0;
+					 for(int i=0; i< nestslots.length;i++)
+					 {
+						 if(nestslots == null)
+						 {
+							 count++;
+						 }
+					 }
+					 if(count!= 0 && partsrobotstate == PartsRobotStatus.waitingForParts)
+					 {
+						 camera.msgImFull(nest);
+					 }
+				 }
+			
+			}
+		};
+		
+		timer.schedule(timer_task, (rn.nextInt(1000)+1000));
+		
+		
+		
+		/*
+		 public void run(){ 
+			 if(lanestate != LaneStatus.gettingParts)
+			 {
+				 int count = 0;
+				 for(int i=0; i< nestslots.length;i++)
+				 {
+					 if(nestslots == null)
+					 {
+						 count++;
+					 }
+				 }
+				 if(count!= 0 && partsrobotstate == PartsRobotStatus.waitingForParts)
+				 {
+					 camera.msgImFull(nest);
+				 }
+			 }
+		
+		 }*/
+		
+		
 	}
 	
 	public Integer getIndex() {

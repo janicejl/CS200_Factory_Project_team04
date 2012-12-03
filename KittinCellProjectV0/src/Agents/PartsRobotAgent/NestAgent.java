@@ -79,7 +79,7 @@ public class NestAgent extends Agent implements Nest{
 			}
 		};
 		
-		timer.schedule(timer_task, (rn.nextInt(1000)+1000));
+		timer.schedule(timer_task, (rn.nextInt(5000)+1000));
 	}
 	
 	public NestAgent(int index,Server server)
@@ -402,7 +402,7 @@ public class NestAgent extends Agent implements Nest{
 			}
 		};
 		
-		timer.schedule(timer_task, (rn.nextInt(1000)+1000));
+		timer.schedule(timer_task, (rn.nextInt(5000)+1000));
 		
 		
 		

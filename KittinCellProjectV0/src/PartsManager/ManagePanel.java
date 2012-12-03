@@ -66,21 +66,21 @@ public class ManagePanel extends JPanel{
 		
 		manageButtons.add(new JButton("Create"));
 		manageButtons.get(manageButtons.size()-1).setAlignmentY(Component.CENTER_ALIGNMENT);
-		manageButtons.get(manageButtons.size()-1).setPreferredSize(new Dimension(70, 40));
-		manageButtons.get(manageButtons.size()-1).setMaximumSize(new Dimension(70, 40));
-		manageButtons.get(manageButtons.size()-1).setMinimumSize(new Dimension(70, 40));
+		manageButtons.get(manageButtons.size()-1).setPreferredSize(new Dimension(80, 40));
+		manageButtons.get(manageButtons.size()-1).setMaximumSize(new Dimension(80, 40));
+		manageButtons.get(manageButtons.size()-1).setMinimumSize(new Dimension(80, 40));
 		
 		manageButtons.add(new JButton("Clear"));
 		manageButtons.get(manageButtons.size()-1).setAlignmentY(Component.CENTER_ALIGNMENT);
-		manageButtons.get(manageButtons.size()-1).setPreferredSize(new Dimension(70, 40));
-		manageButtons.get(manageButtons.size()-1).setMaximumSize(new Dimension(70, 40));
-		manageButtons.get(manageButtons.size()-1).setMinimumSize(new Dimension(70, 40));
+		manageButtons.get(manageButtons.size()-1).setPreferredSize(new Dimension(80, 40));
+		manageButtons.get(manageButtons.size()-1).setMaximumSize(new Dimension(80, 40));
+		manageButtons.get(manageButtons.size()-1).setMinimumSize(new Dimension(80, 40));
 		
 		manageButtons.add(new JButton("Remove All"));
 		manageButtons.get(manageButtons.size()-1).setAlignmentY(Component.CENTER_ALIGNMENT);
-		manageButtons.get(manageButtons.size()-1).setPreferredSize(new Dimension(90, 40));
-		manageButtons.get(manageButtons.size()-1).setMaximumSize(new Dimension(90, 40));
-		manageButtons.get(manageButtons.size()-1).setMinimumSize(new Dimension(90, 40));
+		manageButtons.get(manageButtons.size()-1).setPreferredSize(new Dimension(105, 40));
+		manageButtons.get(manageButtons.size()-1).setMaximumSize(new Dimension(105, 40));
+		manageButtons.get(manageButtons.size()-1).setMinimumSize(new Dimension(105, 40));
 		
 		// group components into panel 
 		horizPanels.add(new JPanel());

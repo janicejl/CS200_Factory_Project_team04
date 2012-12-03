@@ -4,6 +4,9 @@ import  Agent.*;
 import Agents.VisionAgent.VisionAgent;
 import server.Server;
 import data.*;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,8 +41,6 @@ public class NestAgent extends Agent implements Nest{
 	public PartsRobotStatus partsrobotstate= PartsRobotStatus.noAction;
 	public NestStatus neststate = NestStatus.noParts;
 	public AnimationStatus animationstate = AnimationStatus.noAction;
-	
-	Timer timer = new Timer();
 	Random rn = new Random();
 	Nest nest;
 	
@@ -52,33 +53,7 @@ public class NestAgent extends Agent implements Nest{
 		for(int i = 0; i<8; i++){
 			nestslots[i]=null;
 		}
-		
-		TimerTask timer_task = new TimerTask()
-		{  
-			public void run()
-			{ System.out.println("boooom");
-				 if(lanestate != LaneStatus.gettingParts)
-				 {
-					 System.out.println("boooom2");
-					 int count = 0;
-					 for(int i=0; i< nestslots.length;i++)
-					 {
-						 if(nestslots == null)
-						 {
-							 count++;
-						 }
-					 }
-					 if(count!= 0 || partsrobotstate == PartsRobotStatus.waitingForParts )
-					 {
-						 System.out.println("boooom3");
-						 camera.msgImFull(nest);
-					 }
-				 }
-			
-			}
-		};
-		
-		timer.schedule(timer_task, (rn.nextInt(5000)+1000));
+
 	}
 	
 	public NestAgent(int index,Server server)
@@ -91,10 +66,6 @@ public class NestAgent extends Agent implements Nest{
 		for(int i = 0; i<8; i++){
 			nestslots[i]=null;
 		}
-		
-		
-		nest = this;
-		
 	}	
 
 	public void setPartsRobotAgent(PartsRobot robot){
@@ -456,6 +427,18 @@ public class NestAgent extends Agent implements Nest{
 	
 	public void setLane(Lane newlane){
 		this.lane = newlane;
+	}
+	private class TimerListener extends TimerTask{
+
+		@Override
+		public void run() {
+			if(partinfo!=null&&nestslots[0]!=null){
+				neststate = NestStatus.needCheck;
+				stateChanged();
+			}
+		}
+
+		
 	}
 	
 }

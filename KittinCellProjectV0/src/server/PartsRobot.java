@@ -55,7 +55,7 @@ public class PartsRobot implements Runnable, Serializable{
     boolean dropParts = false;		//whether the part robot will drop parts
     boolean dropTurn = false;		//whether the parts robot needs to try a drop this turn
     Random rand = new Random();		//generate random number for dropping
-    int dropRate = 50;				//percentage chance that part will be dropped per move
+    int dropRate = 25;				//percentage chance that part will be dropped per move
     double dropSrcY = 0;					// where the parts robot is coming from. used for drop purposes
     double dropDstY = 300;
     CopyOnWriteArrayList<Integer> canDrop = new CopyOnWriteArrayList<Integer>(); // randomized order for dropping

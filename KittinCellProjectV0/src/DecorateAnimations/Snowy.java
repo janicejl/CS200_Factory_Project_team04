@@ -63,14 +63,47 @@ public class Snowy extends JPanel implements ActionListener{
 	        
 	}
 		
+	public void update(){
+		for(int i=0;i<snowflakes.size();i++){
+			if(snowflakes.get(i).isLeft()){
+				x=Math.random()*10;
+				if(x<2){
+					snowflakes.get(i).setX(snowflakes.get(i).getX()+1);
+					snowflakes.get(i).setLeft(false);
+				}
+				else{
+					snowflakes.get(i).setX(snowflakes.get(i).getX()-1);
+					snowflakes.get(i).setY(snowflakes.get(i).getY()+1);
+					snowflakes.get(i).setLeft(true);
+				}
+			}
+			else{
+				x=Math.random()*10;
+				if(x<8){
+					snowflakes.get(i).setX(snowflakes.get(i).getX()+1);
+					snowflakes.get(i).setLeft(false);
+				}
+				else{
+					snowflakes.get(i).setX(snowflakes.get(i).getX()-1);
+					snowflakes.get(i).setY(snowflakes.get(i).getY()+2);
+					snowflakes.get(i).setLeft(true);
+				}
+			}
+		}
+	    repaint();
+		revalidate();
+	    time++;
+	    if(time==100)
+	    	time=0;
+	        
+	}
 
-
-	protected void paintComponent(Graphics g){
+	public void paintComponent(Graphics g){
 		super.paintComponent(g); 
 		Graphics2D g2 = (Graphics2D)g;
 		
 		if(time==0){
-			for (int i=0;i<1;i++){
+			for (int i=0;i<2;i++){
 				snowflakes.add(new Snow());
 			}
 			time=0;

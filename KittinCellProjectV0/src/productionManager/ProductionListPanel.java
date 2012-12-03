@@ -99,11 +99,13 @@ public class ProductionListPanel extends JPanel implements ActionListener{
 				burn.setText("Clear Fire");
 				app.graphics.burnItDown();
 				app.next2();
+				app.graphics.getKs().setTurnOn(false);
 			}
 			else {
 				burn.setText("Burn it Down!");
 				app.graphics.clearFire();
-				app.next2();	
+				app.next2();
+				app.graphics.getKs().setTurnOn(true);
 			}
 		}
 	}

@@ -42,9 +42,14 @@ public class Kit implements Serializable {
 		if(bad){
 			for(int i = 0; i < partsList.size(); i++){
 				if(partsList.get(i).getPartDropped()){
-					if(!p.getPartDropped() && p.getImagePath().equals(partsList.get(i).getImagePath())){
-						partsList.get(i).setPartDropped(false);
-						return;
+					if(p.getImagePath().equals(partsList.get(i).getImagePath())){
+						if(!p.getPartDropped()){
+							partsList.get(i).setPartDropped(false);
+							return;
+						}
+						else{
+							return;
+						}
 					}
 				}
 			}

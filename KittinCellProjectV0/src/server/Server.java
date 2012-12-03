@@ -119,14 +119,14 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public Server(){
 		serverTest = new GUIServer(this);
 
-		/*OutputStream outConsole = new OutputStream() { // DO NOT REMOVE THIS BLOCK!!!
+		OutputStream outConsole = new OutputStream() { // DO NOT REMOVE THIS BLOCK!!!
 			@Override
 			public void write(int b) throws IOException {
-				serverGUI.updateTextPane( String.valueOf((char) b));
+				serverTest.updateTextPane( String.valueOf((char) b));
 			}
 			@Override
 			public void write(byte[] b, int off, int len) throws IOException {
-				serverGUI.updateTextPane( new String(b, off, len));
+				serverTest.updateTextPane( new String(b, off, len));
 			}
 			@Override
 			public void write(byte[] b) throws IOException {
@@ -135,7 +135,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		};
 			 
 		System.setOut(new PrintStream(outConsole, true));
-		System.setErr(new PrintStream(outConsole, true));*/
+		System.setErr(new PrintStream(outConsole, true));
 		
 		//setup layout
 		setLayout(new GridBagLayout());

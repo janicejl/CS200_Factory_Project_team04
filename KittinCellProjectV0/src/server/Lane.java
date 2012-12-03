@@ -231,7 +231,7 @@ public class Lane implements ActionListener, Serializable{
 		    	}
 	    	}
 	    	if(isJammed == true){
-	    		if(Math.random()*100 > 99){
+	    		if(Math.random()*1000 > 995){
 	    			setJamOn(false);
 	    		}
 	    	}

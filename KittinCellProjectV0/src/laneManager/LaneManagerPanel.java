@@ -197,6 +197,15 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 //	}
 	
 	public void actionPerformed(ActionEvent ae) {
+		if(ae.getSource() == feederSlow){
+			app.setFeederSlow(!app.isFeederSlow());
+			if(app.isFeederSlow()){
+				feederSlow.setText("Fix Feeder Slow");
+			}
+			else{
+				feederSlow.setText("Make Feeder Slow");
+			}
+		}
 		for (int i = 0; i < 8; i++) {
 			if (ae.getSource() == jam.get(i)) {
 				app.getOnJammeds().set(i, !app.getOnJammeds().get(i));
@@ -211,14 +220,6 @@ public class LaneManagerPanel extends JPanel implements ActionListener, ChangeLi
 					jam.get(i).setText("Fix Overflow");
 				} else {
 					jam.get(i).setText("Overflow Nest");
-				}
-			} else if(ae.getSource() == feederSlow){
-				app.setFeederSlow(!app.isFeederSlow());
-				if(app.isFeederSlow()){
-					feederSlow.setText("Fix Feeder Slow");
-				}
-				else{
-					feederSlow.setText("Make Feeder Slow");
 				}
 			}
 		}

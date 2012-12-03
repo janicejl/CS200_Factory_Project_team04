@@ -103,7 +103,7 @@ public class Snowy extends JPanel implements ActionListener{
 		Graphics2D g2 = (Graphics2D)g;
 		
 		if(time==0){
-			for (int i=0;i<1;i++){
+			for (int i=0;i<2;i++){
 				snowflakes.add(new Snow());
 			}
 			time=0;

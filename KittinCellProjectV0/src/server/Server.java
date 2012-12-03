@@ -34,11 +34,6 @@ import GantryManager.GantryManager;
 
 public class Server extends JFrame implements Runnable, ActionListener{
 	
-//	ServerPanel gui; //panel for gui
-//	ServerKitTestPanel kitTest; //panel for kit assembly commands
-//	ServerPartTestPanel partsTest; //panel for parts robot commands
-//	ServerLaneTestPanel laneTest; //panel for lane commands
-//	ServerGantryTestPanel gantryTest; //panel for gantry commands
 	GUIServer serverTest;
 	Integer phase; //phase to determine which panel to display (old)
 	
@@ -47,12 +42,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	ServerSocket ss; //serversocket
 	Socket s; //socket reference to connect to each manager
-//	DetermineProtocol determine;
-//	KitAssemblyProtocol kitPro;
-//	LaneManagerProtocol lanePro;
-//	PartsRobotProtocol partsPro;
-//	GantryManagerProtocol gantryPro;
-	
+
 	ArrayList<PartInfo> partsList; //available parts to make
 	ArrayList<KitInfo> kitsList; //available kit configurations
 	ArrayList<Job> jobsList; //current jobs
@@ -119,7 +109,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	public Server(){
 		serverTest = new GUIServer(this);
 
-		/*OutputStream outConsole = new OutputStream() { // DO NOT REMOVE THIS BLOCK!!!
+		//Console output to server gui
+		OutputStream outConsole = new OutputStream() { // DO NOT REMOVE THIS BLOCK!!!
 			@Override
 			public void write(int b) throws IOException {
 				serverTest.updateTextPane( String.valueOf((char) b));
@@ -135,30 +126,12 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		};
 			 
 		System.setOut(new PrintStream(outConsole, true));
-		System.setErr(new PrintStream(outConsole, true));*/
+		System.setErr(new PrintStream(outConsole, true));
+		//end code for console output
 		
 		//setup layout
 		setLayout(new GridBagLayout());
-//		gui = new ServerPanel(this);
 		phase = new Integer(0);
-//		GridBagConstraints c = new GridBagConstraints();
-//		c.gridx = 0;	
-//		c.gridy = 0;
-//		add(gui, c);
-//		//Testing buttons
-//		kitTest = new ServerKitTestPanel(this);
-//		kitTest.setPreferredSize(new Dimension(300, 400));
-//		kitTest.setMaximumSize(new Dimension(300, 400));
-//		kitTest.setMinimumSize(new Dimension(300, 400));
-//		partsTest = new ServerPartTestPanel(this);
-//		partsTest.setPreferredSize(new Dimension(300, 400));
-//		partsTest.setMaximumSize(new Dimension(300, 400));
-//		partsTest.setMinimumSize(new Dimension(300, 400));
-//		laneTest = new ServerLaneTestPanel(this);
-//		laneTest.setPreferredSize(new Dimension(300, 400));
-//		laneTest.setMaximumSize(new Dimension(300, 400));
-//		laneTest.setMinimumSize(new Dimension(300, 400));
-//		gantryTest = new ServerGantryTestPanel(this);
 		running = false; //set running state to false
 		
 		//200 Hardware Setup
@@ -240,13 +213,8 @@ public class Server extends JFrame implements Runnable, ActionListener{
     	//201 Agents Setup
     	
         //Gantry Controller and Agent
-		//gantryController = new GantryControllerAgent(this);
 		gantry1 = new GantryAgent("gantry1", this);
-		//gantry1.setGantryController(gantryController);
-	//	gantryController.msgGantryAdded(gantry1);
-		//gantry2 = new GantryAgent("gantry2", this);
-		//gantry2.setGantryController(gantryController);
-		//gantryController.msgGantryAdded(gantry2);
+		
 		
 		//Nest Agents
     	NestAgent nest1 = new NestAgent(1,this);
@@ -301,10 +269,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		feeder2.SetGantry(gantry1);
 		feeder3.SetGantry(gantry1);
 		feeder4.SetGantry(gantry1);
-	//	feeder1.setGantryController(gantryController);
-		//feeder2.setGantryController(gantryController);
-	//	feeder3.setGantryController(gantryController);
-		//feeder4.setGantryController(gantryController);
 		lane1.setFeeder(feeder1);
 		lane2.setFeeder(feeder1);
 		lane3.setFeeder(feeder2);
@@ -420,13 +384,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;	
 		c.gridy = 0;
-//		add(kitTest, c);
-//		c.gridx = 1;
-//		add(partsTest, c);
-//		c.gridx = 2;
-//		add(laneTest, c);
-//		c.gridx = 3;
-//		add(gantryTest,c);
 		add(serverTest,c);
 		phase = 1;
 		try{
@@ -451,36 +408,7 @@ public class Server extends JFrame implements Runnable, ActionListener{
 			try {
 				s = ss.accept();
 				new Protocols(s, this);
-				
-				/*determine = new DetermineProtocol(s, this);
-				if(getClientType().equals("Kit Assembly")){
-					//kitPro = new KitAssemblyProtocol(s, this); //create proper protocol
-					removeCenter();
-					GridBagConstraints c = new GridBagConstraints();
-					c.gridx = 0;	
-					c.gridy = 0;
-					add(kitTest, c);
-					phase = 1;
-				}
-				else if(getClientType().equals("Parts Robot")){
-					partsPro = new PartsRobotProtocol(s, this);
-					removeCenter();
-					GridBagConstraints c = new GridBagConstraints();
-					c.gridx = 0;	
-					c.gridy = 0;
-					add(partsTest, c);
-					phase = 2;
-				}
-				else if(getClientType().equals("Lane Manager")){
-					lanePro = new LaneManagerProtocol(s, this);
-					removeCenter();
-					GridBagConstraints c = new GridBagConstraints();
-					c.gridx = 0;	
-					c.gridy = 0;
-					add(laneTest, c);
-					phase = 3;
-				}
-	*/		} catch (IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}		
@@ -578,8 +506,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	   	else if(process.equals("Get Job")){
 	   		if(jobsList.size() != 0){
 	   			getFCSAgent().msgHereIsKitConfig(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
-	//   	    getPartsRobotAgent().msgMakeThisKit(jobsList.get(0).getKit(), jobsList.get(0).getAmount());
-	//   	    getKitRobotAgent().msgGetKits(jobsList.get(0).getAmount());
 	   		}
 	   		else{
 	   			running = false;
@@ -651,7 +577,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
     				}
     				else{
     					if (feeders.get(num/2).getPartAmount() > 0){
-			//    			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
 			    			lanes.get(num).setRelease(true);
 			    			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
 			    		}
@@ -663,7 +588,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
     				}
     				else{
     					if (feeders.get(num/2).getPartAmount() > 0){
-			//    			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
 			    			lanes.get(num).setRelease(true);
 			    			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
 			    		}
@@ -672,7 +596,6 @@ public class Server extends JFrame implements Runnable, ActionListener{
     		}
     		else{
 	    		if (feeders.get(num/2).getPartAmount() > 0){
-	//    			lanes.get(num).addPart(feeders.get(num/2).getParts().get(0));
 	    			lanes.get(num).setRelease(true);
 	    			lanes.get(num).setReleaseCount(lanes.get(num).getReleaseCount() + 1);
 	    		}
@@ -946,32 +869,15 @@ public class Server extends JFrame implements Runnable, ActionListener{
 	
 	//Paint Function for Test Panels
 	public void paint(Graphics g){
-//		if(phase.equals(0)){
-//			gui.repaint();
-//		}
 		if(phase.equals(1)){
-//			kitTest.repaint();
-//			partsTest.repaint();
-//			laneTest.repaint();
-//			gantryTest.repaint();
 			serverTest.repaint();
 		}
-//		else if(phase.equals(2)){
-//			partsTest.repaint();
-//		}
-//		else if(phase.equals(3)){
-//			laneTest.repaint();
-//		}
 		revalidate();
 	}
 	
 	//Revalidate functions for certain IDE's that don't support it for JFrames
 	public void revalidate(){
-//		gui.revalidate();
-//		kitTest.revalidate();
-//		partsTest.revalidate();
-//		laneTest.revalidate();
-//		gantryTest.revalidate();
+		serverTest.revalidate();
 	}
 	
 	//Main Function

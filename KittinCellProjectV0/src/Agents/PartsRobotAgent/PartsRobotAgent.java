@@ -269,6 +269,10 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 			kit1.state = KitStatus.available;
 			if(count == 1)
 				currentkit = CurrentKit.kit1;
+			if(count < 1){
+				currentkit = CurrentKit.kit1;
+				count++;
+			}
 		}
 		else{
 			kit2.partsneeded.clear();
@@ -278,6 +282,10 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 			kit2.state = KitStatus.available;
 			if(count == 1)
 				currentkit = CurrentKit.kit2;
+			if(count < 1){
+				currentkit = CurrentKit.kit2;
+				count++;
+			}
 
 		}
 		switchkit = true;
@@ -390,9 +398,9 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	}
 
 	
-		//print("Nothing to do, sleeping. Kit1 recipe size: " + kit1.partsneeded.size() + ". Kit 1 available: " + kit1.state);
-		//print("Kit2 recipe size: " + kit2.partsneeded.size() + ". Kit 2 available: " + kit2.state);
-		//print("Current Kit: " + currentkit);
+		print("Nothing to do, sleeping. Kit1 recipe size: " + kit1.partsneeded.size() + ". Kit 1 available: " + kit1.state);
+		print("Kit2 recipe size: " + kit2.partsneeded.size() + ". Kit 2 available: " + kit2.state);
+		print("Current Kit: " + currentkit);
 		return false;
 	}
 
@@ -461,7 +469,7 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 		print("Asking if there is a free available kit");
 		if(kit1.state == KitStatus.notAvailable)
 			kit1.state = KitStatus.pending;
-		else
+		else if(kit2.state == KitStatus.notAvailable)
 			kit2.state = KitStatus.pending;
 		kitstand.msgIsThereEmptyKit();
 	}	
@@ -639,20 +647,20 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 
 		if(kit1.partsneeded.isEmpty()){
 			print("Kit 1 finished");
+			kit1.state = KitStatus.notAvailable;
 			kitstand.msgKitIsDone(0);
 			for(PartInfo type : recipe){
 				kit1.partsneeded.add(type);
 			}
-			kit1.state = KitStatus.notAvailable;
 			currentkit = CurrentKit.kit2;
 		}
 		if(kit2.partsneeded.isEmpty()){
 			print("Kit 2 finished");
+			kit2.state = KitStatus.notAvailable;
 			kitstand.msgKitIsDone(1);
 			for(PartInfo type : recipe){
 				kit2.partsneeded.add(type);
 			}
-			kit2.state = KitStatus.notAvailable;
 			currentkit = CurrentKit.kit1;
 		}
 	}

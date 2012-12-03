@@ -9,11 +9,11 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
 public class Kitten {
-	BufferedImage image;
-	Dimension size;
-	boolean hide,appeared,finished;
-	double x;
-	double y;
+	BufferedImage image; //image of kitten
+	Dimension size; // size of image
+	boolean hide,appeared,finished; // whether the kitten is now hide, appeared or finish appeared
+	double x;//x pos
+	double y;//y pos
 	
 	public Kitten(String s) {
 		size = new Dimension();

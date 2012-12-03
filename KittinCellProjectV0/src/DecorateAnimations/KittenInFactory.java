@@ -18,12 +18,12 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class KittenInFactory extends JPanel{
-	ArrayList<Kitten> kittens;
+	ArrayList<Kitten> kittens;// list of kittens
 	//Timer timer;
-	int time=0;
-	int intime=0;
-	int rand=1;
-	boolean turnOn=true;
+	int time=0; //record time
+	int intime=0; //for little delay
+	int rand=1; //which kitten goes up
+	boolean turnOn=true; //whether animation is on or off
 	public KittenInFactory() {
 		kittens = new ArrayList<Kitten>();
 		kittens.add(new Kitten("images/kk1.png"));

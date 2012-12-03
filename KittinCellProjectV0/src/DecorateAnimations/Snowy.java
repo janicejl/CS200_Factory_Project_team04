@@ -16,7 +16,7 @@ public class Snowy extends JPanel implements ActionListener{
 	private double x;
 	private double y = 0;
 	int time=0;
-	ArrayList<Snow> snowflakes;
+	ArrayList<Snow> snowflakes; //list of snowflakes
 	
 	public Snowy() {
 		snowflakes=new ArrayList<Snow>();

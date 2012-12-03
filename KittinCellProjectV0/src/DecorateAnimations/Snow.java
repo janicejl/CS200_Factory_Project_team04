@@ -11,10 +11,10 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class Snow{
-	BufferedImage snowflake;
-	double x;
-	double y;
-	boolean goLeft;
+	BufferedImage snowflake;//image
+	double x;//x pos
+	double y; //y pos
+	boolean goLeft;//if it is now going left
 	public Snow() {
 		try {
 			snowflake = ImageIO.read(new File("images/snow.png"));

@@ -125,6 +125,9 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		laneGraphics.setLanes(lanes);
 		laneGraphics.update();
 		gantryGraphics.setGantryManager(manager);
+		if(fireOn){
+			fire.update();
+		}
 	}
 	
 	//paint function. 

@@ -8,11 +8,10 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 
-public class Fire extends JPanel implements ActionListener{
+public class Fire extends JPanel{
 	BufferedImage img = null;			// Image for drawing fire off-screen
 	Graphics g2;		// Graphics object for painting on img
 	Random rng;			// Random number generator
-	Timer timer;		// timer
 	Color colors[];		// Color gradient array
 	int values[][];		// 2D array of fire color indices
 	int color1, color2;
@@ -52,10 +51,6 @@ public class Fire extends JPanel implements ActionListener{
 
 		// 2D FIRE ARRAY
 		init_values();
-		// ANIMATION TIMER
-		
-		timer = new Timer(10, this); // update timer
-		timer.start();
 	}
 	
 	// Initialize array for color gradient: white - orange - red - black
@@ -120,30 +115,29 @@ public class Fire extends JPanel implements ActionListener{
 		g2.drawImage(img,0,0,this);		
 	}
 
-	public void actionPerformed(ActionEvent e)	{
-		if (e.getSource() == timer){	
-			speckle();		// Modify the bottom row for the fire
-			disperse();		// Apply the simple fire algorithm everywhere else
-			cntr++;
-		
-			if (cntr == 5){
-				cntr = 0;
-				fireLevel++;
-				//System.out.println(fireLevel);
-				for (int r = 0; r < rows; r++){
-					if(r != rows - 1){
-						for (int c = 1; c < cols; c++){
-							values[r][c] = values[r+1][c];
-						}					
+	public void update()	{
+		speckle();		// Modify the bottom row for the fire
+		disperse();		// Apply the simple fire algorithm everywhere else
+		cntr++;
+	
+		if (cntr == 2){
+			cntr = 0;
+			fireLevel++;
+			//System.out.println(fireLevel);
+			for (int r = 0; r < rows; r++){
+				if(r != rows - 1){
+					for (int c = 1; c < cols; c++){
+						values[r][c] = values[r+1][c];
+					}					
+				}
+				else {
+					for (int c = 1; c < cols; c++){
+						values[r][c] = values[r-1][c];
 					}
-					else {
-						for (int c = 1; c < cols; c++){
-							values[r][c] = values[r-1][c];
-						}
-					}				
-				}			
-			}
+				}				
+			}			
 		}
+	
 	}
 
 	// Modify the bottom row of pixels for the fire

@@ -67,17 +67,19 @@ public class VisionAgentTest extends TestCase {
 		assertTrue("should not be waiting for any other cameras", vision.waiting==false);
 		
 		// vision.pickAndExecuteAnAction();
-		assertTrue("camera should have taken the picture", vision.state==State.PICTURE_TAKEN);
+		System.out.println(vision.state+"\n\n\n\n");
+		assertTrue("camera should not have taken the picture yet", vision.state==State.SCHEMATIC_RECEIVED);
 		assertTrue("parts should not have been approved yet", vision.approved==false);
 		
 		vision.pickAndExecuteAnAction();
 		assertTrue("full nests map should remove inspected nests", vision.fullNestsMap.size()==2);
-		assertTrue("parts should be approved", vision.approved==true);
-		assertTrue("state should have changed back to schematic received", vision.state==State.SCHEMATIC_RECEIVED);
+		assertTrue("camera should have taken the picture", vision.state==State.PICTURE_TAKEN);
+		assertTrue("parts should be approved", vision.approved==false);	
 		
 		vision.pickAndExecuteAnAction();
 		assertTrue("parts should no longer be approved", vision.approved==false);
-		
+		assertTrue("state should have changed back to schematic received", vision.state==State.SCHEMATIC_RECEIVED);
+
 	}
 	
 	// test bad nests
@@ -155,14 +157,11 @@ public class VisionAgentTest extends TestCase {
 		
 		System.out.println("\n\n\n" + vision.state + "\n\n\n");
 		assertTrue("should have taken the picture", vision.state==State.PICTURE_TAKEN);
-		assertTrue("should not be waiting for any other cameras", vision.waiting==false);
 		
 		vision.pickAndExecuteAnAction();
 		assertTrue("status should have changed back to schematic received", vision.state==State.SCHEMATIC_RECEIVED);
-		
-		/* this is a problem - it should not approve the nests but it is */
-		// assertTrue("parts should not have been approved", vision.approved==false);
-		assertTrue("parts should not have been approved", vision.approved==true);
+	
+		assertTrue("parts should not have been approved", vision.approved==false);
 		
 		nest2.msgNeedThisPart(new PartInfo("badpart", "imagepath"));
 		vision.pickAndExecuteAnAction();

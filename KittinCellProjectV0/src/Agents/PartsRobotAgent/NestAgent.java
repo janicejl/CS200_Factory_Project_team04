@@ -21,6 +21,7 @@ public class NestAgent extends Agent implements Nest{
 	Vision camera;
 	String name;
 	Server server;
+	boolean hadeight = false;
 		
 	boolean allowextraparts = false;
 	public int index;
@@ -79,8 +80,12 @@ public class NestAgent extends Agent implements Nest{
 				{
 					nestslots[i] = p;
 					acceptedpart =true;
-					if(i == 0)
+					if(i == 0){
 						neststate = NestStatus.needCheck;
+					}
+					if(i==7){
+						hadeight = true;
+					}
 					break;
 				}
 			}
@@ -202,8 +207,8 @@ public class NestAgent extends Agent implements Nest{
 			}
 		}
 		if(lanestate == LaneStatus.hasPart){
-			int x = generator.nextInt(2);
-			if(x==1 && allowextraparts){
+			int x = generator.nextInt(10);
+			if(x==1 && false){            // =========SWITCH false with 'allowextraparts' boolean to enable nest Overflow =========================
 				acceptPart();
 				return true;
 			}
@@ -241,6 +246,7 @@ public class NestAgent extends Agent implements Nest{
 		lane.msgPurge();
 		animationstate = AnimationStatus.noAction;
 		neststate = NestStatus.noParts;
+		hadeight = false;
 
 	}
 
@@ -272,6 +278,11 @@ public class NestAgent extends Agent implements Nest{
 			}
 			
 		}
+		if(nestslots[7]==null && extraparts.size()>0){
+			nestslots[7]=extraparts.get(0);
+			extraparts.remove(0);
+		}
+		
 		//if(lanestate == LaneStatus.hasPart && nestslots[7]==null){
 		//	acceptPart();
 		//}
@@ -290,6 +301,7 @@ public class NestAgent extends Agent implements Nest{
 			}
 		}
 		if(stillempty){
+			hadeight = false;
 			askForParts();
 		}
 	}

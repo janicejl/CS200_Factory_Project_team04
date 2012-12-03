@@ -256,30 +256,41 @@ public class VisionAgent extends Agent implements Vision {
 		}
 		else{
 			
-			boolean nest1Approved=false;
-			boolean nest2Approved=false;
-			
-			// nest1.getPartType should return the string of the name that the nest should hold
-			if (nest1.getPartInfo() == fullNestsPartsList.get( nest1.getNumber()-1) ) {
-				nest1Approved=true;
+			boolean nest1Approved=true;
+			boolean nest2Approved=true;
+			if(server.getNests().get(nest1.getIndex()-1).getParts().size()==0){
+				nest1Approved = false;
+			}
+			for(Part p:server.getNests().get(nest1.getIndex()-1).getParts()){
+				if(!p.info.getImagePath().equals(fullNestsPartsList.get(nest1.getIndex()-1).getImagePath()))
+				nest1Approved = false;
+			}
+			if(nest1Approved){
 				print(nest1.getName() + " approved");
 			}
 			else {
-				nest1Approved=false;
 				nest1.msgBadParts();
 				print(nest1.getName() + " not approved");
 			}
-					
-			if (nest2.getPartInfo() == fullNestsPartsList.get(nest2.getNumber()-1) ) { 
-				nest2Approved=true;
+			
+			
+			if(server.getNests().get(nest2.getIndex()-1).getParts().size()==0){
+				nest2Approved = false;
+			}
+			for(Part p:server.getNests().get(nest2.getIndex()-1).getParts()){
+				if(!p.info.getImagePath().equals(fullNestsPartsList.get(nest2.getIndex()-1).getImagePath()))
+				nest2Approved = false;
+			}
+			if(nest2Approved){
 				print(nest2.getName() + " approved");
 			}
 			else {
-				nest2Approved=false;
 				nest2.msgBadParts();
 				print(nest2.getName() + " not approved");
 			}
-						
+			
+			
+			
 			if (nest1Approved && nest2Approved) {
 				approved=true;
 				print("consecutive nests approved");
@@ -287,6 +298,12 @@ public class VisionAgent extends Agent implements Vision {
 			else {
 				approved=false;
 				print("consecutive not approved");
+			}
+			if(!nest1Approved){
+				fullNestsMap.remove(nest1.getNumber());
+			}
+			if(!nest2Approved){
+				fullNestsMap.remove(nest2.getNumber());
 			}
 			approveOrDenyParts();
 		}	
@@ -322,10 +339,10 @@ public class VisionAgent extends Agent implements Vision {
 			if (approved) {
 				partsRobot.msgPartsApproved(nest1.getNumber());
 				partsRobot.msgPartsApproved(nest2.getNumber());				
-			}
+			
 			fullNestsMap.remove(nest1.getNumber());
 			fullNestsMap.remove(nest2.getNumber());
-			
+			}
 			nest1 = null;
 			nest2 = null;
 		}

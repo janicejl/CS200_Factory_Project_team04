@@ -390,9 +390,9 @@ public class PartsRobotAgent extends Agent implements PartsRobot {
 	}
 
 	
-		print("Nothing to do, sleeping. Kit1 recipe size: " + kit1.partsneeded.size() + ". Kit 1 available: " + kit1.state);
-		print("Kit2 recipe size: " + kit2.partsneeded.size() + ". Kit 2 available: " + kit2.state);
-		print("Current Kit: " + currentkit);
+		//print("Nothing to do, sleeping. Kit1 recipe size: " + kit1.partsneeded.size() + ". Kit 1 available: " + kit1.state);
+		//print("Kit2 recipe size: " + kit2.partsneeded.size() + ". Kit 2 available: " + kit2.state);
+		//print("Current Kit: " + currentkit);
 		return false;
 	}
 

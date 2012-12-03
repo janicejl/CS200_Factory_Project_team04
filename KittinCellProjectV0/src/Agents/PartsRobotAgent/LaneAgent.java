@@ -95,6 +95,7 @@ public class LaneAgent extends Agent implements Lane{
 		stateChanged();
 	}
 	public void msgLaneUnJammed(){
+		//print("lane unjammed");
 		lanejamstate = LaneJamStatus.noAction;
 		stateChanged();
 	}
@@ -158,7 +159,6 @@ public class LaneAgent extends Agent implements Lane{
 			}
 			
 		}
-		print("sleeping... Neststate = " + neststate);
 		return false;
 	}
 	

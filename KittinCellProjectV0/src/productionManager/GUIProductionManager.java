@@ -30,6 +30,8 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 	LaneGraphics laneGraphics;					//reference to the lane graphics
 	GUIGantryManager gantryGraphics;			//reference to the gantry graphics
 	BufferedImage background = null;			//image of the background of the factory. 
+	
+	KittenInFactory ks;                         //panel for kittens sneaking around
 	Image catGIF;
 	Image catGIF2;
 	boolean catGIFOn;
@@ -89,12 +91,14 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
         	System.out.println("Kitty no load :(");
         }
 		
-		snowy = new Snowy();
-//		timer = new Timer(10, this);
-//		timer.start();
-
-		//add(snowy);
-		add(base);
+		ks = new KittenInFactory();
+			
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx=0;
+		c.gridy=0;
+			
+		add(ks,c);
+		add(base,c);
 		
 	}
 	

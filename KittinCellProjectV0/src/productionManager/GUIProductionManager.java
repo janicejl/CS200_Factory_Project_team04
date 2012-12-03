@@ -32,6 +32,8 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 	BufferedImage background = null;			//image of the background of the factory. 
 	
 	KittenInFactory ks;                         //panel for kittens sneaking around
+	Snowy snowy;                                //snowy background
+	
 	Image catGIF;
 	Image catGIF2;
 	boolean catGIFOn;
@@ -91,7 +93,9 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
         }
 		
 		ks = new KittenInFactory();
+		snowy = new Snowy();
 		add(ks);
+		add(snowy);
 		
 		add(base);
 		
@@ -126,6 +130,7 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		laneGraphics.update();
 		gantryGraphics.setGantryManager(manager);
 		ks.update();
+		snowy.update();
 		if(fireOn){
 			fire.update();
 			
@@ -144,6 +149,7 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		gantryGraphics.paintComponent(g);
 		g.translate(-830, 0);
 		ks.paintComponent(g);
+		snowy.paintComponent(g);
 		if(fireOn){
 			fire.paintFire(g2);
 			

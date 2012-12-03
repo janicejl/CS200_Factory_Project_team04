@@ -2,6 +2,8 @@ package DecorateAnimations;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,24 +17,35 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class KittenInFactory extends JPanel implements ActionListener{
+public class KittenInFactory extends JPanel{
 	ArrayList<Kitten> kittens;
-	Timer timer;
+	//Timer timer;
 	int time=0;
 	int intime=0;
 	int rand=1;
 	boolean turnOn=true;
 	public KittenInFactory() {
 		kittens = new ArrayList<Kitten>();
-		kittens.add(new Kitten(new JLabel(new ImageIcon("images/kk1.png"))));
-		kittens.add(new Kitten(new JLabel(new ImageIcon("images/kk2.png"))));
-		kittens.add(new Kitten(new JLabel(new ImageIcon("images/kk3.png"))));
-		kittens.add(new Kitten(new JLabel(new ImageIcon("images/kk4.png"))));
-		kittens.add(new Kitten(new JLabel(new ImageIcon("images/kk5.png"))));
-		kittens.add(new Kitten(new JLabel(new ImageIcon("images/kk6.png"))));
-		kittens.add(new Kitten(new JLabel(new ImageIcon("images/kk7.png"))));
-		kittens.add(new Kitten(new JLabel(new ImageIcon("images/kk8.png"))));
-		kittens.add(new Kitten(new JLabel(new ImageIcon("images/kk0.png"))));
+		kittens.add(new Kitten("images/kk1.png"));
+		kittens.add(new Kitten("images/kk2.png"));
+		kittens.add(new Kitten("images/kk3.png"));
+		kittens.add(new Kitten("images/kk4.png"));
+		kittens.add(new Kitten("images/kk5.png"));
+		kittens.add(new Kitten("images/kk6.png"));
+		kittens.add(new Kitten("images/kk7.png"));
+		kittens.add(new Kitten("images/kk8.png"));
+		kittens.add(new Kitten("images/kk0.png"));
+		
+		kittens.get(0).setXY(0, 600);
+		kittens.get(1).setXY(1210, 600);
+		kittens.get(2).setXY(0-kittens.get(2).getSize().width, 400);
+		kittens.get(3).setXY(200, 600);
+		kittens.get(4).setXY(-kittens.get(4).getSize().width, 180);
+		kittens.get(5).setXY(100, 0-kittens.get(5).getSize().height);
+		kittens.get(6).setXY(1200,0-kittens.get(5).getSize().height-20);
+		kittens.get(7).setXY(800,0-kittens.get(5).getSize().height-10);
+		kittens.get(8).setXY(760,600);
+		//System.out.println(""+kittens.get(2).getSize().width);
 		
 		this.setVisible(true);
 		this.setPreferredSize(new Dimension(1200,600));
@@ -40,75 +53,36 @@ public class KittenInFactory extends JPanel implements ActionListener{
 		this.setMaximumSize(new Dimension(1200,600));
 		//this.setBackground(Color.green);
 		this.setOpaque(false);
+
 		
-		setLayout(null);
-
-		Insets insets = this.getInsets();
-		for(int i=0;i<kittens.size();i++){
-			this.add(kittens.get(i).getImage());
-		}
-
-			kittens.get(0).getImage().setBounds(0, 590, 
-					kittens.get(0).getSize().width, kittens.get(0).getSize().height); //set the original location of kittens
-
-			kittens.get(1).getImage().setBounds(1180, 590, 
-					kittens.get(1).getSize().width, kittens.get(1).getSize().height); 
-			
-			//System.out.println(""+kittens.get(2).getSize().width);
-			kittens.get(2).getImage().setBounds(0-kittens.get(2).getSize().width, 400,
-					kittens.get(2).getSize().width, kittens.get(2).getSize().height); 
-			
-			kittens.get(3).getImage().setBounds(200, 590,
-					kittens.get(3).getSize().width, kittens.get(3).getSize().height);
-
-			kittens.get(4).getImage().setBounds(0-kittens.get(4).getSize().width, 180,
-					kittens.get(4).getSize().width, kittens.get(4).getSize().height);
-			
-			kittens.get(5).getImage().setBounds(100, 0-kittens.get(5).getSize().height,
-					kittens.get(5).getSize().width, kittens.get(5).getSize().height);
-			
-			kittens.get(6).getImage().setBounds(1180, 0-kittens.get(6).getSize().height,
-					kittens.get(6).getSize().width, kittens.get(6).getSize().height);
-			
-			kittens.get(7).getImage().setBounds(800, 0-kittens.get(7).getSize().height,
-					kittens.get(7).getSize().width, kittens.get(7).getSize().height);
-			
-			kittens.get(8).getImage().setBounds(760, 590, 
-					kittens.get(8).getSize().width, kittens.get(8).getSize().height);
-			
-			
-			this.repaint();
-			this.revalidate();// update
-			
-			timer = new Timer(20,this);
-			timer.start();
+		//timer = new Timer(20,this);
+		//timer.start();
 	}
-
 	
-	public static void main(String[] args) {
-		JFrame j = new JFrame();
-		KittenInFactory k = new KittenInFactory();
-		j.setSize(1200,600);
-		j.setVisible(true);
-		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		j.add(k);
+	public void paintComponent(Graphics g){
+		super.paintComponent(g); 
+		Graphics2D g2 = (Graphics2D)g;
+		for (int i=0;i<kittens.size();i++){
+			g2.drawImage(kittens.get(i).getImage(),(int)kittens.get(i).getX(),
+					(int)kittens.get(i).getY(),this);
+		}
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void update() {
 		if(turnOn){
 		for(int i=0;i<9;i++){
 			if(kittens.get(i).isFinished()){
 				if(i!=8){
 					rand=-1;
-					if(time==10){
+					if(time==2){
 						rand=i+1;
+						System.out.println(""+rand);
 						kittens.get(i).setFinished(false);
 					}
 				}
 				else {
 					rand=-1;
-					if(time==10){
+					if(time==2){
 						rand=0;
 						kittens.get(i).setFinished(false);
 					}
@@ -132,8 +106,8 @@ public class KittenInFactory extends JPanel implements ActionListener{
 				condition=3;
 			}
 			if(condition==3){
-				if (kittens.get(x).getImage().getLocation().y>(580-kittens.get(x).size.height)){
-					kittens.get(x).getImage().setLocation(kittens.get(x).getImage().getLocation().x, kittens.get(x).getImage().getLocation().y-1);
+				if (kittens.get(x).getY()>(590-kittens.get(x).getSize().height)){
+					kittens.get(x).setY(kittens.get(x).getY()-3);
 				}
 				else{
 					intime++;
@@ -144,8 +118,8 @@ public class KittenInFactory extends JPanel implements ActionListener{
 				}
 			}
 			if(condition==1){
-				if(kittens.get(x).getImage().getLocation().y<(600)){
-					kittens.get(x).getImage().setLocation(kittens.get(x).getImage().getLocation().x, kittens.get(x).getImage().getLocation().y+1);
+				if(kittens.get(x).getY()<(600)){
+					kittens.get(x).setY(kittens.get(x).getY()+3);
 				}
 				else{
 					kittens.get(x).setHide(true);
@@ -175,8 +149,9 @@ public class KittenInFactory extends JPanel implements ActionListener{
 				condition=3;
 			}
 			if(condition==3){
-				if (kittens.get(1).getImage().getLocation().y>(580-kittens.get(1).size.height)){
-					kittens.get(1).getImage().setLocation(kittens.get(1).getImage().getLocation().x-1, kittens.get(1).getImage().getLocation().y-1);
+				if (kittens.get(1).getY()>(600-kittens.get(1).getSize().height)){
+					kittens.get(1).setX(kittens.get(1).getX()-3);
+					kittens.get(1).setY(kittens.get(1).getY()-3);
 				}
 				else{
 					intime++;
@@ -187,8 +162,9 @@ public class KittenInFactory extends JPanel implements ActionListener{
 				}
 			}
 			if(condition==1){
-				if(kittens.get(1).getImage().getLocation().y<(600)){
-					kittens.get(1).getImage().setLocation(kittens.get(1).getImage().getLocation().x+1, kittens.get(1).getImage().getLocation().y+1);
+				if(kittens.get(1).getY()<(600)){
+					kittens.get(1).setX(kittens.get(1).getX()+3);
+					kittens.get(1).setY(kittens.get(1).getY()+3);
 				}
 				else{
 					kittens.get(1).setHide(true);
@@ -202,7 +178,7 @@ public class KittenInFactory extends JPanel implements ActionListener{
 			}
 		}
 		
-		if(rand==2||rand==4){//movement of kitten 3
+		if(rand==2||rand==4){//movement of kitten 3 and 5
 			int condition = -1;
 			int x=rand;
 			if(kittens.get(x).isHide()&& !kittens.get(x).isAppeared()){
@@ -218,8 +194,8 @@ public class KittenInFactory extends JPanel implements ActionListener{
 				condition=3;
 			}
 			if(condition==3){
-				if (kittens.get(x).getImage().getLocation().x<0){
-					kittens.get(x).getImage().setLocation(kittens.get(x).getImage().getLocation().x+1, kittens.get(x).getImage().getLocation().y);
+				if (kittens.get(x).getX()<-10){
+					kittens.get(x).setX(kittens.get(x).getX()+3);
 				}
 				else{
 					intime++;
@@ -230,8 +206,8 @@ public class KittenInFactory extends JPanel implements ActionListener{
 				}
 			}
 			if(condition==1){
-				if(kittens.get(x).getImage().getLocation().x>0-kittens.get(x).getSize().width){
-					kittens.get(x).getImage().setLocation(kittens.get(x).getImage().getLocation().x-1, kittens.get(x).getImage().getLocation().y);
+				if(kittens.get(x).getX()>0-kittens.get(x).getSize().width){
+					kittens.get(x).setX(kittens.get(x).getX()-3);
 				}
 				else{
 					kittens.get(x).setHide(true);
@@ -261,8 +237,8 @@ public class KittenInFactory extends JPanel implements ActionListener{
 				condition=3;
 			}
 			if(condition==3){
-				if (kittens.get(x).getImage().getLocation().y<0){
-					kittens.get(x).getImage().setLocation(kittens.get(x).getImage().getLocation().x, kittens.get(x).getImage().getLocation().y+1);
+				if (kittens.get(x).getY()<0){
+					kittens.get(x).setY(kittens.get(x).getY()+3);
 				}
 				else{
 					intime++;
@@ -273,8 +249,8 @@ public class KittenInFactory extends JPanel implements ActionListener{
 				}
 			}
 			if(condition==1){
-				if(kittens.get(x).getImage().getLocation().y>-kittens.get(x).getSize().height){
-					kittens.get(x).getImage().setLocation(kittens.get(x).getImage().getLocation().x, kittens.get(x).getImage().getLocation().y-1);
+				if(kittens.get(x).getY()>-kittens.get(x).getSize().height){
+					kittens.get(x).setY(kittens.get(x).getY()-3);
 				}
 				else{
 					kittens.get(x).setHide(true);
@@ -304,8 +280,9 @@ public class KittenInFactory extends JPanel implements ActionListener{
 				condition=3;
 			}
 			if(condition==3){
-				if (kittens.get(x).getImage().getLocation().y<-10){
-					kittens.get(x).getImage().setLocation(kittens.get(x).getImage().getLocation().x-1, kittens.get(x).getImage().getLocation().y+1);
+				if (kittens.get(x).getY()<-20){
+					kittens.get(x).setX(kittens.get(x).getX()-3);
+					kittens.get(x).setY(kittens.get(x).getY()+3);
 				}
 				else{
 					intime++;
@@ -316,8 +293,9 @@ public class KittenInFactory extends JPanel implements ActionListener{
 				}
 			}
 			if(condition==1){
-				if(kittens.get(x).getImage().getLocation().y>0-kittens.get(x).getSize().height){
-					kittens.get(x).getImage().setLocation(kittens.get(x).getImage().getLocation().x+1, kittens.get(x).getImage().getLocation().y-1);
+				if(kittens.get(x).getY()>0-kittens.get(x).getSize().height){
+					kittens.get(x).setX(kittens.get(x).getX()+3);
+					kittens.get(x).setY(kittens.get(x).getY()-3);
 				}
 				else{
 					kittens.get(x).setHide(true);
@@ -330,22 +308,18 @@ public class KittenInFactory extends JPanel implements ActionListener{
 				kittens.get(x).setHide(false);
 			}
 		}
-		
-		
 		time++;
-		this.revalidate();
-		this.repaint();
 		}
+		repaint();
 	}
 
-
-	public synchronized Timer getTimer() {
-		return timer;
-	}
-
-
-	public synchronized void setTimer(Timer timer) {
-		this.timer = timer;
+	public static void main(String[] args) {
+		JFrame j = new JFrame();
+		KittenInFactory k = new KittenInFactory();
+		j.setSize(1200,600);
+		j.setVisible(true);
+		j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		j.add(k);
 	}
 
 

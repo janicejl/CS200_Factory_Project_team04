@@ -37,7 +37,6 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 	boolean catGIFOn;
 	JLabel label;
 	JPanel base;                                //base of those factory panels
-	Snowy snowy;                                //panel of snowy background
 	
 	private Vector<Lane> lanes = new Vector<Lane> ();			//Collection of the lanes	
 	private Vector<Feeder> feeders = new Vector<Feeder>();		//Collection of the Feeders
@@ -92,13 +91,9 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
         }
 		
 		ks = new KittenInFactory();
-			
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx=0;
-		c.gridy=0;
-			
-		add(ks,c);
-		add(base,c);
+		add(ks);
+		
+		add(base);
 		
 	}
 	
@@ -108,6 +103,7 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		add(fire);
 		fireOn = true;
 		catGIFOn = true;
+		
 	}
 	
 	//function to stop the fire non-normative. 
@@ -129,8 +125,10 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		laneGraphics.setLanes(lanes);
 		laneGraphics.update();
 		gantryGraphics.setGantryManager(manager);
+		ks.update();
 		if(fireOn){
 			fire.update();
+			
 		}
 	}
 	
@@ -145,8 +143,10 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 		g.translate(830, 0);
 		gantryGraphics.paintComponent(g);
 		g.translate(-830, 0);
+		ks.paintComponent(g);
 		if(fireOn){
 			fire.paintFire(g2);
+			
 		}
 
 		
@@ -207,6 +207,14 @@ public class GUIProductionManager extends JPanel{		//The animation panel for the
 	public void setGantryManager(GantryManager gm)
 	{
 		manager = gm;
+	}
+
+	public synchronized KittenInFactory getKs() {
+		return ks;
+	}
+
+	public synchronized void setKs(KittenInFactory ks) {
+		this.ks = ks;
 	}
 	
 //	public void actionPerformed(ActionEvent e){

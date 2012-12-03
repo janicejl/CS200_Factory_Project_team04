@@ -264,6 +264,7 @@ public class NestAgent extends Agent implements Nest{
 		}
 		
 		
+		
 		return false;
 	}
 
@@ -370,7 +371,7 @@ public class NestAgent extends Agent implements Nest{
 	public void setVisionAgent(final VisionAgent camera){
 		this.camera = camera;
 		
-		TimerTask timer_task = new TimerTask()
+	/*TimerTask timer_task = new TimerTask()
 		{  
 			public void run()
 			{ System.out.println("boooom");
@@ -393,9 +394,36 @@ public class NestAgent extends Agent implements Nest{
 				 }
 			
 			}
-		};
+		};*/
 		
-		timer.schedule(timer_task, (rn.nextInt(5000)+1000));
+		/*timer.scheduleAtFixedRate(new TimerTask(){
+			public void run()
+			{ 
+				 if(lanestate != LaneStatus.gettingParts)
+				 {
+					 
+					 int count = 0;
+					 for(int i=0; i< nestslots.length;i++)
+					 {
+						 if(nestslots != null)
+						 {
+							 count++;
+						 }
+					 }
+					 System.out.println(count);
+					 System.out.println(partsrobotstate);
+					 System.out.println(neststate);
+					 System.out.println(lanestate);
+					 if(count!= 0 && partsrobotstate == PartsRobotStatus.waitingForParts && neststate == NestStatus.noAction && lanestate == LaneStatus.noAction)
+					 {
+						 System.out.println("boooom");
+						 camera.msgImFull(nest);
+					 }
+				 }
+			
+			}
+		
+		}, 1000,1000);*/
 		
 		
 		

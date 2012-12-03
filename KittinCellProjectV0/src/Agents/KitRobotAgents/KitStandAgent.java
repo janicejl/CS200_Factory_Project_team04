@@ -8,16 +8,13 @@ import java.util.List;
 import server.Server;
 
 import Agent.Agent;
-import Agents.KitRobotAgents.KitRobotAgent.KitRobotEvent;
-import Agents.KitRobotAgents.KitRobotAgent.KitState;
 import Interface.PartsRobotAgent.*;
 import Interface.KitRobotAgent.KitRobot;
 import Interface.KitRobotAgent.KitStand;
 import Interface.VisionAgent.Vision;
-import data.KitConfig;
 import data.Part;
 import data.Kit;
-import data.PartInfo;
+
 
 public class KitStandAgent extends Agent implements KitStand, Serializable{
 
@@ -160,7 +157,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 		{
 			if(kit_h.position == position)
 			{
-				System.out.println(position);
 				kit_h.state = KitState.AddParts;
 				kit_h.parts_to_add = part_l;
 				stateChanged();
@@ -397,7 +393,6 @@ public class KitStandAgent extends Agent implements KitStand, Serializable{
 			kit_h.kit.addPart(part);
 		}
 		System.out.println("KitStand: Add Parts to kit");
-		System.out.println(kit_h.position);
 		kit_h.state = KitState.None;
 		//kit_h.parts_to_add = null;
 	}
